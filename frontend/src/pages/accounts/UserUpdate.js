@@ -1,5 +1,5 @@
-function UserUpdate (){
-  return 
+function UserUpdate() {
+  return <div>UserUpdate</div>;
 }
 
-export default UserUpdate
+export default UserUpdate;

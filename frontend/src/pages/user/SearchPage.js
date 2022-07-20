@@ -1,5 +1,5 @@
-function SearchPage (){
-  return 
+function SearchPage() {
+  return <div>SearchPage</div>;
 }
 
-export default SearchPage
+export default SearchPage;

@@ -1,5 +1,5 @@
-function PostUpdate (){
-  return 
+function PostUpdate() {
+  return <div>PostUpdate</div>;
 }
 
-export default PostUpdate
+export default PostUpdate;

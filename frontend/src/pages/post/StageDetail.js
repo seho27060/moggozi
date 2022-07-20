@@ -1,5 +1,5 @@
-function StageDetail (){
-  return 
+function StageDetail() {
+  return <div>StageDetail</div>;
 }
 
-export default StageDetail
+export default StageDetail;

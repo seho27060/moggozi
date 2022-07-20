@@ -1,5 +1,5 @@
-function StageUpdate (){
-  return 
+function StageUpdate() {
+  return <div>StageUpdate</div>;
 }
 
-export default StageUpdate
+export default StageUpdate;
