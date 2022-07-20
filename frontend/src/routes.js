@@ -35,7 +35,7 @@ import UserPage from "./pages/user/UserPage"
 
 // Main
 import Mainpage from "./pages/MainPage"
-// import SearchPage from "./pages/SearchPage"
+import SearchPage from "./pages/SearchPage"
 import UnknownPage from "./pages/UnknownPage"
 
 export default function Router() {
@@ -52,6 +52,10 @@ export default function Router() {
           element: <Mainpage />
         },
       ],
+    },
+    {
+      path: "/search",
+      element: <SearchPage />
     },
     {
       path: "/account",
