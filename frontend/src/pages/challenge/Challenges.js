@@ -1,5 +1,7 @@
 function Challenges() {
-  return <div>Challenges</div>;
+  return <div>
+    Challenges
+    </div>;
 }
 
 export default Challenges;

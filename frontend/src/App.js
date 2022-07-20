@@ -1,17 +1,12 @@
-import { Route, Routes } from "react-router-dom"
-import './App.css';
+import Router from "./routes"
 
-import Layout from "./components/layout/Layout"
+import './App.css';
 
 function App() {
   return (
-    <Layout>
-      <Routes>
-        <Route path="/" exact element={}/>
-        <Route path="" element={}/>
-        <Route path="" element={}/>
-      </Routes>
-    </Layout>
+    <div>
+      <Router />
+    </div>
   );
 }
 
