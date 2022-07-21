@@ -1,11 +1,13 @@
-// import { Outlet } from 'react-router-dom'
+import React from "react"
+import LoginForm from "../../components/accounts/LoginForm"
 
-function Login(props) {
-  console.log(props)
-
-  return <div>Login
-    {/* <Outlet /> */}
-  </div>;
+function Login (){
+  return (
+    <div>
+      <h1>Login Page</h1>
+      <LoginForm/>
+    </div>
+  )
 }
 
 export default Login;
