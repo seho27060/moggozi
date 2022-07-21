@@ -1,38 +1,36 @@
-import { useRef } from "react";
+import React, { useRef } from "react";
 
-function AccountForm() {
+const AccountForm: React.FC = () => {
+  const emailInputRef = useRef<HTMLInputElement>(null);
+  const usernameInputRef = useRef<HTMLInputElement>(null);
+  const nicknameInputRef = useRef<HTMLInputElement>(null);
+  const introduceInputRef = useRef<HTMLTextAreaElement>(null);
+  const passwordInputRef = useRef<HTMLInputElement>(null);
+  const isPrivateInputRef = useRef<HTMLInputElement>(null);
+  const userImgInputRef = useRef<HTMLInputElement>(null);
 
-  const emailInputRef = useRef()
-  const usernameInputRef = useRef()
-  const nicknameInputRef = useRef()
-  const introduceInputRef = useRef()
-  const passwordInputRef = useRef()
-  const isPrivateInputRef = useRef()
-  const userImgInputRef = useRef()
+  function submitHandler(event: React.FormEvent) {
+    event.preventDefault();
 
-    function submitHandler(event) {
-    event.preventDefault()
-
-    const enteredEmail = emailInputRef.current.value
-    const enteredUsername = usernameInputRef.current.value
-    const enteredNickname = nicknameInputRef.current.value
-    const enteredIntroduce = introduceInputRef.current.value
-    const enteredPassword = passwordInputRef.current.value
-    const enteredIsPrivate = isPrivateInputRef.current.value
-    const enteredUserImg = userImgInputRef.current.value
+    const enteredEmail = emailInputRef.current!.value;
+    const enteredUsername = usernameInputRef.current!.value;
+    const enteredNickname = nicknameInputRef.current!.value;
+    const enteredIntroduce = introduceInputRef.current!.value;
+    const enteredPassword = passwordInputRef.current!.value;
+    const enteredIsPrivate = isPrivateInputRef.current!.value;
+    const enteredUserImg = userImgInputRef.current!.value;
 
     const meetupData = {
-      email : enteredEmail,
+      email: enteredEmail,
       username: enteredUsername,
-      nickname : enteredNickname,
-      introduce : enteredIntroduce,
+      nickname: enteredNickname,
+      introduce: enteredIntroduce,
       password: enteredPassword,
-      is_private : enteredIsPrivate,
-      user_img : enteredUserImg,
-    }
-    
-    console.log(meetupData)
+      is_private: enteredIsPrivate,
+      user_img: enteredUserImg,
+    };
 
+    console.log(meetupData);
   }
   return (
     <div>
@@ -46,7 +44,7 @@ function AccountForm() {
               required
               id="email"
               ref={emailInputRef}
-              placeholder ="email"
+              placeholder="email"
             />
           </div>
           <div>
@@ -60,28 +58,18 @@ function AccountForm() {
           </div>
           <div>
             <label htmlFor="username">username : </label>
-            <input
-              type="text"
-              required
-              id="username"
-              ref={usernameInputRef}
-            />
+            <input type="text" required id="username" ref={usernameInputRef} />
           </div>
           <div>
             <label htmlFor="nickname">nickname : </label>
-            <input
-              type="text"
-              required
-              id="nickname"
-              ref={nicknameInputRef}
-            />
+            <input type="text" required id="nickname" ref={nicknameInputRef} />
           </div>
           <div>
             <label htmlFor="introduce">introduce : </label>
             <textarea
               required
               id="introduce"
-              rows="5"
+              rows={5}
               ref={introduceInputRef}
             />
           </div>
@@ -96,12 +84,7 @@ function AccountForm() {
           </div>
           <div>
             <label htmlFor="user_img">user_img : </label>
-            <input
-              type="url"
-              required
-              id="user_img"
-              ref={userImgInputRef}
-            />
+            <input type="url" required id="user_img" ref={userImgInputRef} />
           </div>
           <button type="button" onClick={submitHandler}>
             Register

@@ -1,12 +1,10 @@
 import { Outlet } from 'react-router-dom'
 
 
-const AccountLayout = (props) => {
-  console.log(props)
+const AccountLayout: React.FC = () => {
   return (
     <div>
       AccountLayout
-      {props.children}
       <Outlet />
     </div>
   )
