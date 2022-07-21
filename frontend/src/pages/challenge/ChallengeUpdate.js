@@ -1,5 +1,5 @@
-function ChallengeUpdate (){
-  return 
+function ChallengeUpdate() {
+  return <div>ChallengeUpdate</div>;
 }
 
-export default Login
+export default ChallengeUpdate;

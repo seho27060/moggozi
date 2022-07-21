@@ -1,5 +1,5 @@
-function ChallengeNew (){
-  return 
+function ChallengeNew() {
+  return <div>ChallengeNew</div>;
 }
 
-export default ChallengeNew
+export default ChallengeNew;
