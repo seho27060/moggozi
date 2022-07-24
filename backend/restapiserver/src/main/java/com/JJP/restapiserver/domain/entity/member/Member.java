@@ -4,12 +4,13 @@ import com.JJP.restapiserver.domain.entity.challenge.Challenge;
 import com.JJP.restapiserver.domain.entity.stage.Comment;
 import com.JJP.restapiserver.domain.entity.stage.Post;
 import com.JJP.restapiserver.domain.entity.challenge.Review;
-import lombok.Builder;
-import lombok.Getter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 // Setter를 쓰지 말아야 할 이유
 // 어디에서나 수정가능하게끔 열어놓으면 안 됨
@@ -17,30 +18,72 @@ import java.util.List;
 
 @Entity
 @Getter
+@Setter /** 삭제 예정  */
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Member {
+
     @Id
     @GeneratedValue
     @Column(name = "member_id")
     private Long id;
 
-    @Column(length = 30)
-    private String email;
-    @Column(length =  20)
+    // email을 username으로 칭한다.
+    @Column(length = 30, unique= true)
     private String username;
 
-    @Column(length = 10)
-    private String nickname;
+    // 가입하는 사람의 성+이름이 합쳐진 이름이다.
+    @Column(length =  20)
+    private String fullname;
 
-    @Column(length = 50)
-    private String introduce;
-    @Column(length = 20)
+    // 비밀번호
+    @Column(length = 100)
     private String password;
 
+    /*
+
+    // 가입자의 닉네임이다.
+    @Column(length = 10, unique= true)
+    private String nickname;
+
+    // 한 줄 소개
+    @Column(length = 100)
+    private String introduce;
+
+    // 프로필 이미지
     @Column(length = 300)
     private String user_img;
 
-    private int user_state;
+    // 마이페이지 공개 여부 - 0: false, 1: true
+    private int is_private;
 
+
+     */
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "member_id")
+    , inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles = new HashSet<>();
+
+    public Member(String username, String fullname, String password) {
+        this.username = username;
+        this.fullname = fullname;
+        this.password = password;
+    }
+
+    /*
+    public Member(String username, String fullname, String password
+        , String nickname, String introduce, String user_img, int is_private) {
+
+        this.username = username;
+        this.fullname = fullname;
+        this.password = password;
+        this.nickname = nickname;
+        this.introduce = introduce;
+        this.user_img = user_img;
+        this.is_private = is_private;
+    }
 
     @OneToMany(mappedBy = "member")
     private List<Challenge> challengeList = new ArrayList<>();
@@ -69,17 +112,5 @@ public class Member {
     @OneToMany(mappedBy = "member")
     private List<Review> reviews = new ArrayList<>();
 
-    @Builder
-    public Member(String email, String username, String nickname, String introduce, String password
-    , String user_img, int user_state)
-    {
-        this.email = email;
-        this.username = username;
-        this.nickname = nickname;
-        this.introduce = introduce;
-        this.password = password;
-        this.user_img = user_img;
-        this.user_state = user_state;
-    }
-
+     */
 }
