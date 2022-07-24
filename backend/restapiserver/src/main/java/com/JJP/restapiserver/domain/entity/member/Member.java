@@ -100,12 +100,11 @@ public class Member {
     @OneToMany(mappedBy = "to_user_id")
     private List<Follow> following_list = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member")
-    private List<ChallengeLike> challengeLikeList = new ArrayList<>();
+//    @OneToMany(mappedBy = "member")
+//    private List<ChallengeLike> challengeLikeList = new ArrayList<>();
 
     @OneToMany(mappedBy = "member")
     private List<Review> reviews = new ArrayList<>();
 
 */
-
 }
