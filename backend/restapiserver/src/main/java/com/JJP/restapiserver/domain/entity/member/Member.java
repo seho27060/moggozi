@@ -17,7 +17,6 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Member {
-
     @Id
     @GeneratedValue
     @Column(name = "member_id")
