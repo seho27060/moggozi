@@ -1,19 +1,23 @@
 package com.JJP.restapiserver.controller;
 
-import com.JJP.restapiserver.domain.dto.member.LoginRequest;
-import com.JJP.restapiserver.domain.dto.member.MessageResponse;
-import com.JJP.restapiserver.domain.dto.member.SignupRequest;
-import com.JJP.restapiserver.domain.dto.member.UserInfoResponse;
+import com.JJP.restapiserver.domain.dto.member.request.LoginRequest;
+import com.JJP.restapiserver.domain.dto.member.request.LogoutRequest;
+import com.JJP.restapiserver.domain.dto.member.request.SignupRequest;
+import com.JJP.restapiserver.domain.dto.member.request.TokenRefreshRequest;
+import com.JJP.restapiserver.domain.dto.member.response.JwtResponse;
+import com.JJP.restapiserver.domain.dto.MessageResponse;
+import com.JJP.restapiserver.domain.dto.member.response.TokenRefreshResponse;
 import com.JJP.restapiserver.domain.entity.member.ERole;
 import com.JJP.restapiserver.domain.entity.member.Member;
+import com.JJP.restapiserver.domain.entity.member.RefreshToken;
 import com.JJP.restapiserver.domain.entity.member.Role;
+import com.JJP.restapiserver.exception.TokenRefreshException;
 import com.JJP.restapiserver.repository.MemberRepository;
 import com.JJP.restapiserver.repository.RoleRepository;
 import com.JJP.restapiserver.security.JwtUtils;
 import com.JJP.restapiserver.security.UserDetailsImpl;
+import com.JJP.restapiserver.service.RefreshTokenService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -32,7 +36,6 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/user")
 public class MemberController {
-
     @Autowired
     AuthenticationManager authenticationManager;
     @Autowired
@@ -43,6 +46,10 @@ public class MemberController {
     PasswordEncoder encoder;
     @Autowired
     JwtUtils jwtUtils;           // jwt 토큰 생성, 분해, 검증, 유효성 검사
+
+    // RereshToken 생성을 위한 Service
+    @Autowired
+    RefreshTokenService refreshTokenService;
 
     // 로그인
     @PostMapping("/login")
@@ -58,20 +65,19 @@ public class MemberController {
         // UserDetails Object를 만든다.
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
 
-        // 응답 쿠키를 생성한다.
-        ResponseCookie jwtCookie = jwtUtils.generateJwtCookie(userDetails);
+        String jwt = jwtUtils.generateJwtToken(userDetails);
 
         // 사용자 권한 정보를 확인한다.
         List<String> roles = userDetails.getAuthorities().stream()
                 .map(item -> item.getAuthority())
                 .collect(Collectors.toList());
 
+        RefreshToken refreshToken = refreshTokenService.createRefreshToken(userDetails.getId());
+
         // Http Cookie에 token 정보를 담아 보낸다.
-        return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, jwtCookie.toString())
-                .body(new UserInfoResponse(userDetails.getId(),
-                        userDetails.getUsername(),
-                        userDetails.getFullname(),
-                        roles));
+        return ResponseEntity.ok(new JwtResponse(jwt, refreshToken.getToken()
+                , userDetails.getId(), userDetails.getUsername()
+                , userDetails.getFullname(), roles));
     }
 
     // 회원가입
@@ -100,8 +106,7 @@ public class MemberController {
             Role userRole = roleRepository.findByName(ERole.ROLE_USER)
                     .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
             roles.add(userRole);
-        }
-        else {
+        } else {
             strRoles.forEach(role -> {
                 switch (role) {
                     case "admin":
@@ -123,15 +128,30 @@ public class MemberController {
         }
         user.setRoles(roles);
         userRepository.save(user);
+
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }
 
     // 로그아웃
     @PostMapping("/logout")
-    public ResponseEntity<?> logoutUser() {
-        ResponseCookie cookie = jwtUtils.getCleanJwtCookie();
-        return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString())
-                .body(new MessageResponse("You've been signed out!"));
+    public ResponseEntity<?> logoutUser(@Valid @RequestBody LogoutRequest logoutRequest) {
+        refreshTokenService.deleteByMemberId(logoutRequest.getId());
+        return ResponseEntity.ok(new MessageResponse("Log out successful"));
+    }
+
+    @PostMapping("/refreshtoken")
+    public ResponseEntity<?> refreshtoken(@Valid @RequestBody TokenRefreshRequest tokenRefreshRequest) {
+        String requestRefreshToken = tokenRefreshRequest.getRefreshToken();
+
+        return refreshTokenService.findByToken(requestRefreshToken)
+                .map(refreshTokenService::verifyExpiration)
+                .map(RefreshToken::getMember)
+                .map(user -> {
+                    String token = jwtUtils.generateTokenFromUsername(user.getUsername());
+                    return ResponseEntity.ok(new TokenRefreshResponse(token, requestRefreshToken));
+                }).
+                orElseThrow(() -> new TokenRefreshException(requestRefreshToken
+                        , "Refresh token is not in database!"));
     }
 
 }

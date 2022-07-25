@@ -1,4 +1,4 @@
-package com.JJP.restapiserver.domain.dto.member;
+package com.JJP.restapiserver.domain.dto;
 
 
 import lombok.AllArgsConstructor;

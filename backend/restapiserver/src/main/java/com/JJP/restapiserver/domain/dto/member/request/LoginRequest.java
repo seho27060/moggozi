@@ -1,4 +1,4 @@
-package com.JJP.restapiserver.domain.dto.member;
+package com.JJP.restapiserver.domain.dto.member.request;
 
 import lombok.Getter;
 import lombok.Setter;
