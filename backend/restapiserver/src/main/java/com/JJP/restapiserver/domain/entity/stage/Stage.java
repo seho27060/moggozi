@@ -16,6 +16,7 @@ public class Stage extends BaseTimeEntity {
 
     private Long post_order;
 
+    // 챌린지와 다대일 양방향 관계
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "challenge_id")
     private Challenge challenge;

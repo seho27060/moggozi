@@ -9,7 +9,7 @@ spring:
     url:  jdbc:h2:tcp://localhost/~/testdb
     driver-class-name: org.h2.Driver
     username: sa
-    password:
+    password: 1234
 
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
@@ -27,6 +27,5 @@ logging:                        # logging level은 DEBUG로 설정하겠다.
 
 jwt:
   header: Authorization
-  secret: MjIwNy1maXJzdC1wcm9qZWN0LWp3dC10b2tlbi1wcmVzZW50ZWQtYnktbW9nZ296aS1hbmQtc3Vw
-  cG9ydGVkLWJ5LXNzYWZ5Cg==
+  secret: MjIwNy1maXJzdC1wcm9qZWN0LWp3dC10b2tlbi1wcmVzZW50ZWQtYnktbW9nZ296aS1hbmQtc3VwcG9ydGVkLWJ5LXNzYWZ5Cg==
   token-validity-in-seconds: 86400        # 토큰 만료 시간(초) = 1일 (24시간)

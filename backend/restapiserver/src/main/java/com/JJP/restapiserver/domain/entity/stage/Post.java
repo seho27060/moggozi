@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Getter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -17,7 +19,7 @@ public class Post extends BaseTimeEntity {
 
     @JoinColumn(name = "member_id")
     @ManyToOne
-    private Member writer;
+    private Member member;
     @Column(length = 45)
     private String title;
 
@@ -29,11 +31,15 @@ public class Post extends BaseTimeEntity {
     @Column(length = 300)
     private String post_img;
 
-    @Builder
 
-    public Post(Long id, Member writer, String title, String content, Long stage_id, String post_img) {
+    // 포스트 좋아요와 다대일 양방향 관계
+    @OneToMany(mappedBy = "post")
+    private List<PostLike> postLikeList = new ArrayList<>();
+
+    @Builder
+    public Post(Long id, Member member, String title, String content, Long stage_id, String post_img) {
         this.id = id;
-        this.writer = writer;
+        this.member = member;
         this.title = title;
         this.content = content;
         this.stage_id = stage_id;
