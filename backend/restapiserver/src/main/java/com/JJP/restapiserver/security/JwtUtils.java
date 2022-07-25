@@ -10,7 +10,7 @@ import org.springframework.web.util.WebUtils;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import java.security.SignatureException;
+//import java.security.SignatureException;
 import java.util.Date;
 
 @Component
@@ -18,8 +18,12 @@ public class JwtUtils {
     private static final Logger logger = LoggerFactory.getLogger(JwtUtils.class);
     @Value("${jwt.secret}")
     private String jwtSecret;
-    @Value("${jwt.token-validity-in-milliseconds}")
+    @Value("${jwt.accessExpirationInMs}")
     private int jwtExpirationMs;
+
+    @Value("${jwt.refreshExpirationInMs}")
+    private int jwtRefreshMs;
+
     @Value("${jwt.cookieName}")
     private String jwtCookie;
 
@@ -36,10 +40,10 @@ public class JwtUtils {
     // 유효한 토큰인지 확인하기
     public boolean validateJwtToken(String authToken) {
         try {
-            Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(authToken);
+            Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(authToken).getBody().getSubject();
             return true;
-//        } catch (SignatureException e) {
-//            logger.error("Invalid JWT signature: {}", e.getMessage());
+        } catch (SignatureException e) {
+            logger.error("Invalid JWT signature: {}", e.getMessage());
         } catch (MalformedJwtException e) {
             logger.error("Invalid JWT token: {}", e.getMessage());
         } catch (ExpiredJwtException e) {
@@ -62,11 +66,9 @@ public class JwtUtils {
                 .compact();
     }
 
-    // User의 정보를 이용하여 쿠키 만들기
-    public ResponseCookie generateJwtCookie(UserDetailsImpl userPrincipal) {
-        String jwt = generateTokenFromUsername(userPrincipal.getUsername());
-        ResponseCookie cookie = ResponseCookie.from(jwtCookie, jwt).path("/").maxAge(24 * 60 * 60).httpOnly(true).build();
-        return cookie;
+    // User의 정보를 이용하여 토큰 만들기
+    public String generateJwtToken(UserDetailsImpl userPrincipal) {
+      return generateTokenFromUsername(userPrincipal.getUsername());
     }
 
     // 쿠키 삭제

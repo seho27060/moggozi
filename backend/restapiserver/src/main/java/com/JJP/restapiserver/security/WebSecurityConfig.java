@@ -20,8 +20,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableGlobalMethodSecurity(prePostEnabled = true) // AOP security on methods
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Value("${spring.h2.console.path}")
-    private String h2ConsolePath;
+//    @Value("${spring.h2.console.path}")
+//    private String h2ConsolePath;
 
     @Autowired
     UserDetailsServiceImpl userDetailsService;
@@ -49,13 +49,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors().and().csrf().disable()
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-                .authorizeRequests().antMatchers("/user/signup/**").permitAll()
-                .antMatchers("/user/login/**").permitAll()
-                .antMatchers(h2ConsolePath + "/**").permitAll()
+                .authorizeRequests().antMatchers("/user/**").permitAll()
                 .anyRequest().authenticated();
 
         // fix H2 database console: Refused to display ' in a frame because it set 'X-Frame-Options' to 'deny'
-        http.headers().frameOptions().sameOrigin();
+//        http.headers().frameOptions().sameOrigin();
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 
