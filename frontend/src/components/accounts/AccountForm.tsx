@@ -1,13 +1,16 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
+// 박세호, 회원가입 폼, 비밀번호 체크. axios 추가 필요. 요청성공시 메인페이지로 이동
 
 const AccountForm: React.FC = () => {
+  const navigate = useNavigate()
+
+  const [passwordCheck, setPasswordCheck] = useState(true)
+  const [passwordInputState, setPasswordInput] = useState("")
+
   const emailInputRef = useRef<HTMLInputElement>(null);
   const usernameInputRef = useRef<HTMLInputElement>(null);
   const nicknameInputRef = useRef<HTMLInputElement>(null);
-  const introduceInputRef = useRef<HTMLTextAreaElement>(null);
-  const passwordInputRef = useRef<HTMLInputElement>(null);
-  const isPrivateInputRef = useRef<HTMLInputElement>(null);
-  const userImgInputRef = useRef<HTMLInputElement>(null);
 
   function submitHandler(event: React.FormEvent) {
     event.preventDefault();
@@ -15,23 +18,23 @@ const AccountForm: React.FC = () => {
     const enteredEmail = emailInputRef.current!.value;
     const enteredUsername = usernameInputRef.current!.value;
     const enteredNickname = nicknameInputRef.current!.value;
-    const enteredIntroduce = introduceInputRef.current!.value;
-    const enteredPassword = passwordInputRef.current!.value;
-    const enteredIsPrivate = isPrivateInputRef.current!.value;
-    const enteredUserImg = userImgInputRef.current!.value;
+    const enteredPassword = passwordInputState
 
     const meetupData = {
       email: enteredEmail,
       username: enteredUsername,
       nickname: enteredNickname,
-      introduce: enteredIntroduce,
       password: enteredPassword,
-      is_private: enteredIsPrivate,
-      user_img: enteredUserImg,
+      introduce: "",
+      is_private: "",
+      user_img: "",
     };
-
+    // axios를 통한 https 요청 보내기
+    // 가입정보 보내고 해당 정보로 로그인 vs 메인페이지 이동
     console.log(meetupData);
+    navigate("/",{replace : true})
   }
+  
   return (
     <div>
       <h3>Account form</h3>
@@ -44,7 +47,6 @@ const AccountForm: React.FC = () => {
               required
               id="email"
               ref={emailInputRef}
-              placeholder="email"
             />
           </div>
           <div>
@@ -53,8 +55,27 @@ const AccountForm: React.FC = () => {
               type="password"
               required
               id="password"
-              ref={passwordInputRef}
+              value = {passwordInputState}
+              onChange = {(event) => {
+                setPasswordInput(event.target.value)
+              }}
             />
+          </div>
+          <div>
+            <label htmlFor="passwordCheck">type password again: </label>
+            <input
+              type="password"
+              required
+              id="passwordCheck"
+              onChange={(event) => {
+                if (passwordInputState === event.target.value){
+                  setPasswordCheck(true)
+                } else {
+                  setPasswordCheck(false)
+                }
+              }}
+            />
+            { !passwordCheck && <p>password is not match, check again plz</p>}
           </div>
           <div>
             <label htmlFor="username">username : </label>
@@ -64,29 +85,7 @@ const AccountForm: React.FC = () => {
             <label htmlFor="nickname">nickname : </label>
             <input type="text" required id="nickname" ref={nicknameInputRef} />
           </div>
-          <div>
-            <label htmlFor="introduce">introduce : </label>
-            <textarea
-              required
-              id="introduce"
-              rows={5}
-              ref={introduceInputRef}
-            />
-          </div>
-          <div>
-            <label htmlFor="is_private">is_private : </label>
-            <input
-              type="check"
-              required
-              id="is_private"
-              ref={isPrivateInputRef}
-            />
-          </div>
-          <div>
-            <label htmlFor="user_img">user_img : </label>
-            <input type="url" required id="user_img" ref={userImgInputRef} />
-          </div>
-          <button type="button" onClick={submitHandler}>
+          <button type="button" onClick={submitHandler} disabled = {!passwordCheck} >
             Register
           </button>
         </form>
