@@ -24,7 +24,8 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation group: 'org.passay', name: 'passay', version: '1.6.1'
-	compileOnly 'org.projectlombok:lombok'
+    implementation 'junit:junit:4.13.1'
+    compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'com.h2database:h2'
 	annotationProcessor 'org.projectlombok:lombok'
@@ -33,11 +34,7 @@ dependencies {
 	// swagger
 	implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
 
-	// Jackson은 자바 객체와 JSON 형식의 문자열 간 변환 처리 담당하는 라이브러리
-	implementation "com.fasterxml.jackson.core:jackson-core:2.9.9"
-	implementation "com.fasterxml.jackson.core:jackson-annotations:2.9.9"
-	implementation "com.fasterxml.jackson.core:jackson-databind:2.9.9"
-	implementation "com.fasterxml.jackson.module:jackson-module-kotlin:2.9.9"
+
 
 	// Spring Security + JWT
 	implementation group: 'com.auth0', name: 'java-jwt', version: '3.18.2'
