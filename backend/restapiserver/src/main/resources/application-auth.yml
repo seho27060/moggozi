@@ -1,0 +1,6 @@
+jwt:
+  header: Authorization
+  secret: MjIwNy1maXJzdC1wcm9qZWN0LWp3dC10b2tlbi1wcmVzZW50ZWQtYnktbW9nZ296aS1hbmQtc3VwcG9ydGVkLWJ5LXNzYWZ5Cg==
+  cookieName: moggozi
+  accessExpirationInMs: 3600000        # Access 토큰 만료 시간(ms)
+  refreshExpirationInMs: 86400000       # Refresh 토큰 만료 시간(ms) = 1일 (24시간)
