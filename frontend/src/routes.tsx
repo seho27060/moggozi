@@ -13,6 +13,7 @@ import SearchLayout from "./layout/SearchLayout";
 import Login from "./pages/accounts/Login";
 import Signup from "./pages/accounts/Signup";
 import UserUpdate from "./pages/accounts/UserUpdate";
+import PasswordReissue from "./pages/accounts/PasswordReissue";
 
 // Challenge
 import ChallengeDetail from "./pages/challenge/ChallengeDetail";
@@ -77,6 +78,10 @@ export default function Router() {
           path: "userUpdate",
           element: <UserUpdate />,
         },
+        {
+          path: "passwordReissue",
+          element: <PasswordReissue />,
+        }
       ],
     },
     {
