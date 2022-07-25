@@ -1,11 +1,10 @@
-
 import React, { useRef } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 import { login } from "../../store/user";
 
-import axios from "axios"
+import axios from "axios";
 
 const LoginForm: React.FC = () => {
   const dispatch = useDispatch();
@@ -43,12 +42,11 @@ const LoginForm: React.FC = () => {
       };
       axios(option)
         .then((res) => {
-          dispatch(login(res.data))
-          localStorage.setItem("token", res.data.token)
-          navigate("/")
+          dispatch(login(res.data));
+          localStorage.setItem("token", res.data.token);
+          navigate("/");
         })
         .catch((err) => alert(err));
-      
     }
   }
 
@@ -67,7 +65,6 @@ const LoginForm: React.FC = () => {
           </div>
           <button type="submit">Login</button>
         </form>
-
         {/* <SocialLoginForm value={"KAKAO"}></SocialLoginForm>
         <SocialLoginForm value={"GOOGLE"}></SocialLoginForm> */}
       </div>
