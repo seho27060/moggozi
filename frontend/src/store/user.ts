@@ -64,9 +64,12 @@ export const userSlice = createSlice({
       state.token = action.payload.token
       state.isLoggedIn = !!action.payload.token
     },
+    logout: (state) => {
+      localStorage.removeItem("token")
+    }
   },
 });
 
-export const { login } = userSlice.actions;
+export const { login, logout } = userSlice.actions;
 
 export default userSlice.reducer;
