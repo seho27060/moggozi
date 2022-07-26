@@ -2,15 +2,14 @@ package com.JJP.restapiserver.security;
 
 
 import com.JJP.restapiserver.domain.entity.member.Member;
+import com.JJP.restapiserver.domain.entity.member.Role;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 // username을 이용하여 userDetails object 리턴
 // userDetails에 포함시킬 내용을 정의
@@ -19,33 +18,31 @@ public class UserDetailsImpl implements UserDetails {
     private static final long serialVersionUID = 1L;
     private Long id;
     private String username;
-
-    private String fullname;
+    private String nickname;
     @JsonIgnore
     private String password;
 
-    // AuthenticationManager가 사용자 인증과, 권한을 확인 후, Authentication object를 만들 때 사용됨됨
-   private Collection<? extends GrantedAuthority> authorities; // 'ROLE_'로 시작하는 권한들
+    // AuthenticationManager가 사용자 인증과, 권한을 확인 후, Authentication object를 만들 때 사용됨
+    private GrantedAuthority authority;
 
-    public UserDetailsImpl(Long id, String username, String fullname
-            , String password, Collection<? extends GrantedAuthority> authorities) {
+    public UserDetailsImpl(Long id, String username, String nickname
+            , String password, GrantedAuthority authority) {
         this.id = id;
-        this.fullname = fullname;
+        this.nickname = nickname;
         this.username = username;
         this.password = password;
-        this.authorities = authorities;
+        this.authority = authority;
     }
 
-    public static UserDetailsImpl build(Member user) {
-        List<GrantedAuthority> authorities = user.getRoles().stream()
-                .map(role -> new SimpleGrantedAuthority(role.getName().name()))
-                .collect(Collectors.toList());
-        return new UserDetailsImpl(user.getId(), user.getUsername(), user.getFullname(), user.getPassword(), authorities);
+    public static UserDetailsImpl build(Member member) {
+        Role role = member.getRole();
+        GrantedAuthority authority = new SimpleGrantedAuthority(role.getName().name());
+        return new UserDetailsImpl(member.getId(), member.getUsername(), member.getFullname(), member.getPassword(), authority);
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return authorities;
+        return null;
     }
 
     @Override
@@ -58,9 +55,25 @@ public class UserDetailsImpl implements UserDetails {
         return username;
     }
 
-    public String getFullname() {return fullname; }
+    public String getNickname() {
+        return nickname;
+    }
 
-    public Long getId() { return id; }
+    public long getAuthority() {
+        switch(authority.getAuthority()) {
+            case "ROLE_USER":
+                return 1;
+            case "ROLE_INVALIDATED_USER":
+                return 2;
+            case "ROLE_ADMIN":
+                return 3;
+        }
+        return -1;
+    }
+
+    public Long getId() {
+        return id;
+    }
 
 
     @Override

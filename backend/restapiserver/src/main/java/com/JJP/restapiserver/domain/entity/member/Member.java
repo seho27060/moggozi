@@ -1,16 +1,11 @@
 package com.JJP.restapiserver.domain.entity.member;
 
-import com.JJP.restapiserver.domain.entity.challenge.Challenge;
-import com.JJP.restapiserver.domain.entity.stage.Comment;
-import com.JJP.restapiserver.domain.entity.stage.Post;
-import com.JJP.restapiserver.domain.entity.challenge.Review;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 // Setter를 쓰지 말아야 할 이유
 // 어디에서나 수정가능하게끔 열어놓으면 안 됨
@@ -18,7 +13,6 @@ import java.util.Set;
 
 @Entity
 @Getter
-@Setter /** 삭제 예정  */
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -29,22 +23,20 @@ public class Member {
     @Column(name = "member_id")
     private Long id;
 
-    // email을 username으로 칭한다.
-    @Column(length = 30, unique= true)
-    private String username;
+    // username은 email이다.
+    @Column(nullable = false, length = 30, unique= true)
+    private String username; // 사용자의 아이디: email
 
     // 가입하는 사람의 성+이름이 합쳐진 이름이다.
-    @Column(length =  20)
-    private String fullname;
+    @Column(nullable = false, length =  20)
+    private String fullname; // 사용자의 이름: last name + first name
 
     // 비밀번호
-    @Column(length = 100)
-    private String password;
+    @Column(nullable = false, length = 100)
+    private String password; // BCrypt에 의해 Encoding되어 저장된다.
 
-    /*
-
-    // 가입자의 닉네임이다.
-    @Column(length = 10, unique= true)
+    // 가입자의 닉네임
+    @Column(nullable = false, length = 10, unique= true)
     private String nickname;
 
     // 한 줄 소개
@@ -52,30 +44,27 @@ public class Member {
     private String introduce;
 
     // 프로필 이미지
-    @Column(length = 300)
+    @Column(length = 300) /** 크기 변경 예정 **/
     private String user_img;
 
     // 마이페이지 공개 여부 - 0: false, 1: true
     private int is_private;
 
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "role_id")
+    private Role role;
 
-     */
+    // 생성자
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "member_id")
-    , inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Role> roles = new HashSet<>();
-
-    public Member(String username, String fullname, String password) {
+    /** 삭제 예정 */
+    public Member(String username, String nickname, String password, Role role) {
         this.username = username;
-        this.fullname = fullname;
+        this.fullname = nickname;
         this.password = password;
     }
 
-    /*
-    public Member(String username, String fullname, String password
-        , String nickname, String introduce, String user_img, int is_private) {
-
+    @Builder
+    public Member(String username, String fullname, String password, String nickname, String introduce, String user_img, int is_private, Role role) {
         this.username = username;
         this.fullname = fullname;
         this.password = password;
@@ -83,7 +72,12 @@ public class Member {
         this.introduce = introduce;
         this.user_img = user_img;
         this.is_private = is_private;
+        this.role = role;
     }
+
+    // 연관관계 설정
+
+/*
 
     @OneToMany(mappedBy = "member")
     private List<Challenge> challengeList = new ArrayList<>();
@@ -106,11 +100,12 @@ public class Member {
     @OneToMany(mappedBy = "to_user_id")
     private List<Follow> following_list = new ArrayList<>();
 
-//    @OneToMany(mappedBy = "member")
-//    private List<ChallengeLike> challengeLikeList = new ArrayList<>();
+    @OneToMany(mappedBy = "member")
+    private List<ChallengeLike> challengeLikeList = new ArrayList<>();
 
     @OneToMany(mappedBy = "member")
     private List<Review> reviews = new ArrayList<>();
 
-     */
+*/
+
 }
