@@ -15,7 +15,6 @@ spring:
 
 
   jpa:
-    defer-datasource-initialization: true
     database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
       ddl-auto: create-drop     # sessionFactory가 시작될 때, Drop -> Create -> Alter 순, 종료될 때 Drop 진행

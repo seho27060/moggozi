@@ -6,7 +6,6 @@ import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -24,6 +23,19 @@ public class SignupRequest {
     @Size(min = 6, max = 40)
     private String password;
 
-    private Set<String> role;
+    @NotBlank
+    @Size(min = 3, max = 10)
+    private String nickname;
 
+    @Size(max = 100)
+    private String introduce;
+
+    @Size(max = 300)
+    private String user_img;
+
+    private int is_private; // 0: 공개 X, 1: 공개 O
+
+//    private Set<String> role;
+
+    private Long role = null;
 }
