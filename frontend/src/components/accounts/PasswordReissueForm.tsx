@@ -32,10 +32,12 @@ const PasswordReissueForm: React.FC = () => {
       };
       axios(option)
         .then((res) => {
-          alert('email로 전송했습니다.')
-          navigate('/')
+          alert('email로 전송했습니다.')      
         })
-        .catch((err) => alert(err));
+        .catch((err) => {
+          alert(err)
+        });
+      navigate('/', {replace: true})
     }
   };
 
