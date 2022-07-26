@@ -9,7 +9,7 @@ import javax.validation.constraints.Size;
 
 @Getter
 @Setter
-public class SignupRequest {
+public class UpdateUserRequest {
 
     @NotBlank
     @Size(min = 3, max = 30)
@@ -18,10 +18,6 @@ public class SignupRequest {
     @NotBlank
     @Size(max = 20)
     private String fullname;
-
-    @NotBlank
-    @Size(min = 6, max = 40)
-    private String password;
 
     @NotBlank
     @Size(min = 3, max = 10)
@@ -34,8 +30,4 @@ public class SignupRequest {
     private String user_img;
 
     private int is_private; // 0: 공개 X, 1: 공개 O
-
-//    private Set<String> role;
-
-    private Long role = null;
 }

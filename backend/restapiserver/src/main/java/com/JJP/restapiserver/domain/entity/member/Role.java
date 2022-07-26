@@ -12,8 +12,9 @@ import javax.persistence.*;
 public class Role {
 
     @Id
+    @Column(name = "role_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @Enumerated(EnumType.STRING)
     private ERole name; // 권한 이름
@@ -21,4 +22,5 @@ public class Role {
     public Role(ERole name) {
         this.name = name;
     }
+
 }

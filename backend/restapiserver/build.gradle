@@ -28,7 +28,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation group: 'org.passay', name: 'passay', version: '1.6.1'  // password policy for java
-	compileOnly 'org.projectlombok:lombok'		// @Getter, @Setter 등 Annotation을 컴파일 할 때 해석하겠다.
+	compileOnly 'org.projectlombok:lombok'// @Getter, @Setter 등 Annotation을 컴파일 할 때 해석하겠다.
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'com.h2database:h2'			// 인메모리 데이터베이스인 h2 사용
 	annotationProcessor 'org.projectlombok:lombok' 	// @Getter, @Setter 등 Annotation 관련 라이브러리
