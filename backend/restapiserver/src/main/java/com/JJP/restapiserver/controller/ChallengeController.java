@@ -6,7 +6,9 @@ import com.JJP.restapiserver.service.ChallengeService;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,14 +27,8 @@ public class ChallengeController {
     @PutMapping("/complete/{challenge_id}")
     public ResponseEntity completeChallenge(@RequestBody ChallengeCompleteRequestDto challengeCompleteRequestDto)
     {
-        try{
-            int response = challengeService.completeChallenge(challengeCompleteRequestDto);
-
-        }
-        catch
-        {
-
-        }
+        int response = challengeService.completeChallenge(challengeCompleteRequestDto);
+        return new ResponseEntity<>(HttpStatus.OK);
 
     }
 }

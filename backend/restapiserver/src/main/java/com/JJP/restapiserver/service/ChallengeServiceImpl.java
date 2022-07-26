@@ -2,16 +2,20 @@ package com.JJP.restapiserver.service;
 
 import com.JJP.restapiserver.domain.dto.ChallengeCompleteRequestDto;
 import com.JJP.restapiserver.domain.entity.challenge.Challenge;
+import com.JJP.restapiserver.domain.entity.challenge.JoinedChallenge;
 import com.JJP.restapiserver.repository.ChallengeRepository;
+import com.JJP.restapiserver.repository.JoinedChallengeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class ChallengeServiceImpl implements ChallengeService{
 
+    private final JoinedChallengeRepository joinedChallengeRepository;
     private final ChallengeRepository challengeRepository;
 
     // 테스트 완료
@@ -54,9 +58,11 @@ public class ChallengeServiceImpl implements ChallengeService{
 
     @Override
     public int completeChallenge(ChallengeCompleteRequestDto challengeCompleteRequestDto) {
+
         // 상태를 변화시켜줄 챌린지를 찾음.
         Challenge challenge = challengeRepository.findById(challengeCompleteRequestDto.getChallenge_id()).get();
-        //
+        Optional<JoinedChallenge> joinedChallenge = joinedChallengeRepository.
+                findByChallenge_idAndUser_id(challengeCompleteRequestDto.getChallenge_id(), challengeCompleteRequestDto.getUser_id());
 
         return 0;
     }
