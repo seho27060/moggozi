@@ -35,4 +35,8 @@ public class Review extends BaseTimeEntity {
         this.rate = rate;
         this.member = member;
     }
+
+    public Review() {
+
+    }
 }

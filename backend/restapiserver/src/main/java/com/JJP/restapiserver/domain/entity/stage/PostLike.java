@@ -3,11 +3,13 @@ package com.JJP.restapiserver.domain.entity.stage;
 import com.JJP.restapiserver.domain.entity.member.Member;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
+@NoArgsConstructor
 public class PostLike {
     @Id
     @GeneratedValue

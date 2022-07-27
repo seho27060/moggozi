@@ -3,7 +3,6 @@ package com.JJP.restapiserver.service;
 import com.JJP.restapiserver.domain.dto.ChallengeCompleteRequestDto;
 import com.JJP.restapiserver.domain.dto.ChallengeRequestDto;
 import com.JJP.restapiserver.domain.entity.challenge.Challenge;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 

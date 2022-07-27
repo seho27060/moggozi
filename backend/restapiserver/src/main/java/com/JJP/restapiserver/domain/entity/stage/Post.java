@@ -4,6 +4,7 @@ import com.JJP.restapiserver.domain.entity.BaseTimeEntity;
 import com.JJP.restapiserver.domain.entity.member.Member;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -11,6 +12,7 @@ import java.util.List;
 
 @Entity
 @Getter
+@NoArgsConstructor
 public class Post extends BaseTimeEntity {
     @Id
     @GeneratedValue
