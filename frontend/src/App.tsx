@@ -26,6 +26,7 @@ function App() {
         alert(err)
       } 
     }
+    // 여기는 데이터가 어떻게 오는지 보고 수정해야 할 듯.
     if (auth) {
       dispatch(authentication(auth))
     } else {
