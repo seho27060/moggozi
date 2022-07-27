@@ -22,7 +22,7 @@ const NavigationBar: React.FC = () => {
             <NavLink to="/search">Search</NavLink>
           </li>
           {!userState.isLoggedIn && (
-            <Fragment>    
+            <Fragment>
               <li>
                 <NavLink to="/account/login">Login</NavLink>
               </li>
@@ -40,13 +40,15 @@ const NavigationBar: React.FC = () => {
                 <LogoutBtn />
               </li>
               <li>
-                <NavLink to={`/user/${userState.userInfo.user_id}`}>{ userState.userInfo.nickname }님의 MyPage</NavLink>
+                <NavLink to={`/user/${userState.userInfo.user_id}`}>
+                  {userState.userInfo.nickname}님의 MyPage
+                </NavLink>
               </li>
             </Fragment>
           )}
         </ul>
       </nav>
     </header>
-  )
-}
+  );
+};
 export default NavigationBar;

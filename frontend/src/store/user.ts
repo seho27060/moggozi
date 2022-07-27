@@ -8,6 +8,7 @@ export interface UserState {
   isLoggedIn: boolean;
 }
 
+// 중첩문 안의 객체도 모든 타입을 지정해줘야 한다.
 export interface UserInfo {
   user_id: number | null;
   email: string | null;
