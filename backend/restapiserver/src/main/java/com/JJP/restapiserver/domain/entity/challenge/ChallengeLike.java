@@ -1,6 +1,7 @@
 package com.JJP.restapiserver.domain.entity.challenge;
 
 import com.JJP.restapiserver.domain.entity.member.Member;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -18,9 +19,11 @@ public class ChallengeLike {
     // 멤버와 다대일 양방향 관계
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
+    @JsonBackReference
     private Member member;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name ="challenge_id")
+    @JsonBackReference
     private Challenge challenge;
 }

@@ -1,11 +1,15 @@
 package com.JJP.restapiserver.domain.entity.member;
 
+import com.JJP.restapiserver.domain.entity.stage.Comment;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 // Setter를 쓰지 말아야 할 이유
 // 어디에서나 수정가능하게끔 열어놓으면 안 됨
@@ -55,6 +59,9 @@ public class Member {
     private Role role;
 
     // 생성자
+    @OneToMany(mappedBy = "member")
+    @JsonManagedReference
+    private List<Comment> commentList = new ArrayList<>();
 
     /** 삭제 예정 */
     public Member(String username, String nickname, String password, Role role) {

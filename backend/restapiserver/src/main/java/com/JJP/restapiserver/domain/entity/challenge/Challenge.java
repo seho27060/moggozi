@@ -4,6 +4,7 @@ import com.JJP.restapiserver.domain.dto.ChallengeRequestDto;
 import com.JJP.restapiserver.domain.entity.BaseTimeEntity;
 import com.JJP.restapiserver.domain.entity.member.Member;
 import com.JJP.restapiserver.domain.entity.stage.Stage;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -40,9 +41,9 @@ public class Challenge extends BaseTimeEntity {
 
     private int state;
 
-
     // 스테이지와 다대일 양방향 관계
     @OneToMany(mappedBy = "challenge")
+    @JsonManagedReference
     private List<Stage> stages = new ArrayList<>();
 
     // 좋아요와 다대일 단방향 관계
@@ -54,8 +55,8 @@ public class Challenge extends BaseTimeEntity {
     private List<Review> reviews = new ArrayList<>();
 
     @OneToMany(mappedBy = "challenge")
+    @JsonManagedReference
     private List<JoinedChallenge> joinedChallengeList = new ArrayList<>();
-
 
     public void updateChallenge(ChallengeRequestDto challengeRequestDto)
     {

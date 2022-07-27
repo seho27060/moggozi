@@ -53,7 +53,7 @@ public class StageServiceImpl implements StageService {
     }
 
     @Override
-    public Long chalengeStage(Long stage_id, Long stageuser_id) {
+    public Long challengeStage(Long stage_id, Long stageuser_id) {
         return null;
     }
 }

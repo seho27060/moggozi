@@ -3,13 +3,17 @@ package com.JJP.restapiserver.domain.entity.challenge;
 import com.JJP.restapiserver.domain.dto.ReviewUpdateRequestDto;
 import com.JJP.restapiserver.domain.entity.BaseTimeEntity;
 import com.JJP.restapiserver.domain.entity.member.Member;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
+@AllArgsConstructor
 @Builder
 public class Review extends BaseTimeEntity {
     @Id
@@ -24,10 +28,12 @@ public class Review extends BaseTimeEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "challenge_id")
+    @JsonBackReference
     private Challenge challenge;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
+    @JsonBackReference
     private Member member;
 
     public void update(ReviewUpdateRequestDto reviewUpdateRequestDto) {
