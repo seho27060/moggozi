@@ -1,14 +1,11 @@
 package com.JJP.restapiserver.controller;
 
 
+import com.JJP.restapiserver.domain.Challenge;
 import com.JJP.restapiserver.domain.dto.ChallengeCompleteRequestDto;
 import com.JJP.restapiserver.domain.dto.ChallengeRequestDto;
-import com.JJP.restapiserver.domain.entity.challenge.Challenge;
 import com.JJP.restapiserver.service.ChallengeService;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

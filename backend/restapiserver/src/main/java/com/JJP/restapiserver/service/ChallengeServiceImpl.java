@@ -1,10 +1,9 @@
 package com.JJP.restapiserver.service;
 
+import com.JJP.restapiserver.domain.Challenge;
 import com.JJP.restapiserver.domain.dto.ChallengeCompleteRequestDto;
 import com.JJP.restapiserver.domain.dto.ChallengeRequestDto;
-import com.JJP.restapiserver.domain.entity.challenge.Challenge;
 import com.JJP.restapiserver.domain.entity.challenge.JoinedChallenge;
-import com.JJP.restapiserver.domain.entity.member.Member;
 import com.JJP.restapiserver.repository.ChallengeRepository;
 import com.JJP.restapiserver.repository.JoinedChallengeRepository;
 import com.JJP.restapiserver.repository.MemberRepository;
