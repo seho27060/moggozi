@@ -11,7 +11,7 @@ const NavigationBar: React.FC = () => {
     <header>
       <div>로고</div>
       {userState.isLoggedIn && (
-        <div>{ userState.userInfo.nickname }님 안녕하세요!</div>
+      <div>{ userState.userInfo.nickname }님 안녕하세요!</div>
       )}
       <nav>
         <ul>

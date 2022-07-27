@@ -78,8 +78,8 @@ export const userSlice = createSlice({
         img: action.payload.img,
         state: action.payload.state,
       };
-      state.token = action.payload.token;
-      state.isLoggedIn = !!action.payload.token;
+      state.token = action.payload.accessToken;
+      state.isLoggedIn = !!action.payload.accessToken;
     },
     logout: (state) => {
       localStorage.removeItem("accessToken");
