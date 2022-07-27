@@ -16,8 +16,10 @@ public class ChallengeLike {
 
     // 멤버와 다대일 양방향 관계
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
     private Member member;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    private Challenge challenge;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name ="challenge_id")
+    private Challenge challenge;
 }

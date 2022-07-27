@@ -8,5 +8,5 @@ import java.util.Optional;
 
 public interface JoinedChallengeRepository extends JpaRepository<JoinedChallenge, Long> {
 
-    Optional<JoinedChallenge> findByChallenge_idAndUser_id(Long challenge_id, Long user_id);
+    Optional<JoinedChallenge> findByChallenge_idAndMember_id(Long challenge_id, Long user_id);
 }

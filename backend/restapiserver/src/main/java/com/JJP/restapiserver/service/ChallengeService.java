@@ -1,6 +1,7 @@
 package com.JJP.restapiserver.service;
 
 import com.JJP.restapiserver.domain.dto.ChallengeCompleteRequestDto;
+import com.JJP.restapiserver.domain.dto.ChallengeRequestDto;
 import com.JJP.restapiserver.domain.entity.challenge.Challenge;
 import org.springframework.stereotype.Service;
 
@@ -18,8 +19,9 @@ public interface ChallengeService {
     // 챌린지 상세정보를 불러오는 api
     Challenge getChallengeDetail(Long challenge_id);
     // 챌린지 등록하는 api
-//    int saveChallenge(ChallengeRegisterRequestDto challengeData);
-//    int updateChallenge(ChallengeRequestDto challengeData);
+    int saveChallenge(ChallengeRequestDto challengeData);
+
+    int updateChallenge(Long id, ChallengeRequestDto challengeData);
     // 챌린지 만든 유저가 챌린지를 삭제하게 하는 api
     int deleteChallenge(Long challenge_id);
 

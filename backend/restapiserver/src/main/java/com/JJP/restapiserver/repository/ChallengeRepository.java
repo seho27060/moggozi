@@ -16,9 +16,10 @@ public interface ChallengeRepository extends JpaRepository<Challenge, Long> {
     // 챌린지 이름이 키워드를 포함하고 있는지 검색하여 해당 리스트를 반환함
     List<Challenge> findByNameContaining(String keyword);
 
-    // 인기순에 따른 챌린지 리스트
-//    @Query("select c from Challenge c order by count(m) from ChallengeLike m where c.id = m.id limit 5")
-//    List<Challenge> findByLike();
+    @Query(value = "select ID, count(*) from Challenge as a inner join ChallengeLike b on a.ID = b.CHALLENGE_ID group by a.ID order by count(*) desc limit 5"
+    ,nativeQuery = true)
+    List<Object[]> findByLike();
+
     // 챌린지 번호로 상세정보 얻어오기
     @Override
     Optional<Challenge> findById(Long id);

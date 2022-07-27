@@ -3,11 +3,13 @@ package com.JJP.restapiserver.domain.entity.challenge;
 import com.JJP.restapiserver.domain.entity.member.Member;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 
 @Getter
 @Entity
+@Setter
 @Builder
 public class JoinedChallenge {
 

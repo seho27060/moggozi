@@ -1,5 +1,6 @@
 package com.JJP.restapiserver.domain.entity.challenge;
 
+import com.JJP.restapiserver.domain.dto.ChallengeRequestDto;
 import com.JJP.restapiserver.domain.entity.BaseTimeEntity;
 import com.JJP.restapiserver.domain.entity.member.Member;
 import com.JJP.restapiserver.domain.entity.stage.Stage;
@@ -57,6 +58,15 @@ public class Challenge extends BaseTimeEntity {
     private List<JoinedChallenge> joinedChallengeList = new ArrayList<>();
 
 
+    public void updateChallenge(ChallengeRequestDto challengeRequestDto)
+    {
+        this.challenge_img = challengeRequestDto.getChallenge_img();
+        this.name = challengeRequestDto.getName();
+        this.content = challengeRequestDto.getContent();
+        this.level = challengeRequestDto.getLevel();
+        this.hobby = challengeRequestDto.getHobby();
+        this.state = challengeRequestDto.getState();
+    }
     @Builder
     public Challenge(Long id, Member member, String name, String challenge_img, String content, int level, String hobby, int state) {
         this.id = id;

@@ -14,7 +14,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter { // 추가적 
     public void configure(WebSecurity web) {
         web
                 .ignoring()
-                .antMatchers("/h2-console/**", "/favicon.ico");
+                .antMatchers("/**", "/favicon.ico");
 
     }
 
@@ -24,7 +24,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter { // 추가적 
         http.
                 authorizeRequests()                                      // HttpServletRequest를 사용하는 요청에 대해 접근 제한을 설정하고자 한다.
                 .antMatchers("/user").permitAll()             // "/user"로의 접근에 대해서는 인증없이 모든 접근을 허용한다.
-                .anyRequest().authenticated();                          // 그리고 나머지 어떤 요청에 대해서는 모두 인증을 받아야 한다.
+                .anyRequest().permitAll();
+                //authenticated();                          // 그리고 나머지 어떤 요청에 대해서는 모두 인증을 받아야 한다.
     }
 
 }
