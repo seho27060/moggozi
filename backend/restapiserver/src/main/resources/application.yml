@@ -1,5 +1,5 @@
 spring.profiles.include: 'auth'
-                                                         show_sql: 보여준다.)
+
 server:
   port: 8081
 
@@ -20,6 +20,6 @@ spring:
 
 logging:                        # logging level은 DEBUG로 설정하겠다.
   level:                        # logging level: All < Debug < Info < Warn < Error < Fatal < Off 가 있다.
-    com.JJP: DEBUG        # 불필요한 로그로 인해 비즈니스 로그가 무엇인지를 찾기 힘들기 때문에 레벨을 설정할 수 있다.
-    # 이 때, Debug 아래의 Info, Warn, Error, Fatal 까지의 로그가 찍힌다, Off는 로그를 보지 않겠다는 것이다.
+    com.JJP: DEBUG              # 불필요한 로그로 인해 비즈니스 로그가 무엇인지를 찾기 힘들기 때문에 레벨을 설정할 수 있다.
+                                # 이 때, Debug 아래의 Info, Warn, Error, Fatal 까지의 로그가 찍힌다, Off는 로그를 보지 않겠다는 것이다.
 
