@@ -3,9 +3,21 @@ import Cookie from "js-cookie";
 
 // interface(type) 을 통해 우리가 관리할 state의 형태를 먼저 잡아줌
 export interface UserState {
-  userInfo: object;
+  userInfo: UserInfo;
   token: string | null;
   isLoggedIn: boolean;
+}
+
+// 중첩문 안의 객체도 모든 타입을 지정해줘야 한다.
+export interface UserInfo {
+  user_id: number | null;
+  email: string | null;
+  name: string | null;
+  nickname: string | null;
+  introduce: string | null;
+  is_private: number | null;
+  img: string | null;
+  state: number | null;
 }
 
 // user_id: number | null;
@@ -29,14 +41,14 @@ const initialToken = localStorage.getItem("accessToken");
 
 const initialState: UserState = {
   userInfo: {
-    user_id: "",
-    email: "",
-    name: "",
-    nickname: "",
-    introduce: "",
-    is_private: "",
-    img: "",
-    state: "",
+    user_id: null,
+    email: null,
+    name: null,
+    nickname: null,
+    introduce: null,
+    is_private: null,
+    img: null,
+    state: null,
   },
   token: initialToken,
   isLoggedIn: !!initialToken,
