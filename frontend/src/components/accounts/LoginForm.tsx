@@ -1,7 +1,8 @@
-import React, { useRef } from "react";
+import React, { useRef, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-
+import Cookie from "js-cookie";
+import moment from "moment"
 import { login } from "../../store/user";
 
 import axios from "axios";
@@ -29,7 +30,7 @@ const LoginForm: React.FC = () => {
       return;
     } else {
       const option: object = {
-        url: "https://d197b24a-21f5-4dcf-b2b0-926255a197d0.mock.pstmn.io/testapi/first",
+        url: 'https://d197b24a-21f5-4dcf-b2b0-926255a197d0.mock.pstmn.io/testapi/first',
         method: "POST",
         header: {
           Accept: "application/json",
@@ -40,15 +41,28 @@ const LoginForm: React.FC = () => {
           password: enteredPw,
         },
       };
+      // axios.defaults.withCredentials = true;
       axios(option)
         .then((res) => {
           dispatch(login(res.data));
-          localStorage.setItem("token", res.data.token);
+          localStorage.setItem("accessToken", res.data.accessToken);
+          Cookie.set("refreshToken", res.data.refreshToken, { secure: true });
+          localStorage.setItem("expiresAt", moment().add(1, "hour").format("yyyy-MM-DD HH:mm:ss"))
           navigate("/");
         })
         .catch((err) => alert(err));
     }
   }
+
+
+  // 이미 로그인해 있을 경우 메인페이지로 이동시킴
+  const token = localStorage.getItem('accessToken')
+  useEffect(() => {
+    if (token) {
+      navigate('/')
+    }
+  }, [token, navigate])
+
 
   return (
     <div>
