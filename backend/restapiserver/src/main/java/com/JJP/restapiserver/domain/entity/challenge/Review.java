@@ -35,11 +35,7 @@ public class Review extends BaseTimeEntity {
         this.rate = reviewUpdateRequestDto.getRate();
     }
 
-//    @Builder
-//    public Review(Long id, String review_content, int rate, Member member) {
-//        this.id = id;
-//        this.review_content = review_content;
-//        this.rate = rate;
-//        this.member = member;
-//    }
+    public Review() {
+
+    }
 }

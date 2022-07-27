@@ -4,23 +4,17 @@ import com.JJP.restapiserver.domain.entity.challenge.Challenge;
 import com.JJP.restapiserver.domain.entity.member.Member;
 import com.JJP.restapiserver.repository.ChallengeRepository;
 import com.JJP.restapiserver.repository.MemberRepository;
-import org.assertj.core.internal.bytebuddy.pool.TypePool;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
-
-import java.util.Optional;
-
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @Transactional
 @SpringBootTest
-@RunWith(SpringRunner.class)
 public class ChallengeServiceImplTest {
 
     @Autowired
@@ -38,13 +32,13 @@ public class ChallengeServiceImplTest {
     @Test
     public void 멤버와챌린지저장되나요() {
         Member member = Member.builder()
-                .email("chob58@naver.com")
+                .username("chob58@naver.com")
                 .username("cho")
                 .nickname("witboon")
                 .introduce("I am good")
                 .password("123")
                 .user_img("nothing")
-                .user_state(0).build();
+                .is_private(0).build();
         memberRepository.save(member);
 
 
@@ -64,7 +58,7 @@ public class ChallengeServiceImplTest {
 
         // 데이터에 들어가긴 함
         // 다만 왠지 모르게 영속 컨텍스트에 캐싱이 안 되어 있는 듯함
-        assertEquals(member.getEmail(), member1.getEmail());
+        assertEquals(member.getUsername(), member1.getUsername());
         assertEquals(challenge.getName(), challenge1.getName());
 
     }

@@ -39,4 +39,20 @@ public class Stage extends BaseTimeEntity {
     @Column(length = 200)
     private String stage_img;
 
+    @Builder
+    public Stage(Long id, Long post_order, Challenge challenge, String name, int period, String content, String stage_img) {
+        this.id = id;
+        this.post_order = post_order;
+        this.challenge = challenge;
+        this.name = name;
+        this.period = period;
+        this.content = content;
+        this.stage_img = stage_img;
+    }
+
+    public void update(String name, String content, String stage_img){
+        this.name = name;
+        this.content = content;
+        this.stage_img = stage_img;
+    }
 }
