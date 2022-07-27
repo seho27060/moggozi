@@ -1,20 +1,13 @@
-import type { RootState } from "../../store/store";
-
 import React, { useRef } from "react";
-import { useDispatch } from "react-redux";
 
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const PasswordReissueForm: React.FC = () => {
-  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const inputEmail = useRef<HTMLInputElement>(null);
   const inputName = useRef<HTMLInputElement>(null);
-
-  const userData = {
-    email: inputEmail,
-    name: inputName,
-  };
 
   const passwordFindHandler = (event: React.FormEvent) => {
     // 입력된 input값 변수에 담기
@@ -39,9 +32,12 @@ const PasswordReissueForm: React.FC = () => {
       };
       axios(option)
         .then((res) => {
-          //dispatch(password(res.data));
+          alert('email로 전송했습니다.')      
         })
-        .catch((err) => alert(err));
+        .catch((err) => {
+          alert(err)
+        });
+      navigate('/', {replace: true})
     }
   };
 
