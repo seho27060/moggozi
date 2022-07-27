@@ -92,7 +92,7 @@ public class Member {
     private List<Alert> callee_alerts = new ArrayList<>();
 
     @OneToMany(mappedBy = "member")
-    private List<Comment> comments = new ArrayList<>();
+    private List<Comment> commentList = new ArrayList<>();
 
     @OneToMany(mappedBy = "from_user_id")
     private List<Follow> follower_list = new ArrayList<>();

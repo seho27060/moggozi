@@ -1,24 +1,29 @@
 package com.JJP.restapiserver.domain.entity.stage;
 
+import com.JJP.restapiserver.domain.dto.CommentRequestDto;
 import com.JJP.restapiserver.domain.entity.BaseTimeEntity;
 import com.JJP.restapiserver.domain.entity.member.Member;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+
+
 @Entity
 @Getter
-@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Comment extends BaseTimeEntity {
     @Id
     @GeneratedValue
     private Long id;
 
-    private Long stage_id;
-
-    private Long challenge_id;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="stage_id")
+    private Stage stage;
 
     // 멤버와 다대일 양방향 관계
     @ManyToOne(fetch = FetchType.LAZY)
@@ -28,22 +33,17 @@ public class Comment extends BaseTimeEntity {
     @Lob
     private String text;
 
-    private int parent;
+    private Long parent;
 
     private int depth;
 
     private int comment_state;
 
-    @Builder
-
-    public Comment(Long id, Long stage_id, Long challenge_id, Member member, String text, int parent, int depth, int comment_state) {
-        this.id = id;
-        this.stage_id = stage_id;
-        this.challenge_id = challenge_id;
-        this.member = member;
-        this.text = text;
-        this.parent = parent;
-        this.depth = depth;
-        this.comment_state = comment_state;
+    public void update(CommentRequestDto commentRequestDto)
+    {
+        this.text = commentRequestDto.getText();
+        this.parent = commentRequestDto.getParent();
+        this.depth = commentRequestDto.getDepth();
+        this.comment_state = commentRequestDto.getComment_state();
     }
 }
