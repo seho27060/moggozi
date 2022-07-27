@@ -44,4 +44,10 @@ public class Stage extends BaseTimeEntity {
         this.content = content;
         this.stage_img = stage_img;
     }
+
+    public void update(String name, String content, String stage_img){
+        this.name = name;
+        this.content = content;
+        this.stage_img = stage_img;
+    }
 }
