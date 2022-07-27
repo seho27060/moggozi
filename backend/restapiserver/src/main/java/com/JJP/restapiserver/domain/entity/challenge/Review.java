@@ -1,14 +1,20 @@
 package com.JJP.restapiserver.domain.entity.challenge;
 
+import com.JJP.restapiserver.domain.dto.ReviewUpdateRequestDto;
 import com.JJP.restapiserver.domain.entity.BaseTimeEntity;
 import com.JJP.restapiserver.domain.entity.member.Member;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
+@AllArgsConstructor
+@Builder
 public class Review extends BaseTimeEntity {
     @Id
     @GeneratedValue
@@ -22,19 +28,20 @@ public class Review extends BaseTimeEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "challenge_id")
+    @JsonBackReference
     private Challenge challenge;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
+    @JsonBackReference
     private Member member;
 
-    @Builder
+    public void update(ReviewUpdateRequestDto reviewUpdateRequestDto) {
+        this.review_content = reviewUpdateRequestDto.getReview_content();
+        this.rate = reviewUpdateRequestDto.getRate();
+    }
 
-    public Review(Long id, String review_content, int rate, Challenge challenge, Member member) {
-        this.id = id;
-        this.review_content = review_content;
-        this.rate = rate;
-        this.challenge = challenge;
-        this.member = member;
+    public Review() {
+
     }
 }

@@ -1,26 +1,32 @@
 package com.JJP.restapiserver.domain.entity.stage;
 
 import com.JJP.restapiserver.domain.entity.member.Member;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
 @Getter
+@NoArgsConstructor
 public class StageUser {
 
     @Id
     @GeneratedValue
     private Long id;
 
+    // 멤버와 다대일 양방향 관계
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
+    @JsonManagedReference
     private Member member;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "stage_id")
+    @JsonManagedReference
     private Stage stage;
 
     private LocalDateTime join_time;

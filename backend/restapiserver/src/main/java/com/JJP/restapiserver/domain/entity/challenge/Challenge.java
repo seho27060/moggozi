@@ -1,10 +1,13 @@
 package com.JJP.restapiserver.domain.entity.challenge;
 
+import com.JJP.restapiserver.domain.dto.ChallengeRequestDto;
 import com.JJP.restapiserver.domain.entity.BaseTimeEntity;
 import com.JJP.restapiserver.domain.entity.member.Member;
 import com.JJP.restapiserver.domain.entity.stage.Stage;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -12,6 +15,7 @@ import java.util.List;
 
 @Entity
 @Getter
+@NoArgsConstructor
 public class Challenge extends BaseTimeEntity {
     @Id
     @GeneratedValue
@@ -20,7 +24,6 @@ public class Challenge extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
-
 
     @Column(length = 20)
     private String name;
@@ -38,19 +41,36 @@ public class Challenge extends BaseTimeEntity {
 
     private int state;
 
+    // 스테이지와 다대일 양방향 관계
     @OneToMany(mappedBy = "challenge")
+    @JsonManagedReference
     private List<Stage> stages = new ArrayList<>();
 
-    @OneToMany(mappedBy = "challenge")
+    // 좋아요와 다대일 단방향 관계
+    @OneToMany
     private List<ChallengeLike> challengeLikeList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "challenge")
+    // 한줄평과 일대다 단방향 관계
+    @OneToMany
     private List<Review> reviews = new ArrayList<>();
 
+    @OneToMany(mappedBy = "challenge")
+    @JsonManagedReference
+    private List<JoinedChallenge> joinedChallengeList = new ArrayList<>();
 
+    public void updateChallenge(ChallengeRequestDto challengeRequestDto)
+    {
+        this.challenge_img = challengeRequestDto.getChallenge_img();
+        this.name = challengeRequestDto.getName();
+        this.content = challengeRequestDto.getContent();
+        this.level = challengeRequestDto.getLevel();
+        this.hobby = challengeRequestDto.getHobby();
+        this.state = challengeRequestDto.getState();
+    }
     @Builder
-    public Challenge(String name, String challenge_img, String content, int level
-    , String hobby, int state){
+    public Challenge(Long id, Member member, String name, String challenge_img, String content, int level, String hobby, int state) {
+        this.id = id;
+        this.member = member;
         this.name = name;
         this.challenge_img = challenge_img;
         this.content = content;
@@ -58,5 +78,4 @@ public class Challenge extends BaseTimeEntity {
         this.hobby = hobby;
         this.state = state;
     }
-
 }
