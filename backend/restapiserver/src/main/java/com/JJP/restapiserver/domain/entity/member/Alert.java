@@ -14,10 +14,12 @@ public class Alert extends BaseTimeEntity {
     @GeneratedValue
     private Long id;
 
+    // 멤버와 다대일 양방향 관계
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "caller_id")
     private Member caller;
 
+    // 멤버와 다대일 양방향 관계
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "callee_id")
     private Member callee;

@@ -1,33 +1,25 @@
 spring.profiles.include: 'auth'
+                                                         show_sql: 보여준다.)
+server:
+  port: 8081
 
 spring:
-  h2:
-    console:
-      enabled: true
-      path: /h2-ui
-
   datasource:
-    url:  jdbc:h2:tcp://localhost/~/testdb
-    driver-class-name: org.h2.Driver
-    username: sa
-    password:
+    url: jdbc:mariadb://54.180.158.97:3306/moggozi
+    driver-class-name: org.mariadb.jdbc.Driver
+    username: root
+    password: c201
     initialization-mode: always
-
-
   jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
+    open-in-view: true
+    generate-ddl: true
+    show-sql: true
     hibernate:
-      ddl-auto: create-drop     # sessionFactory가 시작될 때, Drop -> Create -> Alter 순, 종료될 때 Drop 진행
-    properties:
-      hibernate:
-        format_sql: true        # console 창에서 sql문을 보기 위한 설정 (format_sql: sql의 형태로 작성한 쿼리문을
-        show_sql: true          #                                                             show_sql: 보여준다.)
+      ddl-auto: create-drop          #                                                             show_sql: 보여준다.)
     defer-datasource-initialization: true
 
 logging:                        # logging level은 DEBUG로 설정하겠다.
   level:                        # logging level: All < Debug < Info < Warn < Error < Fatal < Off 가 있다.
     com.JJP: DEBUG        # 불필요한 로그로 인해 비즈니스 로그가 무엇인지를 찾기 힘들기 때문에 레벨을 설정할 수 있다.
-                                # 이 때, Debug 아래의 Info, Warn, Error, Fatal 까지의 로그가 찍힌다, Off는 로그를 보지 않겠다는 것이다.
-
-
+    # 이 때, Debug 아래의 Info, Warn, Error, Fatal 까지의 로그가 찍힌다, Off는 로그를 보지 않겠다는 것이다.
 

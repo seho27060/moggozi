@@ -18,31 +18,34 @@ repositories {
 	mavenCentral()
 }
 
-// Jackson은 자바 객체와 JSON 형식의 문자열 간 변환 처리 담당하는 라이브러리
-// 요청과 응답의 객체변환 및 직렬화/역직렬화를 자동으로 담당하는 라이브러리
-// spring-boot-stater-web 의존성이 추가되었으므로 Jackson 라이브러리가 자동 포함되어있다.
-
+bootJar {
+	duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-//	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
-	implementation group: 'org.passay', name: 'passay', version: '1.6.1'  // password policy for java
-	compileOnly 'org.projectlombok:lombok'// @Getter, @Setter 등 Annotation을 컴파일 할 때 해석하겠다.
+	implementation group: 'org.passay', name: 'passay', version: '1.6.1'
+    implementation 'junit:junit:4.13.1'
+    compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
-	runtimeOnly 'com.h2database:h2'			// 인메모리 데이터베이스인 h2 사용
-	annotationProcessor 'org.projectlombok:lombok' 	// @Getter, @Setter 등 Annotation 관련 라이브러리
+	runtimeOnly 'com.h2database:h2'
+	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client' // MariaDB
 
 	// swagger
-	implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'  // JSON API Documentation
+	implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
+
+
 
 	// Spring Security + JWT
-	implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
 	implementation group: 'com.auth0', name: 'java-jwt', version: '3.18.2'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	testImplementation 'org.springframework.security:spring-security-test'
 }
+
 
 tasks.named('test') {
 	useJUnitPlatform()

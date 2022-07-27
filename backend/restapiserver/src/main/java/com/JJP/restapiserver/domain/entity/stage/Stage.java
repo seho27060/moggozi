@@ -4,18 +4,21 @@ import com.JJP.restapiserver.domain.entity.BaseTimeEntity;
 import com.JJP.restapiserver.domain.entity.challenge.Challenge;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Getter
 @Entity
+@NoArgsConstructor
 public class Stage extends BaseTimeEntity {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
 
     private Long post_order;
 
+    // 챌린지와 다대일 양방향 관계
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "challenge_id")
     private Challenge challenge;
@@ -32,7 +35,6 @@ public class Stage extends BaseTimeEntity {
     private String stage_img;
 
     @Builder
-
     public Stage(Long id, Long post_order, Challenge challenge, String name, int period, String content, String stage_img) {
         this.id = id;
         this.post_order = post_order;

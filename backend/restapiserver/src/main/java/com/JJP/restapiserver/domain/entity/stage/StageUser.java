@@ -15,6 +15,7 @@ public class StageUser {
     @GeneratedValue
     private Long id;
 
+    // 멤버와 다대일 양방향 관계
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private Member member;
