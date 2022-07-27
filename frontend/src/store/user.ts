@@ -3,9 +3,20 @@ import Cookie from "js-cookie";
 
 // interface(type) 을 통해 우리가 관리할 state의 형태를 먼저 잡아줌
 export interface UserState {
-  userInfo: object;
+  userInfo: UserInfo;
   token: string | null;
   isLoggedIn: boolean;
+}
+
+export interface UserInfo {
+  user_id: number | null;
+  email: string | null;
+  name: string | null;
+  nickname: string | null;
+  introduce: string | null;
+  is_private: number | null;
+  img: string | null;
+  state: number | null;
 }
 
 // user_id: number | null;
@@ -29,14 +40,14 @@ const initialToken = localStorage.getItem("accessToken");
 
 const initialState: UserState = {
   userInfo: {
-    user_id: "",
-    email: "",
-    name: "",
-    nickname: "",
-    introduce: "",
-    is_private: "",
-    img: "",
-    state: "",
+    user_id: null,
+    email: null,
+    name: null,
+    nickname: null,
+    introduce: null,
+    is_private: null,
+    img: null,
+    state: null,
   },
   token: initialToken,
   isLoggedIn: !!initialToken,
@@ -66,8 +77,8 @@ export const userSlice = createSlice({
         img: action.payload.img,
         state: action.payload.state,
       };
-      state.token = action.payload.token;
-      state.isLoggedIn = !!action.payload.token;
+      state.token = action.payload.accessToken;
+      state.isLoggedIn = !!action.payload.accessToken;
     },
     logout: (state) => {
       localStorage.removeItem("accessToken");

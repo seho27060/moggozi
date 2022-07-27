@@ -11,7 +11,7 @@ const NavigationBar: React.FC = () => {
     <header>
       <div>로고</div>
       {userState.isLoggedIn && (
-      <div>{ userState.nickname }님 안녕하세요!</div>
+      <div>{ userState.userInfo.nickname }님 안녕하세요!</div>
       )}
       <nav>
         <ul>
@@ -40,7 +40,7 @@ const NavigationBar: React.FC = () => {
                 <LogoutBtn />
               </li>
               <li>
-                <NavLink to={`/user/${userState.user_id}`}>{ userState.nickname }님의 MyPage</NavLink>
+                <NavLink to={`/user/${userState.userInfo.user_id}`}>{ userState.userInfo.nickname }님의 MyPage</NavLink>
               </li>
             </Fragment>
           )}
