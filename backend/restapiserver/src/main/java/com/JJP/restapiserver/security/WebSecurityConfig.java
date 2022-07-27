@@ -3,6 +3,7 @@ package com.JJP.restapiserver.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -17,10 +18,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity // Spring Web Security 활성화 - 평상시 비활성화
 @EnableGlobalMethodSecurity(prePostEnabled = true) // AOP security on methods
+@Order(1)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-
-//    @Value("${spring.h2.console.path}")
-//    private String h2ConsolePath;
 
     @Autowired
     UserDetailsServiceImpl userDetailsService;
@@ -51,8 +50,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests().antMatchers("/user/**").permitAll()
                 .anyRequest().authenticated();
 
-        // fix H2 database console: Refused to display ' in a frame because it set 'X-Frame-Options' to 'deny'
-//        http.headers().frameOptions().sameOrigin();
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 

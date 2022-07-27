@@ -18,7 +18,6 @@ import java.util.Map;
 @Component
 // Jwt 처리 시, 발생하는 에러를 다루는 Handler
 public class AuthEntryPointJwt implements AuthenticationEntryPoint {
-
     private static final Logger logger = LoggerFactory.getLogger(AuthEntryPointJwt.class);
 
     @Override

@@ -6,11 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Component;
-import org.springframework.web.util.WebUtils;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-//import java.security.SignatureException;
 import java.util.Date;
 
 @Component
@@ -26,16 +22,6 @@ public class JwtUtils {
 
     @Value("${jwt.cookieName}")
     private String jwtCookie;
-
-    // 쿠키에서 Jwt 확인하기
-    public String getJwtFromCookies(HttpServletRequest request) {
-        Cookie cookie = WebUtils.getCookie(request, jwtCookie);
-        if (cookie != null) {
-            return cookie.getValue();
-        } else {
-            return null;
-        }
-    }
 
     // 유효한 토큰인지 확인하기
     public boolean validateJwtToken(String authToken) {

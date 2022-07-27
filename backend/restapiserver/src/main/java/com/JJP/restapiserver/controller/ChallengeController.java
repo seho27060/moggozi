@@ -1,9 +1,9 @@
 package com.JJP.restapiserver.controller;
 
 
-import com.JJP.restapiserver.domain.Challenge;
 import com.JJP.restapiserver.domain.dto.ChallengeCompleteRequestDto;
 import com.JJP.restapiserver.domain.dto.ChallengeRequestDto;
+import com.JJP.restapiserver.domain.entity.challenge.Challenge;
 import com.JJP.restapiserver.service.ChallengeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;

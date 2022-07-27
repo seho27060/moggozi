@@ -1,9 +1,7 @@
 package com.JJP.restapiserver.domain.entity.challenge;
 
 import com.JJP.restapiserver.domain.entity.member.Member;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -11,6 +9,8 @@ import javax.persistence.*;
 @Entity
 @Setter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class JoinedChallenge {
 
     @Id
@@ -26,4 +26,5 @@ public class JoinedChallenge {
     private Challenge challenge;
 
     private int state;
+
 }
