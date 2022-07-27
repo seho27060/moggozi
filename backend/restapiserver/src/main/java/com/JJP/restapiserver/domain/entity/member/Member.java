@@ -69,7 +69,7 @@ public class Member {
 
     // 댓글과 일대다 양방향 관계
     @OneToMany(mappedBy = "member")
-    private List<Comment> comments = new ArrayList<>();
+    private List<Comment> commentList = new ArrayList<>();
 
     // 팔로우와 일대다 양방향 관계
     @OneToMany(mappedBy = "from_user_id")

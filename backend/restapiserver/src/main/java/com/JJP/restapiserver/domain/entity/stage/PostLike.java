@@ -8,6 +8,7 @@ import javax.persistence.*;
 
 @Entity
 @Getter
+@Builder
 public class PostLike {
     @Id
     @GeneratedValue
@@ -24,11 +25,4 @@ public class PostLike {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @Builder
-
-    public PostLike(Long id, Post post, Member member) {
-        this.id = id;
-        this.post = post;
-        this.member = member;
-    }
 }

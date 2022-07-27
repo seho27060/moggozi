@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Entity
@@ -23,6 +25,9 @@ public class Stage extends BaseTimeEntity {
     @JoinColumn(name = "challenge_id")
     private Challenge challenge;
 
+    @OneToMany(mappedBy = "stage")
+    List<Comment> commentList = new ArrayList<>();
+
     @Column(length = 20)
     private String name;
 
@@ -34,14 +39,4 @@ public class Stage extends BaseTimeEntity {
     @Column(length = 200)
     private String stage_img;
 
-    @Builder
-    public Stage(Long id, Long post_order, Challenge challenge, String name, int period, String content, String stage_img) {
-        this.id = id;
-        this.post_order = post_order;
-        this.challenge = challenge;
-        this.name = name;
-        this.period = period;
-        this.content = content;
-        this.stage_img = stage_img;
-    }
 }
