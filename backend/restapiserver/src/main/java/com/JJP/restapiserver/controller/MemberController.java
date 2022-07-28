@@ -6,7 +6,7 @@ import com.JJP.restapiserver.domain.dto.member.response.TokenRefreshResponse;
 import com.JJP.restapiserver.domain.entity.member.RefreshToken;
 import com.JJP.restapiserver.exception.TokenRefreshException;
 import com.JJP.restapiserver.security.JwtUtils;
-import com.JJP.restapiserver.service.MemberService;
+import com.JJP.restapiserver.service.MemberServiceImpl;
 import com.JJP.restapiserver.service.RefreshTokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +20,7 @@ import javax.validation.Valid;
 public class MemberController {
 
     @Autowired
-    MemberService memberService;
+    MemberServiceImpl memberService;
 
     // RereshToken 생성을 위한 Service
     @Autowired

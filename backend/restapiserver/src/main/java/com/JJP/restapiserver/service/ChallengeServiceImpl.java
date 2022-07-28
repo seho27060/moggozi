@@ -4,6 +4,7 @@ import com.JJP.restapiserver.domain.dto.ChallengeCompleteRequestDto;
 import com.JJP.restapiserver.domain.dto.ChallengeRequestDto;
 import com.JJP.restapiserver.domain.entity.challenge.Challenge;
 import com.JJP.restapiserver.domain.entity.challenge.JoinedChallenge;
+import com.JJP.restapiserver.domain.entity.member.Member;
 import com.JJP.restapiserver.repository.ChallengeRepository;
 import com.JJP.restapiserver.repository.JoinedChallengeRepository;
 import com.JJP.restapiserver.repository.MemberRepository;
@@ -27,6 +28,10 @@ public class ChallengeServiceImpl implements ChallengeService{
     @Override
     public List<Challenge> getChallengeListByHobby(String hobby) {
 
+        List<Challenge> challengeList = challengeRepository.findByHobby(hobby);
+
+
+
         return challengeRepository.findByHobby(hobby);
     }
 
@@ -46,7 +51,6 @@ public class ChallengeServiceImpl implements ChallengeService{
 
 
 
-    //구현 완료?
     @Override
     public List<Challenge> getChallengeListByLike() {
 
@@ -69,9 +73,9 @@ public class ChallengeServiceImpl implements ChallengeService{
 
     @Override
     public int saveChallenge(ChallengeRequestDto challengeData) {
-//        Member member = memberRepository.findById(challengeData.user_id).get();
+        Member member = memberRepository.findById(challengeData.user_id).get();
         Challenge challenge = Challenge.builder()
-//                .member(member)
+                .member(member)
                 .name(challengeData.getName())
                 .challenge_img(challengeData.getChallenge_img())
                 .content(challengeData.getContent())
