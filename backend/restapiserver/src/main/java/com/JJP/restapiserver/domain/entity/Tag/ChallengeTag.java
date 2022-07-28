@@ -1,29 +1,32 @@
-package com.JJP.restapiserver.domain.entity.challenge;
+package com.JJP.restapiserver.domain.entity.Tag;
 
-import com.JJP.restapiserver.domain.entity.member.Member;
+import com.JJP.restapiserver.domain.entity.challenge.Challenge;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-// 완전 복합키로 가져야 하지 않나?
-@Entity
 @Getter
 @Builder
-public class ChallengeLike {
+@Entity
+@NoArgsConstructor
+@AllArgsConstructor
+public class ChallengeTag {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
 
-    // 멤버와 다대일 양방향 관계
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
     @JsonBackReference
-    private Member member;
+    @JoinColumn(name = "tag_id")
+    private Tag tag;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name ="challenge_id")
     @JsonBackReference
+    @JoinColumn(name = "challenge_id")
     private Challenge challenge;
+
 }

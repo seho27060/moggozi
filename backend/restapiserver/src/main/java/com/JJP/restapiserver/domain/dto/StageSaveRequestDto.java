@@ -2,7 +2,7 @@ package com.JJP.restapiserver.domain.dto;
 
 import com.JJP.restapiserver.domain.entity.challenge.Challenge;
 import com.JJP.restapiserver.domain.entity.stage.Stage;
-import com.JJP.restapiserver.repository.ChallengeRepository;
+import com.JJP.restapiserver.repository.challenge.ChallengeRepository;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
