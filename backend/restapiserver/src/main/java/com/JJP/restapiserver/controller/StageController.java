@@ -39,6 +39,7 @@ public class StageController {
 
     @DeleteMapping("/{stage_id}")
     public Long delete(@PathVariable Long stage_id){
-        return null;
+        stageService.deleteStage(stage_id);
+        return stage_id;
     }
 }
