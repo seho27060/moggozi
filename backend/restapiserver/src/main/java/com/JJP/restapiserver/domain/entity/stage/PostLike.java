@@ -13,7 +13,7 @@ import javax.persistence.*;
 @Builder
 public class PostLike {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
 
     // 포스트와 다대일 양방향 관계

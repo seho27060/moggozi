@@ -3,7 +3,7 @@ package com.JJP.restapiserver.domain.entity.member;
 import com.JJP.restapiserver.domain.entity.challenge.Challenge;
 import com.JJP.restapiserver.domain.entity.challenge.ChallengeLike;
 import com.JJP.restapiserver.domain.entity.challenge.Review;
-import com.JJP.restapiserver.domain.entity.hobby.MemberTag;
+import com.JJP.restapiserver.domain.entity.Tag.MemberTag;
 import com.JJP.restapiserver.domain.entity.stage.Comment;
 import com.JJP.restapiserver.domain.entity.stage.Post;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -28,7 +28,7 @@ import java.util.List;
 public class Member {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "member_id")
     private Long id;
 
@@ -75,27 +75,35 @@ public class Member {
     }
 
     @OneToMany(mappedBy = "member")
+    @JsonManagedReference
     private List<Challenge> challengeList = new ArrayList<>();
 
     @OneToMany(mappedBy = "member")
+    @JsonManagedReference
     private List<Post> posts = new ArrayList<>();
 
     @OneToMany(mappedBy = "caller")
+    @JsonManagedReference
     private List<Alert> caller_alerts = new ArrayList<>();
 
     @OneToMany(mappedBy = "callee")
+    @JsonManagedReference
     private List<Alert> callee_alerts = new ArrayList<>();
 
     @OneToMany(mappedBy = "from_user_id")
+    @JsonManagedReference
     private List<Follow> follower_list = new ArrayList<>();
 
     @OneToMany(mappedBy = "to_user_id")
+    @JsonManagedReference
     private List<Follow> following_list = new ArrayList<>();
 
     @OneToMany(mappedBy = "member")
+    @JsonManagedReference
     private List<ChallengeLike> challengeLikeList = new ArrayList<>();
 
     @OneToMany(mappedBy = "member")
+    @JsonManagedReference
     private List<Review> reviews = new ArrayList<>();
 
     @OneToMany(mappedBy = "member")

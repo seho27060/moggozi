@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 public class StageUser {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
 
     // 멤버와 다대일 양방향 관계

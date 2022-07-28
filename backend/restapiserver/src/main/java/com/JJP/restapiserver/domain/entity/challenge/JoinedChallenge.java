@@ -15,7 +15,7 @@ import javax.persistence.*;
 public class JoinedChallenge {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)

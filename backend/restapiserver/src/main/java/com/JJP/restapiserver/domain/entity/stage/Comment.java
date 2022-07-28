@@ -19,7 +19,7 @@ import javax.persistence.*;
 @Builder
 public class Comment extends BaseTimeEntity {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)

@@ -1,7 +1,7 @@
 package com.JJP.restapiserver.domain.stage;
 
 import com.JJP.restapiserver.domain.entity.stage.Stage;
-import com.JJP.restapiserver.repository.StageRepository;
+import com.JJP.restapiserver.repository.stage.StageRepository;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;

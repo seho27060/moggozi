@@ -17,7 +17,7 @@ import javax.persistence.*;
 @Builder
 public class Review extends BaseTimeEntity {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
 
     @Column(length = 20)

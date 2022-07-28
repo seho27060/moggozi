@@ -2,9 +2,10 @@ package com.JJP.restapiserver.domain.entity.challenge;
 
 import com.JJP.restapiserver.domain.dto.ChallengeRequestDto;
 import com.JJP.restapiserver.domain.entity.BaseTimeEntity;
-import com.JJP.restapiserver.domain.entity.hobby.ChallengeTag;
+import com.JJP.restapiserver.domain.entity.Tag.ChallengeTag;
 import com.JJP.restapiserver.domain.entity.member.Member;
 import com.JJP.restapiserver.domain.entity.stage.Stage;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,11 +23,12 @@ import java.util.List;
 @AllArgsConstructor
 public class Challenge extends BaseTimeEntity {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
+    @JsonBackReference
     private Member member;
 
     @Column(length = 20)

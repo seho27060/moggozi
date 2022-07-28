@@ -1,7 +1,7 @@
 package com.JJP.restapiserver.security;
 
 import com.JJP.restapiserver.domain.entity.member.Member;
-import com.JJP.restapiserver.repository.MemberRepository;
+import com.JJP.restapiserver.repository.member.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

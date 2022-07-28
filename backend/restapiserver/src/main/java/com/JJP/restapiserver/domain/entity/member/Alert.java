@@ -12,7 +12,7 @@ import javax.persistence.*;
 @Entity
 public class Alert extends BaseTimeEntity {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
 
     // 멤버와 다대일 양방향 관계

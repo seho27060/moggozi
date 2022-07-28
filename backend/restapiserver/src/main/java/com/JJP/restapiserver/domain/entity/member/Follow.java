@@ -11,7 +11,7 @@ import javax.persistence.*;
 public class Follow extends BaseTimeEntity {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
 
     // 멤버와 다대일 양방향 관계
