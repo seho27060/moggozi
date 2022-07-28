@@ -1,6 +1,8 @@
 package com.JJP.restapiserver.controller;
 
+import com.JJP.restapiserver.domain.dto.StageResponseDto;
 import com.JJP.restapiserver.domain.dto.StageSaveRequestDto;
+import com.JJP.restapiserver.domain.dto.StageUpdateRequestDto;
 import com.JJP.restapiserver.domain.entity.stage.Stage;
 import com.JJP.restapiserver.service.StageService;
 import lombok.RequiredArgsConstructor;
@@ -9,23 +11,35 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RequiredArgsConstructor
-@RestController
+@RequestMapping("/stage")
+@RestController()
 public class StageController {
 
     private final StageService stageService;
 
-    @GetMapping("/stage/{challenge_id}")
+    @GetMapping("/{challenge_id}")
     public List<Stage> findById(@PathVariable Long challenge_id){
         return stageService.getStageList(challenge_id);
     }
 
-    @PostMapping("/stage")
-    public Long save(@RequestBody StageSaveRequestDto stageSaveRequestDto){
-        return stageService.saveStage(stageSaveRequestDto);
+    @PostMapping("/{challenge_id}")
+    public Long save(@PathVariable Long challenge_id, @RequestBody StageSaveRequestDto stageSaveRequestDto){
+        return stageService.saveStage(challenge_id, stageSaveRequestDto);
     }
 
-    @GetMapping("/test")
-    public String test(){
-        return "test";
+    @GetMapping("/detail/{stage_id}")
+    public StageResponseDto stageDetail(@PathVariable Long stage_id){
+        return stageService.getStageDetail(stage_id);
+    }
+
+    @PutMapping("/{stage_id}")
+    public Long update(@PathVariable Long stage_id, @RequestBody StageUpdateRequestDto stageUpdateRequestDto){
+        return stageService.updateStage(stage_id, stageUpdateRequestDto);
+    }
+
+    @DeleteMapping("/{stage_id}")
+    public Long delete(@PathVariable Long stage_id){
+        stageService.deleteStage(stage_id);
+        return stage_id;
     }
 }
