@@ -4,6 +4,7 @@ import com.JJP.restapiserver.domain.dto.StageResponseDto;
 import com.JJP.restapiserver.domain.dto.StageSaveRequestDto;
 import com.JJP.restapiserver.domain.dto.StageUpdateRequestDto;
 import com.JJP.restapiserver.domain.entity.stage.Stage;
+import com.JJP.restapiserver.repository.ChallengeRepository;
 import com.JJP.restapiserver.repository.StageRepository;
 import com.JJP.restapiserver.repository.StageUserRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,7 @@ public class StageServiceImpl implements StageService {
 
     private  final StageRepository stageRepository;
     private  final StageUserRepository stageUserRepository;
+    private final ChallengeRepository challengeRepository;
 
     @Override
     public List<Stage> getStageList(Long challenge_id) {
@@ -31,8 +33,8 @@ public class StageServiceImpl implements StageService {
     }
 
     @Override
-    public Long saveStage(StageSaveRequestDto stageRequestDto) {
-        return stageRepository.save(stageRequestDto.toEntity()) .getId();
+    public Long saveStage(Long challenge_id, StageSaveRequestDto stageRequestDto) {
+        return stageRepository.save(stageRequestDto.toEntity(challenge_id, challengeRepository)) .getId();
     }
 
     @Override

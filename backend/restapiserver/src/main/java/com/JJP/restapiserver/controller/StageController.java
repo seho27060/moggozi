@@ -19,9 +19,9 @@ public class StageController {
         return stageService.getStageList(challenge_id);
     }
 
-    @PostMapping("/stage")
-    public Long save(@RequestBody StageSaveRequestDto stageSaveRequestDto){
-        return stageService.saveStage(stageSaveRequestDto);
+    @PostMapping("/stage/{challenge_id}")
+    public Long save(@PathVariable Long challenge_id, @RequestBody StageSaveRequestDto stageSaveRequestDto){
+        return stageService.saveStage(challenge_id, stageSaveRequestDto);
     }
 
     @GetMapping("/test")

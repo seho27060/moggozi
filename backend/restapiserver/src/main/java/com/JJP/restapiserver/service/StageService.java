@@ -16,7 +16,7 @@ public interface StageService {
     StageResponseDto getStageDetail(Long stage_id);
 
     // 스테이지 등록
-    Long saveStage(StageSaveRequestDto stageRequestDto);
+    Long saveStage(Long challenge_id, StageSaveRequestDto stageRequestDto);
 
     // 스테이지 수정
     Long updateStage(Long stage_id, StageUpdateRequestDto stageRequestDto);

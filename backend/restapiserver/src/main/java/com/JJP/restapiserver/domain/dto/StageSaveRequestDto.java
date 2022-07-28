@@ -1,6 +1,8 @@
 package com.JJP.restapiserver.domain.dto;
 
+import com.JJP.restapiserver.domain.entity.challenge.Challenge;
 import com.JJP.restapiserver.domain.entity.stage.Stage;
+import com.JJP.restapiserver.repository.ChallengeRepository;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,13 +25,15 @@ public class StageSaveRequestDto {
         this.order = order;
     }
 
-    public Stage toEntity(){
+    public Stage toEntity(Long challenge_id, ChallengeRepository challengeRepository){
+        Challenge challenge = challengeRepository.getById(challenge_id);
         return Stage.builder()
                 .name(name)
                 .period(period)
                 .content(content)
                 .stage_img(stage_img)
                 .post_order(order)
+                .challenge(challenge)
                 .build();
     }
 }
