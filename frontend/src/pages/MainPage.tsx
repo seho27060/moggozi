@@ -15,6 +15,7 @@ function MainPage() {
 
   return (
     <div>
+      <h1>안녕하세요</h1>
       Mainpage
       {/* 로그인 상태일 경우에만 로그아웃 버튼 생성 */}
       {!isLoggedIn || <LogoutBtn />}
