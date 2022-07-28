@@ -1,6 +1,6 @@
+// .env 파일에 주소를 적고
+// 해당 파일에서 서버 주소등을 불러다 씀
 
-export const SERVER = process.env.REACT_APP_SERVER_API
-
-export const SIGNUP_API = `${SERVER}/`
-export const LOGIN_API = `${SERVER}/`
-export const SEARCH_API = `${SERVER}/`
+export const apiConfig = {
+    api_root: process.env.REACT_APP_API_ROOT
+}
