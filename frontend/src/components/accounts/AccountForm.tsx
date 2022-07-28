@@ -20,7 +20,7 @@ const AccountForm: React.FC = () => {
     const enteredNickname = nicknameInputRef.current!.value;
     const enteredPassword = passwordInputState
 
-    const meetupData = {
+    const accountData = {
       email: enteredEmail,
       username: enteredUsername,
       nickname: enteredNickname,
@@ -31,7 +31,7 @@ const AccountForm: React.FC = () => {
     };
     // axios를 통한 https 요청 보내기
     // 가입정보 보내고 해당 정보로 로그인 vs 메인페이지 이동
-    console.log(meetupData);
+    console.log(accountData);
     navigate("/",{replace : true})
   }
   
