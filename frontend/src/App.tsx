@@ -5,7 +5,7 @@ import Router from "./routes";
 import { authentication } from "./store/user";
 import Api from "./lib/customApi"
 
-import "./App.css";
+import "./App.scss";
 
 function App() {
   const dispatch = useDispatch();
