@@ -9,6 +9,7 @@ import com.JJP.restapiserver.repository.StageRepository;
 import com.JJP.restapiserver.repository.StageUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -20,36 +21,41 @@ public class StageServiceImpl implements StageService {
     private  final StageUserRepository stageUserRepository;
     private final ChallengeRepository challengeRepository;
 
+    @Transactional(readOnly = true)
     @Override
     public List<Stage> getStageList(Long challenge_id) {
         return stageRepository.findAllByChallenge_id(challenge_id);
     }
 
+    @Transactional(readOnly = true)
     @Override
-    public StageResponseDto getStageDetail(Long stage_id) {
+    public StageResponseDto getStageDetail(Long id) {
 
-        Stage entity = stageRepository.findById(stage_id).orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + stage_id));
+        Stage entity = stageRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + id));
         return new StageResponseDto(entity);
     }
 
+    @Transactional
     @Override
     public Long saveStage(Long challenge_id, StageSaveRequestDto stageRequestDto) {
         return stageRepository.save(stageRequestDto.toEntity(challenge_id, challengeRepository)) .getId();
     }
 
+    @Transactional
     @Override
-    public Long updateStage(Long stage_id, StageUpdateRequestDto stageRequestDto) {
+    public Long updateStage(Long id, StageUpdateRequestDto stageUpdateRequestDto) {
 
-        Stage entity = stageRepository.findById(stage_id).orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + stage_id));
+        Stage entity = stageRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + id));
 
-        entity.update(stageRequestDto.getName(), stageRequestDto.getContent(), stageRequestDto.getStage_img());
+        entity.update(stageUpdateRequestDto.getName(), stageUpdateRequestDto.getContent(), stageUpdateRequestDto.getStage_img());
 
-        return stage_id;
+        return id;
     }
 
+    @Transactional
     @Override
-    public void deleteStage(Long stage_id) {
-        Stage entity = stageRepository.findById(stage_id).orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + stage_id));
+    public void deleteStage(Long id) {
+        Stage entity = stageRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + id));
 
         stageRepository.delete(entity);
     }

@@ -2,6 +2,7 @@ package com.JJP.restapiserver.controller;
 
 import com.JJP.restapiserver.domain.dto.StageResponseDto;
 import com.JJP.restapiserver.domain.dto.StageSaveRequestDto;
+import com.JJP.restapiserver.domain.dto.StageUpdateRequestDto;
 import com.JJP.restapiserver.domain.entity.stage.Stage;
 import com.JJP.restapiserver.service.StageService;
 import lombok.RequiredArgsConstructor;
@@ -32,8 +33,8 @@ public class StageController {
     }
 
     @PutMapping("/{stage_id}")
-    public Long modify(@PathVariable Long stage_id){
-        return null;
+    public Long update(@PathVariable Long stage_id, @RequestBody StageUpdateRequestDto stageUpdateRequestDto){
+        return stageService.updateStage(stage_id, stageUpdateRequestDto);
     }
 
     @DeleteMapping("/{stage_id}")
