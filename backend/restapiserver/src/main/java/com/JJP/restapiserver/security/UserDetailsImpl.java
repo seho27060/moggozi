@@ -37,7 +37,7 @@ public class UserDetailsImpl implements UserDetails {
     public static UserDetailsImpl build(Member member) {
         Role role = member.getRole();
         GrantedAuthority authority = new SimpleGrantedAuthority(role.getName().name());
-        return new UserDetailsImpl(member.getId(), member.getUsername(), member.getFullname(), member.getPassword(), authority);
+        return new UserDetailsImpl(member.getId(), member.getUsername(), member.getNickname(), member.getPassword(), authority);
     }
 
     @Override
@@ -74,7 +74,6 @@ public class UserDetailsImpl implements UserDetails {
     public Long getId() {
         return id;
     }
-
 
     @Override
     public boolean isAccountNonExpired() {

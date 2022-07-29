@@ -13,8 +13,9 @@ import javax.persistence.*;
 
 @Entity
 @Getter
-@AllArgsConstructor
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Review extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -39,9 +40,5 @@ public class Review extends BaseTimeEntity {
     public void update(ReviewUpdateRequestDto reviewUpdateRequestDto) {
         this.review_content = reviewUpdateRequestDto.getReview_content();
         this.rate = reviewUpdateRequestDto.getRate();
-    }
-
-    public Review() {
-
     }
 }

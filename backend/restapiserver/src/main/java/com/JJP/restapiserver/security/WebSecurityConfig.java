@@ -1,9 +1,9 @@
 package com.JJP.restapiserver.security;
 
+import com.JJP.restapiserver.service.CustomOAuth2UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -18,14 +18,19 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity // Spring Web Security 활성화 - 평상시 비활성화
 @EnableGlobalMethodSecurity(prePostEnabled = true) // AOP security on methods
-@Order(1)
+//@Order(1)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    UserDetailsServiceImpl userDetailsService;
+    private CustomOAuth2UserService customOAuth2UserService;
+    @Autowired
+    private UserDetailsServiceImpl userDetailsService;
 
     @Autowired
     private AuthEntryPointJwt unauthorizedHandler;
+
+    @Autowired
+    private OAuth2SuccessHandler oAuth2SuccessHandler;
 
     @Bean
     public AuthTokenFilter authenticationJwtTokenFilter() {
@@ -42,14 +47,22 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
+    // 설정 - 커스텀을 안하는게 맞다.
+    // 커스텀을 왜했는가가
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable()
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-                .authorizeRequests().antMatchers("/user/**").permitAll()
-                .anyRequest().authenticated();
+                .authorizeRequests().antMatchers("/**").permitAll()
+                .anyRequest().authenticated()
+                .and()
+                .oauth2Login()
+                .successHandler(oAuth2SuccessHandler)
+                .userInfoEndpoint()
+                .userService(customOAuth2UserService);
 
+        // 접근하기 전 인증된 사용자인지, 유저이름과 비밀번호가 맞게 입력되었는지를 확인하는 필터
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 

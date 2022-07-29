@@ -67,11 +67,10 @@ public class Member {
     @JsonManagedReference
     private List<Comment> commentList = new ArrayList<>();
 
-    /** 삭제 예정 */
-    public Member(String username, String nickname, String password, Role role) {
+    @Builder
+    public Member(String username, String nickname) {
         this.username = username;
         this.fullname = nickname;
-        this.password = password;
     }
 
     @OneToMany(mappedBy = "member")

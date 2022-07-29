@@ -15,8 +15,9 @@ import javax.persistence.*;
 
 @Entity
 @Getter
-@AllArgsConstructor
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Comment extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)

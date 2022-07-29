@@ -10,8 +10,8 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Getter
-@Builder
 @Entity
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class ChallengeTag {
