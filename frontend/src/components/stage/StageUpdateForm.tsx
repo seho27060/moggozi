@@ -1,4 +1,5 @@
 import { FormEvent, useRef } from "react";
+import { GoBackButton } from "../../layout/HistoryButton";
 import { Stage } from "../../pages/stage/StageMain";
 // 수정하기가 글쓴이가 수정할 수 있도록 해야함.
 
@@ -100,6 +101,8 @@ const StageUpdateForm: React.FC<{ stage: Stage }> = ({ stage }) => {
               ref={orderInputRef}
             />
           </div>
+          {/* 뒤로가기시 오류 있음. */}
+          <GoBackButton/>
           <button onClick={stateUpdateHandler}>submit</button>
         </form>
       </div>

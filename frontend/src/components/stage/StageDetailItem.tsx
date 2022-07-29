@@ -1,18 +1,26 @@
 // stage store에서 스테이지 번호를 갱신하고..접근해야하ㅡ나?
 
-import { Stage } from "../../pages/stage/StageMain";
 import { GoBackButton } from "../../layout/HistoryButton";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useCallback } from "react";
+import Modal from "../ui/Modal";
+import PostList from "../post/PostList";
+import { StageDetailType } from "../../pages/stage/StageDetail";
 
-const StageDetailItem: React.FC<{ stage: Stage }> = ({ stage }) => {
+const StageDetailItem: React.FC<{ stage: StageDetailType }> = ({ stage }) => {
   const [isOpenModal, setOpenModal] = useState<boolean>(false);
 
   const OnClickToggleModal = useCallback(() => {
+    console.log(isOpenModal);
     setOpenModal(!isOpenModal);
   }, [isOpenModal]);
 
+  function removeHandler () {
+    console.log("현재 스테이지를 삭제합니다.")
+    return <div></div>;
+  };
+  
   return (
     <div>
       StageDetail
@@ -24,7 +32,12 @@ const StageDetailItem: React.FC<{ stage: Stage }> = ({ stage }) => {
         <p>{stage.period}</p>
         <p>{stage.content}</p>
         <img src={stage.stage_img} alt="img" />
-        <GoBackButton />
+      </div>
+      <div style={{ border: "solid", margin: "1rem", padding: "1rem" }}>
+        <PostList postings= {stage.postings}/>
+      </div>
+      <div style={{ border: "solid", margin: "1rem", padding: "1rem" }}>
+      <GoBackButton />
         <Link
           to={`/stage/${stage.stage_id}/update`}
           style={{ color: "inherit", textDecoration: "none" }}
@@ -32,6 +45,15 @@ const StageDetailItem: React.FC<{ stage: Stage }> = ({ stage }) => {
           <button>수정하기</button>
         </Link>
         <button onClick={OnClickToggleModal}>삭제하기</button>
+        {isOpenModal && (
+          <Modal>
+            <div>
+              정말 삭세하시겠습니까?
+              <button onClick={removeHandler}>삭제</button>
+              <button onClick={OnClickToggleModal}>취소</button>
+            </div>
+          </Modal>
+        )}
       </div>
     </div>
   );

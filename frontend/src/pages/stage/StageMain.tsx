@@ -13,6 +13,7 @@ export interface Stage {
   children?: React.ReactNode;
 }
 
+
 export const StageDummy: Stage[] = [
   {
     stage_id : 1,

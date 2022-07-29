@@ -14,7 +14,7 @@ export function GoBackButton() {
   </div>
   )
 }
-
+ 
 export function GoForwardButton() {
   const navigate = useNavigate()
 
