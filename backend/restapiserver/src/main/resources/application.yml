@@ -1,7 +1,6 @@
 spring.profiles.include: 'auth'
 
 spring:
-  port: 8081
   h2:
     console:
       enabled: true
@@ -23,7 +22,7 @@ spring:
 #    defer-datasource-initialization: true
 
   datasource:
-    url:  jdbc:h2:tcp://localhost/~/test
+    url:  jdbc:h2:tcp://localhost/~/testdb
     driver-class-name: org.h2.Driver
     username: sa
     password:
@@ -38,6 +37,16 @@ spring:
         format_sql: true        # console 창에서 sql문을 보기 위한 설정 (format_sql: sql의 형태로 작성한 쿼리문을
         show_sql: true          #                                                             show_sql: 보여준다.)
     defer-datasource-initialization: true
+
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 948844328868-cos0sa2t47h5qva1glcsoijkt2690g35.apps.googleusercontent.com
+            client-secret: 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
+            scope: profile, email
+
 
 
 logging:                        # logging level은 DEBUG로 설정하겠다.
