@@ -44,6 +44,9 @@ public class Challenge extends BaseTimeEntity {
 
     private int state;
 
+    @Column(length = 50)
+    private String description;
+
     // 스테이지와 다대일 양방향 관계
     @OneToMany(mappedBy = "challenge")
     @JsonManagedReference
@@ -67,12 +70,13 @@ public class Challenge extends BaseTimeEntity {
 
     public void updateChallenge(ChallengeRequestDto challengeRequestDto)
     {
-        this.challenge_img = challengeRequestDto.getChallenge_img();
         this.name = challengeRequestDto.getName();
+        this.challenge_img = challengeRequestDto.getChallenge_img();
         this.content = challengeRequestDto.getContent();
         this.level = challengeRequestDto.getLevel();
 //        this.hobby = challengeRequestDto.getHobby();
         this.state = challengeRequestDto.getState();
+        this.description = challengeRequestDto.getDescription();
     }
 //    @Builder
 //    public Challenge(Long id, Member member, String name, String challenge_img, String content, int level, String hobby, int state) {
