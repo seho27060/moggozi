@@ -1,8 +1,5 @@
 spring.profiles.include: 'auth'
 
-server:
-  port: 8090
-
 spring:
   h2:
     console:
@@ -40,7 +37,6 @@ spring:
 #        format_sql: true        # console 창에서 sql문을 보기 위한 설정 (format_sql: sql의 형태로 작성한 쿼리문을
 #        show_sql: true          #                                                             show_sql: 보여준다.)
 #    defer-datasource-initialization: true
-
 
   security:
     oauth2:
