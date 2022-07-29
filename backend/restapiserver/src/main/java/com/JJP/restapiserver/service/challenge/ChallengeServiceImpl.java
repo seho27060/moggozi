@@ -2,9 +2,15 @@ package com.JJP.restapiserver.service.challenge;
 
 import com.JJP.restapiserver.domain.dto.ChallengeCompleteRequestDto;
 import com.JJP.restapiserver.domain.dto.ChallengeRequestDto;
+import com.JJP.restapiserver.domain.entity.Tag.ChallengeTag;
+import com.JJP.restapiserver.domain.entity.Tag.MemberTag;
+import com.JJP.restapiserver.domain.entity.Tag.Tag;
 import com.JJP.restapiserver.domain.entity.challenge.Challenge;
 import com.JJP.restapiserver.domain.entity.challenge.JoinedChallenge;
 import com.JJP.restapiserver.domain.entity.member.Member;
+import com.JJP.restapiserver.repository.Tag.ChallengeTagRepository;
+import com.JJP.restapiserver.repository.Tag.MemberTagRepository;
+import com.JJP.restapiserver.repository.Tag.TagRepository;
 import com.JJP.restapiserver.repository.challenge.ChallengeRepository;
 import com.JJP.restapiserver.repository.challenge.JoinedChallengeRepository;
 import com.JJP.restapiserver.repository.member.MemberRepository;
@@ -21,18 +27,21 @@ public class ChallengeServiceImpl implements ChallengeService{
 
     private final JoinedChallengeRepository joinedChallengeRepository;
     private final ChallengeRepository challengeRepository;
-
     private final MemberRepository memberRepository;
+    private final TagRepository tagRepository;
+    private final ChallengeTagRepository challengeTagRepository;
+
+//    private final MemberTagRepository memberTagRepository;
 
     // 테스트 완료
     @Override
     public List<Challenge> getChallengeListByHobby(String hobby) {
 
-        List<Challenge> challengeList = challengeRepository.findByHobby(hobby);
+//        List<Challenge> challengeList = challengeRepository.findByHobby(hobby);
 
 
-
-        return challengeRepository.findByHobby(hobby);
+        return null;
+//        return challengeRepository.findByHobby(hobby);
     }
 
     // 미구현
@@ -80,10 +89,34 @@ public class ChallengeServiceImpl implements ChallengeService{
                 .challenge_img(challengeData.getChallenge_img())
                 .content(challengeData.getContent())
                 .level(challengeData.getLevel())
-                .hobby(challengeData.getHobby())
                 .state(challengeData.getState())
                 .build();
-        challengeRepository.save(challenge);
+        Long challenge_id = challengeRepository.save(challenge).getId();
+
+        // 여러 개의 태그 리스트를 프론트에서 보내준 데이터에서 받는다.
+        List<String> tagList = challengeData.getTagList();
+        List<ChallengeTag> challengeTagList = new ArrayList<>();
+        for(int i = 0; i < tagList.size(); i++)
+        {
+            String tag = tagList.get(i);
+            Tag tagEntity;
+            // 태그 리스트 중에서 이미 태그가 존재한다면
+            // 챌린지가 이미 취미로 집어넣은 태그인지 확인한다.
+            if(tagRepository.existsByTag(tag))
+                tagEntity = tagRepository.getByTag(tag);
+            // 아예 처음 생기는 태그라면, 태그 테이블에 집어넣고
+            // 사용자 취미 태그 테이블에도 집어넣어 준다.
+            else{
+                tagEntity = Tag.builder()
+                            .tag(tag)
+                            .build();
+                tagRepository.save(tagEntity);
+            }
+            challengeTagRepository.save(ChallengeTag.builder()
+                    .challenge(challenge)
+                    .tag(tagEntity)
+                    .build());
+        }
         return 0;
     }
 
