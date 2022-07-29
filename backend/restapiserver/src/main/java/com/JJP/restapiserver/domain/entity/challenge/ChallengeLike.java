@@ -2,8 +2,10 @@ package com.JJP.restapiserver.domain.entity.challenge;
 
 import com.JJP.restapiserver.domain.entity.member.Member;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
@@ -11,6 +13,8 @@ import javax.persistence.*;
 @Entity
 @Getter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class ChallengeLike {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -26,4 +30,5 @@ public class ChallengeLike {
     @JoinColumn(name ="challenge_id")
     @JsonBackReference
     private Challenge challenge;
+
 }

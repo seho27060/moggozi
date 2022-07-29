@@ -11,9 +11,9 @@ import javax.persistence.*;
 
 @Getter
 @Entity
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class MemberTag {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)

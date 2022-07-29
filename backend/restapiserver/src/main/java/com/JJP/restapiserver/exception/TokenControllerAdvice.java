@@ -1,7 +1,6 @@
-package com.JJP.restapiserver.security;
+package com.JJP.restapiserver.exception;
 
 import com.JJP.restapiserver.domain.dto.ErrorMessage;
-import com.JJP.restapiserver.exception.TokenRefreshException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
