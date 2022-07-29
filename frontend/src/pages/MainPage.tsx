@@ -4,6 +4,8 @@ import LogoutBtn from "../components/accounts/LogoutBtn";
 import { useDispatch, useSelector } from "react-redux";
 import React from "react";
 import { challengeCreate } from "../store/challenge"
+import ChallengeList from "../components/challenge/ChallengeList";
+
 const MainPage: React.FC = () => {
   const dispatch = useDispatch();
   const challengeState = useSelector((state: RootState) => state.challenge);
@@ -27,6 +29,7 @@ const MainPage: React.FC = () => {
       MainPage
       <LogoutBtn />
       <button onClick={addHandler}>add</button>
+      <ChallengeList challenges = {challengeState}></ChallengeList>
     </div>
   );
 }
