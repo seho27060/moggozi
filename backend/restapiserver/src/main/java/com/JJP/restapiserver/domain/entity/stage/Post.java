@@ -25,13 +25,17 @@ public class Post extends BaseTimeEntity {
     @JoinColumn(name = "member_id")
     @JsonBackReference
     private Member member;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "stage_id")
+    @JsonBackReference
+    private Stage stage;
+
     @Column(length = 45)
     private String title;
 
     @Lob
     private String content;
-
-    private Long stage_id;
 
     @Column(length = 300)
     private String post_img;
@@ -43,12 +47,18 @@ public class Post extends BaseTimeEntity {
     private List<PostLike> postLikeList = new ArrayList<>();
 
     @Builder
-    public Post(Long id, Member member, String title, String content, Long stage_id, String post_img) {
+    public Post(Long id, Member member, Stage stage, String title, String content, String post_img) {
         this.id = id;
         this.member = member;
+        this.stage = stage;
         this.title = title;
         this.content = content;
-        this.stage_id = stage_id;
+        this.post_img = post_img;
+    }
+
+    public void update(String title, String content, String post_img) {
+        this.title = title;
+        this.content = content;
         this.post_img = post_img;
     }
 }
