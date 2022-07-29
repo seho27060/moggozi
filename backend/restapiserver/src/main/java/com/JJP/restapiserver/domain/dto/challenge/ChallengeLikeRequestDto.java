@@ -1,4 +1,4 @@
-package com.JJP.restapiserver.domain.dto;
+package com.JJP.restapiserver.domain.dto.challenge;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -6,6 +6,7 @@ import com.JJP.restapiserver.domain.entity.challenge.Review;
 import com.JJP.restapiserver.domain.entity.Tag.MemberTag;
 import com.JJP.restapiserver.domain.entity.stage.Comment;
 import com.JJP.restapiserver.domain.entity.stage.Post;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

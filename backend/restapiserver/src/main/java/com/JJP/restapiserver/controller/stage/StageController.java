@@ -1,8 +1,8 @@
 package com.JJP.restapiserver.controller.stage;
 
-import com.JJP.restapiserver.domain.dto.StageResponseDto;
-import com.JJP.restapiserver.domain.dto.StageSaveRequestDto;
-import com.JJP.restapiserver.domain.dto.StageUpdateRequestDto;
+import com.JJP.restapiserver.domain.dto.stage.StageResponseDto;
+import com.JJP.restapiserver.domain.dto.stage.StageSaveRequestDto;
+import com.JJP.restapiserver.domain.dto.stage.StageUpdateRequestDto;
 import com.JJP.restapiserver.domain.entity.stage.Stage;
 import com.JJP.restapiserver.service.stage.StageService;
 import lombok.RequiredArgsConstructor;
