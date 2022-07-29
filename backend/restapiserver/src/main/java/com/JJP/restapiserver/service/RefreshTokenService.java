@@ -32,7 +32,6 @@ public class RefreshTokenService {
 
     // Refresh token 생성
     public RefreshToken createRefreshToken(Long memberId) {
-
         Member member = memberRepository.findById(memberId).get();
         Instant date = Instant.now().plusMillis(refreshTokenDurationMs);
         String token = UUID.randomUUID().toString();

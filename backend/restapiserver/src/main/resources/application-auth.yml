@@ -5,16 +5,22 @@ jwt:
   accessExpirationInMs: 36000000        # Access 토큰 만료 시간(ms) = 5시간
   refreshExpirationInMs: 86400000       # Refresh 토큰 만료 시간(ms) = 1일 (24시간)
 
-#spring:
-#  security:
-#    oauth2.client:
-#        registration:
-#          google:
-#            clientId: 948844328868-cos0sa2t47h5qva1glcsoijkt2690g35.apps.googleusercontent.com
-#            clientSecret: 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
-#            scope:
-#              - profile
-#              - email
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 948844328868-cos0sa2t47h5qva1glcsoijkt2690g35.apps.googleusercontent.com
+            client-secret: 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
+            scope: profile, email
 
-
+  mail:
+    host: smtp.daum.net
+    port: 465
+    username: moggozi.ssafy@daum.net
+    password: AhRhwl.Tkvl7
+    properties:
+      mail.smtp.auth: true
+      mail.smtp.ssl.enable: true
 

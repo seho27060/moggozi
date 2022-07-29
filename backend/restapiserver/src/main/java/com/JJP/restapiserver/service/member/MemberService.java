@@ -10,7 +10,7 @@ public interface MemberService {
     public ResponseEntity<?> register(SignupRequest signupRequest); // 회원등록
     public ResponseEntity<?> delete(Long user_id); // 회원탈퇴
     public ResponseEntity<?> update(Long user_id, UpdateUserRequest updateUserRequest); // 회원정보수정
-    public ResponseEntity<?> updatePassword(LoginRequest loginRequest); // 패스워드 업데이트
+    public ResponseEntity<?> updatePassword(String username); // 패스워드 업데이트
     public ResponseEntity<?> checkValidity(LoginRequest loginRequest); // 사용자 확인
 
     public ResponseEntity<?> login(LoginRequest loginRequest); // 로그인
