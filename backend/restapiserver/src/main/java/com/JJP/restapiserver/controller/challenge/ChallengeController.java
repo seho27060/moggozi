@@ -4,12 +4,9 @@ package com.JJP.restapiserver.controller.challenge;
 import com.JJP.restapiserver.domain.dto.challenge.ChallengeCompleteRequestDto;
 import com.JJP.restapiserver.domain.dto.challenge.ChallengeRequestDto;
 import com.JJP.restapiserver.domain.dto.challenge.ChallengeResponseDto;
-import com.JJP.restapiserver.domain.entity.challenge.Challenge;
 import com.JJP.restapiserver.security.JwtUtils;
 import com.JJP.restapiserver.service.challenge.ChallengeService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,6 +27,7 @@ public class ChallengeController {
     public ResponseEntity getChallengeListByHobby(@PathVariable("hobby") String hobby,
                                                   HttpServletRequest request){
         Long user_id = jwtUtils.getUserIdFromJwtToken(request.getHeader("Authorization"));
+        System.out.println("***************** jwt TOken: " + request.getHeader("Authorization"));
         List<ChallengeResponseDto> challengeList = challengeService.getChallengeListByHobby(hobby, user_id);
         return new ResponseEntity<List<ChallengeResponseDto>>(challengeList,HttpStatus.OK);
     }
@@ -55,6 +53,7 @@ public class ChallengeController {
     public ResponseEntity getChallengeDatail(@PathVariable Long challenge_id, HttpServletRequest request)
     {
         Long member_id = jwtUtils.getUserIdFromJwtToken(request.getHeader("Authorization"));
+
         System.out.println("지금 이 값은 테스트 값입니다. " + request.getHeader("Authorization"));
         ChallengeResponseDto challengeResponseDto = challengeService.getChallengeDetail(challenge_id, member_id);
         return new ResponseEntity(challengeResponseDto, HttpStatus.OK);
