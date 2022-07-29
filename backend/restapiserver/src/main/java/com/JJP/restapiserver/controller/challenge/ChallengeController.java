@@ -55,7 +55,7 @@ public class ChallengeController {
     public ResponseEntity getChallengeDatail(@PathVariable Long challenge_id, HttpServletRequest request)
     {
         Long member_id = jwtUtils.getUserIdFromJwtToken(request.getHeader("Authorization"));
-
+        System.out.println("지금 이 값은 테스트 값입니다. " + request.getHeader("Authorization"));
         ChallengeResponseDto challengeResponseDto = challengeService.getChallengeDetail(challenge_id, member_id);
         return new ResponseEntity(challengeResponseDto, HttpStatus.OK);
     }
