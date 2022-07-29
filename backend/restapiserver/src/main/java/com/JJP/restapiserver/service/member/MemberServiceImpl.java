@@ -174,7 +174,6 @@ public class MemberServiceImpl implements MemberService {
 
 
     private void saveMember(Long user_id, String username, String fullname, String password, String nickname, String introduce, String user_img, int is_private, Role role) {
-
         Member member = null;
         if(user_id == -1L) {
             member = Member.builder().
