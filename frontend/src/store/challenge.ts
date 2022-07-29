@@ -18,13 +18,12 @@ export interface ChallengeState {
   user_progress: number | null;
 }
 
-// 챌린지 디테일 정보 리스트 먼저 한다.
+// 챌린지 디테일 정보 - 리스트 먼저 한다.
 // export interface ChallengeDetailState {
 //   id: number | null;
 //   create_time: string | null;
 //   update_time: string | null;
 // }
-
 
 const initialChallengesState: ChallengeState[] = [];
 
@@ -35,14 +34,10 @@ export const challengesSlice = createSlice({
     challengeCreate: (state, action) => {
       state.push(action.payload);
     },
-    challengeUpdate: (state, action) => {
-
-    },
-    challengeDelete: (state, action) => {
-
-    }
-  }
-})
+    challengeUpdate: (state, action) => {},
+    challengeDelete: (state, action) => {},
+  },
+});
 
 export const { challengeCreate } = challengesSlice.actions;
 
