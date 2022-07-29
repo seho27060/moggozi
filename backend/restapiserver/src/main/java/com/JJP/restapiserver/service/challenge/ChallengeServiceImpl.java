@@ -97,30 +97,7 @@ public class ChallengeServiceImpl implements ChallengeService{
                 .build();
         Long challenge_id = challengeRepository.save(challenge).getId();
 
-        // 여러 개의 태그 리스트를 프론트에서 보내준 데이터에서 받는다.
-        List<TagRequestDto> tagList = challengeData.getHobby();
-        List<ChallengeTag> challengeTagList = new ArrayList<>();
-        for(int i = 0; i < tagList.size(); i++)
-        {
-            String tag = tagList.get(i).getTag();
-            Tag tagEntity;
-            // 태그 리스트 중에서 이미 태그가 존재한다면
-            // 챌린지가 이미 취미로 집어넣은 태그인지 확인한다.
-            if(tagRepository.existsByTag(tag))
-                tagEntity = tagRepository.getByTag(tag);
-            // 아예 처음 생기는 태그라면, 태그 테이블에 집어넣고
-            // 사용자 취미 태그 테이블에도 집어넣어 준다.
-            else{
-                tagEntity = Tag.builder()
-                            .tag(tag)
-                            .build();
-                tagRepository.save(tagEntity);
-            }
-            challengeTagRepository.save(ChallengeTag.builder()
-                    .challenge(challenge)
-                    .tag(tagEntity)
-                    .build());
-        }
+        tagRegister(challenge_id, challengeData);
         return 0;
     }
 
@@ -129,6 +106,7 @@ public class ChallengeServiceImpl implements ChallengeService{
 
         Challenge challenge = challengeRepository.findById(challenge_id).get();
         challenge.updateChallenge(challengeData);
+        challengeRepository.save(challenge);
 
         for(int i = 0; i < challenge.getChallengeTagList().size(); i++)
         {
@@ -136,7 +114,8 @@ public class ChallengeServiceImpl implements ChallengeService{
             challengeTagRepository.deleteById(index);
         }
 
-        challengeRepository.save(challenge);
+        tagRegister(challenge_id, challengeData);
+
         return 0;
     }
 
@@ -153,10 +132,11 @@ public class ChallengeServiceImpl implements ChallengeService{
 
         // 상태를 변화시켜줄 챌린지를 찾음.
         Challenge challenge = challengeRepository.findById(challengeCompleteRequestDto.getChallenge_id()).get();
-        Optional<JoinedChallenge> joinedChallenge = joinedChallengeRepository.
-                findByChallenge_idAndMember_id(challengeCompleteRequestDto.getChallenge_id(), challengeCompleteRequestDto.getUser_id());
+        JoinedChallenge joinedChallenge = joinedChallengeRepository.
+                findByChallenge_idAndMember_id(challengeCompleteRequestDto.getChallenge_id(),
+                        challengeCompleteRequestDto.getUser_id()).get();
         // 완료되었다는 상태가 2임
-        joinedChallenge.get().setState(2);
+        joinedChallenge.setState(2);
         return 0;
     }
 
@@ -171,7 +151,6 @@ public class ChallengeServiceImpl implements ChallengeService{
             for(int j = 0; j < challenge.getChallengeTagList().size(); j++)
             {
                 Tag tag = challenge.getChallengeTagList().get(j).getTag();
-//                String tag = tagRepository.getById(tag_id).getTag();
                 challengeResponseDto.getTagList().add(tag.getTag());
             }
             JoinedChallenge joinedChallenge = joinedChallengeRepository.findByChallenge_idAndMember_id(
@@ -181,5 +160,33 @@ public class ChallengeServiceImpl implements ChallengeService{
             responseDtoList.add(challengeResponseDto);
         }
         return responseDtoList;
+    }
+
+    public void tagRegister(Long challenge_id, ChallengeRequestDto challengeData)
+    {
+        Challenge challenge = challengeRepository.findById(challenge_id).get();
+
+        List<TagRequestDto> tagList = challengeData.getHobby();
+        for(int i = 0; i < tagList.size(); i++)
+        {
+            String tag = tagList.get(i).getTag();
+            Tag tagEntity;
+            // 태그 리스트 중에서 이미 태그가 존재한다면
+            // 챌린지가 이미 취미로 집어넣은 태그인지 확인한다.
+            if(tagRepository.existsByTag(tag))
+                tagEntity = tagRepository.getByTag(tag);
+                // 아예 처음 생기는 태그라면, 태그 테이블에 집어넣고
+                // 사용자 취미 태그 테이블에도 집어넣어 준다.
+            else{
+                tagEntity = Tag.builder()
+                        .tag(tag)
+                        .build();
+                tagRepository.save(tagEntity);
+            }
+            challengeTagRepository.save(ChallengeTag.builder()
+                    .challenge(challenge)
+                    .tag(tagEntity)
+                    .build());
+        }
     }
 }
