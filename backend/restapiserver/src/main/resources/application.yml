@@ -38,6 +38,7 @@ spring:
 #        show_sql: true          #                                                             show_sql: 보여준다.)
 #    defer-datasource-initialization: true
 
+
   security:
     oauth2:
       client:
