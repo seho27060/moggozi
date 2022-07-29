@@ -1,19 +1,20 @@
 package com.JJP.restapiserver.service.challenge;
 
-import com.JJP.restapiserver.domain.dto.ChallengeCompleteRequestDto;
-import com.JJP.restapiserver.domain.dto.ChallengeRequestDto;
+import com.JJP.restapiserver.domain.dto.challenge.ChallengeCompleteRequestDto;
+import com.JJP.restapiserver.domain.dto.challenge.ChallengeRequestDto;
+import com.JJP.restapiserver.domain.dto.challenge.ChallengeResponseDto;
+import com.JJP.restapiserver.domain.dto.tag.TagRequestDto;
 import com.JJP.restapiserver.domain.entity.Tag.ChallengeTag;
-import com.JJP.restapiserver.domain.entity.Tag.MemberTag;
 import com.JJP.restapiserver.domain.entity.Tag.Tag;
 import com.JJP.restapiserver.domain.entity.challenge.Challenge;
 import com.JJP.restapiserver.domain.entity.challenge.JoinedChallenge;
 import com.JJP.restapiserver.domain.entity.member.Member;
 import com.JJP.restapiserver.repository.Tag.ChallengeTagRepository;
-import com.JJP.restapiserver.repository.Tag.MemberTagRepository;
 import com.JJP.restapiserver.repository.Tag.TagRepository;
 import com.JJP.restapiserver.repository.challenge.ChallengeRepository;
 import com.JJP.restapiserver.repository.challenge.JoinedChallengeRepository;
 import com.JJP.restapiserver.repository.member.MemberRepository;
+import com.JJP.restapiserver.repository.stage.StageUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -30,18 +31,36 @@ public class ChallengeServiceImpl implements ChallengeService{
     private final MemberRepository memberRepository;
     private final TagRepository tagRepository;
     private final ChallengeTagRepository challengeTagRepository;
+    private final StageUserRepository stageUserRepository;
 
 //    private final MemberTagRepository memberTagRepository;
 
-    // 테스트 완료
     @Override
-    public List<Challenge> getChallengeListByHobby(String hobby) {
+    public List<ChallengeResponseDto> getChallengeListByHobby(String hobby) {
 
-//        List<Challenge> challengeList = challengeRepository.findByHobby(hobby);
+        List<Challenge> challengeList = challengeRepository.findByHobby(hobby);
 
+        List<ChallengeResponseDto> responseDtoList = new ArrayList<>();
+        for(int i = 0; i < challengeList.size(); i++)
+        {
+            Challenge challenge = challengeList.get(i);
+            ChallengeResponseDto challengeResponseDto = new ChallengeResponseDto(challenge);
+            List<String> temp = new ArrayList<>();
+            for(int j = 0; j < challenge.getChallengeTagList().size(); j++)
+            {
+                Tag tag = challenge.getChallengeTagList().get(j).getTag();
+//                String tag = tagRepository.getById(tag_id).getTag();
+                challengeResponseDto.getTagList().add(tag.getTag());
+            }
+            int complete_sum = challenge.getStageList().size() * 2;
+            int sum = 0;
+            for(int j = 0; j < challenge.getStageList().size(); j++){
+                sum += challenge.getStageList().get(i).getS
+            }
+            responseDtoList.add(challengeResponseDto);
+        }
 
-        return null;
-//        return challengeRepository.findByHobby(hobby);
+        return responseDtoList;
     }
 
     // 미구현
@@ -94,11 +113,11 @@ public class ChallengeServiceImpl implements ChallengeService{
         Long challenge_id = challengeRepository.save(challenge).getId();
 
         // 여러 개의 태그 리스트를 프론트에서 보내준 데이터에서 받는다.
-        List<String> tagList = challengeData.getTagList();
+        List<TagRequestDto> tagList = challengeData.getHobby();
         List<ChallengeTag> challengeTagList = new ArrayList<>();
         for(int i = 0; i < tagList.size(); i++)
         {
-            String tag = tagList.get(i);
+            String tag = tagList.get(i).getTag();
             Tag tagEntity;
             // 태그 리스트 중에서 이미 태그가 존재한다면
             // 챌린지가 이미 취미로 집어넣은 태그인지 확인한다.

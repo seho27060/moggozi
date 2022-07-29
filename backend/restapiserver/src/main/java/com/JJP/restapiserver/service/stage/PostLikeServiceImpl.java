@@ -1,6 +1,6 @@
 package com.JJP.restapiserver.service.stage;
 
-import com.JJP.restapiserver.domain.dto.PostLikeRequestDto;
+import com.JJP.restapiserver.domain.dto.stage.PostLikeRequestDto;
 import com.JJP.restapiserver.domain.entity.stage.PostLike;
 import com.JJP.restapiserver.repository.member.MemberRepository;
 import com.JJP.restapiserver.repository.stage.PostLikeRepository;

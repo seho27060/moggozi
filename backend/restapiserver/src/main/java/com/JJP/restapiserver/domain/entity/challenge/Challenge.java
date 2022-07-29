@@ -1,6 +1,6 @@
 package com.JJP.restapiserver.domain.entity.challenge;
 
-import com.JJP.restapiserver.domain.dto.ChallengeRequestDto;
+import com.JJP.restapiserver.domain.dto.challenge.ChallengeRequestDto;
 import com.JJP.restapiserver.domain.entity.BaseTimeEntity;
 import com.JJP.restapiserver.domain.entity.Tag.ChallengeTag;
 import com.JJP.restapiserver.domain.entity.member.Member;
@@ -18,12 +18,12 @@ import java.util.List;
 
 @Entity
 @Getter
-@NoArgsConstructor
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor
 public class Challenge extends BaseTimeEntity {
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -47,7 +47,7 @@ public class Challenge extends BaseTimeEntity {
     // 스테이지와 다대일 양방향 관계
     @OneToMany(mappedBy = "challenge")
     @JsonManagedReference
-    private List<Stage> stages = new ArrayList<>();
+    private List<Stage> stageList = new ArrayList<>();
 
     // 좋아요와 다대일 단방향 관계
     @OneToMany
@@ -55,7 +55,7 @@ public class Challenge extends BaseTimeEntity {
 
     // 한줄평과 일대다 단방향 관계
     @OneToMany
-    private List<Review> reviews = new ArrayList<>();
+    private List<Review> reviewList = new ArrayList<>();
 
     @OneToMany(mappedBy = "challenge")
     @JsonManagedReference
@@ -71,7 +71,7 @@ public class Challenge extends BaseTimeEntity {
         this.name = challengeRequestDto.getName();
         this.content = challengeRequestDto.getContent();
         this.level = challengeRequestDto.getLevel();
-//        this.challengeTagList = challengeRequestDto.getChallengeTagList();
+//        this.hobby = challengeRequestDto.getHobby();
         this.state = challengeRequestDto.getState();
     }
 //    @Builder

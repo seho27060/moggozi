@@ -1,4 +1,4 @@
-package com.JJP.restapiserver.domain.dto;
+package com.JJP.restapiserver.domain.dto.stage;
 
 import lombok.Builder;
 import lombok.Getter;

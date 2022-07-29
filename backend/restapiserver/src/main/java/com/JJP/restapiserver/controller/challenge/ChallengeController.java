@@ -1,8 +1,9 @@
 package com.JJP.restapiserver.controller.challenge;
 
 
-import com.JJP.restapiserver.domain.dto.ChallengeCompleteRequestDto;
-import com.JJP.restapiserver.domain.dto.ChallengeRequestDto;
+import com.JJP.restapiserver.domain.dto.challenge.ChallengeCompleteRequestDto;
+import com.JJP.restapiserver.domain.dto.challenge.ChallengeRequestDto;
+import com.JJP.restapiserver.domain.dto.challenge.ChallengeResponseDto;
 import com.JJP.restapiserver.domain.entity.challenge.Challenge;
 import com.JJP.restapiserver.service.challenge.ChallengeService;
 import lombok.RequiredArgsConstructor;
@@ -23,8 +24,8 @@ public class ChallengeController {
 
     @GetMapping("/hobby/{hobby}")
     public ResponseEntity getChallengeListByHobby(@PathVariable("hobby") String hobby){
-        List<Challenge> challengeList = challengeService.getChallengeListByHobby(hobby);
-        return new ResponseEntity<List<Challenge>>(challengeList,HttpStatus.OK);
+        List<ChallengeResponseDto> challengeList = challengeService.getChallengeListByHobby(hobby);
+        return new ResponseEntity<List<ChallengeResponseDto>>(challengeList,HttpStatus.OK);
     }
 
     @GetMapping("/search/{keyword}")

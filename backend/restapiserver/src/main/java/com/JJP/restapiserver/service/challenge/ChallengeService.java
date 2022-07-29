@@ -1,14 +1,15 @@
 package com.JJP.restapiserver.service.challenge;
 
-import com.JJP.restapiserver.domain.dto.ChallengeCompleteRequestDto;
-import com.JJP.restapiserver.domain.dto.ChallengeRequestDto;
+import com.JJP.restapiserver.domain.dto.challenge.ChallengeCompleteRequestDto;
+import com.JJP.restapiserver.domain.dto.challenge.ChallengeRequestDto;
+import com.JJP.restapiserver.domain.dto.challenge.ChallengeResponseDto;
 import com.JJP.restapiserver.domain.entity.challenge.Challenge;
 
 import java.util.List;
 
 public interface ChallengeService {
     // 취미에 따른 챌린지 리스트 반환해주는 api
-    List<Challenge> getChallengeListByHobby(String hobby);
+    List<ChallengeResponseDto> getChallengeListByHobby(String hobby);
     // 사용자에 맞춰 추천하는 챌린지 리스트를 반환해주는 api
     List<Challenge> getChallengeListByRecommendation();
     // 검색어에 따른 리스트 반환해주는 api
