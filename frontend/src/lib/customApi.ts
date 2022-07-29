@@ -3,7 +3,7 @@ import { apiConfig } from "../config"
 import { refresh, refreshErrorHandle } from "./refresh"
 
 const Api = axios.create({
-    baseURL: apiConfig.api_root,
+    baseURL: apiConfig.apiRoot,
     timeout: 10000,
     params: {},
 });
