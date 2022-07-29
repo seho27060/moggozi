@@ -1,12 +1,11 @@
 package com.JJP.restapiserver.domain.entity.member;
 
+import com.JJP.restapiserver.domain.entity.Tag.MemberTag;
 import com.JJP.restapiserver.domain.entity.challenge.Challenge;
 import com.JJP.restapiserver.domain.entity.challenge.ChallengeLike;
 import com.JJP.restapiserver.domain.entity.challenge.Review;
-import com.JJP.restapiserver.domain.entity.Tag.MemberTag;
 import com.JJP.restapiserver.domain.entity.stage.Comment;
 import com.JJP.restapiserver.domain.entity.stage.Post;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -69,9 +68,16 @@ public class Member {
     private List<Comment> commentList = new ArrayList<>();
 
     @Builder
-    public Member(String username, String nickname) {
+    public Member(String username, String fullname) {
         this.username = username;
-        this.fullname = nickname;
+        this.fullname = fullname;
+    }
+
+    @Builder
+    public Member(String username, String fullname, String password) {
+        this.username = username;
+        this.fullname = fullname;
+        this.password = password;
     }
 
     @OneToMany(mappedBy = "member")
