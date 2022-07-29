@@ -1,5 +1,8 @@
 spring.profiles.include: 'auth'
 
+server:
+  port: 8090
+
 spring:
   h2:
     console:
