@@ -21,7 +21,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     // 사용자 정보 수정 - DB 변경 후 영속성에도 반영해줌
     @Modifying(clearAutomatically = true)
-    @Query("update Member m set m.password = ?1 where m.id = ?2")
+    @Query("update Member m set m.password = :password where m.id = :id")
     int updatePasswordById(String password, Long id);
 
     @Modifying(clearAutomatically = true)

@@ -74,9 +74,10 @@ public class MemberController {
         return memberService.checkValidity(loginRequest);
     }
 
-    @PostMapping("/password")
-    public ResponseEntity<?> updatePassword(@Valid @RequestBody LoginRequest loginRequest) {
-        return memberService.updatePassword(loginRequest);
+    // 비밓번호 찾기
+    @PostMapping("/password/{username}")
+    public ResponseEntity<?> updatePassword(@PathVariable String username) {
+        return memberService.updatePassword(username);
     }
 
     @GetMapping("/{user_id}")

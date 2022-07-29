@@ -68,16 +68,15 @@ public class Member {
     private List<Comment> commentList = new ArrayList<>();
 
     @Builder
-    public Member(String username, String fullname) {
-        this.username = username;
-        this.fullname = fullname;
-    }
-
-    @Builder
-    public Member(String username, String fullname, String password) {
+    public Member(String username, String fullname, String password, String nickname, String introduce, String user_img, int is_private, Role role) {
         this.username = username;
         this.fullname = fullname;
         this.password = password;
+        this.nickname = nickname;
+        this.introduce = introduce;
+        this.user_img = user_img;
+        this.is_private = is_private;
+        this.role = role;
     }
 
     @OneToMany(mappedBy = "member")
@@ -115,17 +114,5 @@ public class Member {
     @OneToMany(mappedBy = "member")
     @JsonManagedReference
     private List<MemberTag> memberTagList = new ArrayList<>();
-    @Builder
-    public Member(String username, String fullname, String password, String nickname, String introduce, String user_img, int is_private, Role role) {
-        this.username = username;
-        this.fullname = fullname;
-        this.password = password;
-        this.nickname = nickname;
-        this.introduce = introduce;
-        this.user_img = user_img;
-        this.is_private = is_private;
-        this.role = role;
-    }
-
 
 }
