@@ -106,9 +106,12 @@ export const userSlice = createSlice({
       state.token = action.payload.token;
       state.isLoggedIn = !!action.payload.token;
     },
+    KakaoLogin: (state, action) => {
+
+    }
   },
 });
 
-export const { login, logout, authentication } = userSlice.actions;
+export const { login, logout, authentication, KakaoLogin } = userSlice.actions;
 
 export default userSlice.reducer;

@@ -15,6 +15,11 @@ import Signup from "./pages/accounts/Signup";
 import UserUpdate from "./pages/accounts/UserUpdate";
 import PasswordReissue from "./pages/accounts/PasswordReissue";
 
+//OAuth
+import KakaoOAuthRedirectHandler from "./pages/KakaoOAuthRedirectHandler";
+import NaverOAuthRedirectHandler from "./pages/NaverOAuthRedirectHandler";
+import GoogleOAuthRedirectHandler from "./pages/GoogleOAuthRedirectHandler";
+
 // Challenge
 import ChallengeDetail from "./pages/challenge/ChallengeDetail";
 import ChallengeNew from "./pages/challenge/ChallengeNew";
@@ -61,6 +66,18 @@ export default function Router() {
           element: <SearchPage />,
         },
       ],
+    },
+    {
+      path: "/oauth/callback/kakao",
+      element: <KakaoOAuthRedirectHandler />
+    },
+    {
+      path: "/oauth/callback/naver",
+      element: <NaverOAuthRedirectHandler />
+    },
+    {
+      path: "/oauth/callback/google",
+      element: <GoogleOAuthRedirectHandler />
     },
     {
       path: "/account",
