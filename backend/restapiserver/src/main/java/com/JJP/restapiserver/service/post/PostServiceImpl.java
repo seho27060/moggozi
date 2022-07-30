@@ -26,6 +26,7 @@ public class PostServiceImpl implements PostService {
         return postRepository.save(postSaveRequestDto.toEntity(memberRepository.getById(postSaveRequestDto.getMember_id()), stageRepository.getById(postSaveRequestDto.getStage_id()))).getId();
     }
 
+    @Transactional
     @Override
     public Long updatePost(PostUpdateRequestDto postUpdateRequestDto) {
         Long post_id = postUpdateRequestDto.getPost_id();
