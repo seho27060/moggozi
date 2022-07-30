@@ -4,6 +4,7 @@ import com.JJP.restapiserver.domain.entity.member.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.Optional;
 
@@ -22,7 +23,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     // 사용자 정보 수정 - DB 변경 후 영속성에도 반영해줌
     @Modifying(clearAutomatically = true)
     @Query("update Member m set m.password = :password where m.id = :id")
-    int updatePasswordById(String password, Long id);
+    int updatePasswordById(@Param("password") String password, @Param("id") Long id);
 
     @Modifying(clearAutomatically = true)
     @Query("update Member m set m.role = ?1 where m.id = ?2")

@@ -13,7 +13,7 @@ import com.JJP.restapiserver.repository.member.RoleRepository;
 import com.JJP.restapiserver.security.JwtUtils;
 import com.JJP.restapiserver.security.UserDetailsImpl;
 import com.JJP.restapiserver.service.RefreshTokenService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -27,27 +27,23 @@ import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import javax.transaction.Transactional;
 import java.util.Optional;
 import java.util.Random;
 
+@RequiredArgsConstructor
 @Service
 public class MemberServiceImpl implements MemberService {
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
-    @Autowired
-    private MemberRepository memberRepository;
-    @Autowired
-    private RoleRepository roleRepository;
-    @Autowired
-    private PasswordEncoder encoder;
-    @Autowired
-    private JwtUtils jwtUtils;           // jwt 토큰 생성, 분해, 검증, 유효성 검사
+    private final AuthenticationManager authenticationManager;
+    private final MemberRepository memberRepository;
+    private final RoleRepository roleRepository;
+    private final PasswordEncoder encoder;
+    private final JwtUtils jwtUtils;           // jwt 토큰 생성, 분해, 검증, 유효성 검사
 
-    @Autowired
-    private RefreshTokenService refreshTokenService;
+    private final RefreshTokenService refreshTokenService;
 
-    private JavaMailSender javaMailSender;
+    private final JavaMailSender javaMailSender;
 
     @Value("${spring.mail.username}")
     private String sender;
@@ -130,13 +126,15 @@ public class MemberServiceImpl implements MemberService {
     /**
      * 패스워드 변경
      */
+
+    @Transactional
     @Override
     public ResponseEntity<?> updatePassword(String username) {
         Optional<Member> member = memberRepository.findByUsername(username);
 
         if (member.isPresent()) {
             String password = resetPassword();
-            memberRepository.updatePasswordById(password, member.get().getId());
+            memberRepository.updatePasswordById(encoder.encode(password), member.get().getId());
             try {
                 sendEmail(username, password);
                 return ResponseEntity.ok(new MessageResponse("Updated the user's password successfully."));

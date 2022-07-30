@@ -75,9 +75,9 @@ public class MemberController {
     }
 
     // 비밓번호 찾기
-    @PostMapping("/password/{username}")
-    public ResponseEntity<?> updatePassword(@PathVariable String username) {
-        return memberService.updatePassword(username);
+    @PostMapping("/password")
+    public ResponseEntity<?> updatePassword(@RequestBody PasswordRequest request) {
+        return memberService.updatePassword(request.getUsername());
     }
 
     @GetMapping("/{user_id}")
