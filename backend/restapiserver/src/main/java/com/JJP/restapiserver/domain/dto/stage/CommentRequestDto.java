@@ -1,4 +1,4 @@
-package com.JJP.restapiserver.domain.dto;
+package com.JJP.restapiserver.domain.dto.stage;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,7 +11,6 @@ import lombok.Setter;
 @NoArgsConstructor
 public class CommentRequestDto {
     Long stage_id;
-    Long user_id;
     String text;
     Long parent;
     int depth;

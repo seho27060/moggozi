@@ -29,7 +29,7 @@ public class ReviewServiceImpl implements ReviewService{
                 .review_content(reviewRequestDto.getReview_content())
                 .rate(reviewRequestDto.getRate())
                 .challenge(challengeRepository.getById(reviewRequestDto.getChallenge_id()))
-                .member(memberRepository.getById(reviewRequestDto.getUser_id()))
+                .member(memberRepository.getById(reviewRequestDto.getMember_id()))
                 .build();
         reviewRepository.save(review);
         return new ResponseEntity(HttpStatus.OK);

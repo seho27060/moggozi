@@ -73,7 +73,6 @@ public class ChallengeServiceImpl implements ChallengeService{
         return challengeIntoDto(challengeList, responseDtoList, member_id);
     }
 
-    // 테스트 완료
     @Override
     public ChallengeResponseDto getChallengeDetail(Long challenge_id, Long member_id) {
         Challenge challenge = challengeRepository.findById(challenge_id).get();
@@ -82,6 +81,11 @@ public class ChallengeServiceImpl implements ChallengeService{
 
         List<ChallengeResponseDto> challengeResponseDtoList = new ArrayList<>();
         return challengeIntoDto(challengeList, challengeResponseDtoList, member_id).get(0);
+    }
+
+    public Challenge getChallengeDetail2(Long challenge_id, Long member_id) {
+        Challenge challenge = challengeRepository.findById(challenge_id).get();
+        return challenge;
     }
 
     @Override
@@ -153,10 +157,13 @@ public class ChallengeServiceImpl implements ChallengeService{
                 Tag tag = challenge.getChallengeTagList().get(j).getTag();
                 challengeResponseDto.getTagList().add(tag.getTag());
             }
-            JoinedChallenge joinedChallenge = joinedChallengeRepository.findByChallenge_idAndMember_id(
+            Optional<JoinedChallenge> joinedChallenge = joinedChallengeRepository.findByChallenge_idAndMember_id(
                     challenge.getId(), member_id
-            ).get();
-            challengeResponseDto.setUser_progress(joinedChallenge.getState());
+            );
+            if(joinedChallenge.isPresent())
+            {
+                challengeResponseDto.setUser_progress(joinedChallenge.get().getState());
+            }
             responseDtoList.add(challengeResponseDto);
         }
         return responseDtoList;
