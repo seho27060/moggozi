@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class ChallengeLikeController {
 
-    private ChallengeLikeService challengeLikeService;
+    private final ChallengeLikeService challengeLikeService;
 
     @PostMapping("/like")
     public ResponseEntity like(@RequestBody ChallengeLikeRequestDto challengeLikeRequestDto)

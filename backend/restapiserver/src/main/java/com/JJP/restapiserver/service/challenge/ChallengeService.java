@@ -18,6 +18,7 @@ public interface ChallengeService {
     List<ChallengeResponseDto> getChallengeListByLike(Long member_id);
     // 챌린지 상세정보를 불러오는 api
     ChallengeResponseDto getChallengeDetail(Long challenge_id, Long member_id);
+    Challenge getChallengeDetail2(Long challenge_id, Long member_id);
     // 챌린지 등록하는 api
     int saveChallenge(ChallengeRequestDto challengeData);
 

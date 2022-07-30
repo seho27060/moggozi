@@ -53,11 +53,13 @@ public class Challenge extends BaseTimeEntity {
     private List<Stage> stageList = new ArrayList<>();
 
     // 좋아요와 다대일 단방향 관계
-    @OneToMany
+    @OneToMany(mappedBy = "challenge")
+    @JsonManagedReference
     private List<ChallengeLike> challengeLikeList = new ArrayList<>();
 
     // 한줄평과 일대다 단방향 관계
-    @OneToMany
+    @OneToMany(mappedBy = "challenge")
+    @JsonManagedReference
     private List<Review> reviewList = new ArrayList<>();
 
     @OneToMany(mappedBy = "challenge")

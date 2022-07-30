@@ -1,6 +1,6 @@
 package com.JJP.restapiserver.service.stage;
 
-import com.JJP.restapiserver.domain.dto.CommentRequestDto;
+import com.JJP.restapiserver.domain.dto.stage.CommentRequestDto;
 import com.JJP.restapiserver.domain.entity.member.Member;
 import com.JJP.restapiserver.domain.entity.stage.Comment;
 import com.JJP.restapiserver.domain.entity.stage.Stage;
@@ -32,18 +32,18 @@ public class CommentServiceImpl implements CommentService{
     }
 
     @Override
-    public List<Comment> getMyCommentList(Long user_id) {
+    public List<Comment> getMyCommentList(Long member_id) {
         // 먼저 유저 인덱스를 통해서 유저 정보 받아오기
-        Member member = memberRepository.getById(user_id);
+        Member member = memberRepository.getById(member_id);
         return member.getCommentList();
     }
 
     @Override
-    public ResponseEntity registerComment(CommentRequestDto commentRequestDto) {
+    public ResponseEntity registerComment(CommentRequestDto commentRequestDto, Long member_id) {
         Comment comment = Comment.builder()
                 .stage(stageRepository.getById(commentRequestDto.getStage_id()))
                 .text(commentRequestDto.getText())
-                .member(memberRepository.getById(commentRequestDto.getUser_id()))
+                .member(memberRepository.getById(member_id))
                 .parent(commentRequestDto.getParent())
                 .depth(commentRequestDto.getDepth())
                 .comment_state(commentRequestDto.getComment_state())
