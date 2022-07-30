@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { loginApi } from "../../lib/generalApi";
 import Cookie from "js-cookie";
 import moment from "moment";
-import { login } from "../../store/user";
+import { login } from "../../store/auth";
 
 const LoginForm: React.FC = () => {
   const dispatch = useDispatch();

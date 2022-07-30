@@ -2,7 +2,7 @@
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import Router from "./routes";
-import { authentication } from "./store/user";
+import { authentication } from "./store/auth";
 import { persistAuth } from "./lib/withTokenApi";
 
 import "./App.scss";
