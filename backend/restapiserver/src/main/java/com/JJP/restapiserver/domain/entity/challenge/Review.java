@@ -1,6 +1,6 @@
 package com.JJP.restapiserver.domain.entity.challenge;
 
-import com.JJP.restapiserver.domain.dto.ReviewUpdateRequestDto;
+import com.JJP.restapiserver.domain.dto.challenge.ReviewUpdateRequestDto;
 import com.JJP.restapiserver.domain.entity.BaseTimeEntity;
 import com.JJP.restapiserver.domain.entity.member.Member;
 import com.fasterxml.jackson.annotation.JsonBackReference;

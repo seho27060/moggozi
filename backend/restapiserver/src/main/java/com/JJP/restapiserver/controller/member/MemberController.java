@@ -6,8 +6,8 @@ import com.JJP.restapiserver.domain.dto.member.response.TokenRefreshResponse;
 import com.JJP.restapiserver.domain.entity.member.RefreshToken;
 import com.JJP.restapiserver.exception.TokenRefreshException;
 import com.JJP.restapiserver.security.JwtUtils;
-import com.JJP.restapiserver.service.member.MemberServiceImpl;
 import com.JJP.restapiserver.service.RefreshTokenService;
+import com.JJP.restapiserver.service.member.MemberServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -74,13 +74,17 @@ public class MemberController {
         return memberService.checkValidity(loginRequest);
     }
 
+    // 비밓번호 찾기
     @PostMapping("/password")
-    public ResponseEntity<?> updatePassword(@Valid @RequestBody LoginRequest loginRequest) {
-        return memberService.updatePassword(loginRequest);
+    public ResponseEntity<?> updatePassword(@RequestBody PasswordRequest request) {
+        return memberService.updatePassword(request.getUsername());
     }
 
     @GetMapping("/{user_id}")
     public ResponseEntity<?> getUserInfo(@PathVariable Long user_id) {
+            /**  TOKEN에서 UserID 추출 (Parameter 추가 필요: HttpServletRequest request) */
+//        System.out.println("token************************** "+request.getHeader("Authorization"));
+//        System.out.println("userId************************** " + jwtUtils.getUserIdFromJwtToken(request.getHeader("Authorization")));
         return memberService.findUser(user_id);
     }
 }

@@ -25,6 +25,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
     private final MemberRepository memberRepository;
     private final HttpSession httpSession;
 
+    // 대리자 생성
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
 
@@ -44,7 +45,6 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 
         Optional<Member> member = memberRepository.findByUsername(attributes.getEmail());
 
-        // 사용자가 가입을 하지 않아서 member의 값이 null일지라도 OAuth2를 통한 로그인을 위해 권한을 부여한다.
         return new DefaultOAuth2User(Collections.singleton(
                 new SimpleGrantedAuthority("ROLE_USER"))
                 , attributes.getAttributes(), attributes.getNameAttributeKey());

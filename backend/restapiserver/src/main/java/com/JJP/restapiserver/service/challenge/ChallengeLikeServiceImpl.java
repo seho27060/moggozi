@@ -1,6 +1,6 @@
 package com.JJP.restapiserver.service.challenge;
 
-import com.JJP.restapiserver.domain.dto.ChallengeLikeRequestDto;
+import com.JJP.restapiserver.domain.dto.challenge.ChallengeLikeRequestDto;
 import com.JJP.restapiserver.domain.entity.challenge.ChallengeLike;
 import com.JJP.restapiserver.repository.challenge.ChallengeLikeRepository;
 import com.JJP.restapiserver.repository.challenge.ChallengeRepository;

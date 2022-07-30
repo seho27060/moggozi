@@ -1,7 +1,7 @@
 package com.JJP.restapiserver.controller.challenge;
 
-import com.JJP.restapiserver.domain.dto.ReviewRequestDto;
-import com.JJP.restapiserver.domain.dto.ReviewUpdateRequestDto;
+import com.JJP.restapiserver.domain.dto.challenge.ReviewRequestDto;
+import com.JJP.restapiserver.domain.dto.challenge.ReviewUpdateRequestDto;
 import com.JJP.restapiserver.domain.entity.challenge.Review;
 import com.JJP.restapiserver.service.challenge.ReviewService;
 import lombok.RequiredArgsConstructor;

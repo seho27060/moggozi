@@ -1,6 +1,6 @@
 package com.JJP.restapiserver.controller.stage;
 
-import com.JJP.restapiserver.domain.dto.PostLikeRequestDto;
+import com.JJP.restapiserver.domain.dto.stage.PostLikeRequestDto;
 import com.JJP.restapiserver.service.stage.PostLikeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

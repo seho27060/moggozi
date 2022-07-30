@@ -36,7 +36,8 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client' // MariaDB
 
-
+	// SMTP
+	implementation 'org.springframework.boot:spring-boot-starter-mail'
 
 	// swagger
 	implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
