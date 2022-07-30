@@ -1,4 +1,4 @@
-package com.JJP.restapiserver.domain.dto;
+package com.JJP.restapiserver.domain.dto.stage;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ChallengeLikeRequestDto {
+public class PostLikeRequestDto {
+    private Long post_id;
     private Long member_id;
-    private Long challenge_id;
 }

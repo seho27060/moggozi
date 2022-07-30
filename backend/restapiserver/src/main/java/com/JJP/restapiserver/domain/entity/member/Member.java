@@ -1,9 +1,9 @@
 package com.JJP.restapiserver.domain.entity.member;
 
+import com.JJP.restapiserver.domain.entity.Tag.MemberTag;
 import com.JJP.restapiserver.domain.entity.challenge.Challenge;
 import com.JJP.restapiserver.domain.entity.challenge.ChallengeLike;
 import com.JJP.restapiserver.domain.entity.challenge.Review;
-import com.JJP.restapiserver.domain.entity.Tag.MemberTag;
 import com.JJP.restapiserver.domain.entity.stage.Comment;
 import com.JJP.restapiserver.domain.entity.stage.Post;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -68,9 +68,15 @@ public class Member {
     private List<Comment> commentList = new ArrayList<>();
 
     @Builder
-    public Member(String username, String nickname) {
+    public Member(String username, String fullname, String password, String nickname, String introduce, String user_img, int is_private, Role role) {
         this.username = username;
-        this.fullname = nickname;
+        this.fullname = fullname;
+        this.password = password;
+        this.nickname = nickname;
+        this.introduce = introduce;
+        this.user_img = user_img;
+        this.is_private = is_private;
+        this.role = role;
     }
 
     @OneToMany(mappedBy = "member")
@@ -108,17 +114,5 @@ public class Member {
     @OneToMany(mappedBy = "member")
     @JsonManagedReference
     private List<MemberTag> memberTagList = new ArrayList<>();
-    @Builder
-    public Member(String username, String fullname, String password, String nickname, String introduce, String user_img, int is_private, Role role) {
-        this.username = username;
-        this.fullname = fullname;
-        this.password = password;
-        this.nickname = nickname;
-        this.introduce = introduce;
-        this.user_img = user_img;
-        this.is_private = is_private;
-        this.role = role;
-    }
-
 
 }

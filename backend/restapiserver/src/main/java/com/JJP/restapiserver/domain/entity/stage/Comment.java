@@ -1,6 +1,6 @@
 package com.JJP.restapiserver.domain.entity.stage;
 
-import com.JJP.restapiserver.domain.dto.CommentRequestDto;
+import com.JJP.restapiserver.domain.dto.stage.CommentRequestDto;
 import com.JJP.restapiserver.domain.entity.BaseTimeEntity;
 import com.JJP.restapiserver.domain.entity.member.Member;
 import com.fasterxml.jackson.annotation.JsonBackReference;

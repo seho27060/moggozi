@@ -13,8 +13,11 @@ import com.JJP.restapiserver.repository.member.RoleRepository;
 import com.JJP.restapiserver.security.JwtUtils;
 import com.JJP.restapiserver.security.UserDetailsImpl;
 import com.JJP.restapiserver.service.RefreshTokenService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -22,26 +25,32 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
+import javax.transaction.Transactional;
 import java.util.Optional;
+import java.util.Random;
 
+@RequiredArgsConstructor
 @Service
 public class MemberServiceImpl implements MemberService {
 
-    @Autowired
-    AuthenticationManager authenticationManager;
-    @Autowired
-    MemberRepository memberRepository;
-    @Autowired
-    RoleRepository roleRepository;
-    @Autowired
-    PasswordEncoder encoder;
-    @Autowired
-    JwtUtils jwtUtils;           // jwt 토큰 생성, 분해, 검증, 유효성 검사
+    private final AuthenticationManager authenticationManager;
+    private final MemberRepository memberRepository;
+    private final RoleRepository roleRepository;
+    private final PasswordEncoder encoder;
+    private final JwtUtils jwtUtils;           // jwt 토큰 생성, 분해, 검증, 유효성 검사
 
-    @Autowired
-    RefreshTokenService refreshTokenService;
+    private final RefreshTokenService refreshTokenService;
 
-    /** 회원등록 */
+    private final JavaMailSender javaMailSender;
+
+    @Value("${spring.mail.username}")
+    private String sender;
+
+    /**
+     * 회원등록
+     */
     @Override
     public ResponseEntity<?> register(SignupRequest signupRequest) {
 
@@ -54,13 +63,13 @@ public class MemberServiceImpl implements MemberService {
         int is_private = signupRequest.getIs_private();
         Long role_no = signupRequest.getRole() == null ? 1 : signupRequest.getRole();
 
-        if(memberRepository.existsByUsername(username)) {
+        if (memberRepository.existsByUsername(username)) {
             return ResponseEntity.badRequest().body(new MessageResponse("Error: Username(email) is already taken."));
         }
-        if(memberRepository.existsByNickname(nickname)) {
+        if (memberRepository.existsByNickname(nickname)) {
             return ResponseEntity.badRequest().body(new MessageResponse("Error: Nickname is already taken."));
         }
-        if(role_no > 4 && role_no < 1) {
+        if (role_no > 4 && role_no < 1) {
             return ResponseEntity.badRequest().body(new MessageResponse("Error: The role number doesn't exist."));
         }
 
@@ -71,12 +80,14 @@ public class MemberServiceImpl implements MemberService {
         return ResponseEntity.ok(new MessageResponse("Registered a user successfully!"));
     }
 
-    /** 회원탈퇴 */
+    /**
+     * 회원탈퇴
+     */
     @Override
     public ResponseEntity<?> delete(Long user_id) {
         Optional<Member> member = memberRepository.findById(user_id);
 
-        if(member.isEmpty())
+        if (member.isEmpty())
             return ResponseEntity.badRequest().body(new MessageResponse("Error: The user doesn't exist"));
 
         memberRepository.updateRoleById("ROLE_INVALIDATED_USER", user_id);
@@ -84,11 +95,13 @@ public class MemberServiceImpl implements MemberService {
         return ResponseEntity.ok(new MessageResponse("Deleted a user successfully!"));
     }
 
-    /** 회원정보 수정 */
+    /**
+     * 회원정보 수정
+     */
     @Override
     public ResponseEntity<?> update(Long user_id, UpdateUserRequest updateUserRequest) {
         Optional<Member> member = memberRepository.findById(user_id);
-        if(member.isEmpty()) {
+        if (member.isEmpty()) {
             return ResponseEntity.badRequest().body(new MessageResponse("Error: User doesn't exist."));
         }
 
@@ -99,8 +112,8 @@ public class MemberServiceImpl implements MemberService {
         String user_img = updateUserRequest.getUser_img();
         int is_private = updateUserRequest.getIs_private();
 
-        if(memberRepository.existsByNickname(nickname)) {
-            return ResponseEntity.badRequest().body(new MessageResponse("Error: Written Nickname already exists." ));
+        if (memberRepository.existsByNickname(nickname)) {
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: Written Nickname already exists."));
         }
 
         // 존재하지 않는 사용자이면서도 사용되지 않은 닉네임을 사용한다면, 사용자 등록
@@ -110,37 +123,52 @@ public class MemberServiceImpl implements MemberService {
 
     }
 
-    /** 패스워드 변경 */
-    @Override
-    public ResponseEntity<?> updatePassword(LoginRequest loginRequest) {
-        Optional<Member> member = memberRepository.findByUsername(loginRequest.getUsername());
+    /**
+     * 패스워드 변경
+     */
 
-        if(encoder.matches(loginRequest.getPassword(), member.get().getPassword())) {
-            memberRepository.updatePasswordById(encoder.encode(loginRequest.getPassword()), member.get().getId());
-            return ResponseEntity.ok(new MessageResponse("Updated password successfully"));
+    @Transactional
+    @Override
+    public ResponseEntity<?> updatePassword(String username) {
+        Optional<Member> member = memberRepository.findByUsername(username);
+
+        if (member.isPresent()) {
+            String password = resetPassword();
+            memberRepository.updatePasswordById(encoder.encode(password), member.get().getId());
+            try {
+                sendEmail(username, password);
+                return ResponseEntity.ok(new MessageResponse("Updated the user's password successfully."));
+
+            } catch (MessagingException e) {
+                return ResponseEntity.internalServerError().body(new MessageResponse("Error: Failed to update password"));
+            }
+
         } else {
-            return ResponseEntity.badRequest().body(new MessageResponse("Error: Password doesn't match"));
+            return ResponseEntity.badRequest().body(new MessageResponse("Error:" + username + "doesn't exist."));
         }
     }
 
-    /** 사용자 비밀번호 변경 */
+    /**
+     * 사용자 비밀번호 변경
+     */
     @Override
     public ResponseEntity<?> checkValidity(LoginRequest loginRequest) {
         Optional<Member> member = memberRepository.findByUsername(loginRequest.getUsername());
-
-        if(encoder.matches(loginRequest.getPassword(), member.get().getPassword())) {
+        if (encoder.matches(loginRequest.getPassword(), member.get().getPassword())) {
             return ResponseEntity.ok(new MessageResponse("Validated user"));
         } else {
             return ResponseEntity.badRequest().body(new MessageResponse("Invalidated user"));
         }
     }
 
-    /** 로그인 */
+    /**
+     * 로그인
+     */
     @Override
     public ResponseEntity<?> login(LoginRequest loginRequest) {
         // Authentication 객체를 생성한다 by AuthenticationManager
         Authentication authentication = authenticationManager
-                        .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+                .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
 
         // Security Context에 인증정보를 저장한다.
         SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -155,41 +183,72 @@ public class MemberServiceImpl implements MemberService {
 
         RefreshToken refreshToken = refreshTokenService.createRefreshToken(userDetails.getId());
 
-        return ResponseEntity.ok(new JwtResponse(jwt, refreshToken.getToken()
-                , userDetails.getId(), userDetails.getUsername()
-                , userDetails.getNickname(), role));
+        return ResponseEntity.ok(JwtResponse.builder().accessToken(jwt)
+                .refreshToken(refreshToken.getToken())
+                .id(userDetails.getId())
+                .username(userDetails.getUsername())
+                .nickname(userDetails.getNickname()).build());
     }
 
-    /** 사용자 세부정보 얻기 - 회원정보 조회 */
+    /**
+     * 사용자 세부정보 얻기 - 회원정보 조회
+     */
     @Override
     public ResponseEntity<?> findUser(Long user_id) {
         Optional<Member> member = memberRepository.findById(user_id);
 
-        if(member.isEmpty()) {
+        if (member.isEmpty()) {
             return ResponseEntity.badRequest().body(new MessageResponse("User information doesn't exist."));
         } else {
             return ResponseEntity.ok(member);
         }
+
     }
 
-
     private void saveMember(Long user_id, String username, String fullname, String password, String nickname, String introduce, String user_img, int is_private, Role role) {
-
         Member member = null;
-        if(user_id == -1L) {
+        if (user_id == -1L) {
             member = Member.builder().
-                username(username).fullname(fullname)
-                .password(password).nickname(nickname)
-                .introduce(introduce).user_img(user_img)
-                .is_private(is_private).role(role).build();
-        } else {
-            member = Member.builder().id(user_id).
                     username(username).fullname(fullname)
                     .password(password).nickname(nickname)
                     .introduce(introduce).user_img(user_img)
                     .is_private(is_private).role(role).build();
+        } else {
+            member = Member.builder().id(user_id)
+                    .username(username).fullname(fullname)
+                    .password(password).nickname(nickname)
+                    .introduce(introduce).user_img(user_img)
+                    .is_private(is_private).role(role).build();
         }
-
         memberRepository.save(member);
+    }
+
+    private String resetPassword() {
+        Random random = new Random();
+
+        String updatedPassword = random.ints(33, 123)
+                .limit(6)
+                .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+                .toString();
+
+        return updatedPassword;
+    }
+
+    private void sendEmail(String username, String password) throws MessagingException {
+
+        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+        MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
+        mimeMessageHelper.setFrom(sender);
+        mimeMessageHelper.setTo(username);
+        mimeMessageHelper.setSubject("[Moggozi] 임시 비밀번호 안내");
+
+        StringBuilder body = new StringBuilder();
+        body.append(username).append(" 님의 임시 비밀번호를 안내드립니다.\n").append(password).append("\n")
+                .append("\n 고객님의 안전한 비밀번호 사용을 위해 \n 빠른 시일 내 새로운 비밀번호로 변경해주세요~ :) ");
+        mimeMessageHelper.setText(body.toString(), true);
+/**        메일에 덧붙일 이미지 ---           */
+//        mimeMessageHelper.addInline("Moggozi", new FileDataSource("files/..."));
+        javaMailSender.send(mimeMessage);
+
     }
 }

@@ -1,7 +1,7 @@
 package com.JJP.restapiserver.service.challenge;
 
-import com.JJP.restapiserver.domain.dto.ReviewRequestDto;
-import com.JJP.restapiserver.domain.dto.ReviewUpdateRequestDto;
+import com.JJP.restapiserver.domain.dto.challenge.ReviewRequestDto;
+import com.JJP.restapiserver.domain.dto.challenge.ReviewUpdateRequestDto;
 import com.JJP.restapiserver.domain.entity.challenge.Review;
 import com.JJP.restapiserver.repository.challenge.ChallengeRepository;
 import com.JJP.restapiserver.repository.member.MemberRepository;
@@ -29,7 +29,7 @@ public class ReviewServiceImpl implements ReviewService{
                 .review_content(reviewRequestDto.getReview_content())
                 .rate(reviewRequestDto.getRate())
                 .challenge(challengeRepository.getById(reviewRequestDto.getChallenge_id()))
-                .member(memberRepository.getById(reviewRequestDto.getUser_id()))
+                .member(memberRepository.getById(reviewRequestDto.getMember_id()))
                 .build();
         reviewRepository.save(review);
         return new ResponseEntity(HttpStatus.OK);

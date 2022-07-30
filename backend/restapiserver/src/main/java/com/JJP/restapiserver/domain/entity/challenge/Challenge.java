@@ -1,6 +1,6 @@
 package com.JJP.restapiserver.domain.entity.challenge;
 
-import com.JJP.restapiserver.domain.dto.ChallengeRequestDto;
+import com.JJP.restapiserver.domain.dto.challenge.ChallengeRequestDto;
 import com.JJP.restapiserver.domain.entity.BaseTimeEntity;
 import com.JJP.restapiserver.domain.entity.Tag.ChallengeTag;
 import com.JJP.restapiserver.domain.entity.member.Member;
@@ -18,12 +18,12 @@ import java.util.List;
 
 @Entity
 @Getter
-@NoArgsConstructor
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor
 public class Challenge extends BaseTimeEntity {
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -42,23 +42,25 @@ public class Challenge extends BaseTimeEntity {
 
     private int level;
 
-    @Column(length = 20)
-    private String hobby;
-
     private int state;
+
+    @Column(length = 50)
+    private String description;
 
     // 스테이지와 다대일 양방향 관계
     @OneToMany(mappedBy = "challenge")
     @JsonManagedReference
-    private List<Stage> stages = new ArrayList<>();
+    private List<Stage> stageList = new ArrayList<>();
 
     // 좋아요와 다대일 단방향 관계
-    @OneToMany
+    @OneToMany(mappedBy = "challenge")
+    @JsonManagedReference
     private List<ChallengeLike> challengeLikeList = new ArrayList<>();
 
     // 한줄평과 일대다 단방향 관계
-    @OneToMany
-    private List<Review> reviews = new ArrayList<>();
+    @OneToMany(mappedBy = "challenge")
+    @JsonManagedReference
+    private List<Review> reviewList = new ArrayList<>();
 
     @OneToMany(mappedBy = "challenge")
     @JsonManagedReference
@@ -66,16 +68,17 @@ public class Challenge extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "challenge")
     @JsonManagedReference
-    private List<ChallengeTag> challengeTagsList = new ArrayList<>();
+    private List<ChallengeTag> challengeTagList = new ArrayList<>();
 
     public void updateChallenge(ChallengeRequestDto challengeRequestDto)
     {
-        this.challenge_img = challengeRequestDto.getChallenge_img();
         this.name = challengeRequestDto.getName();
+        this.challenge_img = challengeRequestDto.getChallenge_img();
         this.content = challengeRequestDto.getContent();
         this.level = challengeRequestDto.getLevel();
-        this.hobby = challengeRequestDto.getHobby();
+//        this.hobby = challengeRequestDto.getHobby();
         this.state = challengeRequestDto.getState();
+        this.description = challengeRequestDto.getDescription();
     }
 //    @Builder
 //    public Challenge(Long id, Member member, String name, String challenge_img, String content, int level, String hobby, int state) {

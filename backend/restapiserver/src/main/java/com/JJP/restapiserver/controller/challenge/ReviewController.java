@@ -1,7 +1,7 @@
 package com.JJP.restapiserver.controller.challenge;
 
-import com.JJP.restapiserver.domain.dto.ReviewRequestDto;
-import com.JJP.restapiserver.domain.dto.ReviewUpdateRequestDto;
+import com.JJP.restapiserver.domain.dto.challenge.ReviewRequestDto;
+import com.JJP.restapiserver.domain.dto.challenge.ReviewUpdateRequestDto;
 import com.JJP.restapiserver.domain.entity.challenge.Review;
 import com.JJP.restapiserver.service.challenge.ReviewService;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +21,7 @@ public class ReviewController {
     @PostMapping("/register")
     public ResponseEntity registerReview(@RequestBody ReviewRequestDto reviewRequestDto)
     {
+        System.out.println(reviewRequestDto);
         return reviewService.registerReview(reviewRequestDto);
     }
 
@@ -32,12 +33,12 @@ public class ReviewController {
     }
 
     @PutMapping("/{challenge_id}")
-    public ResponseEntity updateReview(ReviewUpdateRequestDto reviewUpdateRequestDto)
+    public ResponseEntity updateReview(@RequestBody ReviewUpdateRequestDto reviewUpdateRequestDto)
     {
         return reviewService.updateReview(reviewUpdateRequestDto);
     }
 
-    @DeleteMapping("/{challenge_id}")
+    @DeleteMapping("/{review_id}")
     public ResponseEntity deleteReview(@PathVariable Long review_id)
     {
         return reviewService.deleteReview(review_id);
