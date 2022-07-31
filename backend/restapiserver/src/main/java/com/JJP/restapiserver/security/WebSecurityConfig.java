@@ -54,7 +54,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests().antMatchers("/**").permitAll()
-                .anyRequest().permitAll()
+//                .anyRequest().permitAll()
+                .and()
+                .logout()
+                .logoutSuccessUrl("/")
                 .and()
                 .oauth2Login()
                 .successHandler(oAuth2SuccessHandler)
@@ -70,5 +73,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
+
+
 
 }
