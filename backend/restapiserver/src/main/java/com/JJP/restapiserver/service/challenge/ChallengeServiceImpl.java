@@ -66,7 +66,7 @@ public class ChallengeServiceImpl implements ChallengeService{
         List<Challenge> challengeList = new ArrayList<>();
         for(int i = 0; i < list.size(); i++)
         {
-            Challenge challenge = challengeRepository.findById((Long)(list.get(i)[0])).get();
+            Challenge challenge = challengeRepository.findById(Long.parseLong(list.get(i)[0].toString())).get();
             challengeList.add(challenge);
         }
         List<ChallengeResponseDto> responseDtoList = new ArrayList<>();
