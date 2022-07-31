@@ -1,6 +1,6 @@
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { logout } from "../../store/user"
+import { logout } from "../../store/auth"
 
 const LogoutBtn = () => {
   const dispatch = useDispatch()

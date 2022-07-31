@@ -1,4 +1,3 @@
-
 // JWT token refresh작업을 하는 곳.
 // (accessToken 과 토큰 만료시간은 로컬 스토리지, refreshToken 은 httpOnly cookie 에 저장되어 있다고 가정합니다.)
 
@@ -20,7 +19,7 @@ const refresh = async (config: AxiosRequestConfig): Promise<AxiosRequestConfig> 
       refreshToken,
     };
 
-    // 토큰 갱신 서버통신
+    // 토큰 갱신 서버통신 // 토큰 갱신 주소 수정 필요.
     const { data } = await axios.post(`${apiConfig.apiRoot}/auth/token`, body);
 
     token = data.data.accessToken;

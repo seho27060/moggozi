@@ -5,7 +5,7 @@ import LogoutBtn from "../components/accounts/LogoutBtn";
 import { RootState } from "../store/store";
 
 const NavigationBar: React.FC = () => {
-  const userState = useSelector((state: RootState) => state.user);
+  const userState = useSelector((state: RootState) => state.auth);
 
   return (
     <header>
@@ -40,7 +40,7 @@ const NavigationBar: React.FC = () => {
                 <LogoutBtn />
               </li>
               <li>
-                <NavLink to={`/user/${userState.userInfo.user_id}`}>
+                <NavLink to={`/user/${userState.userInfo.userId}`}>
                   {userState.userInfo.nickname}님의 MyPage
                 </NavLink>
               </li>

@@ -1,10 +1,16 @@
 import type { RootState } from "../store/store";
 
 import LogoutBtn from "../components/accounts/LogoutBtn";
-import { useDispatch, useSelector } from "react-redux";
-import React from "react";
-import { challengeCreate } from "../store/challenge"
-import ChallengeList from "../components/challenge/ChallengeList";
+import { useSelector } from "react-redux";
+import { Link } from "react-router-dom"
+
+function MainPage() {
+  const currentState = useSelector((state: RootState) => state);
+  const isLoggedIn = currentState.auth.isLoggedIn;
+  // console.log(currentState.auth.isLoggedIn);
+  // const myPageHandler = () => {
+  //   navigate(`/user/${currentState.user.user_id}`, {state: currentState.user.user_id})
+  // }
 
 const MainPage: React.FC = () => {
   const dispatch = useDispatch();
