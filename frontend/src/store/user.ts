@@ -20,6 +20,11 @@ export interface UserInfo {
   state: number | null;
 }
 
+export interface UserNameInfo {
+  id: number | null;
+  name: string | null;
+}
+
 // user_id: number | null;
 // email: string | null;
 // name: string | null;
@@ -39,7 +44,7 @@ const initialToken = localStorage.getItem("accessToken");
 //   axios.
 // }
 
-const initialState: UserState = {
+const initialUserState = {
   userInfo: {
     user_id: null,
     email: null,
@@ -62,7 +67,7 @@ export const userSlice = createSlice({
   // 슬라이스의 이름
   name: "userInfo",
   // redux에서 관리할 데이터
-  initialState,
+  initialState: initialUserState,
   // 데이터를 다룰 reducer들
   reducers: {
     // 리덕스가 제공하는 현재 상태를 state 인자로 받음. // "전달받은" 인자는 action.payload

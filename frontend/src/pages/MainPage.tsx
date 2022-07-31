@@ -1,26 +1,35 @@
 import type { RootState } from "../store/store";
 
 import LogoutBtn from "../components/accounts/LogoutBtn";
-import { useSelector } from "react-redux";
-import { Link } from "react-router-dom"
+import { useDispatch, useSelector } from "react-redux";
+import React from "react";
+import { challengeCreate } from "../store/challenge"
+import ChallengeList from "../components/challenge/ChallengeList";
 
-function MainPage() {
-  const currentState = useSelector((state: RootState) => state);
-  const isLoggedIn = currentState.user.isLoggedIn;
-  console.log(currentState.user.isLoggedIn);
-  console.log(currentState.user.isLoggedIn);
-  // const myPageHandler = () => {
-  //   navigate(`/user/${currentState.user.user_id}`, {state: currentState.user.user_id})
-  // }
-
+const MainPage: React.FC = () => {
+  const dispatch = useDispatch();
+  const challengeState = useSelector((state: RootState) => state.challenge);
+  console.log(challengeState)
+  function addHandler(event: React.FormEvent) {
+    const data = {
+      id: 1,
+      name: '브롤스타즈',
+      img: 'https://dullyshin.github.io/2018/08/30/HTML-imgLink/',
+      description: '아주 재밌는 브롤스타즈 놀이에요',
+      hobbies: [{id : 11, name: '게임'}, {id : 2, name: '놀이'}],
+      writer: {id: 24, name: '허재영'},
+      level: 3,
+      user_progress: 2
+    }
+    event.preventDefault();
+    dispatch(challengeCreate(data))
+  }
   return (
     <div>
-      <h1>안녕하세요</h1>
-      Mainpage
-      {/* 로그인 상태일 경우에만 로그아웃 버튼 생성 */}
-      {!isLoggedIn || <LogoutBtn />}
-      <p></p>
-      {!isLoggedIn || <Link to={`/user/${ currentState.user.userInfo.user_id }`} ></Link>}
+      MainPage
+      <LogoutBtn />
+      <button onClick={addHandler}>add</button>
+      <ChallengeList challenges = {challengeState}></ChallengeList>
     </div>
   );
 }
