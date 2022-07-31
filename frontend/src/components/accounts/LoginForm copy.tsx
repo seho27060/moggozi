@@ -19,44 +19,17 @@ const LoginForm: React.FC = () => {
   const inputPw = useRef<HTMLInputElement>(null);
 
   // 현재 페이지에서 login 버튼
-  function loginHandler(event: React.FormEvent) {
-    event.preventDefault();
-
+  const loginHandler = async (event: React.FormEvent) => {
+    event.preventDefault()
     // 입력된 input값 변수에 담기
     const enteredEmail = inputEmail.current!.value;
     const enteredPw = inputPw.current!.value;
 
-    // 둘다 비어있다면 에러 출력 / 이후에 수정해야함.
-    // 정합성 검사
-    // axios.defaults.withCredentials = true;
-    if (enteredEmail.trim().length === 0 || enteredPw.trim().length === 0) {
-      alert("입력을 해주세요.");
-      return;
-    } else {
-      const option: object = {
-        url: 'http://54.180.158.97:8080/user/login',
-        method: "POST",
-        header: {
-          Accept: "application/json",
-          "Content-Type": "application/json; charset=UTP-8",
-        },
-        data: {
-          username: enteredEmail,
-          password: enteredPw,
-        },
-      };
-      axios(option)
-        .then((res) => {
-          console.log("axios 응답")
-          console.log(res)
-          dispatch(login(res.data));
-          localStorage.setItem("id", res.data.id)
-          localStorage.setItem("accessToken", res.data.accessToken);
-          Cookie.set("refreshToken", res.data.refreshToken, { secure: true });
-          localStorage.setItem("expiresAt", moment().add(1, "hour").format("yyyy-MM-DD HH:mm:ss"))
-          navigate("/");
-        })
-        .catch((err) => console.log(err));
+    try {
+      const userData = await loginAPI({ enteredEmail, enteredPw }).unwrap();
+      dispatch()
+    } catch (error) {
+
     }
   }
 

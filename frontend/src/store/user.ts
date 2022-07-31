@@ -10,14 +10,12 @@ export interface UserState {
 
 // 중첩문 안의 객체도 모든 타입을 지정해줘야 한다.
 export interface UserInfo {
-  user_id: number | null;
+  userId: number | null;
   email: string | null;
   name: string | null;
   nickname: string | null;
   introduce: string | null;
-  is_private: number | null;
-  img: string | null;
-  state: number | null;
+  userImg: string | null;
 }
 
 export interface UserNameInfo {
@@ -46,14 +44,12 @@ const initialToken = localStorage.getItem("accessToken");
 
 const initialUserState = {
   userInfo: {
-    user_id: null,
+    userId: null,
     email: null,
     name: null,
     nickname: null,
     introduce: null,
-    is_private: null,
-    img: null,
-    state: null,
+    userImg: null,
   },
   token: initialToken,
   isLoggedIn: !!initialToken,
@@ -72,16 +68,15 @@ export const userSlice = createSlice({
   reducers: {
     // 리덕스가 제공하는 현재 상태를 state 인자로 받음. // "전달받은" 인자는 action.payload
     login: (state, action) => {
+      console.log("페이로드");
       console.log(action.payload);
       state.userInfo = {
-        user_id: action.payload.user_id,
-        email: action.payload.email,
-        name: action.payload.name,
+        userId: action.payload.id,
+        email: action.payload.username,
+        name: action.payload.fullname,
         nickname: action.payload.nickname,
         introduce: action.payload.introduce,
-        is_private: action.payload.is_private,
-        img: action.payload.img,
-        state: action.payload.state,
+        userImg: action.payload.user_img,
       };
       state.token = action.payload.accessToken;
       state.isLoggedIn = !!action.payload.accessToken;
@@ -89,19 +84,18 @@ export const userSlice = createSlice({
     logout: (state) => {
       localStorage.removeItem("accessToken");
       localStorage.removeItem("expiresAt");
+      localStorage.removeItem("id");
       Cookie.remove("refreshToken");
     },
     // 로그인 유지 관련 리듀서 // 로그인 유지 api 보고 수정해야함.
     authentication: (state, action) => {
       state.userInfo = {
-        user_id: action.payload.user_id,
-        email: action.payload.email,
-        name: action.payload.name,
+        userId: action.payload.id,
+        email: action.payload.username,
+        name: action.payload.fullname,
         nickname: action.payload.nickname,
         introduce: action.payload.introduce,
-        is_private: action.payload.is_private,
-        img: action.payload.img,
-        state: action.payload.state,
+        userImg: action.payload.user_img,
       };
       state.token = action.payload.token;
       state.isLoggedIn = !!action.payload.token;

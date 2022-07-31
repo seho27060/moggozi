@@ -14,7 +14,7 @@ function App() {
   // const isLoggedIn = currentState.user.isLoggedIn
 
   const accessToken = localStorage.getItem("accessToken")
-  const user_id = localStorage.getItem("user_id")
+  const user_id = localStorage.getItem("id")
 
   if (accessToken) {
     const auth = async() => {
