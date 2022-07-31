@@ -80,6 +80,7 @@ public class MemberController {
         return memberService.updatePassword(request.getUsername());
     }
 
+    // 사용자 정보 획득하기
     @GetMapping("/{user_id}")
     public ResponseEntity<?> getUserInfo(@PathVariable Long user_id) {
             /**  TOKEN에서 UserID 추출 (Parameter 추가 필요: HttpServletRequest request) */

@@ -5,6 +5,7 @@ import com.JJP.restapiserver.domain.dto.member.request.LoginRequest;
 import com.JJP.restapiserver.domain.dto.member.request.SignupRequest;
 import com.JJP.restapiserver.domain.dto.member.request.UpdateUserRequest;
 import com.JJP.restapiserver.domain.dto.member.response.JwtResponse;
+import com.JJP.restapiserver.domain.dto.member.response.MemberInfoResponse;
 import com.JJP.restapiserver.domain.entity.member.Member;
 import com.JJP.restapiserver.domain.entity.member.RefreshToken;
 import com.JJP.restapiserver.domain.entity.member.Role;
@@ -126,7 +127,6 @@ public class MemberServiceImpl implements MemberService {
     /**
      * 패스워드 변경
      */
-
     @Transactional
     @Override
     public ResponseEntity<?> updatePassword(String username) {
@@ -142,7 +142,6 @@ public class MemberServiceImpl implements MemberService {
             } catch (MessagingException e) {
                 return ResponseEntity.internalServerError().body(new MessageResponse("Error: Failed to update password"));
             }
-
         } else {
             return ResponseEntity.badRequest().body(new MessageResponse("Error:" + username + "doesn't exist."));
         }
@@ -197,12 +196,20 @@ public class MemberServiceImpl implements MemberService {
     public ResponseEntity<?> findUser(Long user_id) {
         Optional<Member> member = memberRepository.findById(user_id);
 
+        MemberInfoResponse memberInfoResponse = MemberInfoResponse.builder()
+                .id(member.get().getId())
+                .username(member.get().getUsername())
+                .fullname(member.get().getFullname())
+                .nickname(member.get().getNickname())
+                .introduce(member.get().getIntroduce())
+                .user_img(member.get().getUser_img())
+                .is_private(member.get().getIs_private()).build();
+
         if (member.isEmpty()) {
             return ResponseEntity.badRequest().body(new MessageResponse("User information doesn't exist."));
         } else {
-            return ResponseEntity.ok(member);
+            return ResponseEntity.ok(memberInfoResponse);
         }
-
     }
 
     private void saveMember(Long user_id, String username, String fullname, String password, String nickname, String introduce, String user_img, int is_private, Role role) {

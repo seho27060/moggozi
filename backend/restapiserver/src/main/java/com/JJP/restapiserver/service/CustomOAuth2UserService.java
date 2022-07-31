@@ -1,7 +1,7 @@
 package com.JJP.restapiserver.service;
 
 
-import com.JJP.restapiserver.domain.dto.member.OAuthAttributes;
+import com.JJP.restapiserver.security.OAuthAttributes;
 import com.JJP.restapiserver.domain.entity.member.Member;
 import com.JJP.restapiserver.repository.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -48,6 +48,5 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         return new DefaultOAuth2User(Collections.singleton(
                 new SimpleGrantedAuthority("ROLE_USER"))
                 , attributes.getAttributes(), attributes.getNameAttributeKey());
-
     }
 }

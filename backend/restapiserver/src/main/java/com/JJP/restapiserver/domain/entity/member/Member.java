@@ -76,8 +76,13 @@ public class Member {
         this.introduce = introduce;
         this.user_img = user_img;
         this.is_private = is_private;
-        this.role = role;
+
+        if(role.equals(null))
+            this.role = new Role(ERole.ROLE_USER);
+        else
+            this.role = role;
     }
+
 
     @OneToMany(mappedBy = "member")
     @JsonManagedReference

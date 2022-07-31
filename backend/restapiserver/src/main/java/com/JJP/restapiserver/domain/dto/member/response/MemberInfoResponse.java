@@ -1,20 +1,20 @@
 package com.JJP.restapiserver.domain.dto.member.response;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserInfoResponse {
+public class MemberInfoResponse {
 
     private Long id;
     private String username; // email 주소
+    private String fullname;
     private String nickname;
+    private String introduce;
     private String user_img;
-    private String role;
+    private int is_private;
 
 }
