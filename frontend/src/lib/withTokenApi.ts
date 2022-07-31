@@ -22,6 +22,16 @@ export const persistAuth = async () => {
     return data
 }
 
+export const userDetail = async () => {
+    const { data } = await withTokenApi.get(`/user/${localStorage.getItem('id')}`)
+    return data
+}
+
+
+
+
+
+
 // 사용법 - 해당 axios는 기본적으로 토큰이 만료되었을 경우 refresh를 겸함.
 
 // GET
