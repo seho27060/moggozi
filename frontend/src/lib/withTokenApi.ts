@@ -2,16 +2,25 @@ import axios from "axios"
 import { apiConfig } from "../config"
 import { refresh, refreshErrorHandle } from "./refresh"
 
-const Api = axios.create({
+const withTokenApi = axios.create({
     baseURL: apiConfig.apiRoot,
+    headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem('accessToken')}`
+    },
     timeout: 10000,
     params: {},
 });
 
-Api.interceptors.request.use(refresh, refreshErrorHandle)
+withTokenApi.interceptors.request.use(refresh, refreshErrorHandle)
 
-export default Api
+export default withTokenApi;
 
+// 로그인 상태 유지
+export const persistAuth = async () => {
+    const { data } = await withTokenApi.get(`/user/${localStorage.getItem('id')}`)
+    return data
+}
 
 // 사용법 - 해당 axios는 기본적으로 토큰이 만료되었을 경우 refresh를 겸함.
 

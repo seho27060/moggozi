@@ -5,10 +5,10 @@ import GoogleLogin from "./GoogleLogin";
 import React, { useRef, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { loginApi } from "../../lib/generalApi";
 import Cookie from "js-cookie";
-import moment from "moment"
+import moment from "moment";
 import { login } from "../../store/user";
-import axios from "axios";
 
 const LoginForm: React.FC = () => {
   const dispatch = useDispatch();
@@ -33,40 +33,32 @@ const LoginForm: React.FC = () => {
       alert("입력을 해주세요.");
       return;
     } else {
-      const option: object = {
-        url: 'http://54.180.158.97:8080/user/login',
-        method: "POST",
-        header: {
-          Accept: "application/json",
-          "Content-Type": "application/json; charset=UTP-8",
-        },
-        data: {
-          username: enteredEmail,
-          password: enteredPw,
-        },
-      };
-      axios(option)
+      const option = { username: enteredEmail, password: enteredPw };
+      loginApi(option)
         .then((res) => {
-          console.log("axios 응답")
-          console.log(res)
-          dispatch(login(res.data));
-          localStorage.setItem("id", res.data.id)
-          localStorage.setItem("accessToken", res.data.accessToken);
-          Cookie.set("refreshToken", res.data.refreshToken, { secure: true });
-          localStorage.setItem("expiresAt", moment().add(1, "hour").format("yyyy-MM-DD HH:mm:ss"))
+          dispatch(login(res));
+          localStorage.setItem("accessToken", res.accessToken);
+          localStorage.setItem("id", res.id);
+          localStorage.setItem(
+            "expiresAt",
+            moment().add(1, "hour").format("yyyy-MM-DD HH:mm:ss")
+          );
+          Cookie.set("refreshToken", res.refreshToken, { secure: true });
           navigate("/");
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          console.log(err);
+        });
     }
   }
 
   // 이미 로그인해 있을 경우 메인페이지로 이동시킴
-  const token = localStorage.getItem('accessToken')
+  const token = localStorage.getItem("accessToken");
   useEffect(() => {
     if (token) {
-      navigate('/')
+      navigate("/");
     }
-  }, [token, navigate])
+  }, [token, navigate]);
 
   return (
     <div>
@@ -83,9 +75,15 @@ const LoginForm: React.FC = () => {
           </div>
           <button type="submit">Login</button>
         </form>
-        <p><KakaoLogin /></p>
-        <p><NaverLogin /></p>
-        <p><GoogleLogin /></p>
+        <p>
+          <KakaoLogin />
+        </p>
+        <p>
+          <NaverLogin />
+        </p>
+        <p>
+          <GoogleLogin />
+        </p>
         <p></p>
         {/* <SocialLoginForm value={"KAKAO"}></SocialLoginForm>
         <SocialLoginForm value={"GOOGLE"}></SocialLoginForm> */}

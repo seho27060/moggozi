@@ -1,10 +1,10 @@
 import type { RootState } from "../../store/store";
 import { useSelector } from "react-redux";
 
-import Api from "../../lib/customApi"
+import Api from "../../lib/withTokenApi"
 
 function UserPage() {
-  const currentState = useSelector((state: RootState) => state.user);
+  const currentState = useSelector((state: RootState) => state.auth);
   
   const userInfo = async () => {
     const { data } = await Api.get(`user/${currentState.userInfo.userId}`)

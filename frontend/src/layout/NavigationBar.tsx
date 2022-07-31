@@ -5,7 +5,7 @@ import LogoutBtn from "../components/accounts/LogoutBtn";
 import { RootState } from "../store/store";
 
 const NavigationBar: React.FC = () => {
-  const userState = useSelector((state: RootState) => state.user);
+  const userState = useSelector((state: RootState) => state.auth);
 
   return (
     <header>
