@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { UserNameInfo } from "./user";
+import { UserInfo } from "./auth";
 
 export interface Hobby {
   id: number | null;
@@ -13,7 +13,7 @@ export interface ChallengeState {
   img: string | null;
   description: string | null;
   hobbies: Hobby[];
-  writer: UserNameInfo;
+  writer: UserInfo;
   level: number | null;
   user_progress: number | null;
 }

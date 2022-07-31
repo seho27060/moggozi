@@ -12,7 +12,7 @@ const ChallengeItem: React.FC<{ challenge: ChallengeState }> = ({
     <p>level : {challenge.level}</p>
     <p>진행도 : {challenge.user_progress}</p>
     <p>
-      {challenge.writer.name}
+      {challenge.writer.nickname}
     </p>
   </li>;
 };
