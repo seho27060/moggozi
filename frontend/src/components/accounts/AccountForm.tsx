@@ -2,10 +2,31 @@ import React, { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { signUpApi, checkId, checkNickname } from "../../lib/generalApi";
 
+import EmailModal from "../ui/EmailModal"
 // 박세호, 회원가입 폼, 비밀번호 체크. axios 추가 필요. 요청성공시 메인페이지로 이동
 
 const AccountForm: React.FC = () => {
   const navigate = useNavigate();
+
+  const [ emailModalOpen, setEmailModalOpen] = useState(false)
+  const [ nicknameModalOpen, setNicknameModalOpen] = useState(false)
+
+  const emailOpenModal = (event: React.FormEvent) => {
+    event.preventDefault()
+    setEmailModalOpen(true)
+  }
+
+  const emailCloseModal = () => {
+    setEmailModalOpen(false)
+  }
+
+  const nicknameOpenModal = () => {
+    setNicknameModalOpen(true)
+  }
+
+  const nicknamecloseModal = () => {
+    setNicknameModalOpen(false)
+  }
 
   // 확인전 0, 중복일시 1, 사용가능 2
   // + 이메일과 닉네임 상태에 따라 해당 input 스타일 다르게 설정
@@ -93,6 +114,13 @@ const AccountForm: React.FC = () => {
             <label htmlFor="email">email : </label>
             <input type="text" required id="email" ref={emailInputRef} />
             <button onClick={emailCheckHandler}>중복 확인</button>
+            <button onClick={emailOpenModal}>이메일 모달 팝업</button>
+            <React.Fragment>
+              <EmailModal open={emailModalOpen} close={emailCloseModal} header="Modal heading">
+                <p>팝업창입니다. 쉽게 만들 수 있어요. 같이 만들어봐요</p>
+              </EmailModal>
+            </React.Fragment>
+
           </div>
           <div>
             <label htmlFor="password">password : </label>
