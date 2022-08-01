@@ -1,10 +1,8 @@
 package com.JJP.restapiserver.domain.entity.Tag;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -15,6 +13,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class Tag {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -22,6 +21,7 @@ public class Tag {
 
     @OneToMany(mappedBy = "tag")
     @JsonManagedReference
+    @JsonIgnore
     private List<ChallengeTag> challengeTagList = new ArrayList<>();
 
     @Column(length = 20)
