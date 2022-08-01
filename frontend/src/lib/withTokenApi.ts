@@ -27,11 +27,10 @@ export const userDetail = async () => {
     return data
 }
 
-
-
-
-
-
+export const fetchChallengeRankList = async () => {
+    const { data } = await withTokenApi.get('/challenge/rank')
+    return data
+}
 // 사용법 - 해당 axios는 기본적으로 토큰이 만료되었을 경우 refresh를 겸함.
 
 // GET

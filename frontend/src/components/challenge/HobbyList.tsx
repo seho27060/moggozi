@@ -6,9 +6,7 @@ const HobbyList: React.FC<{ hobbies: Hobby[] }> = ({ hobbies }) => {
   return (
     <ul>
       {hobbies.map((hobby) => (
-        <Fragment>
-          <HobbyItem hobby={hobby} />
-        </Fragment>
+        <HobbyItem key={hobby.id} hobby={hobby} />
       ))}
     </ul>
   );
