@@ -18,6 +18,11 @@ export default withTokenApi;
 
 // 로그인 상태 유지
 export const persistAuth = async () => {
+    const { data } = await withTokenApi.get(`/user/myinfo`)
+    return data
+}
+
+export const userDetail = async () => {
     const { data } = await withTokenApi.get(`/user/${localStorage.getItem('id')}`)
     return data
 }

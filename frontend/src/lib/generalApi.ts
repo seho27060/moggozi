@@ -18,6 +18,20 @@ export const loginApi = async (option: object) => {
     return data
 }
 
+export const logoutApi = async (option: object) => {
+    const { data } = await generalApi.post('/user/logout/', option)
+    return data
+}
+
+export const checkId = async (email: string) => {
+    const { data } = await generalApi.get(`/user/idcheck/${email}`)
+    return data
+}
+
+export const checkNickname = async (nickname: string) => {
+    const { data } = await generalApi.get(`/user/nickcheck/${nickname}`)
+    return data
+}
 
 
 // 사용법 - 토큰이 필요없는 일반 axios 요청을 사용할 때 이용
