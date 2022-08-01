@@ -25,9 +25,10 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     @Query("update Member m set m.password = :password where m.id = :id")
     int updatePasswordById(@Param("password") String password, @Param("id") Long id);
 
-    @Modifying(clearAutomatically = true)
-    @Query("update Member m set m.role = ?1 where m.id = ?2")
-    int updateRoleById(String role, Long id);
+//    object references an unsaved transient instance - save the transient instance before flushing: com.JJP.restapiserver.domain.entity.member.Role
+//    @Modifying(clearAutomatically = true)
+//    @Query("update Member m set m.role = :role where m.id = :id")
+//    int saveRoleById(@Param("role") Role role, @Param("id") Long id);
 
 
 }

@@ -1,12 +1,10 @@
 package com.JJP.restapiserver.service.member;
 
 import com.JJP.restapiserver.domain.dto.MessageResponse;
-import com.JJP.restapiserver.domain.dto.member.request.LoginRequest;
-import com.JJP.restapiserver.domain.dto.member.request.PwUpdateRequest;
-import com.JJP.restapiserver.domain.dto.member.request.SignupRequest;
-import com.JJP.restapiserver.domain.dto.member.request.UpdateUserRequest;
+import com.JJP.restapiserver.domain.dto.member.request.*;
 import com.JJP.restapiserver.domain.dto.member.response.JwtResponse;
 import com.JJP.restapiserver.domain.dto.member.response.MemberInfoResponse;
+import com.JJP.restapiserver.domain.entity.member.ERole;
 import com.JJP.restapiserver.domain.entity.member.Member;
 import com.JJP.restapiserver.domain.entity.member.RefreshToken;
 import com.JJP.restapiserver.domain.entity.member.Role;
@@ -85,16 +83,21 @@ public class MemberServiceImpl implements MemberService {
     /**
      * 회원탈퇴
      */
+    @Transactional
     @Override
-    public ResponseEntity<?> delete(Long user_id) {
+    public ResponseEntity<?> delete(String password, Long user_id) {
         Optional<Member> member = memberRepository.findById(user_id);
 
-        if (member.isEmpty())
+        if(member.isEmpty())
             return ResponseEntity.badRequest().body(new MessageResponse("Error: The user doesn't exist"));
 
-        memberRepository.updateRoleById("ROLE_INVALIDATED_USER", user_id);
-
-        return ResponseEntity.ok(new MessageResponse("Deleted a user successfully!"));
+        if (encoder.matches(password, member.get().getPassword())) {
+            member.get().updateRole(ERole.ROLE_INVALIDATED_USER);
+            memberRepository.save(member.get());
+            return ResponseEntity.ok(new MessageResponse("Deleted a user successfully!"));
+        } else {
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: The password doesn't match."));
+        }
     }
 
     /**
@@ -106,7 +109,6 @@ public class MemberServiceImpl implements MemberService {
         if (member.isEmpty()) {
             return ResponseEntity.badRequest().body(new MessageResponse("Error: User doesn't exist."));
         }
-
         String username = updateUserRequest.getUsername();
         String fullname = updateUserRequest.getFullname();
         String nickname = updateUserRequest.getNickname();
@@ -148,21 +150,21 @@ public class MemberServiceImpl implements MemberService {
      */
     @Transactional
     @Override
-    public ResponseEntity<?> resetPassword(String username) {
-        Optional<Member> member = memberRepository.findByUsername(username);
+    public ResponseEntity<?> resetPassword(PasswordRequest passwordRequest) {
+        Optional<Member> member = memberRepository.findByUsername(passwordRequest.getUsername());
 
-        if (member.isPresent()) {
+        if (member.isPresent() && member.get().getFullname().equals(passwordRequest.getFullname())) {
             String password = resetPassword();
             memberRepository.updatePasswordById(encoder.encode(password), member.get().getId());
             try {
-                sendEmail(username, password);
+                sendEmail(member.get().getUsername(), password);
                 return ResponseEntity.ok(new MessageResponse("Reset user's password successfully."));
 
             } catch (MessagingException e) {
                 return ResponseEntity.internalServerError().body(new MessageResponse("Error: Failed to update password"));
             }
         } else {
-            return ResponseEntity.badRequest().body(new MessageResponse("Error:" + username + "doesn't exist."));
+            return ResponseEntity.badRequest().body(new MessageResponse("Error:" + member.get().getUsername() + "doesn't exist."));
         }
     }
 
@@ -239,6 +241,7 @@ public class MemberServiceImpl implements MemberService {
         }
     }
 
+    // 사용자 정보 저장 / 수정
     private void saveMember(Long user_id, String username, String fullname, String password, String nickname, String introduce, String user_img, int is_private, Role role) {
         Member member = null;
         if (user_id == -1L) {
@@ -257,6 +260,7 @@ public class MemberServiceImpl implements MemberService {
         memberRepository.save(member);
     }
 
+    // 비밀번호 리셋
     private String resetPassword() {
         Random random = new Random();
 
@@ -268,6 +272,7 @@ public class MemberServiceImpl implements MemberService {
         return updatedPassword;
     }
 
+    // 비밀번호 리셋 시, 이메일 보내기
     private void sendEmail(String username, String password) throws MessagingException {
 
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();

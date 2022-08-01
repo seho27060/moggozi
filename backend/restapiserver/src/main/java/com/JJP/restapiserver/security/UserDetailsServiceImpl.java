@@ -27,6 +27,4 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         // Member db에서 찾은 내용을 바탕으로 UserDetails 객체 만들어 반환하기
         return UserDetailsImpl.build(user);
     }
-
-
 }

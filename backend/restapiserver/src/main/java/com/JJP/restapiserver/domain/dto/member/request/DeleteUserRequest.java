@@ -9,12 +9,7 @@ import javax.validation.constraints.NotBlank;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PwUpdateRequest {
-
+public class DeleteUserRequest {
     @NotBlank
-    private String currentPassword;
-
-    @NotBlank
-    private String changedPassword;
-
+    String password;
 }
