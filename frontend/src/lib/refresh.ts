@@ -20,7 +20,7 @@ const refresh = async (config: AxiosRequestConfig): Promise<AxiosRequestConfig> 
     };
 
     // 토큰 갱신 서버통신 // 토큰 갱신 주소 수정 필요.
-    const { data } = await axios.post(`${apiConfig.apiRoot}/auth/token`, body);
+    const { data } = await axios.post(`${apiConfig.apiRoot}/user/refreshtoken`, body);
 
     token = data.data.accessToken;
     localStorage.setItem("accessToken", data.data.accessToken);

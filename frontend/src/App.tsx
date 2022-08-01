@@ -12,14 +12,16 @@ function App() {
   // const currentState = useSelector((state: RootState) => state)
 
   useEffect(() => {
-    persistAuth()
-      .then((res) => {
-        dispatch(authentication(res));
-        // console.log(res)
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    if (localStorage.getItem("accessToken") != null) {
+      persistAuth()
+        .then((res) => {
+          dispatch(authentication(res));
+          // console.log(res)
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   }, [dispatch]);
 
   return (

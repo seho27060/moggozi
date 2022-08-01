@@ -9,7 +9,7 @@ import ChallengeList from "../components/challenge/ChallengeList";
 const MainPage: React.FC = () => {
   const dispatch = useDispatch();
   const challengeState = useSelector((state: RootState) => state.challenge);
-  console.log(challengeState)
+  // console.log(challengeState)
   function addHandler(event: React.FormEvent) {
     const data = {
       id: 1,
