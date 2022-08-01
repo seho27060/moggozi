@@ -1,6 +1,6 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { GoBackButton } from "../../layout/HistoryButton";
-import { Stage } from "../../pages/stage/StageMain";
+import { Stage } from "../../store/stage";
 import StageItem from "./StageItem";
 
 // interface StagesProps {
@@ -10,6 +10,13 @@ import StageItem from "./StageItem";
 // }
 
 const StageList: React.FC<{ stages: Stage[] }> = ({ stages }) => {
+  const navigator = useNavigate()
+  const moveToStageAdd = () => {
+
+    console.log(`make new Stage to Challenge ${stages[0].challenge_id}`)
+    navigator("/stage/new")
+    return
+  }
   return (
     <div>
       <ul>
@@ -22,6 +29,7 @@ const StageList: React.FC<{ stages: Stage[] }> = ({ stages }) => {
         ))}
       </ul>
       <GoBackButton/>
+      <button onClick ={moveToStageAdd}>Add New Stage</button>
     </div>
   );
 };

@@ -1,5 +1,15 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { Stage } from "../pages/stage/StageMain";
+
+export interface Stage {
+  stage_id : number;
+  challenge_id: number | null;
+  name: string | null;
+  period: number | null;
+  content: string | null;
+  stage_img: string | undefined;
+  order: number | null;
+  children?: React.ReactNode;
+}
 
 export interface StageState {
   stageInfo: Stage;

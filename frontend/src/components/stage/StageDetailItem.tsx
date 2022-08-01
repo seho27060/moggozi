@@ -7,6 +7,7 @@ import { useCallback } from "react";
 import Modal from "../ui/Modal";
 import PostList from "../post/PostList";
 import { StageDetailType } from "../../pages/stage/StageDetail";
+import { stageDelete } from "../../lib/withTokenApi";
 
 const StageDetailItem: React.FC<{ stage: StageDetailType }> = ({ stage }) => {
   const [isOpenModal, setOpenModal] = useState<boolean>(false);
@@ -18,7 +19,12 @@ const StageDetailItem: React.FC<{ stage: StageDetailType }> = ({ stage }) => {
 
   function removeHandler () {
     console.log("현재 스테이지를 삭제합니다.")
-    return <div></div>;
+    stageDelete(stage.stage_id)
+    .then((res) => {
+      console.log("삭제 성공",res)
+    }).catch((err) => {
+      console.log("삭제 실패",err)
+    })
   };
   
   return (

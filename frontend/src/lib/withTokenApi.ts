@@ -27,10 +27,37 @@ export const userDetail = async () => {
     return data
 }
 
+// 스테이지 관련
+export const stageAdd = async (challenge_id:Number) => {
+    const { data } = await withTokenApi.post(`/stage/${challenge_id}`)
+    return data
+}
 
+export const stageDelete = async (stage_id:Number) => {
+    const { data } = await withTokenApi.delete(`/stage/${stage_id}`)
+    return data
+}
 
+export const stageUpdate = async (stage_id:Number) => {
+    const { data } = await withTokenApi.put(`/stage/${stage_id}`)
+    return data
+}
 
+// 포스팅 관련
+export const postAdd = async () => {
+    const { data } = await withTokenApi.post(`/stage/post`)
+    return data
+}
 
+export const postDelete = async (post_id:Number) => {
+    const { data } = await withTokenApi.delete(`/stage/post/${post_id}`)
+    return data
+}
+
+export const postUpdate = async (post_id:Number) => {
+    const { data } = await withTokenApi.put(`/stage/post/${post_id}`)
+    return data
+}
 
 // 사용법 - 해당 axios는 기본적으로 토큰이 만료되었을 경우 refresh를 겸함.
 
