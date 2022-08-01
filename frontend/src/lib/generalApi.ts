@@ -18,6 +18,11 @@ export const loginApi = async (option: object) => {
     return data
 }
 
+export const logoutApi = async (option: object) => {
+    const { data } = await generalApi.post('/user/logout/', option)
+    return data
+}
+
 export const checkId = async (email: string) => {
     const { data } = await generalApi.get(`/user/idcheck/${email}`)
     return data
