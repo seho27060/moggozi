@@ -11,5 +11,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class TagResponseDto {
     private Long id;
-    private String hobby;
+    private String name;
 }
