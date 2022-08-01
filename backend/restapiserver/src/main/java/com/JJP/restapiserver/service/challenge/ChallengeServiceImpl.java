@@ -4,6 +4,7 @@ import com.JJP.restapiserver.domain.dto.challenge.ChallengeCompleteRequestDto;
 import com.JJP.restapiserver.domain.dto.challenge.ChallengeRequestDto;
 import com.JJP.restapiserver.domain.dto.challenge.ChallengeResponseDto;
 import com.JJP.restapiserver.domain.dto.tag.TagRequestDto;
+import com.JJP.restapiserver.domain.dto.tag.TagResponseDto;
 import com.JJP.restapiserver.domain.entity.Tag.ChallengeTag;
 import com.JJP.restapiserver.domain.entity.Tag.Tag;
 import com.JJP.restapiserver.domain.entity.challenge.Challenge;
@@ -158,7 +159,8 @@ public class ChallengeServiceImpl implements ChallengeService{
             for(int j = 0; j < challenge.getChallengeTagList().size(); j++)
             {
                 Tag tag = challenge.getChallengeTagList().get(j).getTag();
-                challengeResponseDto.getTagList().add(tag);
+//                System.out.println(tag);
+                challengeResponseDto.getTagList().add(new TagResponseDto(tag.getId(), tag.getTag()));
             }
             Optional<JoinedChallenge> joinedChallenge = joinedChallengeRepository.findByChallenge_idAndMember_id(
                     challenge.getId(), member_id
