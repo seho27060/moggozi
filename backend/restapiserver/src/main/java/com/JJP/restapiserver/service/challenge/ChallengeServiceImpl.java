@@ -17,11 +17,14 @@ import com.JJP.restapiserver.repository.member.MemberRepository;
 import com.JJP.restapiserver.repository.stage.StageUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+
+@CrossOrigin("*")
 @Service
 @RequiredArgsConstructor
 public class ChallengeServiceImpl implements ChallengeService{

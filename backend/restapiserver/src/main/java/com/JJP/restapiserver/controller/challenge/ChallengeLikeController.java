@@ -5,7 +5,7 @@ import com.JJP.restapiserver.service.challenge.ChallengeLikeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/challengeLike")
 @RequiredArgsConstructor
