@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -26,30 +27,43 @@ public class MemberController {
     @Autowired
     RefreshTokenService refreshTokenService;
 
+    // jwt 토큰 생성을 위한 JWT Util
     @Autowired
     JwtUtils jwtUtils;
 
-    // 로그인
+    /** 로그인 */
     @PostMapping("/login")
     public ResponseEntity<?> login(@Valid @RequestBody LoginRequest loginRequest) { // 아이디, 비밀번호를 body에 담아 전송
         return memberService.login(loginRequest);
     }
 
-    // 회원가입
+    /** 회원가입 */
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
-        System.out.println(signUpRequest.toString());
         return memberService.register(signUpRequest);
     }
 
-    // 로그아웃
+    /** username(이메일) 중복 체크 */
+    @PostMapping("/idcheck/{username}")
+    public ResponseEntity<?> usernameCheck(@PathVariable String username) {
+        return memberService.usernameCheck(username);
+    }
+
+    /** nickname 중복 체크 */
+    @PostMapping("/nickcheck/{nickname}")
+    public ResponseEntity<?> nicknameCheck(@PathVariable String nickname) {
+        return memberService.nicknameCheck(nickname);
+    }
+
+    /** 로그아웃 */
     @PostMapping("/logout")
     public ResponseEntity<?> logoutUser(@Valid @RequestBody LogoutRequest logoutRequest) {
         refreshTokenService.deleteByMemberId(logoutRequest.getId());
         return ResponseEntity.ok(new MessageResponse("Log out successful"));
     }
 
-    @PostMapping("/refreshtoken")
+    /** 리프레시 토큰 생성 */
+    @PostMapping("/refreshToken")
     public ResponseEntity<?> refreshtoken(@Valid @RequestBody TokenRefreshRequest tokenRefreshRequest) {
         String requestRefreshToken = tokenRefreshRequest.getRefreshToken();
 
@@ -64,30 +78,52 @@ public class MemberController {
                         , "Refresh token is not in database!"));
     }
 
+    /** 회원정보 수정 */
     @PostMapping("/update/{user_id}")
     public ResponseEntity<?> updateUser(@PathVariable Long user_id, @Valid @RequestBody UpdateUserRequest updateUserRequest) {
         return memberService.update(user_id, updateUserRequest);
     }
 
-    @PostMapping("/validity")
-    public ResponseEntity<?> checkValidity(@Valid @RequestBody LoginRequest loginRequest) {
-        return memberService.checkValidity(loginRequest);
+//    @PostMapping("/validity")
+//    public ResponseEntity<?> checkValidity(@Valid @RequestBody LoginRequest loginRequest) {
+//        return memberService.checkValidity(loginRequest);
+//    }
+
+    /** 비밀번호 업데이트 */
+    @PostMapping("/updatepw")
+    public ResponseEntity<?> updatePassword(@RequestBody PwUpdateRequest pwUpdateRequest, HttpServletRequest request) {
+        Long user_id = jwtUtils.getUserIdFromJwtToken(request.getHeader("Authorization"));
+        return memberService.updatePassword(pwUpdateRequest, user_id);
     }
 
-    // 비밓번호 찾기
-    @PostMapping("/password")
-    public ResponseEntity<?> updatePassword(@RequestBody PasswordRequest request) {
-        return memberService.updatePassword(request.getUsername());
+    /** 비밀번호 찾기 - 리셋 */
+    @PostMapping("/resetpw")
+    public ResponseEntity<?> resetPassword(@RequestBody PasswordRequest request) {
+        return memberService.resetPassword(request.getUsername());
     }
 
-    // 사용자 정보 획득하기
-    @GetMapping("/{user_id}")
+    /** 타유저 정보 획득하기 */
+    @GetMapping("/info/{user_id}")
     public ResponseEntity<?> getUserInfo(@PathVariable Long user_id) {
-            /**  TOKEN에서 UserID 추출 (Parameter 추가 필요: HttpServletRequest request) */
-//        System.out.println("token************************** "+request.getHeader("Authorization"));
-//        System.out.println("userId************************** " + jwtUtils.getUserIdFromJwtToken(request.getHeader("Authorization")));
         return memberService.findUser(user_id);
     }
+
+    /** 자신의 유저정보 획득하기 */
+    @GetMapping("/myinfo")
+    public ResponseEntity<?> getMyInfo(HttpServletRequest request) {
+        //  TOKEN에서 UserID 추출
+        Long user_id = jwtUtils.getUserIdFromJwtToken(request.getHeader("Authorization"));
+        return memberService.findUser(user_id);
+    }
+//
+//    @GetMapping("/follow/{user_id}")
+//    public ResponseEntity<?> getFollowList(@PathVariable Long user_id) {
+////        return memberService.getFollowList(user_id);=
+////
+////
+////
+////        =
+//     }
 }
 
 

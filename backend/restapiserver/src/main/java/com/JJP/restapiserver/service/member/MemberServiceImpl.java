@@ -2,6 +2,7 @@ package com.JJP.restapiserver.service.member;
 
 import com.JJP.restapiserver.domain.dto.MessageResponse;
 import com.JJP.restapiserver.domain.dto.member.request.LoginRequest;
+import com.JJP.restapiserver.domain.dto.member.request.PwUpdateRequest;
 import com.JJP.restapiserver.domain.dto.member.request.SignupRequest;
 import com.JJP.restapiserver.domain.dto.member.request.UpdateUserRequest;
 import com.JJP.restapiserver.domain.dto.member.response.JwtResponse;
@@ -129,7 +130,25 @@ public class MemberServiceImpl implements MemberService {
      */
     @Transactional
     @Override
-    public ResponseEntity<?> updatePassword(String username) {
+    public ResponseEntity<?> updatePassword(PwUpdateRequest pwUpdateRequest, Long userid) {
+        Optional<Member> member = memberRepository.findById(userid);
+        String currentPassword = pwUpdateRequest.getCurrentPassword();
+        String changedPassword = pwUpdateRequest.getChangedPassword();
+
+        if(encoder.matches(currentPassword, member.get().getPassword())) {
+            memberRepository.updatePasswordById(encoder.encode(changedPassword), userid);
+            return ResponseEntity.ok(new MessageResponse("Updated the user's password successfully."));
+        } else {
+            return ResponseEntity.internalServerError().body(new MessageResponse("Error: Failed to update password"));
+        }
+    }
+
+    /**
+     * 패스워드 찾기 - 리셋
+     */
+    @Transactional
+    @Override
+    public ResponseEntity<?> resetPassword(String username) {
         Optional<Member> member = memberRepository.findByUsername(username);
 
         if (member.isPresent()) {
@@ -137,7 +156,7 @@ public class MemberServiceImpl implements MemberService {
             memberRepository.updatePasswordById(encoder.encode(password), member.get().getId());
             try {
                 sendEmail(username, password);
-                return ResponseEntity.ok(new MessageResponse("Updated the user's password successfully."));
+                return ResponseEntity.ok(new MessageResponse("Reset user's password successfully."));
 
             } catch (MessagingException e) {
                 return ResponseEntity.internalServerError().body(new MessageResponse("Error: Failed to update password"));
@@ -148,15 +167,23 @@ public class MemberServiceImpl implements MemberService {
     }
 
     /**
-     * 사용자 비밀번호 변경
+     * 아이디 중복 접사
      */
     @Override
-    public ResponseEntity<?> checkValidity(LoginRequest loginRequest) {
-        Optional<Member> member = memberRepository.findByUsername(loginRequest.getUsername());
-        if (encoder.matches(loginRequest.getPassword(), member.get().getPassword())) {
-            return ResponseEntity.ok(new MessageResponse("Validated user"));
+    public ResponseEntity<?> usernameCheck(String username) {
+        if(memberRepository.existsByUsername(username)) {
+            return ResponseEntity.ok(new MessageResponse("Username is available."));
         } else {
-            return ResponseEntity.badRequest().body(new MessageResponse("Invalidated user"));
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: Username(email) is already taken."));
+        }
+    }
+
+    @Override
+    public ResponseEntity<?> nicknameCheck(String nickname) {
+        if(memberRepository.existsByUsername(nickname)) {
+            return ResponseEntity.ok(new MessageResponse("Nickname is available."));
+        } else {
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: Nickname is already taken."));
         }
     }
 
@@ -256,6 +283,15 @@ public class MemberServiceImpl implements MemberService {
 /**        메일에 덧붙일 이미지 ---           */
 //        mimeMessageHelper.addInline("Moggozi", new FileDataSource("files/..."));
         javaMailSender.send(mimeMessage);
-
     }
 }
+
+//    @Override
+//    public ResponseEntity<?> checkValidity(LoginRequest loginRequest) {
+//        Optional<Member> member = memberRepository.findByUsername(loginRequest.getUsername());
+//        if (encoder.matches(loginRequest.getPassword(), member.get().getPassword())) {
+//            return ResponseEntity.ok(new MessageResponse("Validated user"));
+//        } else {
+//            return ResponseEntity.badRequest().body(new MessageResponse("Invalidated user"));
+//        }
+//    }

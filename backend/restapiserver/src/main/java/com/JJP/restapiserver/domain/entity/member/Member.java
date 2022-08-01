@@ -14,7 +14,9 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 // Setter를 쓰지 말아야 할 이유
 // 어디에서나 수정가능하게끔 열어놓으면 안 됨
@@ -83,6 +85,12 @@ public class Member {
             this.role = role;
     }
 
+    // 팔로우, 팔로잉
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "follow",
+            joinColumns = @JoinColumn(name = "member_id"),
+            inverseJoinColumns = @JoinColumn(name = "following_id"))
+    private Set<Member> following = new HashSet<>();
 
     @OneToMany(mappedBy = "member")
     @JsonManagedReference
