@@ -5,13 +5,12 @@ import ChallengeItem from "./ChallengeItem";
 const ChallengeList: React.FC<{ challenges: ChallengeItemState[] }> = ({
   challenges,
 }) => {
+  console.log(challenges)
   return (
     <div>
       <ul>
         {challenges.map((challenge) => (
-          <Fragment>
-            <ChallengeItem key={challenge.id} challenge={challenge} />
-          </Fragment>
+          <ChallengeItem key={challenge.id} challenge={challenge} />
         ))}
       </ul>
     </div>

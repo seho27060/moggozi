@@ -2,7 +2,6 @@ import LogoutBtn from "../components/accounts/LogoutBtn";
 
 import ChallengeList from "../components/challenge/ChallengeList";
 import { Link } from "react-router-dom";
-import ChallengeNew from "./challenge/ChallengeNew";
 import { useEffect, useState } from "react";
 import { fetchChallengeRankList } from "../lib/withTokenApi";
 import { ChallengeItemState } from "../store/challenge";
@@ -13,11 +12,11 @@ const MainPage: React.FC = () => {
     ChallengeItemState[]
   >([]);
   useEffect(() => {
-    console.log()
+    console.log();
     setIsLoading(true);
     fetchChallengeRankList()
       .then((res) => {
-        console.log(res)
+        console.log(res);
         const challengeRankList: ChallengeItemState[] = [];
 
         for (const key in res) {
@@ -27,16 +26,20 @@ const MainPage: React.FC = () => {
             img: res[key].challenge_img,
             description: res[key].content,
             hobbies: res[key].tagList,
-            writer: res[key].writer,
+            writer: {
+              nickname: res[key].writer.nickname,
+              userId: res[key].writer.id,
+              userImg: res[key].writer.userImg,
+            },
             level: res[key].level,
             userProgress: res[key].user_progress,
           };
           challengeRankList.push(challenge);
-        };
+        }
         setIsLoading(false);
         setLoadedChallengeRankList(challengeRankList);
       })
-        // console.log(res)
+      // console.log(res)
       .catch((err) => {
         console.log(err);
         setIsLoading(false);
@@ -48,7 +51,7 @@ const MainPage: React.FC = () => {
       MainPage
       <LogoutBtn />
       <Link to={`/challenge/new`}>
-        <ChallengeNew />
+        <button>챌린지 생성</button>
       </Link>
       {isLoading === true && (
         <section>
