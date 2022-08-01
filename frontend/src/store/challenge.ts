@@ -7,7 +7,7 @@ export interface Hobby {
 }
 
 // 챌린지 리스트 정보
-export interface ChallengeState {
+export interface ChallengeItemState {
   id: number | null;
   name: string | null;
   img: string | null;
@@ -15,21 +15,35 @@ export interface ChallengeState {
   hobbies: Hobby[];
   writer: UserInfo;
   level: number | null;
-  user_progress: number | null;
+  userProgress: number | null;
 }
 
-// 챌린지 디테일 정보 - 리스트 먼저 한다.
-// export interface ChallengeDetailState {
-//   id: number | null;
-//   create_time: string | null;
-//   update_time: string | null;
-// }
-
-const initialChallengesState: ChallengeState[] = [];
+const initialChallengesRankState: ChallengeItemState[] = [];
 
 export const challengesSlice = createSlice({
   name: "challenges",
-  initialState: initialChallengesState,
+  initialState: initialChallengesRankState,
+  reducers: {
+    challengeCreate: (state, action) => {
+      state.push(action.payload);
+    },
+    challengeUpdate: (state, action) => {},
+    challengeDelete: (state, action) => {},
+  },
+});
+
+// 챌린지 디테일 정보
+export interface ChallengeDetailState {
+  id: number | null;
+  create_time: string | null;
+  update_time: string | null;
+}
+
+const initialChallengeDetailState: ChallengeDetailState[] = [];
+
+export const challengeSlice = createSlice({
+  name: "challenge",
+  initialState: initialChallengeDetailState,
   reducers: {
     challengeCreate: (state, action) => {
       state.push(action.payload);

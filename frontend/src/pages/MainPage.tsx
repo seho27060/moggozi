@@ -1,37 +1,68 @@
-import type { RootState } from "../store/store";
-
 import LogoutBtn from "../components/accounts/LogoutBtn";
-import { useDispatch, useSelector } from "react-redux";
-import { challengeCreate } from "../store/challenge";
-import ChallengeList from "../components/challenge/ChallengeList";
 
+import ChallengeList from "../components/challenge/ChallengeList";
+import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { fetchChallengeRankList } from "../lib/withTokenApi";
+import { ChallengeItemState } from "../store/challenge";
 
 const MainPage: React.FC = () => {
-  const dispatch = useDispatch();
-  const challengeState = useSelector((state: RootState) => state.challenge);
-  console.log(challengeState)
-  function addHandler(event: React.FormEvent) {
-    const data = {
-      id: 1,
-      name: '브롤스타즈',
-      img: 'https://dullyshin.github.io/2018/08/30/HTML-imgLink/',
-      description: '아주 재밌는 브롤스타즈 놀이에요',
-      hobbies: [{id : 11, name: '게임'}, {id : 2, name: '놀이'}],
-      writer: {id: 24, name: '허재영'},
-      level: 3,
-      user_progress: 2
-    }
-    event.preventDefault();
-    dispatch(challengeCreate(data))
-  }
+  const [isLoading, setIsLoading] = useState(true);
+  const [loadedChallengeRankList, setLoadedChallengeRankList] = useState<
+    ChallengeItemState[]
+  >([]);
+  useEffect(() => {
+    console.log();
+    setIsLoading(true);
+    fetchChallengeRankList()
+      .then((res) => {
+        console.log(res);
+        const challengeRankList: ChallengeItemState[] = [];
+
+        for (const key in res) {
+          const challenge: ChallengeItemState = {
+            id: res[key].challenge_id,
+            name: res[key].name,
+            img: res[key].challenge_img,
+            description: res[key].content,
+            hobbies: res[key].tagList,
+            writer: {
+              nickname: res[key].writer.nickname,
+              userId: res[key].writer.id,
+              userImg: res[key].writer.userImg,
+            },
+            level: res[key].level,
+            userProgress: res[key].user_progress,
+          };
+          challengeRankList.push(challenge);
+        }
+        setIsLoading(false);
+        setLoadedChallengeRankList(challengeRankList);
+      })
+      // console.log(res)
+      .catch((err) => {
+        console.log(err);
+        setIsLoading(false);
+      });
+  }, []);
+
   return (
     <div>
       MainPage
       <LogoutBtn />
-      <button onClick={addHandler}>add</button>
-      <ChallengeList challenges = {challengeState}></ChallengeList>
+      <Link to={`/challenge/new`}>
+        <button>챌린지 생성</button>
+      </Link>
+      {isLoading === true && (
+        <section>
+          <p>Loading...</p>
+        </section>
+      )}
+      {isLoading === false && (
+        <ChallengeList challenges={loadedChallengeRankList} />
+      )}
     </div>
   );
-}
+};
 
 export default MainPage;

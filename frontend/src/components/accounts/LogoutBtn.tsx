@@ -1,25 +1,41 @@
-import { useDispatch } from "react-redux";
+import type { RootState } from "../../store/store";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { logout } from "../../store/auth"
+import { logoutApi } from "../../lib/generalApi";
+import { logout } from "../../store/auth";
 
 const LogoutBtn = () => {
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const userIdState = useSelector(
+    (state: RootState) => state.auth.userInfo.userId
+  );
 
   const LogoutHandler = (event: React.MouseEvent) => {
     event.preventDefault();
-    dispatch(logout())
-    // 임시로 메인페이지로 넘겨 준 후, 페이지 새로고침을 통해 
-    // 리덕스에 있는 데이터를 날려주었음.
-    // + store의 logout에서 axios를 통한 백엔드와의 통신 필요.
-    navigate('/')
-    window.location.reload();
-    
-  }
+    const option = {
+      "id": userIdState
+    }
+    console.log(option)
+    logoutApi(option)
+      .then((res) => {
+        console.log(res);
+        dispatch(logout());
+        navigate("/");
+        window.location.reload();
+      })
+      .catch((err) => {
+        console.log(err);
+        alert("잘못된 요청입니다.")
+      });
+  };
 
-  return  <div>
-    <button onClick={LogoutHandler}>Logout</button>
-  </div>
-}
+  return (
+    <div>
+      <button onClick={LogoutHandler}>Logout</button>
+    </div>
+  );
+};
 
-export default LogoutBtn
+export default LogoutBtn;
