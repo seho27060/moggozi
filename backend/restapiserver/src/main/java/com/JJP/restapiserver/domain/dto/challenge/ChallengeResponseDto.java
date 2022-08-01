@@ -1,5 +1,6 @@
 package com.JJP.restapiserver.domain.dto.challenge;
 
+import com.JJP.restapiserver.domain.entity.Tag.Tag;
 import com.JJP.restapiserver.domain.entity.challenge.Challenge;
 import com.JJP.restapiserver.domain.entity.challenge.Review;
 import com.JJP.restapiserver.domain.entity.member.Member;
@@ -22,7 +23,7 @@ public class ChallengeResponseDto {
     private List<Stage> stageList;
     private int like_num;
     private List<Review> reviewList;
-    private List<String> tagList;
+    private List<Tag> tagList;
     private int user_progress;
 
     public ChallengeResponseDto(Challenge challenge){

@@ -141,7 +141,7 @@ public class ChallengeServiceImpl implements ChallengeService{
         Challenge challenge = challengeRepository.findById(challengeCompleteRequestDto.getChallenge_id()).get();
         JoinedChallenge joinedChallenge = joinedChallengeRepository.
                 findByChallenge_idAndMember_id(challengeCompleteRequestDto.getChallenge_id(),
-                        challengeCompleteRequestDto.getUser_id()).get();
+                        challengeCompleteRequestDto.getMember_id()).get();
         // 완료되었다는 상태가 2임
         joinedChallenge.setState(2);
         return 0;
@@ -158,7 +158,7 @@ public class ChallengeServiceImpl implements ChallengeService{
             for(int j = 0; j < challenge.getChallengeTagList().size(); j++)
             {
                 Tag tag = challenge.getChallengeTagList().get(j).getTag();
-                challengeResponseDto.getTagList().add(tag.getTag());
+                challengeResponseDto.getTagList().add(tag);
             }
             Optional<JoinedChallenge> joinedChallenge = joinedChallengeRepository.findByChallenge_idAndMember_id(
                     challenge.getId(), member_id
