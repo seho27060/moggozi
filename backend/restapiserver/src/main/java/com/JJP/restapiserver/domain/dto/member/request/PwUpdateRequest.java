@@ -11,9 +11,12 @@ import javax.validation.constraints.NotBlank;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class PasswordRequest {
+public class PwUpdateRequest {
 
     @NotBlank
-    private String username;
+    private String currentPassword;
+
+    @NotBlank
+    private String changedPassword;
 
 }
