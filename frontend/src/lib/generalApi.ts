@@ -19,12 +19,12 @@ export const loginApi = async (option: object) => {
 }
 
 export const checkId = async (email: string) => {
-    const { data } = await generalApi.get(`/user/idcheck/${email}`)
+    const { data } = await generalApi.post(`/user/idcheck/${email}`)
     return data
 }
 
 export const checkNickname = async (nickname: string) => {
-    const { data } = await generalApi.get(`/user/nickcheck/${nickname}`)
+    const { data } = await generalApi.post(`/user/nickcheck/${nickname}`)
     return data
 }
 
