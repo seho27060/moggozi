@@ -5,10 +5,10 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useCallback } from "react";
 import PostList from "../post/PostList";
-import { StageDetailType } from "../../store/stage";
+import { stageDetail } from "../../store/stage";
 import { stageDelete } from "../../lib/withTokenApi";
 
-const StageDetailItem: React.FC<{ stage: StageDetailType }> = ({ stage }) => {
+const StageDetailItem: React.FC<{ stage: stageDetail }> = ({ stage }) => {
   const [isOpenModal, setOpenModal] = useState<boolean>(false);
 
   const OnClickToggleModal = useCallback(() => {
@@ -18,7 +18,7 @@ const StageDetailItem: React.FC<{ stage: StageDetailType }> = ({ stage }) => {
 
   function removeHandler() {
     console.log("현재 스테이지를 삭제합니다.");
-    stageDelete(stage.stage_id)
+    stageDelete(stage.stageId)
       .then((res) => {
         console.log("삭제 성공", res);
       })
@@ -31,13 +31,13 @@ const StageDetailItem: React.FC<{ stage: StageDetailType }> = ({ stage }) => {
     <div>
       StageDetail
       <div style={{ border: "solid", margin: "1rem", padding: "1rem" }}>
-        <h2>{stage.stage_id}번 stage item 입니다.</h2>
-        <p>{stage.challenge_id}</p>
+        <h2>{stage.stageId}번 stage item 입니다.</h2>
+        <p>{stage.challengeId}</p>
         <p>{stage.name}</p>
         <p>{stage.order}</p>
         <p>{stage.period}</p>
         <p>{stage.content}</p>
-        <img src={stage.stage_img} alt="img" />
+        <img src={stage.stageImg} alt="img" />
       </div>
       <div style={{ border: "solid", margin: "1rem", padding: "1rem" }}>
         <PostList postings={stage.postings} />
@@ -45,7 +45,7 @@ const StageDetailItem: React.FC<{ stage: StageDetailType }> = ({ stage }) => {
       <div style={{ border: "solid", margin: "1rem", padding: "1rem" }}>
         <GoBackButton />
         <Link
-          to={`/stage/${stage.stage_id}/update`}
+          to={`/stage/${stage.stageId}/update`}
           style={{ color: "inherit", textDecoration: "none" }}
         >
           <button>수정하기</button>
