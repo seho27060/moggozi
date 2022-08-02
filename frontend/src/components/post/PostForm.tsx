@@ -1,10 +1,10 @@
 import { useRef } from "react";
-import { post } from "../../store/post";
+import { PostState } from "../../store/post";
 
 // 생성폼 -> <PostForm post = {null}/>
 // 수정폼 -> <PostForm post = {수정할려는 포스트 데이터}/>
 
-const PostForm: React.FC<{ post: post | null }> = ({ post }) => {
+const PostForm: React.FC<{ post: PostState | null }> = ({ post }) => {
   console.log(post);
 
   const titleInputRef = useRef<HTMLInputElement>(

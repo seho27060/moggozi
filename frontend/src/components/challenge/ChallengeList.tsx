@@ -1,4 +1,3 @@
-import { Fragment } from "react";
 import { ChallengeItemState } from "../../store/challenge";
 import ChallengeItem from "./ChallengeItem";
 

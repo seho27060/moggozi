@@ -1,29 +1,18 @@
-import { post, posting } from "./post";
+import { PostItemState } from "./post";
 
-export interface stage {
-  stageId : number | null,
+export interface Stage {
+  id : number | null,
   challengeId : number | null,
   name : string | null,
   period : number | null,
   content : string | null,
   stageImg : string | undefined,
-  createTime : number | null,
-  updateTime : number | null,
-  order : number | null,
+  createDate : number | null,
+  modifiedDate : number | null,
+  postOrder : number | null,
+  postList: PostItemState[] | null,
 }
 
-export interface stageDetail {
-  stageId : number | null,
-  challengeId : number | null,
-  name : string | null,
-  period : number | null,
-  content : string | null,
-  stageImg : string | undefined,
-  createTime : number | null,
-  updateTime : number | null,
-  order : number | null,
-  postings : posting[] | null
-}
 // export const stageSlice = createSlice({
 //     name : "stageInfo",
 //     initialState,

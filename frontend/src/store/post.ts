@@ -1,4 +1,6 @@
-export interface post {
+import { UserInfo } from "./auth";
+
+export interface PostState {
   postId : number|null,
   memberId : number|null,
   stageId : number|null,
@@ -9,16 +11,11 @@ export interface post {
   postImg : string|null
 }
 
-export interface postWriter {
-  id: number;
-  name: string | null;
-}
-
-// 스테이지에 포함된 postings 타입
-export interface posting {
+// 스테이지에 포함된 postings 타입np
+export interface PostItemState {
   id : number|null,
   title : string|null,  
   likeCount : number|null,
   img : string|null,
-  writer : postWriter
+  writer : UserInfo,
 }
