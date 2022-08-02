@@ -8,19 +8,10 @@ const LogoutBtn = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const userIdState = useSelector(
-    (state: RootState) => state.auth.userInfo.id
-  );
-
   const LogoutHandler = (event: React.MouseEvent) => {
     event.preventDefault();
-    const option = {
-      id: userIdState
-    }
-    console.log(option)
-    logoutApi(option)
+    logoutApi()
       .then((res) => {
-        console.log(res);
         dispatch(logout());
         navigate("/");
         window.location.reload();
