@@ -13,8 +13,7 @@ public class PostUpdateRequestDto {
     private String postImg;
 
     @Builder
-    public PostUpdateRequestDto(Long postId, String title, String content, String postImg){
-        this.postId = postId;
+    public PostUpdateRequestDto(String title, String content, String postImg){
         this.title = title;
         this.content = content;
         this.postImg = postImg;

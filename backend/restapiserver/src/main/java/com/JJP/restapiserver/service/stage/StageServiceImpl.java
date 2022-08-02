@@ -59,9 +59,4 @@ public class StageServiceImpl implements StageService {
 
         stageRepository.delete(entity);
     }
-
-    @Override
-    public Long challengeStage(Long stage_id, Long stageuser_id) {
-        return null;
-    }
 }
