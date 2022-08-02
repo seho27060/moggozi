@@ -8,31 +8,22 @@ import EmailModal from "../ui/EmailModal"
 const AccountForm: React.FC = () => {
   const navigate = useNavigate();
 
+  // 해당 상태에 따라 (emailState) 입력 input창을 빨갛게 표시
   const [ emailModalOpen, setEmailModalOpen] = useState(false)
+  const [ emailState, setEmailState ] = useState(false)
   const [ nicknameModalOpen, setNicknameModalOpen] = useState(false)
+  const [ nicknameState, setNicknameState ] = useState(false)
 
-  const emailOpenModal = (event: React.FormEvent) => {
-    event.preventDefault()
-    setEmailModalOpen(true)
-  }
+  console.log(emailState)
+  console.log(nicknameState)
 
   const emailCloseModal = () => {
     setEmailModalOpen(false)
   }
 
-  const nicknameOpenModal = () => {
-    setNicknameModalOpen(true)
-  }
-
-  const nicknamecloseModal = () => {
+  const nicknameCloseModal = () => {
     setNicknameModalOpen(false)
   }
-
-  // 확인전 0, 중복일시 1, 사용가능 2
-  // + 이메일과 닉네임 상태에 따라 해당 input 스타일 다르게 설정
-  const [emailState, setEmailState] = useState(0);
-  const [nickState, setNicknameState] = useState(0);
-
 
   const [passwordCheck, setPasswordCheck] = useState(true);
   const [passwordInputState, setPasswordInput] = useState("");
@@ -77,31 +68,39 @@ const AccountForm: React.FC = () => {
       });
   }
 
+  const [ emailContent, setEmailContent ] = useState("")
   // 이메일 중복 확인
   function emailCheckHandler(event: React.MouseEvent) {
-    console.log(emailState)
     event.preventDefault();
+    setEmailModalOpen(true)
     const enteredEmail = emailInputRef.current!.value;
     checkId(enteredEmail)
       .then((res) => {
-        setEmailState(2);
+        // 중복이 아닐 경우
+        setEmailContent("해당 이메일은 사용 가능합니다.")
+        setEmailState(false);
       })
       .catch((err) => {
-        setEmailState(1);
+        // 중복일 경우
+        setEmailContent("해당 이메일은 사용할 수 없습니다.")
+        setEmailState(true);
       });
   }
 
+  const [nicknameContent, setNicknameContent] = useState("")
   // 닉네임 중복 확인
   function nicknameCheckHandler(event: React.MouseEvent) {
-    console.log(nickState)
     event.preventDefault();
+    setNicknameModalOpen(true)
     const enteredNickname = nicknameInputRef.current!.value;
     checkNickname(enteredNickname)
       .then((res) => {
-        setNicknameState(2);
+        setNicknameContent("해당 닉네임은 사용 가능합니다.")
+        setNicknameState(false);
       })
       .catch((err) => {
-        setNicknameState(1);
+        setNicknameContent("해당 닉네임은 사용 할 수 없습니다.")
+        setNicknameState(true);
       });
   }
 
@@ -114,10 +113,9 @@ const AccountForm: React.FC = () => {
             <label htmlFor="email">email : </label>
             <input type="text" required id="email" ref={emailInputRef} />
             <button onClick={emailCheckHandler}>중복 확인</button>
-            <button onClick={emailOpenModal}>이메일 모달 팝업</button>
             <React.Fragment>
-              <EmailModal open={emailModalOpen} close={emailCloseModal} header="Modal heading">
-                <p>팝업창입니다. 쉽게 만들 수 있어요. 같이 만들어봐요</p>
+              <EmailModal open={emailModalOpen} close={emailCloseModal} header="이메일 중복 확인">
+                <p>{emailContent}</p>
               </EmailModal>
             </React.Fragment>
 
@@ -158,6 +156,11 @@ const AccountForm: React.FC = () => {
             <label htmlFor="nickname">닉네임 : </label>
             <input type="text" required id="nickname" ref={nicknameInputRef} />
             <button onClick={nicknameCheckHandler}>중복확인</button>
+            <React.Fragment>
+              <EmailModal open={nicknameModalOpen} close={nicknameCloseModal} header="닉네임 중복 확인">
+                <p>{nicknameContent}</p>
+              </EmailModal>
+            </React.Fragment>
           </div>
           <button
             type="button"

@@ -1,5 +1,5 @@
 import React, { ReactElement} from 'react';
-import styles from './EmailModal.module.scss'
+import styles from "./EmailModal.module.scss"
 
 interface EmailProps {
   open: boolean;
@@ -15,7 +15,7 @@ const EmailModal = (props: EmailProps): ReactElement => {
   return (
     // 모달이 열릴때 openModal 클래스가 생성된다.
 
-    <div className={open ? `${[styles.openModal, styles.modal]}` : `${styles.modal}` }>
+    <div className={open ? `${styles.openModal} ${styles.modal}` : `${styles.modal}` }>
     {/* <div className={open ? 'openModal modal' : 'modal'}> */}
       {open ? (
         <section>
