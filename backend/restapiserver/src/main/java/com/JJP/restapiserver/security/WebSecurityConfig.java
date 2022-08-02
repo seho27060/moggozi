@@ -50,15 +50,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     // 커스텀을 왜했는가가
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        /** 추후 권한 변경 시, ROLE_USER인지 확인한 뒤 권한을 줄 것 */
         http.cors().and().csrf().disable()
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests().antMatchers("/**").permitAll()
 //                .anyRequest().permitAll()
                 .and()
-                .logout()
-                .logoutSuccessUrl("/")
-                .and()
+//                .logout()
+//                .logoutSuccessUrl("/")
+//                .and()
                 .oauth2Login()
                 .successHandler(oAuth2SuccessHandler)
                 .userInfoEndpoint()

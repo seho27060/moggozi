@@ -23,4 +23,6 @@ public class Role {
         this.name = name;
     }
 
+    @OneToOne(mappedBy = "role", cascade = CascadeType.ALL)
+    private Member member;
 }

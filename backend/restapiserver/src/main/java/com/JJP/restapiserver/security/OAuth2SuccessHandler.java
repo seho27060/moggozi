@@ -71,7 +71,7 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
         Optional<Member> member = memberRepository.findByUsername(username);
 
         String password = encoder.encode(username.split("@")[0] + "1234");
-        String url = "http://localhost:8080"; /** 추후 주소 변경 필요 **/
+        String url = "http://i7c201.p.ssafy.io:8080"; /** 추후 주소 변경 필요 **/
 
         if(member.isEmpty()) {
             // 유저 객체 만들기
@@ -82,7 +82,7 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
             /** 추후 사용자 페이지로 리다이렉트 필요 **/
             // 사용자 수정 페이지로 리다이렉트 URL
 //            url = "http://localhost:8080/user/update";
-//            url = "http://i7c201.p.ssafy.io:8081/user/register";
+//            url = "http://i7c201.p.ssafy.io:8080/user/register";
         } else {
             // 메인페이지로 redirect URL
             nickname = member.get().getNickname();

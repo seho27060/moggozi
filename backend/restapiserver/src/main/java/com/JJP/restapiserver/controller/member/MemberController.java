@@ -43,6 +43,13 @@ public class MemberController {
         return memberService.register(signUpRequest);
     }
 
+    /** 회원탈퇴 */
+    @PostMapping("/delete")
+    public ResponseEntity<?> deleteUser(@Valid @RequestBody DeleteUserRequest deleteUserRequest, HttpServletRequest request) {
+        Long user_id = jwtUtils.getUserIdFromJwtToken(request.getHeader("Authorization"));
+        return memberService.delete(deleteUserRequest.getPassword(), user_id);
+    }
+
     /** username(이메일) 중복 체크 */
     @PostMapping("/idcheck/{username}")
     public ResponseEntity<?> usernameCheck(@PathVariable String username) {
@@ -99,7 +106,7 @@ public class MemberController {
     /** 비밀번호 찾기 - 리셋 */
     @PostMapping("/resetpw")
     public ResponseEntity<?> resetPassword(@RequestBody PasswordRequest request) {
-        return memberService.resetPassword(request.getUsername());
+        return memberService.resetPassword(request);
     }
 
     /** 타유저 정보 획득하기 */

@@ -14,9 +14,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 // Setter를 쓰지 말아야 할 이유
 // 어디에서나 수정가능하게끔 열어놓으면 안 됨
@@ -61,8 +59,8 @@ public class Member {
     // 마이페이지 공개 여부 - 0: false, 1: true - 정호진
     private int is_private;
 
-    @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "role_id")
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "role_id", referencedColumnName = "role_id")
     private Role role;
 
     @OneToMany(mappedBy = "member")
@@ -84,13 +82,6 @@ public class Member {
         else
             this.role = role;
     }
-
-    // 팔로우, 팔로잉
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "follow",
-            joinColumns = @JoinColumn(name = "member_id"),
-            inverseJoinColumns = @JoinColumn(name = "following_id"))
-    private Set<Member> following = new HashSet<>();
 
     @OneToMany(mappedBy = "member")
     @JsonManagedReference
@@ -128,4 +119,7 @@ public class Member {
     @JsonManagedReference
     private List<MemberTag> memberTagList = new ArrayList<>();
 
+    public void updateRole(ERole role) {
+        this.role = new Role(role);
+    }
 }
