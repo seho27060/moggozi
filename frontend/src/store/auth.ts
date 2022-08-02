@@ -14,7 +14,7 @@ export interface UserInfo {
   img: string | null;
 }
 
-const initialToken = localStorage.getItem("accessToken");
+const initialToken = sessionStorage.getItem("accessToken");
 
 const initialAuthState: UserState = {
   userInfo: {
@@ -44,9 +44,9 @@ export const authSlice = createSlice({
       state.isLoggedIn = !!action.payload.accessToken;
     },
     logout: (state) => {
-      localStorage.removeItem("accessToken");
-      localStorage.removeItem("expiresAt");
-      localStorage.removeItem("id");
+      sessionStorage.removeItem("accessToken");
+      sessionStorage.removeItem("expiresAt");
+      sessionStorage.removeItem("id");
       Cookie.remove("refreshToken");
     },
     // 로그인 유지 관련 리듀서 // 로그인 유지 api 보고 수정해야함.

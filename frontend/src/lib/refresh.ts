@@ -10,8 +10,8 @@ import moment from "moment";
 
 const refresh = async (config: AxiosRequestConfig): Promise<AxiosRequestConfig> => {
   const refreshToken = Cookie.get("refreshToken");
-  const expireAt = localStorage.getItem("expiresAt");
-  let token = localStorage.getItem("accessToken");
+  const expireAt = sessionStorage.getItem("expiresAt");
+  let token = sessionStorage.getItem("accessToken");
 
   // 토큰이 만료되었고, refreshToken 이 저장되어 있을 때 => 토큰 만료 응답이 왔을 경우로 바꿔야 함
   if (moment(expireAt).diff(moment()) < 0 && refreshToken) {
@@ -23,8 +23,8 @@ const refresh = async (config: AxiosRequestConfig): Promise<AxiosRequestConfig> 
     const { data } = await axios.post(`${apiConfig.apiRoot}/user/refreshToken`, body);
 
     token = data.accessToken;
-    localStorage.setItem("accessToken", data.accessToken);
-    localStorage.setItem(
+    sessionStorage.setItem("accessToken", data.accessToken);
+    sessionStorage.setItem(
       "expiresAt",
       moment().add(1, "hour").format("yyyy-MM-DD HH:mm:ss")
     );
