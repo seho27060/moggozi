@@ -8,9 +8,9 @@ import lombok.*;
 @AllArgsConstructor
 @ToString
 public class ReviewRequestDto {
-    private String review_content;
+    private String reviewContent;
     private int rate;
-    private Long member_id;
-    private Long challenge_id;
+    private Long memberId;
+    private Long challengeId;
 
 }

@@ -38,7 +38,7 @@ public class Review extends BaseTimeEntity {
     private Member member;
 
     public void update(ReviewUpdateRequestDto reviewUpdateRequestDto) {
-        this.review_content = reviewUpdateRequestDto.getReview_content();
+        this.review_content = reviewUpdateRequestDto.getReviewContent();
         this.rate = reviewUpdateRequestDto.getRate();
     }
 }

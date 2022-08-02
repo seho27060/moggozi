@@ -6,7 +6,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ChallengeCompleteRequestDto {
-    public Long member_id;
-    public Long challenge_id;
+    public Long memberId;
+    public Long challengeId;
 
 }

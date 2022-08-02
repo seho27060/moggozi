@@ -14,12 +14,12 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ChallengeRequestDto {
-    private Long member_id;
+    private Long memberId;
     private String name;
-    private String challenge_img;
+    private String challengeImg;
     private String content;
     private int level;
-    private List<TagRequestDto> hobby = new ArrayList<>();
+    private List<TagRequestDto> hobbyList = new ArrayList<>();
     // 작성중, 등록 완료
     private int state;
     private String description;

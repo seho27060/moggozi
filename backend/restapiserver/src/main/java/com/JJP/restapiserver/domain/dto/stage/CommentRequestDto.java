@@ -10,10 +10,10 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CommentRequestDto {
-    Long stage_id;
+    Long stageId;
     String text;
     Long parent;
     int depth;
-    int comment_state;
+    int commentState;
 
 }

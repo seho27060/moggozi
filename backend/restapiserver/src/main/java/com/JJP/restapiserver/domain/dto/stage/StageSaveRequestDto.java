@@ -13,7 +13,7 @@ public class StageSaveRequestDto {
     private String name;
     private int period;
     private String content;
-    private String stage_img;
+    private String stageImg;
     private Long order;
 
     @Builder
@@ -21,7 +21,7 @@ public class StageSaveRequestDto {
         this.name = name;
         this.period = period;
         this.content = content;
-        this.stage_img = stage_img;
+        this.stageImg = stage_img;
         this.order = order;
     }
 
@@ -31,7 +31,7 @@ public class StageSaveRequestDto {
                 .name(name)
                 .period(period)
                 .content(content)
-                .stage_img(stage_img)
+                .stage_img(stageImg)
                 .post_order(order)
                 .challenge(challenge)
                 .build();
