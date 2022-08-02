@@ -52,7 +52,6 @@ public class MemberController {
         return memberService.login(loginRequest);
     }
 
-    //    @ApiOperation(value = "회원가입", notes = "사이트 내 정보를 등록하여 회원가입 합니다.")
     @Operation(summary = "회원가입", description = "username, password, nickname는 필수 입력 값 입니다.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = MessageResponse.class))),
@@ -65,7 +64,6 @@ public class MemberController {
         return memberService.register(signUpRequest);
     }
 
-    //    @ApiOperation(value = "회원탈퇴", notes = "회원 탈퇴 신청 시, 비밀번호가 필요하며 회원은 휴면처리 됩니다.")
     @Operation(summary = "회원탈퇴", description = "accessToken으로 사용자 정보를 얻고, 입력한 password와 일치 시 회원은 휴면처리 됩니다.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = MessageResponse.class))),
@@ -91,7 +89,6 @@ public class MemberController {
         return memberService.usernameCheck(username);
     }
 
-    //    @ApiOperation(value = "nickname 중복체크", notes = "동일한 nickname을 사용할 수 없습니다.")
     @Operation(summary = "닉네임 중복 체크", description = "nickname이 중복인지 여부를 판단합니다. 'nickcheck/' url 뒤, nickname을 입력하십시오.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = MessageResponse.class))),
@@ -117,7 +114,6 @@ public class MemberController {
         return ResponseEntity.ok(new MessageResponse("Log out successful"));
     }
 
-    //    @ApiOperation(value = "리프레시토큰 생성", notes = "accessToken 만료시, refreshToken을 발급받습니다. accessToken의 만료시간은 5시간입니다.")
     @Operation(summary = "리프레시토큰 생성", description = "refreshToken을 담아보내면, Token이 새로 생성되어 반환됩니다.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = TokenRefreshResponse.class))),
@@ -166,7 +162,6 @@ public class MemberController {
         return memberService.updatePassword(pwUpdateRequest, user_id);
     }
 
-    //    @ApiOperation(value = "비밀번호 찾기", notes = "사용자 이메일과, 성명을 정확히 입력해야 비밀번호 갱신이 가능합니다.")
     @Operation(summary = "비밀번호 업데이트", description = "사용자 이메일(username)과, 성명(fullname)을 정확히 입력해야 비밀번호 갱신이 가능합니다.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = MessageResponse.class))),
@@ -191,7 +186,6 @@ public class MemberController {
         return memberService.findUser(userId);
     }
 
-    //    @ApiOperation(value = "자신의 유저 정보 획득", notes = "회원정보 수저을 위한 자신의 개인 정보를 획득할 수 있습니다. ")
     @Operation(summary = "유저 정보(본인) 획득 - 회원정보 수정 시, 본인 정보 조회", description = "본인의 회원 정보를 알고 싶을 경우 accessToken을 통해 사용자 정보를 조회할 수 있습니다. ")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = MemberInfoResponse.class))),
