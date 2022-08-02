@@ -162,7 +162,7 @@ public class MemberController {
         return memberService.updatePassword(pwUpdateRequest, user_id);
     }
 
-    @Operation(summary = "비밀번호 업데이트", description = "사용자 이메일(username)과, 성명(fullname)을 정확히 입력해야 비밀번호 갱신이 가능합니다.")
+    @Operation(summary = "비밀번호 리셋", description = "사용자 이메일(username)과, 성명(fullname)을 정확히 입력해야 비밀번호 갱신이 가능합니다.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = MessageResponse.class))),
             @ApiResponse(responseCode = "400", description = "BAD REQUEST", content = @Content(schema = @Schema(implementation = MessageResponse.class))),
