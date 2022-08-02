@@ -1,17 +1,16 @@
 import React, { useRef } from "react";
-import { Hobby } from "../../store/challenge";
+import { useDispatch } from "react-redux";
+import { addHobby } from "../../store/challenge";
 
 const HobbyForm: React.FC = () => {
+  const dispatch = useDispatch();
   const hobbyInputRef = useRef<HTMLInputElement>(null);
-  const hobby: Hobby[] = [];
 
-  let order = 0
   function submitHandler(event: React.FormEvent) {
     event.preventDefault();
-    order += 1
+
     const enteredHobby = hobbyInputRef.current!.value;
-    hobby.push({"id": order, "name": enteredHobby})
-    console.log(hobby)
+    dispatch(addHobby(enteredHobby))
   }
   return <div>
     <h3>Hobby 생성</h3>

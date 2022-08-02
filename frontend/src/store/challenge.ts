@@ -1,10 +1,6 @@
+import { createSlice } from "@reduxjs/toolkit";
 import { UserInfo } from "./auth";
 import { Stage } from "./stage";
-
-export interface Hobby {
-  id: number | null;
-  name: string | null;
-}
 
 // 챌린지 리스트 정보
 export interface ChallengeItemState {
@@ -19,7 +15,6 @@ export interface ChallengeItemState {
   likeNum: number | null;
 }
 
-
 // 챌린지 디테일 정보
 export interface ChallengeDetailState {
   id: number | null;
@@ -29,11 +24,47 @@ export interface ChallengeDetailState {
   img: string | null;
   content: string | null;
   level: number | null;
-  userProgress: number | null;  
+  userProgress: number | null;
   writer: UserInfo;
   stageList: Stage[];
   likeNum: number | null;
   // 리뷰
-  // reviewList: 
+  // reviewList:
   hobbyList: Hobby[];
 }
+
+export interface HobbyState {
+  hobbyList: Hobby[];
+  hobbyCnt: number;
+}
+
+export interface Hobby {
+  id: number | null;
+  name: string | null;
+}
+
+const initialHobbyState: HobbyState = {
+  hobbyList: [],
+  hobbyCnt: 0,
+};
+
+export const hobbySlice = createSlice({
+  name: "hobby",
+  initialState: initialHobbyState,
+  reducers: {
+    addHobby(state, action) {
+      state.hobbyList.push({ id: state.hobbyCnt + 1, name: action.payload });
+      state.hobbyCnt = state.hobbyList.length
+    },
+    deleteHobby(state, action) {
+      state.hobbyList = state.hobbyList.filter(
+        (item) => action.payload !== item.id
+      );
+      state.hobbyCnt = state.hobbyList.length
+    },
+  },
+});
+
+export const { addHobby, deleteHobby } = hobbySlice.actions;
+
+export default hobbySlice.reducer;

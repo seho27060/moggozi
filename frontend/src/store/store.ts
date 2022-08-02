@@ -1,9 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import authReducer from './auth'
+import hobbyReducer from './challenge'
 
 export const store = configureStore({
   reducer: {
     auth: authReducer,
+    hobby: hobbyReducer,
   },
 });
 

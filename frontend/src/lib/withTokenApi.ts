@@ -43,6 +43,11 @@ export const fetchChallengeRankList = async () => {
     return data
 }
 
+export const challengeAdd = async () => {
+    const { data } = await withTokenApi.get('/challenge/save')
+    return data
+}
+
 // 스테이지 관련
 export const stageAdd = async (challenge_id:Number) => {
     const { data } = await withTokenApi.post(`/stage/${challenge_id}`)
