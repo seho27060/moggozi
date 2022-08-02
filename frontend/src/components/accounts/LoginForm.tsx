@@ -1,8 +1,9 @@
 import KakaoLogin from "./KakaoLogin";
 import NaverLogin from "./NaverLogin";
 import GoogleLogin from "./GoogleLogin";
+import EmailModal from "../ui/EmailModal"
 
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { loginApi } from "../../lib/generalApi";
@@ -13,6 +14,12 @@ import { login } from "../../store/auth";
 const LoginForm: React.FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  // 로그인 에러 시 alert 대신 modal
+  const [ loginModalOpen, setLoginModalOpen ] = useState(false)
+  const loginCloseModal = () => {
+    setLoginModalOpen(false)
+  }
 
   // input값 가져오기
   const inputEmail = useRef<HTMLInputElement>(null);
@@ -47,6 +54,7 @@ const LoginForm: React.FC = () => {
           navigate("/");
         })
         .catch((err) => {
+          setLoginModalOpen(true)
           console.log(err);
         });
     }
@@ -75,6 +83,11 @@ const LoginForm: React.FC = () => {
           </div>
           <button type="submit">Login</button>
         </form>
+        <React.Fragment>
+          <EmailModal open={loginModalOpen} close={loginCloseModal} header="로그인 에러">
+            <p>로그인 정보가 잘못되었습니다.</p>
+          </EmailModal>
+        </React.Fragment>
         <p>
           <KakaoLogin />
         </p>
