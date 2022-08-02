@@ -1,14 +1,15 @@
 import { UserInfo } from "./auth";
 
 export interface PostState {
-  postId : number|null,
-  memberId : number|null,
+  id : number|null,
   stageId : number|null,
   title : string|null,
   content: string|null,
-  postTime : Date|null,
-  updateTime : Date|null,
-  postImg : string|null
+  createdTime : Date|null,
+  modifiedTime : Date|null,
+  img : string|null,
+  writer : UserInfo,
+  likeCount : number|null,
 }
 
 // 스테이지에 포함된 postings 타입np

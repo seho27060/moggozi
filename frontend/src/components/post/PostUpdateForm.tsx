@@ -21,7 +21,7 @@ const PostUpdateForm: React.FC<{ post: PostState}> = ({ post }) => {
     post?.content as unknown as HTMLTextAreaElement
   );
   const postImgInputRef = useRef<HTMLInputElement>(
-    post?.postImg as unknown as HTMLInputElement
+    post?.img as unknown as HTMLInputElement
   );
 
 
