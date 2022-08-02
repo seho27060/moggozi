@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import HobbyList from "../../components/challenge/HobbyList";
+import StageList from "../../components/stage/StageList";
 import { fetchChallenge } from "../../lib/withTokenApi";
 import { ChallengeDetailState } from "../../store/challenge";
 
@@ -48,7 +49,7 @@ const ChallengeDetail: React.FC = () => {
           <p>챌린지 취미</p>
           <HobbyList hobbies={loadedChallenge!.hobbyList} />
           <p>스테이지</p>
-          {/* <StageList stages={loadedChallenge!.stageList}/> */}
+          <StageList stages={loadedChallenge!.stageList}/>
         </div>
       )}
     </div>
