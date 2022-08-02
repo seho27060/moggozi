@@ -25,7 +25,7 @@ public class ChallengeResponseDto {
     private int level;
     private List<StageResponseDto> stageList;
     private int likeNum;
-    private List<Review> reviewList;
+    private List<ReviewResponseDto> reviewList;
     private List<TagResponseDto> hobbyList;
     private int userProgress;
 
@@ -47,7 +47,12 @@ public class ChallengeResponseDto {
             this.stageList.add(stageResponseDto);
         }
         this.likeNum = challenge.getChallengeLikeList().size();
-        this.reviewList = challenge.getReviewList();
+        this.reviewList = new ArrayList<>();
+        for(int i = 0; i < challenge.getReviewList().size(); i++){
+            Review review = challenge.getReviewList().get(i);
+            ReviewResponseDto reviewResponseDto = new ReviewResponseDto(review);
+            this.reviewList.add(reviewResponseDto);
+        }
         this.hobbyList = new ArrayList<>();
         this.userProgress = 0;
         this.createdTime = challenge.getCreated_date();

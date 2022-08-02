@@ -41,13 +41,13 @@ public class Comment extends BaseTimeEntity {
 
     private int depth;
 
-    private int comment_state;
+    private int commentState;
 
     public void update(CommentRequestDto commentRequestDto)
     {
         this.text = commentRequestDto.getText();
         this.parent = commentRequestDto.getParent();
         this.depth = commentRequestDto.getDepth();
-        this.comment_state = commentRequestDto.getCommentState();
+        this.commentState = commentRequestDto.getCommentState();
     }
 }
