@@ -33,7 +33,7 @@ export const stageAdd = async (challenge_id:Number) => {
     return data
 }
 
-export const stageDelete = async (stage_id:Number) => {
+export const stageDelete = async (stage_id:Number | null) => {
     const { data } = await withTokenApi.delete(`/stage/${stage_id}`)
     return data
 }

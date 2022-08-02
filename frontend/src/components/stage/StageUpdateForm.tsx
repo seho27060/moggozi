@@ -1,11 +1,11 @@
 import { FormEvent, useRef } from "react";
 import { GoBackButton } from "../../layout/HistoryButton";
-import {Stage} from "../../store/stage"
+import {stage} from "../../store/stage"
 
 // 수정하기가 글쓴이가 수정할 수 있도록 해야함.
 
 
-const StageUpdateForm: React.FC<{ stage: Stage }> = ({ stage }) => {
+const StageUpdateForm: React.FC<{ stage: stage }> = ({ stage }) => {
   const contentInputRef = useRef<HTMLTextAreaElement>(
     stage.content as unknown as HTMLTextAreaElement
   );
@@ -16,7 +16,7 @@ const StageUpdateForm: React.FC<{ stage: Stage }> = ({ stage }) => {
     stage.name as unknown as HTMLInputElement
   );
   const stageImgInputRef = useRef<HTMLInputElement>(
-    stage.stage_img as unknown as HTMLInputElement
+    stage.stageImg as unknown as HTMLInputElement
   );
   const orderInputRef = useRef<HTMLInputElement>(
     stage.order as unknown as HTMLInputElement
@@ -24,14 +24,16 @@ const StageUpdateForm: React.FC<{ stage: Stage }> = ({ stage }) => {
 
   function stateUpdateHandler(event: FormEvent) {
     event.preventDefault();
-    const stageUpdateData: Stage = {
-      challenge_id: stage.challenge_id,
+    const stageUpdateData: stage = {
+      challengeId: stage.challengeId,
       content: contentInputRef.current!.value,
       name: nameInputRef.current!.value,
       order: Number(orderInputRef.current!.value),
       period: Number(periodInputRef.current!.value),
-      stage_id: stage.stage_id,
-      stage_img: stageImgInputRef.current!.value,
+      stageId: stage.stageId,
+      stageImg: stageImgInputRef.current!.value,
+      createTime : stage.createTime,
+      updateTime : stage.updateTime
     };
 
     // 수정 반영된 data를 api로 서버에 전달.
@@ -78,7 +80,7 @@ const StageUpdateForm: React.FC<{ stage: Stage }> = ({ stage }) => {
               type="text"
               required
               id="stage_img"
-              defaultValue={stage.stage_img as string | undefined}
+              defaultValue={stage.stageImg as string | undefined}
               ref={stageImgInputRef}
             />
           </div>

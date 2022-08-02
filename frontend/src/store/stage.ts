@@ -1,42 +1,28 @@
-import { postItem } from "./post";
+import { post, posting } from "./post";
 
-export interface Stage {
-  stage_id : number;
-  challenge_id: number | null;
-  name: string | null;
-  period: number | null;
-  content: string | null;
-  stage_img: string | undefined;
-  order: number | null;
-  children?: React.ReactNode;
+export interface stage {
+  stageId : number | null,
+  challengeId : number | null,
+  name : string | null,
+  period : number | null,
+  content : string | null,
+  stageImg : string | undefined,
+  createTime : number | null,
+  updateTime : number | null,
+  order : number | null,
 }
 
-export interface StageState {
-  stageInfo: Stage;
-}
-
-const initialState: StageState = {
-  stageInfo: {
-    stage_id: 0,
-    challenge_id: 0,
-    name: "",
-    period: 0,
-    content: "",
-    stage_img: "",
-    order: 0,
-  },
-};
-
-export interface StageDetailType {
-  stage_id: number;
-  challenge_id: number | null;
-  name: string | null;
-  period: number | null;
-  content: string | null;
-  stage_img: string | undefined;
-  order: number | null;
-  children?: React.ReactNode;
-  postings: postItem[];
+export interface stageDetail {
+  stageId : number | null,
+  challengeId : number | null,
+  name : string | null,
+  period : number | null,
+  content : string | null,
+  stageImg : string | undefined,
+  createTime : number | null,
+  updateTime : number | null,
+  order : number | null,
+  postings : posting[] | null
 }
 // export const stageSlice = createSlice({
 //     name : "stageInfo",

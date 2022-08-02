@@ -1,10 +1,10 @@
 import { useRef } from "react";
-import { Post } from "../../store/post";
+import { post } from "../../store/post";
 
-// 만약 post 값이 널값이면 -> 생성폼이니 빈칸으로
-// post가 값이 있다면 => 수정 폼이니 prop의 값으로 채워준다.
+// 생성폼 -> <PostForm post = {null}/>
+// 수정폼 -> <PostForm post = {수정할려는 포스트 데이터}/>
 
-const PostForm: React.FC<{ post: Post | null }> = ({ post }) => {
+const PostForm: React.FC<{ post: post | null }> = ({ post }) => {
   console.log(post);
 
   const titleInputRef = useRef<HTMLInputElement>(
@@ -14,16 +14,16 @@ const PostForm: React.FC<{ post: Post | null }> = ({ post }) => {
     post?.content as unknown as HTMLTextAreaElement
   );
   const memberIdInputRef = useRef<HTMLInputElement>(
-    post?.member_id as unknown as HTMLInputElement
+    post?.memberId as unknown as HTMLInputElement
   );
   const postIdInputRef = useRef<HTMLInputElement>(
-    post?.post_id as unknown as HTMLInputElement
+    post?.postId as unknown as HTMLInputElement
   );
   const postImgInputRef = useRef<HTMLInputElement>(
-    post?.post_img as unknown as HTMLInputElement
+    post?.postImg as unknown as HTMLInputElement
   );
   const stageIdInputRef = useRef<HTMLInputElement>(
-    post?.stage_id as unknown as HTMLInputElement
+    post?.stageId as unknown as HTMLInputElement
   );
 
   if (post === null) {
@@ -33,7 +33,7 @@ const PostForm: React.FC<{ post: Post | null }> = ({ post }) => {
   }
 
   return(<div>
-    
+
   </div>)
 };
 export default PostForm;
