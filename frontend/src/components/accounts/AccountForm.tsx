@@ -14,8 +14,13 @@ const AccountForm: React.FC = () => {
   const [ nicknameModalOpen, setNicknameModalOpen] = useState(false)
   const [ nicknameState, setNicknameState ] = useState(false)
 
+<<<<<<< HEAD
   console.log([emailState, nicknameState])
   
+=======
+  console.log(emailState)
+  console.log(nicknameState)
+>>>>>>> df87893 ([S07P12C201-242] [FE-허재영] feat: 중복확인 기능 추가 및 modal)
 
   const emailCloseModal = () => {
     setEmailModalOpen(false)
