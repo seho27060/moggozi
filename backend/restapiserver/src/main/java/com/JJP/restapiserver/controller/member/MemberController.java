@@ -109,12 +109,10 @@ public class MemberController {
             @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR")
     })
     @PostMapping("/logout")
-        public ResponseEntity<?> logoutUser(HttpServletRequest request) {
+    public ResponseEntity<?> logoutUser(HttpServletRequest request) {
         Long user_id = jwtUtils.getUserIdFromJwtToken(request.getHeader("Authorization"));
-        System.out.println("logout id*********************" + user_id);
-            refreshTokenService.deleteByMemberId(user_id);
-        return ResponseEntity.ok(new MessageResponse("Log out successful"));
-
+        refreshTokenService.deleteByMemberId(user_id);
+        return ResponseEntity.ok(new MessageResponse("Success: Log out"));
     }
 
     @Operation(summary = "리프레시토큰 생성", description = "refreshToken을 담아보내면, Token이 새로 생성되어 반환됩니다.")
