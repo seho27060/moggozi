@@ -11,7 +11,7 @@ const PostUpdateForm: React.FC<{ post: PostState}> = ({ post }) => {
   console.log(post);
 
   const userIdState = useSelector(
-    (state: RootState) => state.auth.userInfo.userId
+    (state: RootState) => state.auth.userInfo.id
   );
 
   const titleInputRef = useRef<HTMLInputElement>(
