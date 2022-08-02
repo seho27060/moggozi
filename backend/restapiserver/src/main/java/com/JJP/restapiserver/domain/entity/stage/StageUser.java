@@ -41,4 +41,5 @@ public class StageUser {
         this.joinTime = join_time;
         this.endTime = end_time;
     }
+    public void complete(){}
 }
