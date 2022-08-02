@@ -14,7 +14,7 @@ public class UpdateInfoResponse {
     private String fullname;
     private String nickname;
     private String introduce;
-    private String user_img;
-    private int is_private;
+    private String userImg;
+    private int isPrivate;
 
 }

@@ -86,9 +86,9 @@ public class MemberController {
     }
 
     /** 회원정보 수정 */
-    @PostMapping("/update/{user_id}")
-    public ResponseEntity<?> updateUser(@PathVariable Long user_id, @Valid @RequestBody UpdateUserRequest updateUserRequest) {
-        return memberService.update(user_id, updateUserRequest);
+    @PostMapping("/update/{userId}")
+    public ResponseEntity<?> updateUser(@PathVariable Long userId, @Valid @RequestBody UpdateUserRequest updateUserRequest) {
+        return memberService.update(userId, updateUserRequest);
     }
 
 //    @PostMapping("/validity")
@@ -110,9 +110,9 @@ public class MemberController {
     }
 
     /** 타유저 정보 획득하기 */
-    @GetMapping("/info/{user_id}")
-    public ResponseEntity<?> getUserInfo(@PathVariable Long user_id) {
-        return memberService.findUser(user_id);
+    @GetMapping("/info/{userId}")
+    public ResponseEntity<?> getUserInfo(@PathVariable Long userId) {
+        return memberService.findUser(userId);
     }
 
     /** 자신의 유저정보 획득하기 */

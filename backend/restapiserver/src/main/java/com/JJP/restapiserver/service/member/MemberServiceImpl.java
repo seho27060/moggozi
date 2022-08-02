@@ -231,8 +231,8 @@ public class MemberServiceImpl implements MemberService {
                 .fullname(member.get().getFullname())
                 .nickname(member.get().getNickname())
                 .introduce(member.get().getIntroduce())
-                .user_img(member.get().getUser_img())
-                .is_private(member.get().getIs_private()).build();
+                .userImg(member.get().getUser_img())
+                .isPrivate(member.get().getIs_private()).build();
 
         if (member.isEmpty()) {
             return ResponseEntity.badRequest().body(new MessageResponse("User information doesn't exist."));

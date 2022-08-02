@@ -71,7 +71,8 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
         Optional<Member> member = memberRepository.findByUsername(username);
 
         String password = encoder.encode(username.split("@")[0] + "1234");
-        String url = "http://i7c201.p.ssafy.io:8080"; /** 추후 주소 변경 필요 **/
+//        String url = "http://localhost:8080"; /** 추후 주소 변경 필요 **/
+        String url = "http://i7c201.p.ssafy.io:8080";
 
         if(member.isEmpty()) {
             // 유저 객체 만들기
