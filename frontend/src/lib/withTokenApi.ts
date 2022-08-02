@@ -6,7 +6,7 @@ const withTokenApi = axios.create({
     baseURL: apiConfig.apiRoot,
     headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem('accessToken')}`
+        Authorization: `Bearer ${sessionStorage.getItem('accessToken')}`
     },
     timeout: 10000,
     params: {},
