@@ -1,13 +1,13 @@
-import { posting } from "../../store/post";
+import { PostItemState } from "../../store/post";
 import PostItem from "./PostItem";
 
 
-const PostList: React.FC<{postings: posting[] | null}> = ({postings}) => {
+const PostList: React.FC<{posts: PostItemState[] | null}> = ({posts}) => {
   return (
   <div >
     PostList
-    {postings?.map((posting) => (
-        <PostItem key={posting.id} posting = {posting}/>
+    {posts?.map((post) => (
+        <PostItem key={post.id} post = {post}/>
     ))}
   </div>
   );

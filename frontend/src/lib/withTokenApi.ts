@@ -27,6 +27,17 @@ export const userDetail = async () => {
     return data
 }
 
+// 챌린지 관련
+export const fetchChallenge = async (id: string) => {
+    const { data } = await withTokenApi.get(`/challenge/${id}`)
+    return data
+}
+
+export const fetchChallengeRankList = async () => {
+    const { data } = await withTokenApi.get('/challenge/rank')
+    return data
+}
+
 // 스테이지 관련
 export const stageAdd = async (challenge_id:Number) => {
     const { data } = await withTokenApi.post(`/stage/${challenge_id}`)
@@ -59,10 +70,6 @@ export const postUpdate = async (post_id:Number) => {
     return data
 }
 
-export const fetchChallengeRankList = async () => {
-    const { data } = await withTokenApi.get('/challenge/rank')
-    return data
-}
 // 사용법 - 해당 axios는 기본적으로 토큰이 만료되었을 경우 refresh를 겸함.
 
 // GET

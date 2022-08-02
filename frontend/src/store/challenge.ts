@@ -1,5 +1,5 @@
-import { createSlice } from "@reduxjs/toolkit";
 import { UserInfo } from "./auth";
+import { Stage } from "./stage";
 
 export interface Hobby {
   id: number | null;
@@ -12,47 +12,28 @@ export interface ChallengeItemState {
   name: string | null;
   img: string | null;
   description: string | null;
-  hobbies: Hobby[];
+  hobbyList: Hobby[];
   writer: UserInfo;
   level: number | null;
   userProgress: number | null;
+  likeNum: number | null;
 }
 
-const initialChallengesRankState: ChallengeItemState[] = [];
-
-export const challengesSlice = createSlice({
-  name: "challenges",
-  initialState: initialChallengesRankState,
-  reducers: {
-    challengeCreate: (state, action) => {
-      state.push(action.payload);
-    },
-    challengeUpdate: (state, action) => {},
-    challengeDelete: (state, action) => {},
-  },
-});
 
 // 챌린지 디테일 정보
 export interface ChallengeDetailState {
   id: number | null;
-  create_time: string | null;
-  update_time: string | null;
+  createdTime: string | null;
+  modifiedTime: string | null;
+  name: string | null;
+  img: string | null;
+  content: string | null;
+  level: number | null;
+  userProgress: number | null;  
+  writer: UserInfo;
+  stageList: Stage[];
+  likeNum: number | null;
+  // 리뷰
+  // reviewList: 
+  hobbyList: Hobby[];
 }
-
-const initialChallengeDetailState: ChallengeDetailState[] = [];
-
-export const challengeSlice = createSlice({
-  name: "challenge",
-  initialState: initialChallengeDetailState,
-  reducers: {
-    challengeCreate: (state, action) => {
-      state.push(action.payload);
-    },
-    challengeUpdate: (state, action) => {},
-    challengeDelete: (state, action) => {},
-  },
-});
-
-export const { challengeCreate } = challengesSlice.actions;
-
-export default challengesSlice.reducer;
