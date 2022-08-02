@@ -2,6 +2,7 @@ package com.JJP.restapiserver.controller.challenge;
 
 
 import com.JJP.restapiserver.domain.dto.challenge.ChallengeCompleteRequestDto;
+import com.JJP.restapiserver.domain.dto.challenge.ChallengeListResponseDto;
 import com.JJP.restapiserver.domain.dto.challenge.ChallengeRequestDto;
 import com.JJP.restapiserver.domain.dto.challenge.ChallengeResponseDto;
 import com.JJP.restapiserver.domain.entity.challenge.Challenge;
@@ -32,16 +33,16 @@ public class ChallengeController {
                                                   HttpServletRequest request){
         Long user_id = jwtUtils.getUserIdFromJwtToken(request.getHeader("Authorization"));
         System.out.println("***************** jwt TOken: " + request.getHeader("Authorization"));
-        List<ChallengeResponseDto> challengeList = challengeService.getChallengeListByHobby(hobby, user_id);
-        return new ResponseEntity<List<ChallengeResponseDto>>(challengeList,HttpStatus.OK);
+        List<ChallengeListResponseDto> challengeList = challengeService.getChallengeListByHobby(hobby, user_id);
+        return new ResponseEntity<List<ChallengeListResponseDto>>(challengeList,HttpStatus.OK);
     }
 
     @GetMapping("/search/{keyword}")
     public ResponseEntity getChallengeListByKeyword(@PathVariable String keyword, HttpServletRequest request)
     {
         Long member_id = jwtUtils.getUserIdFromJwtToken(request.getHeader("Authorization"));
-        List<ChallengeResponseDto> challengeList = challengeService.getChallengeListByKeyword(keyword, member_id);
-        return new ResponseEntity<List<ChallengeResponseDto>>(challengeList, HttpStatus.OK);
+        List<ChallengeListResponseDto> challengeList = challengeService.getChallengeListByKeyword(keyword, member_id);
+        return new ResponseEntity<List<ChallengeListResponseDto>>(challengeList, HttpStatus.OK);
     }
 
     @GetMapping("/rank")
@@ -49,7 +50,7 @@ public class ChallengeController {
     {
         Long member_id = jwtUtils.getUserIdFromJwtToken(request.getHeader("Authorization"));
 
-        List<ChallengeResponseDto> challengeList = challengeService.getChallengeListByLike(member_id);
+        List<ChallengeListResponseDto> challengeList = challengeService.getChallengeListByLike(member_id);
         return new ResponseEntity(challengeList, HttpStatus.OK);
     }
 
