@@ -1,17 +1,24 @@
 package com.JJP.restapiserver.domain.entity.challenge;
 
+import com.JJP.restapiserver.domain.dto.challenge.ReviewUpdateRequestDto;
 import com.JJP.restapiserver.domain.entity.BaseTimeEntity;
 import com.JJP.restapiserver.domain.entity.member.Member;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Review extends BaseTimeEntity {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
 
     @Column(length = 20)
@@ -20,23 +27,18 @@ public class Review extends BaseTimeEntity {
     // 1점부터 5점까지
     private int rate;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "challenge_id")
-//    private Challenge challenge;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "challenge_id")
+    @JsonBackReference
+    private Challenge challenge;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
+    @JsonBackReference
     private Member member;
 
-    @Builder
-    public Review(Long id, String review_content, int rate, Member member) {
-        this.id = id;
-        this.review_content = review_content;
-        this.rate = rate;
-        this.member = member;
-    }
-
-    public Review() {
-
+    public void update(ReviewUpdateRequestDto reviewUpdateRequestDto) {
+        this.review_content = reviewUpdateRequestDto.getReview_content();
+        this.rate = reviewUpdateRequestDto.getRate();
     }
 }

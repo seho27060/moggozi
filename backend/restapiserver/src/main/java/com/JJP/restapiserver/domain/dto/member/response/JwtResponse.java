@@ -1,5 +1,6 @@
 package com.JJP.restapiserver.domain.dto.member.response;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -9,22 +10,21 @@ import lombok.Setter;
 @NoArgsConstructor
 public class JwtResponse {
 
-    private String token;
+    private String accessToken;
     private String type = "Bearer";
     private String refreshToken;
     private Long id;
     private String username; // email
-    private String fullname;
-    private Long role;
+    private String nickname;
 
-    public JwtResponse(String token, String refreshToken, Long id, String username
-            , String fullname, Long role) {
-        this.token = token;
+    @Builder
+    public JwtResponse(String accessToken, String refreshToken, Long id, String username
+            , String nickname) {
+        this.accessToken = accessToken;
         this.refreshToken = refreshToken;
         this.id = id;
         this.username = username;
-        this.fullname = fullname;
-        this.role = role;
+        this.nickname = nickname;
     }
 
 

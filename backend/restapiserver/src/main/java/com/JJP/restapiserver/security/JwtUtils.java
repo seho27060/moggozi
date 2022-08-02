@@ -1,10 +1,13 @@
 package com.JJP.restapiserver.security;
 
+import com.JJP.restapiserver.repository.member.MemberRepository;
 import io.jsonwebtoken.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseCookie;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -19,6 +22,9 @@ public class JwtUtils {
 
     @Value("${jwt.refreshExpirationInMs}")
     private int jwtRefreshMs;
+
+    @Autowired
+    MemberRepository memberRepository;
 
     @Value("${jwt.cookieName}")
     private String jwtCookie;
@@ -53,19 +59,23 @@ public class JwtUtils {
     }
 
     // User의 정보를 이용하여 토큰 만들기
-    public String generateJwtToken(UserDetailsImpl userPrincipal) {
+    public String generateJwtToken(UserDetails userPrincipal) {
       return generateTokenFromUsername(userPrincipal.getUsername());
     }
 
-    // 쿠키 삭제
-    public ResponseCookie getCleanJwtCookie() {
-        ResponseCookie cookie = ResponseCookie.from(jwtCookie, null).path("/").build();
-        return cookie;
+    public String generateOAuthJwtToken(OAuth2User userPrincipal) {
+        return generateTokenFromUsername(userPrincipal.getName());
     }
 
     // 토큰으로부터 사용자 이름 얻기
     public String getUserNameFromJwtToken(String token) {
         return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().getSubject();
+    }
+
+    public Long getUserIdFromJwtToken(String token) {
+        token = token.substring(7);
+        String username = getUserNameFromJwtToken(token);
+        return memberRepository.findByUsername(username).get().getId();
     }
 
 }

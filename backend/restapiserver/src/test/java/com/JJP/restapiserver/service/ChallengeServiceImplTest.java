@@ -2,8 +2,9 @@ package com.JJP.restapiserver.service;
 
 import com.JJP.restapiserver.domain.entity.challenge.Challenge;
 import com.JJP.restapiserver.domain.entity.member.Member;
-import com.JJP.restapiserver.repository.ChallengeRepository;
-import com.JJP.restapiserver.repository.MemberRepository;
+import com.JJP.restapiserver.repository.challenge.ChallengeRepository;
+import com.JJP.restapiserver.repository.member.MemberRepository;
+import com.JJP.restapiserver.service.challenge.ChallengeService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

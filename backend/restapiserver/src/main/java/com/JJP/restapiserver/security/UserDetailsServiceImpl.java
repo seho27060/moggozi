@@ -1,7 +1,7 @@
 package com.JJP.restapiserver.security;
 
 import com.JJP.restapiserver.domain.entity.member.Member;
-import com.JJP.restapiserver.repository.MemberRepository;
+import com.JJP.restapiserver.repository.member.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -27,6 +27,4 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         // Member db에서 찾은 내용을 바탕으로 UserDetails 객체 만들어 반환하기
         return UserDetailsImpl.build(user);
     }
-
-
 }

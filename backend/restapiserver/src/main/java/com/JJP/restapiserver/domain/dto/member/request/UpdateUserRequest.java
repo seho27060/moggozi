@@ -1,14 +1,16 @@
 package com.JJP.restapiserver.domain.dto.member.request;
 
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class UpdateUserRequest {
 
     @NotBlank

@@ -2,11 +2,15 @@ package com.JJP.restapiserver.domain.entity.stage;
 
 import com.JJP.restapiserver.domain.entity.BaseTimeEntity;
 import com.JJP.restapiserver.domain.entity.challenge.Challenge;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Entity
@@ -21,7 +25,12 @@ public class Stage extends BaseTimeEntity {
     // 챌린지와 다대일 양방향 관계
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "challenge_id")
+    @JsonBackReference
     private Challenge challenge;
+
+    @OneToMany(mappedBy = "stage")
+    @JsonManagedReference
+    List<Comment> commentList = new ArrayList<>();
 
     @Column(length = 20)
     private String name;
@@ -41,6 +50,12 @@ public class Stage extends BaseTimeEntity {
         this.challenge = challenge;
         this.name = name;
         this.period = period;
+        this.content = content;
+        this.stage_img = stage_img;
+    }
+
+    public void update(String name, String content, String stage_img){
+        this.name = name;
         this.content = content;
         this.stage_img = stage_img;
     }

@@ -3,8 +3,8 @@ package com.JJP.restapiserver.service;
 import com.JJP.restapiserver.domain.entity.member.Member;
 import com.JJP.restapiserver.domain.entity.member.RefreshToken;
 import com.JJP.restapiserver.exception.TokenRefreshException;
-import com.JJP.restapiserver.repository.MemberRepository;
-import com.JJP.restapiserver.repository.RefreshTokenRepository;
+import com.JJP.restapiserver.repository.member.MemberRepository;
+import com.JJP.restapiserver.repository.member.RefreshTokenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -32,7 +32,6 @@ public class RefreshTokenService {
 
     // Refresh token 생성
     public RefreshToken createRefreshToken(Long memberId) {
-
         Member member = memberRepository.findById(memberId).get();
         Instant date = Instant.now().plusMillis(refreshTokenDurationMs);
         String token = UUID.randomUUID().toString();
