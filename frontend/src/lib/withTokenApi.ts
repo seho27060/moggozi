@@ -23,7 +23,7 @@ export const persistAuth = async () => {
 }
 
 export const userDetail = async () => {
-    const { data } = await withTokenApi.get(`/user/${localStorage.getItem('id')}`)
+    const { data } = await withTokenApi.get(`/user/myinfo`)
     return data
 }
 
