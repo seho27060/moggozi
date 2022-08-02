@@ -1,4 +1,4 @@
-import { ChallengeDetailState } from "../../store/challenge";
+// import { ChallengeDetailState } from "../../store/challenge";
 
 const ChallengeDetail: React.FC = () => {
   

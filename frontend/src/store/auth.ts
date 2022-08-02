@@ -39,7 +39,7 @@ export const authSlice = createSlice({
       state.userInfo = {
         userId: action.payload.id,
         nickname: action.payload.nickname,
-        userImg: action.payload.user_img,
+        userImg: action.payload.userImg,
       };
       state.isLoggedIn = !!action.payload.accessToken;
     },
@@ -54,7 +54,7 @@ export const authSlice = createSlice({
       state.userInfo = {
         userId: action.payload.id,
         nickname: action.payload.nickname,
-        userImg: action.payload.user_img,
+        userImg: action.payload.userImg,
       };
       state.isLoggedIn = !!initialToken;
     },
