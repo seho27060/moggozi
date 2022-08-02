@@ -29,22 +29,16 @@ public class StageUser {
     @JsonManagedReference
     private Stage stage;
 
-    private LocalDateTime join_time;
-    private LocalDateTime end_time;
-    private int state;
+    private LocalDateTime joinTime;
+
+    private LocalDateTime endTime;
 
     @Builder
     public StageUser(Long id, Member member, Stage stage, LocalDateTime join_time, LocalDateTime end_time, int state) {
         this.id = id;
         this.member = member;
         this.stage = stage;
-        this.join_time = join_time;
-        this.end_time = end_time;
-        this.state = state;
-    }
-
-    public void complete(){
-        this.end_time = LocalDateTime.now();
-        this.state = 1;
+        this.joinTime = join_time;
+        this.endTime = end_time;
     }
 }

@@ -33,9 +33,9 @@ public class SignupRequest {
     private String introduce;
 
     @Size(max = 300)
-    private String user_img;
+    private String userImg;
 
-    private int is_private; // 0: 공개 X, 1: 공개 O
+    private int isPrivate; // 0: 공개 X, 1: 공개 O
 
 //    private Set<String> role;
 
