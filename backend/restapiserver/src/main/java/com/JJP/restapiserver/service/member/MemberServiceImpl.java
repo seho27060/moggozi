@@ -173,8 +173,8 @@ public class MemberServiceImpl implements MemberService {
      */
     @Override
     public ResponseEntity<?> usernameCheck(String username) {
-        if(memberRepository.existsByUsername(username)) {
-            return ResponseEntity.ok(new MessageResponse("Username is available."));
+        if(!memberRepository.existsByUsername(username)) {
+            return ResponseEntity.ok(new MessageResponse("Username is available"));
         } else {
             return ResponseEntity.badRequest().body(new MessageResponse("Error: Username(email) is already taken."));
         }
@@ -182,7 +182,7 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public ResponseEntity<?> nicknameCheck(String nickname) {
-        if(memberRepository.existsByUsername(nickname)) {
+        if(!memberRepository.existsByNickname(nickname)) {
             return ResponseEntity.ok(new MessageResponse("Nickname is available."));
         } else {
             return ResponseEntity.badRequest().body(new MessageResponse("Error: Nickname is already taken."));
