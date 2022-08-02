@@ -46,7 +46,7 @@ public class CommentServiceImpl implements CommentService{
                 .member(memberRepository.getById(member_id))
                 .parent(commentRequestDto.getParent())
                 .depth(commentRequestDto.getDepth())
-                .comment_state(commentRequestDto.getCommentState())
+                .commentState(commentRequestDto.getCommentState())
                 .build();
         commentRepository.save(comment);
         return new ResponseEntity(HttpStatus.OK);
