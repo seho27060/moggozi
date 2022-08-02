@@ -32,6 +32,7 @@ public class StageUser {
     private LocalDateTime joinTime;
 
     private LocalDateTime endTime;
+    private int state;
 
     @Builder
     public StageUser(Long id, Member member, Stage stage, LocalDateTime join_time, LocalDateTime end_time, int state) {
@@ -40,6 +41,10 @@ public class StageUser {
         this.stage = stage;
         this.joinTime = join_time;
         this.endTime = end_time;
+        this.state = state;
     }
-    public void complete(){}
+    public void complete(){
+        this.endTime = LocalDateTime.now();
+        this.state = 1;
+    }
 }
