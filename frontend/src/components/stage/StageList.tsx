@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { GoBackButton } from "../../layout/HistoryButton";
-import { stage } from "../../store/stage";
+import { Stage } from "../../store/stage";
 import StageItem from "./StageItem";
 
 // interface StagesProps {
@@ -9,7 +9,7 @@ import StageItem from "./StageItem";
 //   element?: React.ReactNode | null;
 // }
 
-const StageList: React.FC<{ stages: stage[] }> = ({ stages }) => {
+const StageList: React.FC<{ stages: Stage[] }> = ({ stages }) => {
   const navigator = useNavigate()
   const moveToStageAdd = () => {
 
@@ -21,11 +21,7 @@ const StageList: React.FC<{ stages: stage[] }> = ({ stages }) => {
     <div>
       <ul>
         {stages.map((stage) => (
-          <div style={{border : "solid", margin : "1rem"}}>
-            <Link to={`/stage/${stage.stageId}`} style={{color: 'inherit', textDecoration: 'none'}}>
-              <StageItem key={stage.stageId} stage={stage}/>
-            </Link>
-          </div>
+          <StageItem key={stage.id} stage={stage}/>
         ))}
       </ul>
       <GoBackButton/>

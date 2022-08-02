@@ -21,18 +21,7 @@ const MainPage: React.FC = () => {
 
         for (const key in res) {
           const challenge: ChallengeItemState = {
-            id: res[key].challenge_id,
-            name: res[key].name,
-            img: res[key].challenge_img,
-            description: res[key].content,
-            hobbies: res[key].tagList,
-            writer: {
-              nickname: res[key].writer.nickname,
-              userId: res[key].writer.id,
-              userImg: res[key].writer.userImg,
-            },
-            level: res[key].level,
-            userProgress: res[key].user_progress,
+            ...res[key],
           };
           challengeRankList.push(challenge);
         }

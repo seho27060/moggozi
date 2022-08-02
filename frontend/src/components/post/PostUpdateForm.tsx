@@ -1,13 +1,13 @@
 import { useRef } from "react";
 import { useSelector } from "react-redux";
-import { post } from "../../store/post";
+import { PostState } from "../../store/post";
 import { RootState } from "../../store/store";
 import { SendPost } from "./PostForm";
 
 // 생성폼 -> <PostUpdateForm post = {null}/>
 // 수정폼 -> <PostForm post = {수정할려는 포스트 데이터}/>
 
-const PostUpdateForm: React.FC<{ post: post}> = ({ post }) => {
+const PostUpdateForm: React.FC<{ post: PostState}> = ({ post }) => {
   console.log(post);
 
   const userIdState = useSelector(

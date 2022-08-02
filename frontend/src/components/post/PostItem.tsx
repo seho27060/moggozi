@@ -1,15 +1,15 @@
-import { posting } from "../../store/post";
+import { PostItemState } from "../../store/post";
+// import PostForm from "./PostForm";
 
-const PostItem: React.FC<{posting:posting}> = ({posting}) =>{
+const PostItem: React.FC<{post: PostItemState}> = ({post}) =>{
   return(
     <div style={{ border: "solid", margin: "1rem", padding: "1rem" }}>
-      {/* <p>포스팅 id : {posting.id}</p> */}
-      <p>포스팅 제목 : {posting.title}</p>
-      <p>포스팅 좋아요 수 : {posting.likeCount}</p>
-      <p>포스팅 이미지 : {posting.img}</p>
+      <p>포스팅 id : {post.id}</p>
+      <p>포스팅 제목 : {post.title}</p>
+      <p>포스팅 좋아요 수 : {post.likeCount}</p>
+      <p>포스팅 이미지 : {post.img}</p>
       <div>
-      {/* <p>포스팅 작성자 id : {posting.writer.id}</p> */}
-      <p>포스팅 작성자 이름 : {posting.writer.name}</p>
+      <p>포스팅 작성자 이름 : {post.writer.nickname}</p>
       </div>
     </div>
    

@@ -1,7 +1,6 @@
 import { useRef } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
-import { stage } from "../../store/stage";
 
 export interface SendPost  {
   memberId : number | null,
@@ -11,7 +10,7 @@ export interface SendPost  {
   postImg : string|undefined
 }
 
-const PostForm: React.FC<{ stage:stage }> = ({ stage }) => {
+const PostForm: React.FC<{ stageId:number }> = ({ stageId }) => {
 
   const userIdState = useSelector(
     (state: RootState) => state.auth.userInfo.userId
@@ -27,7 +26,7 @@ const PostForm: React.FC<{ stage:stage }> = ({ stage }) => {
     title : titleInputRef.current!.value,
     content : contentInputRef.current!.value,
     postImg : postImgInputRef.current?.value,
-    stageId : stage.stageId
+    stageId : stageId
   }
   const postingSubmitHandler = () => {
     // 위의 PostData를 posting 등록하기 api로 보내기
@@ -37,6 +36,7 @@ const PostForm: React.FC<{ stage:stage }> = ({ stage }) => {
 
   return(
   <div>
+    {/* 챌린지이름, 스테이지 이름 prop으로 추가로 받아오기 */}
     <form>
       <label htmlFor="title">제목</label>
       <input type="text" id="title" ref={titleInputRef}/>

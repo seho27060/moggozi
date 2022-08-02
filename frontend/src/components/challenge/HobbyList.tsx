@@ -1,4 +1,3 @@
-import { Fragment } from "react";
 import { Hobby } from "../../store/challenge";
 import HobbyItem from "./HobbyItem";
 
