@@ -27,6 +27,7 @@ const LoginForm: React.FC = () => {
 
   // 현재 페이지에서 login 버튼
   function loginHandler(event: React.FormEvent) {
+    Cookie.remove("refreshToken")
     event.preventDefault();
 
     // 입력된 input값 변수에 담기
@@ -44,9 +45,9 @@ const LoginForm: React.FC = () => {
       loginApi(option)
         .then((res) => {
           dispatch(login(res));
-          localStorage.setItem("accessToken", res.accessToken);
-          localStorage.setItem("id", res.id);
-          localStorage.setItem(
+          sessionStorage.setItem("accessToken", res.accessToken);
+          sessionStorage.setItem("id", res.id);
+          sessionStorage.setItem(
             "expiresAt",
             moment().add(1, "hour").format("yyyy-MM-DD HH:mm:ss")
           );
@@ -61,7 +62,7 @@ const LoginForm: React.FC = () => {
   }
 
   // 이미 로그인해 있을 경우 메인페이지로 이동시킴
-  const token = localStorage.getItem("accessToken");
+  const token = sessionStorage.getItem("accessToken");
   useEffect(() => {
     if (token) {
       navigate("/");

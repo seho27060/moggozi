@@ -1,5 +1,4 @@
-import type { RootState } from "../../store/store";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { logoutApi } from "../../lib/withTokenApi";
 import { logout } from "../../store/auth";
