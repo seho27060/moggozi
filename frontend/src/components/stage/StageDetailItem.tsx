@@ -2,30 +2,10 @@
 
 import { GoBackButton } from "../../layout/HistoryButton";
 import { Link } from "react-router-dom";
-import { useState } from "react";
-import { useCallback } from "react";
 import PostList from "../post/PostList";
 import { Stage } from "../../store/stage";
-import { stageDelete } from "../../lib/withTokenApi";
 
 const StageDetailItem: React.FC<{ stage: Stage }> = ({ stage }) => {
-  const [isOpenModal, setOpenModal] = useState<boolean>(false);
-
-  const OnClickToggleModal = useCallback(() => {
-    console.log(isOpenModal);
-    setOpenModal(!isOpenModal);
-  }, [isOpenModal]);
-
-  function removeHandler() {
-    console.log("현재 스테이지를 삭제합니다.");
-    stageDelete(stage.id)
-      .then((res) => {
-        console.log("삭제 성공", res);
-      })
-      .catch((err) => {
-        console.log("삭제 실패", err);
-      });
-  }
 
   return (
     <div>
@@ -50,14 +30,7 @@ const StageDetailItem: React.FC<{ stage: Stage }> = ({ stage }) => {
         >
           <button>수정하기</button>
         </Link>
-        <button onClick={OnClickToggleModal}>삭제하기</button>
-        {isOpenModal && (
-          <div>
-            정말 삭제하시겠습니까?
-            <button onClick={removeHandler}>삭제</button>
-            <button onClick={OnClickToggleModal}>취소</button>
-          </div>
-        )}
+        {/* 삭제하기 버튼 필요 */}
       </div>
     </div>
   );
