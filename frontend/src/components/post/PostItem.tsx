@@ -1,4 +1,4 @@
-import { postItem } from "../../pages/stage/StageDetail";
+import { postItem } from "../../store/post";
 
 const PostItem: React.FC<{posting:postItem}> = ({posting}) =>{
   return(

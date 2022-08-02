@@ -1,5 +1,15 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { Stage } from "../pages/stage/StageMain";
+import { postItem } from "./post";
+
+export interface Stage {
+  stage_id : number;
+  challenge_id: number | null;
+  name: string | null;
+  period: number | null;
+  content: string | null;
+  stage_img: string | undefined;
+  order: number | null;
+  children?: React.ReactNode;
+}
 
 export interface StageState {
   stageInfo: Stage;
@@ -17,23 +27,33 @@ const initialState: StageState = {
   },
 };
 
+export interface StageDetailType {
+  stage_id: number;
+  challenge_id: number | null;
+  name: string | null;
+  period: number | null;
+  content: string | null;
+  stage_img: string | undefined;
+  order: number | null;
+  children?: React.ReactNode;
+  postings: postItem[];
+}
+// export const stageSlice = createSlice({
+//     name : "stageInfo",
+//     initialState,
+//     reducers: {
+//         stageAdd : () => {
 
-export const stageSlice = createSlice({
-    name : "stageInfo",
-    initialState,
-    reducers: {
-        stageAdd : () => {
+//         },
+//         stageRemove : () => {
 
-        },
-        stageRemove : () => {
+//         },
+//         stageUpdate : () => {
 
-        },
-        stageUpdate : () => {
+//         }
+//     }
+// })
 
-        }
-    }
-})
+// export const { stageAdd, stageRemove, stageUpdate } = stageSlice.actions
 
-export const { stageAdd, stageRemove, stageUpdate } = stageSlice.actions
-
-export default stageSlice.reducer
+// export default stageSlice.reducer

@@ -1,4 +1,4 @@
-import { postItem } from "../../pages/stage/StageDetail";
+import { postItem } from "../../store/post";
 import PostItem from "./PostItem";
 
 

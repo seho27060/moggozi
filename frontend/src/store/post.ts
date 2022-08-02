@@ -27,7 +27,18 @@ const initialState: PostState = {
     post_img : ""
   }
 }
+export interface postWriter {
+  id: number;
+  name: string | null;
+}
 
+export interface postItem {
+  id: number;
+  title: string | null;
+  like_count: number | null;
+  img: string | null;
+  writer: postWriter;
+}
 export const postSlice = createSlice({
   name: 'postInfo',
   initialState,
