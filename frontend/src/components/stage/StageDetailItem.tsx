@@ -40,7 +40,7 @@ const StageDetailItem: React.FC<{ stage: stageDetail }> = ({ stage }) => {
         <img src={stage.stageImg} alt="img" />
       </div>
       <div style={{ border: "solid", margin: "1rem", padding: "1rem" }}>
-        <PostList postings={stage.postings} />
+        <PostList postings={stage.postings}/>
       </div>
       <div style={{ border: "solid", margin: "1rem", padding: "1rem" }}>
         <GoBackButton />
