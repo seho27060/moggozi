@@ -27,8 +27,8 @@ export const userDetail = async () => {
     return data
 }
 
-export const logoutApi = async (option: object) => {
-    const { data } = await withTokenApi.post('/user/logout', option)
+export const logoutApi = async () => {
+    const { data } = await withTokenApi.post('/user/logout')
     return data
 }
 
