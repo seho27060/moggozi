@@ -41,12 +41,12 @@ public class CommentServiceImpl implements CommentService{
     @Override
     public ResponseEntity registerComment(CommentRequestDto commentRequestDto, Long member_id) {
         Comment comment = Comment.builder()
-                .stage(stageRepository.getById(commentRequestDto.getStage_id()))
+                .stage(stageRepository.getById(commentRequestDto.getStageId()))
                 .text(commentRequestDto.getText())
                 .member(memberRepository.getById(member_id))
                 .parent(commentRequestDto.getParent())
                 .depth(commentRequestDto.getDepth())
-                .comment_state(commentRequestDto.getComment_state())
+                .comment_state(commentRequestDto.getCommentState())
                 .build();
         commentRepository.save(comment);
         return new ResponseEntity(HttpStatus.OK);

@@ -23,16 +23,16 @@ public class PostServiceImpl implements PostService {
     @Transactional
     @Override
     public Long savePost(PostSaveRequestDto postSaveRequestDto) {
-        return postRepository.save(postSaveRequestDto.toEntity(memberRepository.getById(postSaveRequestDto.getMember_id()), stageRepository.getById(postSaveRequestDto.getStage_id()))).getId();
+        return postRepository.save(postSaveRequestDto.toEntity(memberRepository.getById(postSaveRequestDto.getMemberId()), stageRepository.getById(postSaveRequestDto.getStageId()))).getId();
     }
 
     @Transactional
     @Override
     public Long updatePost(PostUpdateRequestDto postUpdateRequestDto) {
-        Long post_id = postUpdateRequestDto.getPost_id();
+        Long post_id = postUpdateRequestDto.getPostId();
         Post entity = postRepository.findById(post_id).orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + post_id));
 
-        entity.update(postUpdateRequestDto.getTitle(), postUpdateRequestDto.getContent(), postUpdateRequestDto.getPost_img());
+        entity.update(postUpdateRequestDto.getTitle(), postUpdateRequestDto.getContent(), postUpdateRequestDto.getPostImg());
 
         return post_id;
     }

@@ -22,8 +22,8 @@ public class ChallengeLikeServiceImpl implements ChallengeLikeService{
     public ResponseEntity like(ChallengeLikeRequestDto challengeLikeRequestDto) {
 
         ChallengeLike challengeLike = ChallengeLike.builder()
-                .member(memberRepository.getById(challengeLikeRequestDto.getMember_id()))
-                .challenge(challengeRepository.getById(challengeLikeRequestDto.getChallenge_id()))
+                .member(memberRepository.getById(challengeLikeRequestDto.getMemberId()))
+                .challenge(challengeRepository.getById(challengeLikeRequestDto.getChallengeId()))
                 .build();
         challengeLikeRepository.save(challengeLike);
         return new ResponseEntity(HttpStatus.OK);
@@ -31,8 +31,8 @@ public class ChallengeLikeServiceImpl implements ChallengeLikeService{
 
     @Override
     public ResponseEntity unlike(ChallengeLikeRequestDto challengeLikeRequestDto) {
-        ChallengeLike challengeLike = challengeLikeRepository.findByMember_idAndChallenge_id(challengeLikeRequestDto.getMember_id(),
-                challengeLikeRequestDto.getChallenge_id()).get();
+        ChallengeLike challengeLike = challengeLikeRepository.findByMember_idAndChallenge_id(challengeLikeRequestDto.getMemberId(),
+                challengeLikeRequestDto.getChallengeId()).get();
         challengeLikeRepository.delete(challengeLike);
         return new ResponseEntity(HttpStatus.OK);
     }

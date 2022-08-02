@@ -26,10 +26,10 @@ public class ReviewServiceImpl implements ReviewService{
     @Override
     public ResponseEntity registerReview(ReviewRequestDto reviewRequestDto) {
         Review review = Review.builder()
-                .review_content(reviewRequestDto.getReview_content())
+                .review_content(reviewRequestDto.getReviewContent())
                 .rate(reviewRequestDto.getRate())
-                .challenge(challengeRepository.getById(reviewRequestDto.getChallenge_id()))
-                .member(memberRepository.getById(reviewRequestDto.getMember_id()))
+                .challenge(challengeRepository.getById(reviewRequestDto.getChallengeId()))
+                .member(memberRepository.getById(reviewRequestDto.getMemberId()))
                 .build();
         reviewRepository.save(review);
         return new ResponseEntity(HttpStatus.OK);
@@ -43,7 +43,7 @@ public class ReviewServiceImpl implements ReviewService{
 
     @Override
     public ResponseEntity updateReview(ReviewUpdateRequestDto reviewUpdateRequestDto) {
-        Review review = reviewRepository.getById(reviewUpdateRequestDto.getReview_id());
+        Review review = reviewRepository.getById(reviewUpdateRequestDto.getReviewId());
         review.update(reviewUpdateRequestDto);
         reviewRepository.save(review);
         return new ResponseEntity(HttpStatus.OK);
