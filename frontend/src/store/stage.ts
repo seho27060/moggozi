@@ -12,23 +12,3 @@ export interface Stage {
   postOrder : number | null,
   postList: PostItemState[] | null,
 }
-
-// export const stageSlice = createSlice({
-//     name : "stageInfo",
-//     initialState,
-//     reducers: {
-//         stageAdd : () => {
-
-//         },
-//         stageRemove : () => {
-
-//         },
-//         stageUpdate : () => {
-
-//         }
-//     }
-// })
-
-// export const { stageAdd, stageRemove, stageUpdate } = stageSlice.actions
-
-// export default stageSlice.reducer
