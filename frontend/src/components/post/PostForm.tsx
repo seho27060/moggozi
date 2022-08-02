@@ -13,7 +13,7 @@ export interface SendPost  {
 const PostForm: React.FC<{ stageId:number }> = ({ stageId }) => {
 
   const userIdState = useSelector(
-    (state: RootState) => state.auth.userInfo.userId
+    (state: RootState) => state.auth.userInfo.id
   );
 
   const titleInputRef = useRef<HTMLInputElement>(null);
