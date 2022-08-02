@@ -1,5 +1,5 @@
 import React from "react";
-import { Stage } from "../../pages/stage/StageMain";
+import { Stage } from "../../store/stage";
 
 // interface StageProps {
 //   stage:{

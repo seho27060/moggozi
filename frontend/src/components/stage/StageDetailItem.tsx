@@ -4,9 +4,9 @@ import { GoBackButton } from "../../layout/HistoryButton";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useCallback } from "react";
-import Modal from "../ui/Modal";
 import PostList from "../post/PostList";
-import { StageDetailType } from "../../pages/stage/StageDetail";
+import { StageDetailType } from "../../store/stage";
+import { stageDelete } from "../../lib/withTokenApi";
 
 const StageDetailItem: React.FC<{ stage: StageDetailType }> = ({ stage }) => {
   const [isOpenModal, setOpenModal] = useState<boolean>(false);
@@ -16,11 +16,17 @@ const StageDetailItem: React.FC<{ stage: StageDetailType }> = ({ stage }) => {
     setOpenModal(!isOpenModal);
   }, [isOpenModal]);
 
-  function removeHandler () {
-    console.log("현재 스테이지를 삭제합니다.")
-    return <div></div>;
-  };
-  
+  function removeHandler() {
+    console.log("현재 스테이지를 삭제합니다.");
+    stageDelete(stage.stage_id)
+      .then((res) => {
+        console.log("삭제 성공", res);
+      })
+      .catch((err) => {
+        console.log("삭제 실패", err);
+      });
+  }
+
   return (
     <div>
       StageDetail
@@ -34,10 +40,10 @@ const StageDetailItem: React.FC<{ stage: StageDetailType }> = ({ stage }) => {
         <img src={stage.stage_img} alt="img" />
       </div>
       <div style={{ border: "solid", margin: "1rem", padding: "1rem" }}>
-        <PostList postings= {stage.postings}/>
+        <PostList postings={stage.postings} />
       </div>
       <div style={{ border: "solid", margin: "1rem", padding: "1rem" }}>
-      <GoBackButton />
+        <GoBackButton />
         <Link
           to={`/stage/${stage.stage_id}/update`}
           style={{ color: "inherit", textDecoration: "none" }}
@@ -46,13 +52,11 @@ const StageDetailItem: React.FC<{ stage: StageDetailType }> = ({ stage }) => {
         </Link>
         <button onClick={OnClickToggleModal}>삭제하기</button>
         {isOpenModal && (
-          <Modal>
-            <div>
-              정말 삭세하시겠습니까?
-              <button onClick={removeHandler}>삭제</button>
-              <button onClick={OnClickToggleModal}>취소</button>
-            </div>
-          </Modal>
+          <div>
+            정말 삭세하시겠습니까?
+            <button onClick={removeHandler}>삭제</button>
+            <button onClick={OnClickToggleModal}>취소</button>
+          </div>
         )}
       </div>
     </div>

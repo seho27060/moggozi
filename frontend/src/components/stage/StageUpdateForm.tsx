@@ -1,18 +1,9 @@
 import { FormEvent, useRef } from "react";
 import { GoBackButton } from "../../layout/HistoryButton";
-import { Stage } from "../../pages/stage/StageMain";
+import {Stage} from "../../store/stage"
+
 // 수정하기가 글쓴이가 수정할 수 있도록 해야함.
 
-// interface updateStageState {
-//   stage_id: number;
-//   challenge_id: number | null;
-//   name: string | null;
-//   period: number | null;
-//   content: string | null;
-//   stage_img: string | undefined;
-//   order: number | null;
-//   children?: React.ReactNode;
-// }
 
 const StageUpdateForm: React.FC<{ stage: Stage }> = ({ stage }) => {
   const contentInputRef = useRef<HTMLTextAreaElement>(

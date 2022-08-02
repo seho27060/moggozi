@@ -32,8 +32,8 @@ import PostNew from "./pages/post/PostNew";
 import PostUpdate from "./pages/post/PostUpdate";
 
 // Stage
-import StageMain from "./pages/stage/StageMain";
-import StageDetail from "./pages/stage/StageDetail";
+// import StageMain from "./pages/stage/StageMain";
+// import StageDetail from "./pages/stage/StageDetail";
 import StageNew from "./pages/stage/StageNew";
 import StageUpdate from "./pages/stage/StageUpdate";
 
@@ -145,14 +145,14 @@ export default function Router() {
       path: "/stage",
       element: <StageLayout />,
       children: [
-        {
-          path: "",
-          element: <StageMain />,
-        },
-        {
-          path: ":id",
-          element: <StageDetail />,
-        },
+        // {
+        //   path: "",
+        //   element: <StageMain />,
+        // },
+        // {
+        //   path: ":id",
+        //   element: <StageDetail />,
+        // },
         {
           path: ":id/update",
           element: <StageUpdate />,
