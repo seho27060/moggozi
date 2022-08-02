@@ -14,8 +14,8 @@ const AccountForm: React.FC = () => {
   const [ nicknameModalOpen, setNicknameModalOpen] = useState(false)
   const [ nicknameState, setNicknameState ] = useState(false)
 
-  console.log(emailState)
-  console.log(nicknameState)
+  console.log([emailState, nicknameState])
+  
 
   const emailCloseModal = () => {
     setEmailModalOpen(false)
