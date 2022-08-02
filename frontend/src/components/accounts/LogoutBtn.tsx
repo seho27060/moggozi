@@ -1,7 +1,7 @@
 import type { RootState } from "../../store/store";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { logoutApi } from "../../lib/generalApi";
+import { logoutApi } from "../../lib/withTokenApi";
 import { logout } from "../../store/auth";
 
 const LogoutBtn = () => {
@@ -9,13 +9,13 @@ const LogoutBtn = () => {
   const navigate = useNavigate();
 
   const userIdState = useSelector(
-    (state: RootState) => state.auth.userInfo.userId
+    (state: RootState) => state.auth.userInfo.id
   );
 
   const LogoutHandler = (event: React.MouseEvent) => {
     event.preventDefault();
     const option = {
-      "id": userIdState
+      id: userIdState
     }
     console.log(option)
     logoutApi(option)

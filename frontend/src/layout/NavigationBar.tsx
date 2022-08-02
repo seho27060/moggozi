@@ -40,7 +40,7 @@ const NavigationBar: React.FC = () => {
                 <LogoutBtn />
               </li>
               <li>
-                <NavLink to={`/user/${userState.userInfo.userId}`}>
+                <NavLink to={`/user/${userState.userInfo.id}`}>
                   {userState.userInfo.nickname}님의 MyPage
                 </NavLink>
               </li>

@@ -9,18 +9,18 @@ export interface UserState {
 
 // 중첩문 안의 객체도 모든 타입을 지정해줘야 한다.
 export interface UserInfo {
-  userId: number | null;
+  id: number | null;
   nickname: string | null;
-  userImg: string | null;
+  img: string | null;
 }
 
 const initialToken = localStorage.getItem("accessToken");
 
 const initialAuthState: UserState = {
   userInfo: {
-    userId: null,
+    id: null,
     nickname: null,
-    userImg: null,
+    img: null,
   },
   isLoggedIn: !!initialToken,
 };
@@ -37,9 +37,9 @@ export const authSlice = createSlice({
       // console.log("페이로드");
       // console.log(action.payload);
       state.userInfo = {
-        userId: action.payload.id,
+        id: action.payload.id,
         nickname: action.payload.nickname,
-        userImg: action.payload.userImg,
+        img: action.payload.userImg,
       };
       state.isLoggedIn = !!action.payload.accessToken;
     },
@@ -52,9 +52,9 @@ export const authSlice = createSlice({
     // 로그인 유지 관련 리듀서 // 로그인 유지 api 보고 수정해야함.
     authentication: (state, action) => {
       state.userInfo = {
-        userId: action.payload.id,
+        id: action.payload.id,
         nickname: action.payload.nickname,
-        userImg: action.payload.userImg,
+        img: action.payload.userImg,
       };
       state.isLoggedIn = !!initialToken;
     },

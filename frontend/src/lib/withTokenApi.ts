@@ -27,6 +27,11 @@ export const userDetail = async () => {
     return data
 }
 
+export const logoutApi = async (option: object) => {
+    const { data } = await withTokenApi.post('/user/logout', option)
+    return data
+}
+
 // 챌린지 관련
 export const fetchChallenge = async (id: string) => {
     const { data } = await withTokenApi.get(`/challenge/${id}`)
