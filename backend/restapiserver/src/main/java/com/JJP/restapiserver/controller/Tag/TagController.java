@@ -34,4 +34,10 @@ public class TagController {
             return new ResponseEntity(tagService.saveTag(tagRequestDto.getName()), HttpStatus.OK);
         }
     }
+
+    @GetMapping("/exist/{keyword}")
+    public ResponseEntity checkTagExists(@PathVariable String keyword)
+    {
+        return new ResponseEntity(tagService.existsByTag(keyword), HttpStatus.OK);
+    }
 }
