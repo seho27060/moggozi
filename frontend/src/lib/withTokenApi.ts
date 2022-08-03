@@ -1,118 +1,126 @@
-import axios from "axios"
-import { apiConfig } from "../config"
+import axios from "axios";
+import { apiConfig } from "../config";
 import { ChallengeSaveState } from "../store/challenge";
-import { refresh, refreshErrorHandle } from "./refresh"
+import { refresh, refreshErrorHandle } from "./refresh";
 
 const withTokenApi = axios.create({
-    baseURL: apiConfig.apiRoot,
-    timeout: 10000,
-    params: {},
+  baseURL: apiConfig.apiRoot,
+  timeout: 10000,
+  params: {},
 });
 
-withTokenApi.interceptors.request.use(refresh, refreshErrorHandle)
+withTokenApi.interceptors.request.use(refresh, refreshErrorHandle);
 
 export default withTokenApi;
 
 // 계정 관련
 export const persistAuth = async () => {
-    const { data } = await withTokenApi.get(`/user/myinfo`)
-    return data
-}
+  const { data } = await withTokenApi.get(`/user/myinfo`);
+  return data;
+};
 
 export const userDetail = async () => {
-    const { data } = await withTokenApi.get(`/user/myinfo`)
-    return data
-}
+  const { data } = await withTokenApi.get(`/user/myinfo`);
+  return data;
+};
 
 export const logoutApi = async () => {
-    const { data } = await withTokenApi.post('/user/logout')
-    return data
-}
+  const { data } = await withTokenApi.post("/user/logout");
+  return data;
+};
 
 export const updateUserApi = async (userId: number | null, option: object) => {
-    const { data } = await withTokenApi.post(`user/update/${userId}`, option)
-    return data
-}
+  const { data } = await withTokenApi.post(`user/update/${userId}`, option);
+  return data;
+};
 
 // 챌린지 관련
-export const fetchChallenge = async (id: Number) => {
-    const { data } = await withTokenApi.get(`/challenge/${id}`)
-    return data
-}
+export const fetchChallenge = async (id: number) => {
+  const { data } = await withTokenApi.get(`/challenge/${id}`);
+  return data;
+};
 
 export const fetchChallengeRankList = async () => {
-    const { data } = await withTokenApi.get('/challenge/rank')
-    return data
-}
+  const { data } = await withTokenApi.get("/challenge/rank");
+  return data;
+};
 
 export const challengeAdd = async (challengeData: ChallengeSaveState) => {
-    const { data } = await withTokenApi.post('/challenge/save', challengeData)
-    return data
-}
+  const { data } = await withTokenApi.post("/challenge/save", challengeData);
+  return data;
+};
 
-export const hobbySearch = async (query: String) => {
-    const { data } = await withTokenApi.get(`/hobby/search/${query}`)
-    return data
-}
+export const challengeUpdate = async (
+  challengeData: ChallengeSaveState,
+  id: number
+) => {
+  const { data } = await withTokenApi.put(`/challenge/${id}`, challengeData);
+  return data;
+};
 
-export const hobbyExist = async (name: String) => {
-    const { data } = await withTokenApi.get(`/hobby/exist/${name}`)
-    return data
-}
+export const hobbySearch = async (query: string) => {
+  const { data } = await withTokenApi.get(`/hobby/search/${query}`);
+  return data;
+};
 
-export const setHobby = async (hobby: {name: string}) => {
-    const { data } = await withTokenApi.post('/hobby/save', hobby)
-    return data
-}
+export const hobbyExist = async (name: string) => {
+  const { data } = await withTokenApi.get(`/hobby/exist/${name}`);
+  return data;
+};
+
+export const setHobby = async (hobby: { name: string }) => {
+  const { data } = await withTokenApi.post("/hobby/save", hobby);
+  return data;
+};
 
 // 스테이지 관련
-export const stageAdd = async (challenge_id:Number) => {
-    const { data } = await withTokenApi.post(`/stage/${challenge_id}`)
-    return data
-}
+export const stageAdd = async (challenge_id: number) => {
+  const { data } = await withTokenApi.post(`/stage/${challenge_id}`);
+  return data;
+};
 
-export const stageDelete = async (stage_id:Number | null) => {
-    const { data } = await withTokenApi.delete(`/stage/${stage_id}`)
-    return data
-}
+export const stageDelete = async (stage_id: number | null) => {
+  const { data } = await withTokenApi.delete(`/stage/${stage_id}`);
+  return data;
+};
 
-export const stageUpdate = async (stage_id:Number) => {
-    const { data } = await withTokenApi.put(`/stage/${stage_id}`)
-    return data
-}
+export const stageUpdate = async (stage_id: number) => {
+  const { data } = await withTokenApi.put(`/stage/${stage_id}`);
+  return data;
+};
 
-export const stageRead = async (stage_id:Number) => {
-    const { data } = await withTokenApi.get(`/stage/${stage_id}`)
-    return data
-}
+export const stageRead = async (stage_id: number) => {
+  const { data } = await withTokenApi.get(`/stage/${stage_id}`);
+  return data;
+};
 
 // 포스팅 관련
 export const postAdd = async () => {
-    const { data } = await withTokenApi.post(`/stage/post`)
-    return data
-}
+  const { data } = await withTokenApi.post(`/stage/post`);
+  return data;
+};
 
-export const postDelete = async (post_id:Number) => {
-    const { data } = await withTokenApi.delete(`/stage/post/${post_id}`)
-    return data
-}
+export const postDelete = async (post_id: number) => {
+  const { data } = await withTokenApi.delete(`/stage/post/${post_id}`);
+  return data;
+};
 
-export const postUpdate = async (post_id:Number) => {
-    const { data } = await withTokenApi.put(`/stage/post/${post_id}`)
-    return data
-}
+export const postUpdate = async (post_id: number) => {
+  const { data } = await withTokenApi.put(`/stage/post/${post_id}`);
+  return data;
+};
 
-export const postRead = async (challenge_id:Number) => {
-    const { data } = await withTokenApi.get(`/stage/post/${challenge_id}`)
-    return data
-}
+export const postRead = async (challenge_id: number) => {
+  const { data } = await withTokenApi.get(`/stage/post/${challenge_id}`);
+  return data;
+};
 
 // 댓글 관련
-export const commentRead = async (post_id:Number) => {
-    const { data } = await withTokenApi.get(`/comment/${post_id}`)
-    console.log(data)
-    return data
-}
+export const commentRead = async (post_id: number) => {
+  const { data } = await withTokenApi.get(`/comment/${post_id}`);
+  console.log(data);
+  return data;
+};
 
 // 사용법 - 해당 axios는 기본적으로 토큰이 만료되었을 경우 refresh를 겸함.
 
