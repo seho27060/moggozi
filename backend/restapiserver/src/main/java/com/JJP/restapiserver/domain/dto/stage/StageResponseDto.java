@@ -9,24 +9,24 @@ import java.time.LocalDateTime;
 public class StageResponseDto {
 
     private Long id;
-    private Long challenge_id;
+    private Long challengeId;
     private String name;
     private int period;
     private String content;
-    private String stage_img;
-    private LocalDateTime created_date;
-    private LocalDateTime modified_date;
-    private Long post_order;
+    private String stageImg;
+    private LocalDateTime createdDate;
+    private LocalDateTime modifiedDate;
+    private Long postOrder;
 
     public StageResponseDto(Stage entity) {
         this.id = entity.getId();
-        this.challenge_id = entity.getChallenge().getId();
+        this.challengeId = entity.getChallenge().getId();
         this.name = entity.getName();
         this.period = entity.getPeriod();
         this.content = entity.getContent();
-        this.stage_img = entity.getStage_img();
-        this.created_date = entity.getCreated_date();
-        this.modified_date = entity.getModified_date();
-        this.post_order = entity.getPost_order();
+        this.stageImg = entity.getStage_img();
+        this.createdDate = entity.getCreated_date();
+        this.modifiedDate = entity.getModified_date();
+        this.postOrder = entity.getPost_order();
     }
 }

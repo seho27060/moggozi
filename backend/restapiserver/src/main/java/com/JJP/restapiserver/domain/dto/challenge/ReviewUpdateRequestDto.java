@@ -10,8 +10,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ReviewUpdateRequestDto {
-    private Long review_id;
-    private String review_content;
+    private Long reviewId;
+    private String reviewContent;
     private int rate;
 
 }

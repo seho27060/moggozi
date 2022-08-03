@@ -1,9 +1,11 @@
 package com.JJP.restapiserver.service.challenge;
 
 import com.JJP.restapiserver.domain.dto.challenge.ChallengeCompleteRequestDto;
+import com.JJP.restapiserver.domain.dto.challenge.ChallengeListResponseDto;
 import com.JJP.restapiserver.domain.dto.challenge.ChallengeRequestDto;
 import com.JJP.restapiserver.domain.dto.challenge.ChallengeResponseDto;
 import com.JJP.restapiserver.domain.dto.tag.TagRequestDto;
+import com.JJP.restapiserver.domain.dto.tag.TagResponseDto;
 import com.JJP.restapiserver.domain.entity.Tag.ChallengeTag;
 import com.JJP.restapiserver.domain.entity.Tag.Tag;
 import com.JJP.restapiserver.domain.entity.challenge.Challenge;
@@ -17,11 +19,14 @@ import com.JJP.restapiserver.repository.member.MemberRepository;
 import com.JJP.restapiserver.repository.stage.StageUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+
+@CrossOrigin("*")
 @Service
 @RequiredArgsConstructor
 public class ChallengeServiceImpl implements ChallengeService{
@@ -33,47 +38,45 @@ public class ChallengeServiceImpl implements ChallengeService{
     private final ChallengeTagRepository challengeTagRepository;
     private final StageUserRepository stageUserRepository;
 
-//    private final MemberTagRepository memberTagRepository;
 
     @Override
-    public List<ChallengeResponseDto> getChallengeListByHobby(String hobby, Long member_id) {
+    public List<ChallengeListResponseDto> getChallengeListByHobby(String hobby, Long member_id) {
 
         List<Challenge> challengeList = challengeRepository.findByHobby(hobby);
-        List<ChallengeResponseDto> responseDtoList = new ArrayList<>();
-        return challengeIntoDto(challengeList, responseDtoList, member_id);
+        List<ChallengeListResponseDto> responseDtoList = new ArrayList<>();
+        return challengeIntoListDto(challengeList, responseDtoList, member_id);
     }
 
     // 미구현
     @Override
-    public List<ChallengeResponseDto> getChallengeListByRecommendation() {
+    public List<ChallengeListResponseDto> getChallengeListByRecommendation() {
 
         return null;
     }
 
     //테스트 완료
     @Override
-    public List<ChallengeResponseDto> getChallengeListByKeyword(String keyword, Long member_id) {
+    public List<ChallengeListResponseDto> getChallengeListByKeyword(String keyword, Long member_id) {
         List<Challenge> challengeList = challengeRepository.findByNameContaining(keyword);
-        List<ChallengeResponseDto> responseDtoList = new ArrayList<>();
-        return challengeIntoDto(challengeList, responseDtoList, member_id);
+        List<ChallengeListResponseDto> responseDtoList = new ArrayList<>();
+        return challengeIntoListDto(challengeList, responseDtoList, member_id);
     }
 
 
 
     @Override
-    public List<ChallengeResponseDto> getChallengeListByLike(Long member_id) {
+    public List<ChallengeListResponseDto> getChallengeListByLike(Long member_id) {
         List<Object[]> list = challengeRepository.findByLike();
         List<Challenge> challengeList = new ArrayList<>();
         for(int i = 0; i < list.size(); i++)
         {
-            Challenge challenge = challengeRepository.findById((Long)(list.get(i)[0])).get();
+            Challenge challenge = challengeRepository.findById(Long.parseLong(list.get(i)[0].toString())).get();
             challengeList.add(challenge);
         }
-        List<ChallengeResponseDto> responseDtoList = new ArrayList<>();
-        return challengeIntoDto(challengeList, responseDtoList, member_id);
+        List<ChallengeListResponseDto> responseDtoList = new ArrayList<>();
+        return challengeIntoListDto(challengeList, responseDtoList, member_id);
     }
 
-    // 테스트 완료
     @Override
     public ChallengeResponseDto getChallengeDetail(Long challenge_id, Long member_id) {
         Challenge challenge = challengeRepository.findById(challenge_id).get();
@@ -84,13 +87,18 @@ public class ChallengeServiceImpl implements ChallengeService{
         return challengeIntoDto(challengeList, challengeResponseDtoList, member_id).get(0);
     }
 
+    public Challenge getChallengeDetail2(Long challenge_id, Long member_id) {
+        Challenge challenge = challengeRepository.findById(challenge_id).get();
+        return challenge;
+    }
+
     @Override
     public int saveChallenge(ChallengeRequestDto challengeData) {
-        Member member = memberRepository.findById(challengeData.getMember_id()).get();
+        Member member = memberRepository.findById(challengeData.getMemberId()).get();
         Challenge challenge = Challenge.builder()
                 .member(member)
                 .name(challengeData.getName())
-                .challenge_img(challengeData.getChallenge_img())
+                .challenge_img(challengeData.getImg())
                 .content(challengeData.getContent())
                 .level(challengeData.getLevel())
                 .state(challengeData.getState())
@@ -131,10 +139,10 @@ public class ChallengeServiceImpl implements ChallengeService{
     public int completeChallenge(ChallengeCompleteRequestDto challengeCompleteRequestDto) {
 
         // 상태를 변화시켜줄 챌린지를 찾음.
-        Challenge challenge = challengeRepository.findById(challengeCompleteRequestDto.getChallenge_id()).get();
+        Challenge challenge = challengeRepository.findById(challengeCompleteRequestDto.getChallengeId()).get();
         JoinedChallenge joinedChallenge = joinedChallengeRepository.
-                findByChallenge_idAndMember_id(challengeCompleteRequestDto.getChallenge_id(),
-                        challengeCompleteRequestDto.getUser_id()).get();
+                findByChallenge_idAndMember_id(challengeCompleteRequestDto.getChallengeId(),
+                        challengeCompleteRequestDto.getMemberId()).get();
         // 완료되었다는 상태가 2임
         joinedChallenge.setState(2);
         return 0;
@@ -151,13 +159,40 @@ public class ChallengeServiceImpl implements ChallengeService{
             for(int j = 0; j < challenge.getChallengeTagList().size(); j++)
             {
                 Tag tag = challenge.getChallengeTagList().get(j).getTag();
-                challengeResponseDto.getTagList().add(tag.getTag());
+                challengeResponseDto.getHobbyList().add(new TagResponseDto(tag.getId(), tag.getTag()));
             }
-            JoinedChallenge joinedChallenge = joinedChallengeRepository.findByChallenge_idAndMember_id(
+            Optional<JoinedChallenge> joinedChallenge = joinedChallengeRepository.findByChallenge_idAndMember_id(
                     challenge.getId(), member_id
-            ).get();
-            challengeResponseDto.setUser_progress(joinedChallenge.getState());
+            );
+            if(joinedChallenge.isPresent())
+            {
+                challengeResponseDto.setUserProgress(joinedChallenge.get().getState());
+            }
             responseDtoList.add(challengeResponseDto);
+        }
+        return responseDtoList;
+    }
+    public List<ChallengeListResponseDto> challengeIntoListDto(List<Challenge> challengeList, List<ChallengeListResponseDto> responseDtoList
+            , Long member_id)
+    {
+        for(int i = 0; i < challengeList.size(); i++)
+        {
+            Challenge challenge = challengeList.get(i);
+            ChallengeListResponseDto challengeListResponseDto = new ChallengeListResponseDto(challenge);
+            List<String> temp = new ArrayList<>();
+            for(int j = 0; j < challenge.getChallengeTagList().size(); j++)
+            {
+                Tag tag = challenge.getChallengeTagList().get(j).getTag();
+                challengeListResponseDto.getHobbyList().add(new TagResponseDto(tag.getId(), tag.getTag()));
+            }
+            Optional<JoinedChallenge> joinedChallenge = joinedChallengeRepository.findByChallenge_idAndMember_id(
+                    challenge.getId(), member_id
+            );
+            if(joinedChallenge.isPresent())
+            {
+                challengeListResponseDto.setUserProgress(joinedChallenge.get().getState());
+            }
+            responseDtoList.add(challengeListResponseDto);
         }
         return responseDtoList;
     }
@@ -166,10 +201,10 @@ public class ChallengeServiceImpl implements ChallengeService{
     {
         Challenge challenge = challengeRepository.findById(challenge_id).get();
 
-        List<TagRequestDto> tagList = challengeData.getHobby();
+        List<TagRequestDto> tagList = challengeData.getHobbyList();
         for(int i = 0; i < tagList.size(); i++)
         {
-            String tag = tagList.get(i).getTag();
+            String tag = tagList.get(i).getName();
             Tag tagEntity;
             // 태그 리스트 중에서 이미 태그가 존재한다면
             // 챌린지가 이미 취미로 집어넣은 태그인지 확인한다.

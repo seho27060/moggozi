@@ -30,7 +30,8 @@ public class Stage extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "stage")
     @JsonManagedReference
-    List<Comment> commentList = new ArrayList<>();
+    private List<Post> postList = new ArrayList<>();
+
 
     @Column(length = 20)
     private String name;

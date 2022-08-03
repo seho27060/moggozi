@@ -7,5 +7,5 @@ import lombok.Setter;
 @Getter
 public class TagRequestDto {
     private Long id;
-    private String tag;
+    private String name;
 }

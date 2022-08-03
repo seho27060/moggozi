@@ -47,7 +47,7 @@ public class StageServiceImpl implements StageService {
 
         Stage entity = stageRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + id));
 
-        entity.update(stageUpdateRequestDto.getName(), stageUpdateRequestDto.getContent(), stageUpdateRequestDto.getStage_img());
+        entity.update(stageUpdateRequestDto.getName(), stageUpdateRequestDto.getContent(), stageUpdateRequestDto.getStageImg());
 
         return id;
     }
@@ -58,10 +58,5 @@ public class StageServiceImpl implements StageService {
         Stage entity = stageRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + id));
 
         stageRepository.delete(entity);
-    }
-
-    @Override
-    public Long challengeStage(Long stage_id, Long stageuser_id) {
-        return null;
     }
 }

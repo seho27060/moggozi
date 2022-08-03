@@ -59,8 +59,8 @@ public class MemberServiceImpl implements MemberService {
         String password = encoder.encode(signupRequest.getPassword());
         String nickname = signupRequest.getNickname();
         String introduce = signupRequest.getIntroduce();
-        String user_img = signupRequest.getUser_img();
-        int is_private = signupRequest.getIs_private();
+        String user_img = signupRequest.getUserImg();
+        int is_private = signupRequest.getIsPrivate();
         Long role_no = signupRequest.getRole() == null ? 1 : signupRequest.getRole();
 
         if (memberRepository.existsByUsername(username)) {
@@ -113,8 +113,8 @@ public class MemberServiceImpl implements MemberService {
         String fullname = updateUserRequest.getFullname();
         String nickname = updateUserRequest.getNickname();
         String introduce = updateUserRequest.getIntroduce();
-        String user_img = updateUserRequest.getUser_img();
-        int is_private = updateUserRequest.getIs_private();
+        String user_img = updateUserRequest.getUserImg();
+        int is_private = updateUserRequest.getIsPrivate();
 
         if (memberRepository.existsByNickname(nickname)) {
             return ResponseEntity.badRequest().body(new MessageResponse("Error: Written Nickname already exists."));

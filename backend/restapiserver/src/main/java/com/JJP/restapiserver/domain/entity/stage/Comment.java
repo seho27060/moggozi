@@ -1,6 +1,6 @@
 package com.JJP.restapiserver.domain.entity.stage;
 
-import com.JJP.restapiserver.domain.dto.CommentRequestDto;
+import com.JJP.restapiserver.domain.dto.stage.CommentRequestDto;
 import com.JJP.restapiserver.domain.entity.BaseTimeEntity;
 import com.JJP.restapiserver.domain.entity.member.Member;
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -24,13 +24,13 @@ public class Comment extends BaseTimeEntity {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="stage_id")
+    @JoinColumn(name = "post_id")
     @JsonBackReference
-    private Stage stage;
+    private Post post;
 
     // 멤버와 다대일 양방향 관계
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "member_id")
     @JsonBackReference
     private Member member;
 
@@ -39,15 +39,14 @@ public class Comment extends BaseTimeEntity {
 
     private Long parent;
 
-    private int depth;
+    @Column(name = "\"order\"")
+    private int order;
 
-    private int comment_state;
+    private int state;
 
     public void update(CommentRequestDto commentRequestDto)
     {
         this.text = commentRequestDto.getText();
-        this.parent = commentRequestDto.getParent();
-        this.depth = commentRequestDto.getDepth();
-        this.comment_state = commentRequestDto.getComment_state();
+        this.state = commentRequestDto.getState();
     }
 }
