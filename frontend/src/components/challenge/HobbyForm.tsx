@@ -1,14 +1,16 @@
 import React, { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { hobbyExist, hobbySearch, setHobby } from "../../lib/withTokenApi";
-import { addHobby } from "../../store/challenge";
+import { addHobby, Hobby } from "../../store/challenge";
 import { RootState } from "../../store/store";
 
 const HobbyForm: React.FC = () => {
   const dispatch = useDispatch();
   const hobbyInputRef = useRef<HTMLInputElement>(null);
-  const [dropDownList, setDropDownList] = useState([]); // 자동완성 기능을 위한 dropDownList
+  const [dropDownList, setDropDownList] = useState<Hobby[]>([]); // 자동완성 기능을 위한 dropDownList
   const hobbyList = useSelector((state: RootState) => state.hobby.hobbyList);
+  
+
   function submitHandler(event: React.FormEvent) {
     event.preventDefault();
     const enteredHobby = hobbyInputRef.current!.value;
@@ -51,11 +53,18 @@ const HobbyForm: React.FC = () => {
   function changeInputHandler(event: React.ChangeEvent) {
     event.preventDefault();
     const enteredQuery = hobbyInputRef.current!.value;
-    hobbySearch(enteredQuery)
-      .then((res) => {})
-      .catch((err) => {
-        console.log(err.response);
-      });
+    if (enteredQuery == '') {
+      setDropDownList([])
+    }
+    else {
+      hobbySearch(enteredQuery)
+        .then((res) => {
+          setDropDownList(res)
+        })
+        .catch((err) => {
+          console.log(err.response);
+        });
+    }
   }
 
   return (
@@ -74,6 +83,10 @@ const HobbyForm: React.FC = () => {
           add
         </button>
       </form>
+      {dropDownList.length === 0 && <p>해당하는 단어가 없습니다.</p>}
+      {dropDownList.map((dropDownItem) => {
+        return(<p>{dropDownItem.name}</p>)
+      })}
     </div>
   );
 };
