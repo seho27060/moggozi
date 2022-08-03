@@ -13,6 +13,7 @@ spring:
           google:
             client-id: 948844328868-cos0sa2t47h5qva1glcsoijkt2690g35.apps.googleusercontent.com
             client-secret: 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
+            redirect-uri: "https://i7c201.p.ssafy.io:443/login/oauth2/code/google"
             scope: profile, email
 
           naver:
