@@ -24,13 +24,13 @@ public class Comment extends BaseTimeEntity {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="stage_id")
+    @JoinColumn(name="post_id")
     @JsonBackReference
-    private Stage stage;
+    private Post post;
 
     // 멤버와 다대일 양방향 관계
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "member_id")
     @JsonBackReference
     private Member member;
 
@@ -39,15 +39,13 @@ public class Comment extends BaseTimeEntity {
 
     private Long parent;
 
-    private int depth;
+    private int order;
 
-    private int commentState;
+    private int state;
 
     public void update(CommentRequestDto commentRequestDto)
     {
         this.text = commentRequestDto.getText();
-        this.parent = commentRequestDto.getParent();
-        this.depth = commentRequestDto.getDepth();
-        this.commentState = commentRequestDto.getCommentState();
+        this.state = commentRequestDto.getState();
     }
 }

@@ -1,6 +1,7 @@
 package com.JJP.restapiserver.controller.stage;
 
 import com.JJP.restapiserver.domain.dto.stage.CommentRequestDto;
+import com.JJP.restapiserver.domain.dto.stage.CommentResponseDto;
 import com.JJP.restapiserver.domain.entity.stage.Comment;
 import com.JJP.restapiserver.security.JwtUtils;
 import com.JJP.restapiserver.service.stage.CommentService;
@@ -21,16 +22,17 @@ public class CommentController {
 
     private final JwtUtils jwtUtils;
 
-    @GetMapping("/stage/{stage_id}")
-    public ResponseEntity getStageCommentList(Long stage_id)
+    @GetMapping("/{post_id}")
+    public ResponseEntity getPostCommentList(Long post_id)
     {
-        List<Comment> commentList = commentService.getStageCommentList(stage_id);
+        List<CommentResponseDto> commentList = commentService.getPostCommentList(post_id);
         return new ResponseEntity(commentList, HttpStatus.OK);
     }
 
-    @GetMapping("/user/{member_id}")
-    public ResponseEntity getMyCommentList(@PathVariable  Long member_id){
-        List<Comment> commentList =  commentService.getMyCommentList(member_id);
+    @GetMapping("/myCommentList/")
+    public ResponseEntity getMyCommentList(HttpServletRequest request){
+        Long member_id = jwtUtils.getUserIdFromJwtToken(request.getHeader("Authorization"));
+        List<CommentResponseDto> commentList =  commentService.getMyCommentList(member_id);
         return new ResponseEntity(commentList, HttpStatus.OK);
     }
 
