@@ -33,6 +33,16 @@ export interface ChallengeDetailState {
   hobbyList: Hobby[];
 }
 
+// 챌린지 저장할 때 Form
+export interface ChallengeSaveState {
+  name: string | null;
+  description: string | null;
+  img: string | null;
+  content: string | null;
+  hobbyList: Hobby[];
+  level: number | null;
+}
+
 export interface HobbyState {
   hobbyList: Hobby[];
   hobbyCnt: number;

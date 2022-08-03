@@ -1,6 +1,6 @@
 import axios from "axios"
 import { apiConfig } from "../config"
-import { Hobby } from "../store/challenge";
+import { ChallengeSaveState } from "../store/challenge";
 import { refresh, refreshErrorHandle } from "./refresh"
 
 const withTokenApi = axios.create({
@@ -44,8 +44,8 @@ export const fetchChallengeRankList = async () => {
     return data
 }
 
-export const challengeAdd = async () => {
-    const { data } = await withTokenApi.post('/challenge/save')
+export const challengeAdd = async (challengeData: ChallengeSaveState) => {
+    const { data } = await withTokenApi.post('/challenge/save', challengeData)
     return data
 }
 

@@ -53,7 +53,7 @@ const HobbyForm: React.FC = () => {
   function changeInputHandler(event: React.ChangeEvent) {
     event.preventDefault();
     const enteredQuery = hobbyInputRef.current!.value;
-    if (enteredQuery == '') {
+    if (enteredQuery === '') {
       setDropDownList([])
     }
     else {

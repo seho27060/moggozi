@@ -23,7 +23,7 @@ const initialAuthState: UserState = {
     img: null,
   },
   isLoggedIn: !!initialToken,
-};
+};                                                                                             
 
 // 해당 데이터에 접근할 때에는 , useSelector 를 이용하여 state를 조회
 // useDispatch를 이용하면 action을 줄 수 있다.
