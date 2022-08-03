@@ -63,15 +63,20 @@ public class ChallengeController {
     }
 
     @PostMapping("/save")
-    public int saveChallenge(@RequestBody ChallengeRequestDto challengeRequestDto)
+    public int saveChallenge(@RequestBody ChallengeRequestDto challengeRequestDto, HttpServletRequest request)
     {
+        Long member_id = jwtUtils.getUserIdFromJwtToken(request.getHeader("Authorization"));
+        challengeRequestDto.setMemberId(member_id);
         int ret = challengeService.saveChallenge(challengeRequestDto);
         return ret;
     }
 
     @PutMapping("/{challenge_id}")
-    public int updateChallenge(@PathVariable Long challenge_id, @RequestBody ChallengeRequestDto challengeRequestDto)
+    public int updateChallenge(@PathVariable Long challenge_id, @RequestBody ChallengeRequestDto challengeRequestDto
+                ,HttpServletRequest request)
     {
+        Long member_id = jwtUtils.getUserIdFromJwtToken(request.getHeader("Authorization"));
+        challengeRequestDto.setMemberId(member_id);
         int ret = challengeService.updateChallenge(challenge_id, challengeRequestDto);
         return ret;
     }

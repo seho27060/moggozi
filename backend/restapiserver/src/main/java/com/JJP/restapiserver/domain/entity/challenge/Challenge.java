@@ -73,7 +73,7 @@ public class Challenge extends BaseTimeEntity {
     public void updateChallenge(ChallengeRequestDto challengeRequestDto)
     {
         this.name = challengeRequestDto.getName();
-        this.challenge_img = challengeRequestDto.getChallengeImg();
+        this.challenge_img = challengeRequestDto.getImg();
         this.content = challengeRequestDto.getContent();
         this.level = challengeRequestDto.getLevel();
 //        this.hobby = challengeRequestDto.getHobby();

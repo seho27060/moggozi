@@ -16,7 +16,7 @@ import java.util.List;
 public class ChallengeRequestDto {
     private Long memberId;
     private String name;
-    private String challengeImg;
+    private String img;
     private String content;
     private int level;
     private List<TagRequestDto> hobbyList = new ArrayList<>();
