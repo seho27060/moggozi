@@ -1,5 +1,6 @@
 import axios from "axios"
 import { apiConfig } from "../config"
+import { Hobby } from "../store/challenge";
 import { refresh, refreshErrorHandle } from "./refresh"
 
 const withTokenApi = axios.create({
@@ -33,7 +34,7 @@ export const logoutApi = async () => {
 }
 
 // 챌린지 관련
-export const fetchChallenge = async (id: string) => {
+export const fetchChallenge = async (id: Number) => {
     const { data } = await withTokenApi.get(`/challenge/${id}`)
     return data
 }
@@ -44,7 +45,22 @@ export const fetchChallengeRankList = async () => {
 }
 
 export const challengeAdd = async () => {
-    const { data } = await withTokenApi.get('/challenge/save')
+    const { data } = await withTokenApi.post('/challenge/save')
+    return data
+}
+
+export const hobbySearch = async (query: String) => {
+    const { data } = await withTokenApi.get(`/hobby/search/${query}`)
+    return data
+}
+
+export const hobbyExist = async (name: String) => {
+    const { data } = await withTokenApi.get(`/hobby/exist/${name}`)
+    return data
+}
+
+export const setHobby = async (hobby: {name: string}) => {
+    const { data } = await withTokenApi.post('/hobby/save', hobby)
     return data
 }
 

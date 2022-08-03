@@ -13,7 +13,7 @@ const ChallengeDetail: React.FC = () => {
   useEffect(() => {
     setIsLoading(true);
     if (id) {
-      fetchChallenge(id)
+      fetchChallenge(Number(id))
         .then((res) => {
           const challenge: ChallengeDetailState = {
             ...res,

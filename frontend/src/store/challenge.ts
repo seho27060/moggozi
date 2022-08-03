@@ -53,7 +53,7 @@ export const hobbySlice = createSlice({
   initialState: initialHobbyState,
   reducers: {
     addHobby(state, action) {
-      state.hobbyList.push({ id: state.hobbyCnt + 1, name: action.payload });
+      state.hobbyList.push(action.payload);
       state.hobbyCnt = state.hobbyList.length
     },
     deleteHobby(state, action) {
