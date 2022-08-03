@@ -44,6 +44,7 @@ import UserPage from "./pages/user/UserPage";
 import MainPage from "./pages/MainPage";
 import SearchPage from "./pages/SearchPage";
 import UnknownPage from "./pages/UnknownPage";
+import WebsocketPage from "./pages/WebsocketTest";
 
 export default function Router() {
   return useRoutes([
@@ -167,6 +168,10 @@ export default function Router() {
       path: "/user",
       element: <UserLayout />,
       children: [{ path: ":id", element: <UserPage /> }],
+    },
+    {
+      path: "/websocketTest",
+      element: <WebsocketPage />,
     },
     {
       path: "/*",
