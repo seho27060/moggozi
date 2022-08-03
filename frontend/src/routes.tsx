@@ -11,6 +11,7 @@ import SearchLayout from "./layout/SearchLayout";
 
 // Accounts
 import Login from "./pages/accounts/Login";
+import CompleteSignUp from "./pages/accounts/CompleteSignUp";
 import Signup from "./pages/accounts/Signup";
 import UserUpdate from "./pages/accounts/UserUpdate";
 import PasswordReissue from "./pages/accounts/PasswordReissue";
@@ -87,6 +88,10 @@ export default function Router() {
         {
           path: "login",
           element: <Login />,
+        },
+        {
+          path: "complete",
+          element: <CompleteSignUp />,
         },
         {
           path: "signup",

@@ -53,7 +53,7 @@ const AccountForm: React.FC = () => {
     signUpApi(option)
       .then((res) => {
         alert("회원가입이 완료되었습니다.");
-        navigate("/");
+        navigate("/account/complete");
       })
       .catch((err) => {
         if (err.response.data.message === "Error: Nickname is already taken.") {
