@@ -22,6 +22,7 @@ export interface ChallengeDetailState {
   modifiedTime: string | null;
   name: string | null;
   img: string | null;
+  description: string | null;
   content: string | null;
   level: number | null;
   userProgress: number | null;

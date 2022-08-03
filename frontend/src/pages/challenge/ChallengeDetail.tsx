@@ -44,6 +44,7 @@ const ChallengeDetail: React.FC = () => {
           <p>챌린지 만든 사람: {loadedChallenge!.writer.nickname}</p>
           <p>챌린지 level: {loadedChallenge!.level}</p>
           <p>챌린지 유저 진행도: {loadedChallenge!.userProgress}</p>
+          <p>챌린지 간단 설명: {loadedChallenge!.description}</p>
           <p>챌린지 내용: {loadedChallenge!.content}</p>
           <p>챌린지 좋아요 수: {loadedChallenge!.likeNum}</p>
           <p>챌린지 취미</p>
