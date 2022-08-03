@@ -7,7 +7,7 @@ const ChallengeItem: React.FC<{ challenge: ChallengeItemState }> = ({
 }) => {
   return (
     <li>
-      <Link to={`/challenge/${challenge.id}`} state= {{id: challenge.id}}>
+      <Link to={`/challenge/${challenge.id}`}>
         <h3>챌린지 이름 : {challenge.name}</h3>
       </Link>
       <p>챌린지 소개 : {challenge.description}</p>

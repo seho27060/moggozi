@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import HobbyList from "../../components/challenge/HobbyList";
 import StageList from "../../components/stage/StageList";
@@ -27,7 +28,7 @@ const ChallengeDetail: React.FC = () => {
           setIsLoading(false);
         });
     }
-  }, [ id ]);
+  }, [id]);
   return (
     <div>
       ChallengeDetail
@@ -39,7 +40,9 @@ const ChallengeDetail: React.FC = () => {
       {isLoading === false && (
         <div>
           <p>챌린지 name: {loadedChallenge!.name}</p>
-          {loadedChallenge!.img && <img src={loadedChallenge!.img} alt="challenge Img"></img>}
+          {loadedChallenge!.img && (
+            <img src={loadedChallenge!.img} alt="challenge Img"></img>
+          )}
           <p>챌린지 취미들: {loadedChallenge!.name}</p>
           <p>챌린지 만든 사람: {loadedChallenge!.writer.nickname}</p>
           <p>챌린지 level: {loadedChallenge!.level}</p>
@@ -50,9 +53,12 @@ const ChallengeDetail: React.FC = () => {
           <p>챌린지 취미</p>
           <HobbyList hobbies={loadedChallenge!.hobbyList} />
           <p>스테이지</p>
-          <StageList stages={loadedChallenge!.stageList}/>
+          <StageList stages={loadedChallenge!.stageList} />
         </div>
       )}
+      <Link to={`/challenge/${id}/update`} state={loadedChallenge}>
+        <button>챌린지 수정</button>
+      </Link>
     </div>
   );
 };
