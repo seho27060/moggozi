@@ -41,8 +41,10 @@ public class EchoHandler extends TextWebSocketHandler {
 //			sess.sendMessage(new TextMessage(senderNickname + ": " +  message.getPayload()));
 //		}
 
+        System.out.println("메세지 받았음!!!");
         //protocol : cmd , 댓글작성자, 게시글 작성자 , seq (reply , user2 , user1 , 12)
         String msg = message.getPayload();
+        System.out.println(msg);
         if(StringUtils.isNotEmpty(msg)) {
             String[] strs = msg.split(",");
 
