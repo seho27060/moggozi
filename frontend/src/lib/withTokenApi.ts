@@ -58,6 +58,11 @@ export const challengeUpdate = async (
   return data;
 };
 
+export const challengeDelete = async (id: number) => {
+  const { data } = await withTokenApi.delete(`/challenge/${id}`);
+  return data;
+};
+
 export const hobbySearch = async (query: string) => {
   const { data } = await withTokenApi.get(`/hobby/search/${query}`);
   return data;

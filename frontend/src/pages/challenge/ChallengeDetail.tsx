@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
+import ChallengeDeleteBtn from "../../components/challenge/ChallengeDeleteBtn";
 import HobbyList from "../../components/challenge/HobbyList";
 import StageList from "../../components/stage/StageList";
 import { fetchChallenge } from "../../lib/withTokenApi";
@@ -59,6 +60,7 @@ const ChallengeDetail: React.FC = () => {
       <Link to={`/challenge/${id}/update`} state={loadedChallenge}>
         <button>챌린지 수정</button>
       </Link>
+      {id && <ChallengeDeleteBtn />}
     </div>
   );
 };
