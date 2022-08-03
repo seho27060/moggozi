@@ -33,7 +33,7 @@ public class CommentResponseDto {
                 comment.getMember().getNickname());
         this.parentId = comment.getParent();
         this.text = comment.getText();
-        this.order = comment.getOrder();
+        this.order = comment.getCommentOrder();
         this.state = comment.getState();
         this.createdTime = comment.getCreated_date();
         this.modifiedTime = comment.getModified_date();
