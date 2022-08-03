@@ -8,8 +8,13 @@ import PostCommentChild from "./PostCommentChild";
 const commentState = useSelector((state: RootState) => state.comment.comments);
 
 const PostCommentItem: React.FC<{ comment: Comment }> = ({ comment }) => {
-  
-  const childComment = commentState?.filter((child) => (comment.id === child.parentId))
+  const childComment = commentState?.filter(
+    (child) => comment.id === child.parentId
+  );
+  // 해당 댓글의 자식 댓글 order 순으로 정렬 
+  childComment?.sort((a:Comment, b:Comment)=>(
+    (a.order > b.order) ? 1:-1
+  ))
   return (
     <div>
       {/* 댓글내용과 해당 댓글의 대댓글 출력. */}
@@ -20,7 +25,9 @@ const PostCommentItem: React.FC<{ comment: Comment }> = ({ comment }) => {
         <div>{comment.createdDate?.toString()}</div>
       </p>
       <div style={{ border: "solid", margin: "1rem", padding: "1rem" }}>
-        {childComment?.map((child) =>(<PostCommentChild key={child.id} child={child}/>))}
+        {childComment?.map((child) => (
+          <PostCommentChild key={child.id} child={child} />
+        ))}
       </div>
     </div>
   );

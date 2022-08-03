@@ -9,9 +9,13 @@ const PostCommentList: React.FC<{ comments: Comment[] | null }> = ({
   comments,
 }) => {
   // 원댓글 추려내기
-  const commentList = comments?.filter(
+  const commentList = (comments?.filter(
     (comment) => comment.id === comment.parentId
-  );
+  ))
+  // 추려낸 댓글 order순으로 정렬
+  commentList?.sort((a:Comment, b:Comment) => (
+    (a.id > b.id) ? 1: -1
+  ))
   return (
     <div>
       PostComment
