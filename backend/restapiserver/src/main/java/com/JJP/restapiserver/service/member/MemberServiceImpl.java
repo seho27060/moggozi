@@ -116,7 +116,7 @@ public class MemberServiceImpl implements MemberService {
         String user_img = updateUserRequest.getUserImg();
         int is_private = updateUserRequest.getIsPrivate();
 
-        if (memberRepository.existsByNickname(nickname)) {
+        if (memberRepository.existsByNickname(nickname) && !nickname.equals(member.get().getNickname())) {
             return ResponseEntity.badRequest().body(new MessageResponse("Error: Written Nickname already exists."));
         }
 
