@@ -20,7 +20,7 @@ spring:
             client-secret: YOT4zpMnPj
             client-authentication-method: POST
             authorization-grant-type: authorization_code
-            redirect-uri: "{baseUrl}/{action}/oauth2/code/{registrationId}"
+            redirect-uri: "https://i7c201.p.ssafy.io:443/login/oauth2/code/naver"
             scope: name, email, profile_image
             client-name: Naver
 
@@ -29,7 +29,7 @@ spring:
             client-secret: dOji2PQP9kao6dUKxa6DoqMXl0NgC4CV
             client-authentication-method: POST
             authorization-grant-type: authorization_code
-            redirect-uri: "{baseUrl}/{action}/oauth2/code/{registrationId}"
+            redirect-uri: "https://i7c201.p.ssafy.io:443/login/oauth2/code/kakao"
             scope: profile_nickname, profile_image, account_email
             client-name: Kakao
 
