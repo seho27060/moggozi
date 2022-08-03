@@ -12,7 +12,6 @@ import StageItem from "./StageItem";
 const StageList: React.FC<{ stages: Stage[] }> = ({ stages }) => {
   const navigator = useNavigate()
   const moveToStageAdd = () => {
-
     console.log(`make new Stage to Challenge ${stages[0].challengeId}`)
     navigator("/stage/new")
     return
