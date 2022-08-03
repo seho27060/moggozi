@@ -1,8 +1,8 @@
-import { PostItemState } from "../../store/post";
+import { PostTest } from "../../store/post";
 import PostItem from "./PostItem";
 
 
-const PostList: React.FC<{posts: PostItemState[] | null}> = ({posts}) => {
+const PostList: React.FC<{posts: PostTest[] | null}> = ({posts}) => {
   return (
   <div >
     PostList

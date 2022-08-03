@@ -47,8 +47,8 @@ const AccountForm: React.FC = () => {
       nickname: enteredNickname,
       password: enteredPassword,
       introduce: "",
-      is_private: 0,
-      user_img: "",
+      userImg: "",
+      isPrivate: 0,
     };
     signUpApi(option)
       .then((res) => {

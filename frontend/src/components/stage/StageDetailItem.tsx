@@ -20,7 +20,7 @@ const StageDetailItem: React.FC<{ stage: Stage }> = ({ stage }) => {
         <img src={stage.stageImg} alt="img" />
       </div>
       <div style={{ border: "solid", margin: "1rem", padding: "1rem" }}>
-        <PostList posts={stage.postList} />
+        {/* <PostList posts={stage.postList} /> */}
       </div>
       <div style={{ border: "solid", margin: "1rem", padding: "1rem" }}>
         <GoBackButton />

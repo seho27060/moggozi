@@ -1,11 +1,11 @@
 // import type { RootState } from "../../store/store";
 // import { useSelector } from "react-redux";
 
-import { userDetail } from "../../lib/withTokenApi"
-
+import { Link } from "react-router-dom";
 import { useState } from "react"
 import { Link } from "react-router-dom"
 
+import { userDetail } from "../../lib/withTokenApi"
 function UserPage() {
   
   const [ nickname, setNickname ] = useState("")
@@ -15,7 +15,6 @@ function UserPage() {
 
   userDetail()
     .then((res) => {
-      console.log(res);
       setNickname(res.nickname)
       setIntroduce(res.introduce)
       setUserImg(res.userImg)
@@ -23,17 +22,19 @@ function UserPage() {
       // alert("오류가 발생했습니다.")
       console.log(err)
     })
-  console.log(userDetail())
 
   return (
     <div>
       <Link to={"/account/userUpdate"}>회원정보 수정</Link>
+      UsersPage
+      <Link to={``}>
+        <button>챌린지 생성</button>
+      </Link>
       <ul>
         <li>닉네임 : {nickname}</li>
         <li>자기소개 : {introduce}</li>
         <li>프로필사진 : {userImg}</li>
       </ul>
-      UsersPage
     </div>
   );
 }

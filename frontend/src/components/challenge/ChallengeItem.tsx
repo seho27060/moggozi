@@ -12,7 +12,7 @@ const ChallengeItem: React.FC<{ challenge: ChallengeItemState }> = ({
       </Link>
       <p>챌린지 소개 : {challenge.description}</p>
       <HobbyList hobbies={challenge.hobbyList} />
-      <p>사진 : {challenge.img}</p>
+      {challenge.img && <img src={challenge.img} alt="challenge Img"></img>}
       <p>level : {challenge.level}</p>
       <p>진행도 : {challenge.userProgress}</p>
       <p>작성자 : {challenge.writer.nickname}</p>
