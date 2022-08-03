@@ -1,9 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
 import authReducer from './auth'
-
+import commentReducer from './comment'
 export const store = configureStore({
   reducer: {
     auth: authReducer,
+    comment : commentReducer,
   },
 });
 
