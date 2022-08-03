@@ -39,7 +39,7 @@ const ChallengeDetail: React.FC = () => {
       {isLoading === false && (
         <div>
           <p>챌린지 name: {loadedChallenge!.name}</p>
-          <p>챌린지 img: {loadedChallenge!.img}</p>
+          {loadedChallenge!.img && <img src={loadedChallenge!.img} alt="challenge Img"></img>}
           <p>챌린지 취미들: {loadedChallenge!.name}</p>
           <p>챌린지 만든 사람: {loadedChallenge!.writer.nickname}</p>
           <p>챌린지 level: {loadedChallenge!.level}</p>
