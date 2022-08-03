@@ -47,12 +47,4 @@ public class StageUser {
         this.endTime = LocalDateTime.now();
         this.state = 1;
     }
-    private int state;
-
-
-    public void complete(){
-        this.endTime = LocalDateTime.now();
-        this.state = 1;
-    }
-
 }
