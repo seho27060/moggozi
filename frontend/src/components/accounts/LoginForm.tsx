@@ -46,7 +46,6 @@ const LoginForm: React.FC = () => {
         .then((res) => {
           dispatch(login(res));
           sessionStorage.setItem("accessToken", res.accessToken);
-          sessionStorage.setItem("id", res.id);
           sessionStorage.setItem(
             "expiresAt",
             moment().add(1, "hour").format("yyyy-MM-DD HH:mm:ss")

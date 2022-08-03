@@ -5,10 +5,6 @@ import { refresh, refreshErrorHandle } from "./refresh"
 
 const withTokenApi = axios.create({
     baseURL: apiConfig.apiRoot,
-    headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${sessionStorage.getItem('accessToken')}`
-    },
     timeout: 10000,
     params: {},
 });
@@ -17,7 +13,7 @@ withTokenApi.interceptors.request.use(refresh, refreshErrorHandle)
 
 export default withTokenApi;
 
-// 로그인 상태 유지
+// 계정 관련
 export const persistAuth = async () => {
     const { data } = await withTokenApi.get(`/user/myinfo`)
     return data
@@ -30,6 +26,11 @@ export const userDetail = async () => {
 
 export const logoutApi = async () => {
     const { data } = await withTokenApi.post('/user/logout')
+    return data
+}
+
+export const updateUserApi = async (userId: number | null, option: object) => {
+    const { data } = await withTokenApi.post(`user/update/${userId}`, option)
     return data
 }
 
