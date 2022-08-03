@@ -9,6 +9,7 @@ const PostCommentList: React.FC<{ comments: Comment[] | null }> = ({
   comments,
 }) => {
   // 원댓글 추려내기
+  console.log(comments)
   const commentList = (comments?.filter(
     (comment) => comment.id === comment.parentId
   ))

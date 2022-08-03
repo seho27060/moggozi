@@ -80,6 +80,11 @@ export const stageUpdate = async (stage_id:Number) => {
     return data
 }
 
+export const stageRead = async (stage_id:Number) => {
+    const { data } = await withTokenApi.get(`/stage/${stage_id}`)
+    return data
+}
+
 // 포스팅 관련
 export const postAdd = async () => {
     const { data } = await withTokenApi.post(`/stage/post`)
@@ -93,6 +98,18 @@ export const postDelete = async (post_id:Number) => {
 
 export const postUpdate = async (post_id:Number) => {
     const { data } = await withTokenApi.put(`/stage/post/${post_id}`)
+    return data
+}
+
+export const postRead = async (challenge_id:Number) => {
+    const { data } = await withTokenApi.get(`/stage/post/${challenge_id}`)
+    return data
+}
+
+// 댓글 관련
+export const commentRead = async (post_id:Number) => {
+    const { data } = await withTokenApi.get(`/comment/${post_id}`)
+    console.log(data)
     return data
 }
 

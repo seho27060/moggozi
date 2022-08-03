@@ -5,9 +5,10 @@ import PostCommentChild from "./PostCommentChild";
 
 // 댓글 컴포넌트
 // 현재 스테이트에 불러들인 comment 리스트 가져오기
-const commentState = useSelector((state: RootState) => state.comment.comments);
 
 const PostCommentItem: React.FC<{ comment: Comment }> = ({ comment }) => {
+  const commentState = useSelector((state: RootState) => state.comment.comments);
+
   const childComment = commentState?.filter(
     (child) => comment.id === child.parentId
   );
