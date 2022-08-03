@@ -61,7 +61,7 @@ public class CommentServiceImpl implements CommentService{
                 .text(commentRequestDto.getText())
                 .member(memberRepository.getById(member_id))
                 .parent(commentRequestDto.getParent())
-                .order(commentRequestDto.getOrder())
+                .commentOrder(commentRequestDto.getOrder())
                 .state(commentRequestDto.getState())
                 .build();
         commentRepository.save(comment);

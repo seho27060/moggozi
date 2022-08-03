@@ -24,7 +24,7 @@ public class Comment extends BaseTimeEntity {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="post_id")
+    @JoinColumn(name = "post_id")
     @JsonBackReference
     private Post post;
 
@@ -39,7 +39,7 @@ public class Comment extends BaseTimeEntity {
 
     private Long parent;
 
-    private int order;
+    private int commentOrder;
 
     private int state;
 
