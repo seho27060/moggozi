@@ -49,8 +49,9 @@ public class ChallengeResponseDto {
                 StageResponseDto stageResponseDto = new StageResponseDto(stage);
                 this.stageList.add(stageResponseDto);
             }
-
-        this.likeNum = challenge.getChallengeLikeList().size();
+        if(challenge.getChallengeLikeList() != null)
+            this.likeNum = challenge.getChallengeLikeList().size();
+        else this.likeNum = 0;
         this.reviewList = new ArrayList<>();
         if(challenge.getReviewList() != null)
             for(int i = 0; i < challenge.getReviewList().size(); i++){
