@@ -12,7 +12,7 @@ function App() {
   // const currentState = useSelector((state: RootState) => state)
 
   useEffect(() => {
-    if (localStorage.getItem("accessToken") != null) {
+    if (sessionStorage.getItem("accessToken") != null) {
       persistAuth()
         .then((res) => {
           dispatch(authentication(res));
