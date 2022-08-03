@@ -204,26 +204,27 @@ public class ChallengeServiceImpl implements ChallengeService{
         Challenge challenge = challengeRepository.findById(challenge_id).get();
 
         List<TagRequestDto> tagList = challengeData.getHobbyList();
-        for(int i = 0; i < tagList.size(); i++)
-        {
-            String tag = tagList.get(i).getName();
-            Tag tagEntity;
-            // 태그 리스트 중에서 이미 태그가 존재한다면
-            // 챌린지가 이미 취미로 집어넣은 태그인지 확인한다.
-            if(tagRepository.existsByTag(tag))
-                tagEntity = tagRepository.getByTag(tag);
-                // 아예 처음 생기는 태그라면, 태그 테이블에 집어넣고
-                // 사용자 취미 태그 테이블에도 집어넣어 준다.
-            else{
-                tagEntity = Tag.builder()
-                        .tag(tag)
-                        .build();
-                tagRepository.save(tagEntity);
+        if(tagList != null)
+            for(int i = 0; i < tagList.size(); i++)
+            {
+                String tag = tagList.get(i).getName();
+                Tag tagEntity;
+                // 태그 리스트 중에서 이미 태그가 존재한다면
+                // 챌린지가 이미 취미로 집어넣은 태그인지 확인한다.
+                if(tagRepository.existsByTag(tag))
+                    tagEntity = tagRepository.getByTag(tag);
+                    // 아예 처음 생기는 태그라면, 태그 테이블에 집어넣고
+                    // 사용자 취미 태그 테이블에도 집어넣어 준다.
+                else{
+                    tagEntity = Tag.builder()
+                            .tag(tag)
+                            .build();
+                    tagRepository.save(tagEntity);
+                }
+                challengeTagRepository.save(ChallengeTag.builder()
+                        .challenge(challenge)
+                        .tag(tagEntity)
+                        .build());
             }
-            challengeTagRepository.save(ChallengeTag.builder()
-                    .challenge(challenge)
-                    .tag(tagEntity)
-                    .build());
-        }
     }
 }
