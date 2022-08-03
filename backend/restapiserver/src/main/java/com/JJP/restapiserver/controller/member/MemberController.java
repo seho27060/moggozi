@@ -21,6 +21,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 @Tag(name = "MemberController", description = "사용자 API")
@@ -48,7 +49,8 @@ public class MemberController {
             @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR")
     })
     @PostMapping("/login")
-    public ResponseEntity<?> login(@Valid @RequestBody LoginRequest loginRequest) { // 아이디, 비밀번호를 body에 담아 전송
+    public ResponseEntity<?> login(@Valid @RequestBody LoginRequest loginRequest, HttpSession session) { // 아이디, 비밀번호를 body에 담아 전송
+        session.setAttribute("memberEmail", loginRequest.getUsername());
         return memberService.login(loginRequest);
     }
 
