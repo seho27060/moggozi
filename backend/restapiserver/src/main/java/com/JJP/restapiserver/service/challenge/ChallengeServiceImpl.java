@@ -98,7 +98,7 @@ public class ChallengeServiceImpl implements ChallengeService{
         Challenge challenge = Challenge.builder()
                 .member(member)
                 .name(challengeData.getName())
-                .challenge_img(challengeData.getChallengeImg())
+                .challenge_img(challengeData.getImg())
                 .content(challengeData.getContent())
                 .level(challengeData.getLevel())
                 .state(challengeData.getState())
@@ -204,7 +204,7 @@ public class ChallengeServiceImpl implements ChallengeService{
         List<TagRequestDto> tagList = challengeData.getHobbyList();
         for(int i = 0; i < tagList.size(); i++)
         {
-            String tag = tagList.get(i).getTag();
+            String tag = tagList.get(i).getName();
             Tag tagEntity;
             // 태그 리스트 중에서 이미 태그가 존재한다면
             // 챌린지가 이미 취미로 집어넣은 태그인지 확인한다.
