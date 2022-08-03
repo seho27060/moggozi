@@ -51,6 +51,7 @@ public class MemberServiceImpl implements MemberService {
     /**
      * 회원등록
      */
+    @Transactional
     @Override
     public ResponseEntity<?> register(SignupRequest signupRequest) {
 
@@ -100,9 +101,11 @@ public class MemberServiceImpl implements MemberService {
         }
     }
 
+
     /**
      * 회원정보 수정
      */
+    @Transactional
     @Override
     public ResponseEntity<?> update(Long user_id, UpdateUserRequest updateUserRequest) {
         Optional<Member> member = memberRepository.findById(user_id);
@@ -116,7 +119,7 @@ public class MemberServiceImpl implements MemberService {
         String user_img = updateUserRequest.getUserImg();
         int is_private = updateUserRequest.getIsPrivate();
 
-        if (memberRepository.existsByNickname(nickname)) {
+        if (memberRepository.existsByNickname(nickname) && !nickname.equals(member.get().getNickname())) {
             return ResponseEntity.badRequest().body(new MessageResponse("Error: Written Nickname already exists."));
         }
 
@@ -192,6 +195,7 @@ public class MemberServiceImpl implements MemberService {
     /**
      * 로그인
      */
+    @Transactional
     @Override
     public ResponseEntity<?> login(LoginRequest loginRequest) {
         // Authentication 객체를 생성한다 by AuthenticationManager
