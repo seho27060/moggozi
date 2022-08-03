@@ -4,6 +4,7 @@
 import { userDetail } from "../../lib/withTokenApi"
 
 import { useState } from "react"
+import { Link } from "react-router-dom"
 
 function UserPage() {
   
@@ -26,6 +27,7 @@ function UserPage() {
 
   return (
     <div>
+      <Link to={"/account/userUpdate"}>회원정보 수정</Link>
       <ul>
         <li>닉네임 : {nickname}</li>
         <li>자기소개 : {introduce}</li>
