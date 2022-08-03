@@ -39,7 +39,6 @@ public class Comment extends BaseTimeEntity {
 
     private Long parent;
 
-    @Column(name = "\"order\"")
     private int commentOrder;
 
     private int state;
