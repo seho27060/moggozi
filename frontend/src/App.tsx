@@ -4,9 +4,7 @@ import { useEffect } from "react";
 import Router from "./routes";
 import { authentication } from "./store/auth";
 import { persistAuth } from "./lib/withTokenApi";
-
 import "./App.scss";
-
 function App() {
   const dispatch = useDispatch();
   // const currentState = useSelector((state: RootState) => state)
