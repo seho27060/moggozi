@@ -38,13 +38,15 @@ const ChallengeForm: React.FC = () => {
         hobbyList: hobbyList,
       };
 
-      challengeAdd(challengeData).then((res) => {
-        alert("챌린지 생성이 완료되었습니다.");
-        navigate("/");
-      })
-      .catch((err) => {
-        alert(err.response);
-      })
+      challengeAdd(challengeData)
+        .then((res) => {
+          console.log(res);
+          alert("챌린지 생성이 완료되었습니다.");
+          navigate(`/challenge/${res.id}`, { replace: true }); // 뒤로가기 안 먹도록!
+        })
+        .catch((err) => {
+          alert(err.response);
+        });
     }
   }
   return (
@@ -73,6 +75,7 @@ const ChallengeForm: React.FC = () => {
           <option value="4">어려움</option>
           <option value="5">매우 어려움</option>
         </select>
+        <br />
         <button type="button" onClick={submitHandler}>
           생성
         </button>
