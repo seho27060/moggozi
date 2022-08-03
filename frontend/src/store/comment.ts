@@ -4,7 +4,7 @@ import { UserInfo } from "./auth";
 export interface Comment {
   id: number;
   state: number | null; // 삭제,숨김,활성
-  order: number | null;
+  order: number;
   parentId: number | null;
   text: string | null;
   writer: UserInfo | null;
