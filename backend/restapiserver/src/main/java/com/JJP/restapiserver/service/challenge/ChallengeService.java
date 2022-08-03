@@ -21,9 +21,9 @@ public interface ChallengeService {
     ChallengeResponseDto getChallengeDetail(Long challenge_id, Long member_id);
     Challenge getChallengeDetail2(Long challenge_id, Long member_id);
     // 챌린지 등록하는 api
-    int saveChallenge(ChallengeRequestDto challengeData);
+    ChallengeResponseDto saveChallenge(ChallengeRequestDto challengeData);
 
-    int updateChallenge(Long id, ChallengeRequestDto challengeData);
+    ChallengeResponseDto updateChallenge(Long id, ChallengeRequestDto challengeData);
     // 챌린지 만든 유저가 챌린지를 삭제하게 하는 api
     int deleteChallenge(Long challenge_id);
 

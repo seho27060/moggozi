@@ -93,7 +93,7 @@ public class ChallengeServiceImpl implements ChallengeService{
     }
 
     @Override
-    public int saveChallenge(ChallengeRequestDto challengeData) {
+    public ChallengeResponseDto saveChallenge(ChallengeRequestDto challengeData) {
         Member member = memberRepository.findById(challengeData.getMemberId()).get();
         Challenge challenge = Challenge.builder()
                 .member(member)
@@ -102,15 +102,17 @@ public class ChallengeServiceImpl implements ChallengeService{
                 .content(challengeData.getContent())
                 .level(challengeData.getLevel())
                 .state(challengeData.getState())
+                .description(challengeData.getDescription())
                 .build();
-        Long challenge_id = challengeRepository.save(challenge).getId();
+        challenge =  challengeRepository.save(challenge);
 
-        tagRegister(challenge_id, challengeData);
-        return 0;
+        tagRegister(challenge.getId(), challengeData);
+        ChallengeResponseDto challengeResponseDto = new ChallengeResponseDto(challenge);
+        return challengeResponseDto;
     }
 
     @Override
-    public int updateChallenge(Long challenge_id, ChallengeRequestDto challengeData) {
+    public ChallengeResponseDto updateChallenge(Long challenge_id, ChallengeRequestDto challengeData) {
 
         Challenge challenge = challengeRepository.findById(challenge_id).get();
         challenge.updateChallenge(challengeData);
@@ -123,8 +125,8 @@ public class ChallengeServiceImpl implements ChallengeService{
         }
 
         tagRegister(challenge_id, challengeData);
-
-        return 0;
+        ChallengeResponseDto challengeResponseDto = new ChallengeResponseDto(challenge);
+        return challengeResponseDto;
     }
 
 

@@ -65,7 +65,8 @@ public class CommentServiceImpl implements CommentService{
                 .state(commentRequestDto.getState())
                 .build();
         commentRepository.save(comment);
-        return new ResponseEntity(HttpStatus.OK);
+        CommentResponseDto commentResponseDto = new CommentResponseDto(comment);
+        return new ResponseEntity(commentResponseDto, HttpStatus.OK);
     }
 
     @Override
@@ -73,7 +74,8 @@ public class CommentServiceImpl implements CommentService{
         Comment comment = commentRepository.getById(comment_id);
         comment.update(commentRequestDto);
         commentRepository.save(comment);
-        return new ResponseEntity(HttpStatus.OK);
+        CommentResponseDto commentResponseDto = new CommentResponseDto(comment);
+        return new ResponseEntity(commentResponseDto, HttpStatus.OK);
     }
 
     @Override
