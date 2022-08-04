@@ -23,7 +23,7 @@ public class CommentController {
     private final JwtUtils jwtUtils;
 
     @GetMapping("/{post_id}")
-    public ResponseEntity getPostCommentList(Long post_id)
+    public ResponseEntity getPostCommentList(@PathVariable Long post_id)
     {
         List<CommentResponseDto> commentList = commentService.getPostCommentList(post_id);
         return new ResponseEntity(commentList, HttpStatus.OK);
