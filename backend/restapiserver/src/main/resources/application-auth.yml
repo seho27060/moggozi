@@ -13,6 +13,7 @@ spring:
           google:
             client-id: 286378831968-b4upq7oh9t3sl9c2lqb5m7g8fjm34vo5.apps.googleusercontent.com
             client-secret: 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
+            redirect-uri: "https://i7c201.p.ssafy.io:443/login/oauth2/code/google"
             scope: profile, email
 
           naver:
@@ -62,7 +63,7 @@ spring:
 
 springdoc:
   version: '@project.version@'
-  api-docs:
+  api-docs:/
     path: /api-docs
   default-consumes-media-type: application/json
   default-produces-media-type: application/json
