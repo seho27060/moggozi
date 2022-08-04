@@ -84,7 +84,7 @@ const ChallengeDetail: React.FC = () => {
           <p>스테이지</p>
           <StageList />
 
-          <Link to={`/stage/${id}`} state={loadedChallenge!.stageList}>
+          <Link to={`/stage/${id}`}>
             <button>스테이지 편집</button>
           </Link>
           <Link to={`/challenge/${id}/update`} state={loadedChallenge}>
