@@ -76,6 +76,24 @@ public class ChallengeServiceImpl implements ChallengeService{
         List<ChallengeListResponseDto> responseDtoList = new ArrayList<>();
         return challengeIntoListDto(challengeList, responseDtoList, member_id);
     }
+    public List<ChallengeListResponseDto> getChallengeListByLikeWithoutLogin() {
+        List<Object[]> list = challengeRepository.findByLike();
+        List<Challenge> challengeList = new ArrayList<>();
+        List<ChallengeListResponseDto> responseDtoList = new ArrayList<>();
+        if(list != null)
+        {
+
+            for(int i = 0; i < list.size(); i++)
+            {
+                Challenge challenge = challengeRepository.findById(Long.parseLong(list.get(i)[0].toString())).get();
+                challengeList.add(challenge);
+            }
+            for(int i = 0; i < challengeList.size(); i++){
+                responseDtoList.add(new ChallengeListResponseDto(challengeList.get(i)));
+            }
+        }
+        return responseDtoList;
+    }
 
     @Override
     public ChallengeResponseDto getChallengeDetail(Long challenge_id, Long member_id) {

@@ -17,6 +17,7 @@ public interface ChallengeService {
     List<ChallengeListResponseDto> getChallengeListByKeyword(String keyword, Long member_id);
     // 좋아요 순으로 챌린지 리스트 반환하는 api
     List<ChallengeListResponseDto> getChallengeListByLike(Long member_id);
+    List<ChallengeListResponseDto> getChallengeListByLikeWithoutLogin();
     // 챌린지 상세정보를 불러오는 api
     ChallengeResponseDto getChallengeDetail(Long challenge_id, Long member_id);
     Challenge getChallengeDetail2(Long challenge_id, Long member_id);

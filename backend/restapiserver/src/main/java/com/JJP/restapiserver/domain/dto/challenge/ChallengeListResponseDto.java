@@ -25,7 +25,6 @@ public class ChallengeListResponseDto {
     private List<TagResponseDto> hobbyList;
     private int userProgress;
 
-
     private String description;
 
     public ChallengeListResponseDto(Challenge challenge){

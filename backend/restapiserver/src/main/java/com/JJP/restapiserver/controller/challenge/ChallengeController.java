@@ -48,10 +48,16 @@ public class ChallengeController {
     @GetMapping("/rank")
     public ResponseEntity getChallengeListByLike(HttpServletRequest request)
     {
-        Long member_id = jwtUtils.getUserIdFromJwtToken(request.getHeader("Authorization"));
-
-        List<ChallengeListResponseDto> challengeList = challengeService.getChallengeListByLike(member_id);
-        return new ResponseEntity(challengeList, HttpStatus.OK);
+        if(request.getHeader("Authorization") != null)
+        {
+            Long member_id = jwtUtils.getUserIdFromJwtToken(request.getHeader("Authorization"));
+            List<ChallengeListResponseDto> challengeList = challengeService.getChallengeListByLike(member_id);
+            return new ResponseEntity(challengeList, HttpStatus.OK);
+        }
+        else {
+            List<ChallengeListResponseDto> challengeList = challengeService.getChallengeListByLikeWithoutLogin();
+            return new ResponseEntity(challengeList, HttpStatus.OK);
+        }
     }
 
     @GetMapping("/{challenge_id}")
