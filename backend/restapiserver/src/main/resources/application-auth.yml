@@ -63,7 +63,7 @@ spring:
 
 springdoc:
   version: '@project.version@'
-  api-docs:/
+  api-docs:
     path: /api-docs
   default-consumes-media-type: application/json
   default-produces-media-type: application/json
