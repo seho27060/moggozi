@@ -28,8 +28,9 @@ export interface PostTest {
   id: number | null;
   title: string | null;
   content: string | null;
-  created_date: Date | null;
-  modified_date: Date | null;
+  createdDate: Date | null;
+  modifiedDate: Date | null;
   postImg: string | null;
   postLikeList: like[]|null,
+  writer : UserInfo
 }

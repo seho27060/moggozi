@@ -1,7 +1,8 @@
 import SockJS from "sockjs-client";
-import WebSocketProvider from "../lib/WebSocketProvider";
+// import WebSocketProvider from "../lib/WebSocketProvider";
 
 const WebsocketPage = () => {
+  // 웹소켓
   function onClose(evt: any) {
     alert("연결 끊김");
   }
@@ -14,6 +15,20 @@ const WebsocketPage = () => {
   wsocket.onclose = onClose;
   wsocket.onopen = onOpen
 
+  var sock = new SockJS('https://mydomain.com/my_prefix');
+  sock.onopen = function() {
+      console.log('open');
+      sock.send('test');
+  };
+ 
+  sock.onmessage = function(e) {
+      console.log('message', e.data);
+      sock.close();
+  };
+ 
+  sock.onclose = function() {
+      console.log('close');
+  };
   let msg = "receiverId,message"
   // 보내는 사람/ 받는사람/ 알림타입:포스팅좋아요,댓글..등등등
   function onSend(evt:any) {

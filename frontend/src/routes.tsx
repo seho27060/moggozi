@@ -46,6 +46,7 @@ import MainPage from "./pages/MainPage";
 import SearchPage from "./pages/SearchPage";
 import UnknownPage from "./pages/UnknownPage";
 import WebsocketPage from "./pages/WebsocketTest";
+import PostCommentTestPage from "./pages/PostCommentTestPage";
 
 export default function Router() {
   return useRoutes([
@@ -177,6 +178,10 @@ export default function Router() {
     {
       path: "/websocketTest",
       element: <WebsocketPage />,
+    },
+    {
+      path: "/postcommentTest",
+      element: <PostCommentTestPage />,
     },
     {
       path: "/*",
