@@ -3,6 +3,7 @@
 
 import { Link } from "react-router-dom";
 import { useState } from "react"
+import { Link } from "react-router-dom"
 
 import { userDetail } from "../../lib/withTokenApi"
 function UserPage() {
@@ -24,6 +25,7 @@ function UserPage() {
 
   return (
     <div>
+      <Link to={"/account/userUpdate"}>회원정보 수정</Link>
       UsersPage
       <Link to={``}>
         <button>챌린지 생성</button>

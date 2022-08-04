@@ -29,8 +29,13 @@ export const logoutApi = async () => {
     return data
 }
 
-export const updateUserApi = async (userId: number | null, option: object) => {
-    const { data } = await withTokenApi.post(`user/update/${userId}`, option)
+export const updateUserApi = async (id: number | null, option: object) => {
+    const { data } = await withTokenApi.post(`/user/update/${id}`, option)
+    return data
+}
+
+export const updatePw = async (option: object) => {
+    const { data } = await withTokenApi.post('/user/updatepw', option)
     return data
 }
 

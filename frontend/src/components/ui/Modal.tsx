@@ -1,14 +1,14 @@
 import React, { ReactElement} from 'react';
-import styles from "./EmailModal.module.scss"
+import styles from "./Modal.module.scss"
 
-interface EmailProps {
+interface Props {
   open: boolean;
   close: () => void;
   header: string;
   children: React.ReactNode;
 }
 
-const EmailModal = (props: EmailProps): ReactElement => {
+const Modal = (props: Props): ReactElement => {
   // 열기, 닫기, 모달 헤더 텍스트를 부모로부터 받아옴
   const { open, close, header } = props;
 
@@ -37,4 +37,4 @@ const EmailModal = (props: EmailProps): ReactElement => {
   );
 };
 
-export default EmailModal;
+export default Modal;
