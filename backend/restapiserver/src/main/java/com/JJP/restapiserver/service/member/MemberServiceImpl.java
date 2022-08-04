@@ -16,7 +16,6 @@ import com.JJP.restapiserver.security.JwtUtils;
 import com.JJP.restapiserver.security.UserDetailsImpl;
 import com.JJP.restapiserver.service.RefreshTokenService;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -36,6 +35,7 @@ import java.util.Random;
 
 @RequiredArgsConstructor
 @Service
+@Transactional
 public class MemberServiceImpl implements MemberService {
 
     private final AuthenticationManager authenticationManager;
@@ -55,7 +55,7 @@ public class MemberServiceImpl implements MemberService {
     /**
      * 회원등록
      */
-    @Transactional
+
     @Override
     public ResponseEntity<?> register(SignupRequest signupRequest) {
 
@@ -89,7 +89,7 @@ public class MemberServiceImpl implements MemberService {
     /**
      * 회원탈퇴
      */
-    @Transactional
+//    @Transactional
     @Override
     public ResponseEntity<?> delete(String password, Long user_id) {
         Optional<Member> member = memberRepository.findById(user_id);
@@ -110,7 +110,7 @@ public class MemberServiceImpl implements MemberService {
     /**
      * 회원정보 수정
      */
-    @Transactional
+//    @Transactional
     @Override
     public ResponseEntity<?> update(Long user_id, UpdateUserRequest updateUserRequest) {
         Optional<Member> member = memberRepository.findById(user_id);
@@ -139,7 +139,7 @@ public class MemberServiceImpl implements MemberService {
     /**
      * 패스워드 변경
      */
-    @Transactional
+//    @Transactional
     @Override
     public ResponseEntity<?> updatePassword(PwUpdateRequest pwUpdateRequest, Long userid) {
         Optional<Member> member = memberRepository.findById(userid);
@@ -157,7 +157,7 @@ public class MemberServiceImpl implements MemberService {
     /**
      * 패스워드 찾기 - 리셋
      */
-    @Transactional
+//    @Transactional
     @Override
     public ResponseEntity<?> resetPassword(PasswordRequest passwordRequest) {
         Optional<Member> member = memberRepository.findByUsername(passwordRequest.getUsername());
@@ -201,7 +201,7 @@ public class MemberServiceImpl implements MemberService {
     /**
      * 로그인
      */
-    @Transactional
+//    @Transactional
     @Override
     public ResponseEntity<?> login(LoginRequest loginRequest) {
 
@@ -258,7 +258,7 @@ public class MemberServiceImpl implements MemberService {
      * 조회하고 싶은 사용자 아이디를 인자로 넣어주면, 유저의 프로필 정보를 반환합니다.
      * 프로필 정보: id, username(=email), nickname, user_img, introduce, is_private(프로필 정보 공개 여부)
      * @param userId: 조회하고자하는 사용자의 id
-     * @return
+     * @return ProfileResponse
      */
     @Override
     public ProfileResponse getMemberProfile(Long userId) {
