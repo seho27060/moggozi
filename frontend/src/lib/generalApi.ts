@@ -28,6 +28,11 @@ export const checkNickname = async (nickname: string) => {
   return data;
 };
 
+export const passwordReissue = async (option: object) => {
+    const { data }  = await generalApi.post('/user/resetpw', option)
+    return data
+}
+
 // 챌린지
 
 export const fetchChallengeRankList = async () => {
