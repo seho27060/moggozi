@@ -30,8 +30,6 @@ public class FollowServiceImpl implements FollowService {
         Member toMember = memberRepository.findById(toMemberId).get();
         try {
             if (fromMemberId.equals(toMemberId)) throw new Exception();
-            if (followRepository.existsByFrom_memberAndTo_member(fromMemberId, toMemberId))
-                return ResponseEntity.badRequest().body(new MessageResponse("Error: 이미 팔로우하고 있습니다."));
 
             Follow follow = Follow.builder().from_member(fromMember).to_member(toMember).build();
             followRepository.saveAndFlush(follow);
