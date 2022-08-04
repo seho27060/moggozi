@@ -21,4 +21,6 @@ public class MyPageResponseDto {
 
     private Long writtenPostNum;
     private List<PostResponseDto> recentWrittenPost;
+
+//    private UserResponsDto userResponsDto
 }

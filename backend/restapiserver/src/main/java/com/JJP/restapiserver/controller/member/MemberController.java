@@ -50,8 +50,13 @@ public class MemberController {
     })
     @PostMapping("/login")
     public ResponseEntity<?> login(@Valid @RequestBody LoginRequest loginRequest, HttpSession session) { // 아이디, 비밀번호를 body에 담아 전송
-        session.setAttribute("memberEmail", loginRequest.getUsername());
-        return memberService.login(loginRequest);
+
+        ResponseEntity responseEntity = memberService.login(loginRequest);
+        JwtResponse jwtResponse = (JwtResponse)(responseEntity.getBody());
+        Long memberId = jwtResponse.getId();
+//        System.out.println("나는 말이야 " + memberId);
+        session.setAttribute("memberId", memberId);
+        return responseEntity;
     }
 
     @Operation(summary = "회원가입", description = "username, password, nickname는 필수 입력 값 입니다.")

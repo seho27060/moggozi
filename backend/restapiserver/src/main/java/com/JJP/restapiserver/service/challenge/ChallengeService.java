@@ -1,10 +1,8 @@
 package com.JJP.restapiserver.service.challenge;
 
-import com.JJP.restapiserver.domain.dto.challenge.ChallengeCompleteRequestDto;
-import com.JJP.restapiserver.domain.dto.challenge.ChallengeListResponseDto;
-import com.JJP.restapiserver.domain.dto.challenge.ChallengeRequestDto;
-import com.JJP.restapiserver.domain.dto.challenge.ChallengeResponseDto;
+import com.JJP.restapiserver.domain.dto.challenge.*;
 import com.JJP.restapiserver.domain.entity.challenge.Challenge;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -35,4 +33,6 @@ public interface ChallengeService {
     Long joinedChallengeNum(Long member_id);
 
     List<ChallengeListResponseDto> joinedChallengeList8(Long member_id);
+
+    List<ChallengeSimpleResponseDto> infiniteChallengeList(Long member_id, Pageable pageable);
 }

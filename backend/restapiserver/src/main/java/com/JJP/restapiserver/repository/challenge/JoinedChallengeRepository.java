@@ -1,6 +1,10 @@
 package com.JJP.restapiserver.repository.challenge;
 
+import com.JJP.restapiserver.domain.entity.challenge.Challenge;
 import com.JJP.restapiserver.domain.entity.challenge.JoinedChallenge;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -14,4 +18,6 @@ public interface JoinedChallengeRepository extends JpaRepository<JoinedChallenge
     List<JoinedChallenge> findTop8ByMember_idOrderByModifiedDateDesc(Long member_id);
     // 내가 참여한 챌린지 개수 반환해주는 쿼리 메소드
     Long countByMember_id(Long member_id);
+
+    Slice<Challenge> findByMember_idOrderByStateDesc(Long member_id, Pageable pageable);
 }
