@@ -45,7 +45,7 @@ export const fetchChallenge = async (id: number) => {
   return data;
 };
 
-export const fetchChallengeRankList = async () => {
+export const isLoginFetchChallengeRankList = async () => {
   const { data } = await withTokenApi.get("/challenge/rank");
   return data;
 };
