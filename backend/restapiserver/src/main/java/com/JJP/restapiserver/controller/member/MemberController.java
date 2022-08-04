@@ -54,7 +54,6 @@ public class MemberController {
         ResponseEntity responseEntity = memberService.login(loginRequest);
         JwtResponse jwtResponse = (JwtResponse)(responseEntity.getBody());
         Long memberId = jwtResponse.getId();
-//        System.out.println("나는 말이야 " + memberId);
         session.setAttribute("memberId", memberId);
         return responseEntity;
     }
