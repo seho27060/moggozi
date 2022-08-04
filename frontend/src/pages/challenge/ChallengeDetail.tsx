@@ -1,35 +1,57 @@
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import ChallengeDeleteBtn from "../../components/challenge/ChallengeDeleteBtn";
 import HobbyList from "../../components/challenge/HobbyList";
 import StageList from "../../components/stage/StageList";
-import { fetchChallenge } from "../../lib/withTokenApi";
+import { fetchChallenge } from "../../lib/generalApi";
+import { isLoginFetchChallenge } from "../../lib/withTokenApi";
 import { ChallengeDetailState } from "../../store/challenge";
+import { RootState } from "../../store/store";
 
 const ChallengeDetail: React.FC = () => {
   const { id } = useParams();
+  const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
   const [isLoading, setIsLoading] = useState(true);
   const [loadedChallenge, setLoadedChallenge] =
     useState<ChallengeDetailState>();
   useEffect(() => {
     setIsLoading(true);
     if (id) {
-      fetchChallenge(Number(id))
-        .then((res) => {
-          const challenge: ChallengeDetailState = {
-            ...res,
-          };
-          setIsLoading(false);
-          setLoadedChallenge(challenge);
-        })
-        // console.log(res)
-        .catch((err) => {
-          console.log(err);
-          setIsLoading(false);
-        });
+      if (isLoggedIn) {
+        // 로그인 한 경우
+        isLoginFetchChallenge(Number(id))
+          .then((res) => {
+            const challenge: ChallengeDetailState = {
+              ...res,
+            };
+            setIsLoading(false);
+            setLoadedChallenge(challenge);
+          })
+          // console.log(res)
+          .catch((err) => {
+            console.log(err);
+            setIsLoading(false);
+          });
+      } else {
+        // 로그인 안 한 경우
+        fetchChallenge(Number(id))
+          .then((res) => {
+            const challenge: ChallengeDetailState = {
+              ...res,
+            };
+            setIsLoading(false);
+            setLoadedChallenge(challenge);
+          })
+          // console.log(res)
+          .catch((err) => {
+            console.log(err);
+            setIsLoading(false);
+          });
+      }
     }
-  }, [id]);
+  }, [id, isLoggedIn]);
   return (
     <div>
       ChallengeDetail

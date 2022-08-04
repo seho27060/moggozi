@@ -40,7 +40,7 @@ export const updatePw = async (option: object) => {
 };
 
 // 챌린지 관련
-export const fetchChallenge = async (id: number) => {
+export const isLoginFetchChallenge = async (id: number) => {
   const { data } = await withTokenApi.get(`/challenge/${id}`);
   return data;
 };
