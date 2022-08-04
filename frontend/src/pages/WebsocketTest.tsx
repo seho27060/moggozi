@@ -1,6 +1,3 @@
-import SockJS from "sockjs-client";
-import WebSocketProvider from "../lib/WebSocketProvider";
-
 const WebsocketPage = () => {
   function onClose(evt: any) {
     alert("연결 끊김");
