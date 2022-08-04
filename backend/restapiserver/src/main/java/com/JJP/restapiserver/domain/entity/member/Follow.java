@@ -1,5 +1,6 @@
 package com.JJP.restapiserver.domain.entity.member;
 
+import com.JJP.restapiserver.domain.entity.BaseTimeEntity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,8 +19,7 @@ import javax.persistence.*;
 //                )
 //        }
 //)
-public class Follow {
-//        extends BaseTimeEntity {
+public class Follow extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
