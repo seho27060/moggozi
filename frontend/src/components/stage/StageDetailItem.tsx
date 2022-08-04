@@ -3,10 +3,9 @@
 import { GoBackButton } from "../../layout/HistoryButton";
 import { Link } from "react-router-dom";
 import PostList from "../post/PostList";
-import { Stage } from "../../store/stage";
+import { StageState } from "../../store/stage";
 
-const StageDetailItem: React.FC<{ stage: Stage }> = ({ stage }) => {
-
+const StageDetailItem: React.FC<{ stage: StageState }> = ({ stage }) => {
   return (
     <div>
       StageDetail

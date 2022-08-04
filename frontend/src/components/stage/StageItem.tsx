@@ -1,12 +1,11 @@
 import React from "react";
-import { Stage } from "../../store/stage";
+import { StageState } from "../../store/stage";
 
 const StageItem: React.FC<{
-  stage: Stage;
+  stage: StageState;
 }> = ({ stage }) => {
-
   return (
-    <div >
+    <div>
       <p>스테이지 아이템</p>
       <p>스테이지 번호 : {stage.challengeId}</p>
       <p>스테이지 이름 : {stage.name}</p>

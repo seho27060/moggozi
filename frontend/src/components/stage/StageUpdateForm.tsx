@@ -1,11 +1,10 @@
 import { FormEvent, useRef } from "react";
 import { GoBackButton } from "../../layout/HistoryButton";
-import { Stage } from "../../store/stage"
+import { StageState } from "../../store/stage";
 
 // 수정하기가 글쓴이가 수정할 수 있도록 해야함.
 
-
-const StageUpdateForm: React.FC<{ stage: Stage }> = ({ stage }) => {
+const StageUpdateForm: React.FC<{ stage: StageState }> = ({ stage }) => {
   const contentInputRef = useRef<HTMLTextAreaElement>(
     stage.content as unknown as HTMLTextAreaElement
   );
@@ -24,7 +23,7 @@ const StageUpdateForm: React.FC<{ stage: Stage }> = ({ stage }) => {
 
   function stateUpdateHandler(event: FormEvent) {
     event.preventDefault();
-    const stageUpdateData: Stage = { 
+    const stageUpdateData: StageState = {
       challengeId: stage.challengeId,
       content: contentInputRef.current!.value,
       name: nameInputRef.current!.value,
@@ -32,8 +31,8 @@ const StageUpdateForm: React.FC<{ stage: Stage }> = ({ stage }) => {
       period: Number(periodInputRef.current!.value),
       id: stage.id,
       stageImg: stageImgInputRef.current!.value,
-      createDate : stage.createDate,
-      modifiedDate : stage.modifiedDate,
+      createDate: stage.createDate,
+      modifiedDate: stage.modifiedDate,
       postList: stage.postList,
     };
 
@@ -72,7 +71,7 @@ const StageUpdateForm: React.FC<{ stage: Stage }> = ({ stage }) => {
               id="content"
               defaultValue={stage.content as string | undefined}
               ref={contentInputRef}
-              rows = {5}
+              rows={5}
             />
           </div>
           <div>
@@ -96,7 +95,7 @@ const StageUpdateForm: React.FC<{ stage: Stage }> = ({ stage }) => {
             />
           </div>
           {/* 뒤로가기시 오류 있음. */}
-          <GoBackButton/>
+          <GoBackButton />
           <button onClick={stateUpdateHandler}>submit</button>
         </form>
       </div>

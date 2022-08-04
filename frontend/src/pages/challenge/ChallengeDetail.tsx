@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import ChallengeDeleteBtn from "../../components/challenge/ChallengeDeleteBtn";
@@ -8,6 +8,7 @@ import StageList from "../../components/stage/StageList";
 import { fetchChallenge } from "../../lib/generalApi";
 import { isLoginFetchChallenge } from "../../lib/withTokenApi";
 import { ChallengeDetailState } from "../../store/challenge";
+import { fetchStage } from "../../store/stage";
 import { RootState } from "../../store/store";
 
 const ChallengeDetail: React.FC = () => {
@@ -16,6 +17,8 @@ const ChallengeDetail: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [loadedChallenge, setLoadedChallenge] =
     useState<ChallengeDetailState>();
+  const dispatch = useDispatch();
+
   useEffect(() => {
     setIsLoading(true);
     if (id) {
@@ -28,6 +31,7 @@ const ChallengeDetail: React.FC = () => {
             };
             setIsLoading(false);
             setLoadedChallenge(challenge);
+            dispatch(fetchStage(challenge.stageList));
           })
           // console.log(res)
           .catch((err) => {
@@ -43,6 +47,7 @@ const ChallengeDetail: React.FC = () => {
             };
             setIsLoading(false);
             setLoadedChallenge(challenge);
+            dispatch(fetchStage(challenge.stageList));
           })
           // console.log(res)
           .catch((err) => {
@@ -51,7 +56,8 @@ const ChallengeDetail: React.FC = () => {
           });
       }
     }
-  }, [id, isLoggedIn]);
+  }, [id, isLoggedIn, dispatch]);
+
   return (
     <div>
       ChallengeDetail
@@ -76,13 +82,17 @@ const ChallengeDetail: React.FC = () => {
           <p>챌린지 취미</p>
           <HobbyList hobbies={loadedChallenge!.hobbyList} />
           <p>스테이지</p>
-          <StageList stages={loadedChallenge!.stageList} />
+          <StageList />
+
+          <Link to={`/stage/${id}`} state={loadedChallenge!.stageList}>
+            <button>스테이지 편집</button>
+          </Link>
+          <Link to={`/challenge/${id}/update`} state={loadedChallenge}>
+            <button>챌린지 수정</button>
+          </Link>
+          {id && <ChallengeDeleteBtn />}
         </div>
       )}
-      <Link to={`/challenge/${id}/update`} state={loadedChallenge}>
-        <button>챌린지 수정</button>
-      </Link>
-      {id && <ChallengeDeleteBtn />}
     </div>
   );
 };

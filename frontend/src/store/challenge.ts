@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { UserInfo } from "./auth";
-import { Stage } from "./stage";
+import { StageState } from "./stage";
 
 // 챌린지 리스트 정보
 export interface ChallengeItemState {
@@ -27,7 +27,7 @@ export interface ChallengeDetailState {
   level: number | null;
   userProgress: number | null;
   writer: UserInfo;
-  stageList: Stage[];
+  stageList: StageState[];
   likeNum: number | null;
   // 리뷰
   // reviewList:
