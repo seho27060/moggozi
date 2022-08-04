@@ -28,6 +28,12 @@ export const checkNickname = async (nickname: string) => {
     return data
 }
 
+export const passwordReissue = async (option: object) => {
+    const { data }  = await generalApi.post('/user/resetpw', option)
+    return data
+}
+
+
 
 // 사용법 - 토큰이 필요없는 일반 axios 요청을 사용할 때 이용
 // 위에서 기본 generalApi를 이용하여 사용하고자 하는 axios를 loginApi와 같이 
