@@ -65,17 +65,21 @@ export const hobbySlice = createSlice({
   reducers: {
     addHobby(state, action) {
       state.hobbyList.push(action.payload);
-      state.hobbyCnt = state.hobbyList.length
+      state.hobbyCnt = state.hobbyList.length;
     },
     deleteHobby(state, action) {
       state.hobbyList = state.hobbyList.filter(
         (item) => action.payload !== item.id
       );
-      state.hobbyCnt = state.hobbyList.length
+      state.hobbyCnt = state.hobbyList.length;
+    },
+    fetchHobby(state, action) {
+      state.hobbyList = action.payload;
+      state.hobbyCnt = state.hobbyCnt = state.hobbyList.length;
     },
   },
 });
 
-export const { addHobby, deleteHobby } = hobbySlice.actions;
+export const { addHobby, deleteHobby, fetchHobby } = hobbySlice.actions;
 
 export default hobbySlice.reducer;
