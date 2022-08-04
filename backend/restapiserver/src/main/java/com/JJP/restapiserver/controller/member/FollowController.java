@@ -4,10 +4,7 @@ import com.JJP.restapiserver.security.JwtUtils;
 import com.JJP.restapiserver.service.member.FollowService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -31,8 +28,22 @@ public class FollowController {
         return followService.unfollow(fromMemberId, toMemberId);
     }
 
-    private Long getMemberId(HttpServletRequest servletRequest) {
-        return jwtUtils.getUserIdFromJwtToken(servletRequest.getHeader("Authorization"));
+    // 조회하는 유저가 팔로우하는 리스트
+    @GetMapping("/following/{fromMemberId}")
+    public final ResponseEntity<?> followingList(@PathVariable("fromMemberId") Long fromMemberId) {
+        return followService.followingList(fromMemberId);
+    }
+
+    // 조회하는 유저를 팔로우하는 리스트 - 로그인한 유저가 팔로우하는 상대면 상태 표시 필요 (follow_state)
+    @GetMapping("/followed/{toMemberId}")
+    public final ResponseEntity<?> followedList(@PathVariable("toMemberId") Long toMemberId, HttpServletRequest servletRequest) {
+        Long loginId = getMemberId(servletRequest);
+        return followService.followedList(toMemberId, loginId);
+    }
+
+    // 멤버 아이디 획득을 위해 공통으로 쓰이는 메소드
+    private final Long getMemberId(HttpServletRequest servletRequest) {
+       return jwtUtils.getUserIdFromJwtToken(servletRequest.getHeader("Authorization"));
     }
 
 }

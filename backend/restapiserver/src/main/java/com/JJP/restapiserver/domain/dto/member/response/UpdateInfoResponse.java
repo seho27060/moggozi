@@ -3,7 +3,6 @@ package com.JJP.restapiserver.domain.dto.member.response;
 import lombok.*;
 
 @Getter
-@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor

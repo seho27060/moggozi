@@ -3,7 +3,7 @@ package com.JJP.restapiserver.controller.member;
 import com.JJP.restapiserver.domain.dto.MessageResponse;
 import com.JJP.restapiserver.domain.dto.member.request.*;
 import com.JJP.restapiserver.domain.dto.member.response.JwtResponse;
-import com.JJP.restapiserver.domain.dto.member.response.MemberInfoResponse;
+import com.JJP.restapiserver.domain.dto.member.response.Following;
 import com.JJP.restapiserver.domain.dto.member.response.TokenRefreshResponse;
 import com.JJP.restapiserver.domain.entity.member.RefreshToken;
 import com.JJP.restapiserver.exception.TokenRefreshException;
@@ -175,21 +175,10 @@ public class MemberController {
         return memberService.resetPassword(request);
     }
 
-    @Operation(summary = "타유저 정보 획득", description = "타 유저의 정보를 알고 싶을 경우 'info/' url 뒤 타 유저의 userId를 통해 사용자 정보를 조회할 수 있습니다. ")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = MemberInfoResponse.class))),
-            @ApiResponse(responseCode = "400", description = "BAD REQUEST", content = @Content(schema = @Schema(implementation = MessageResponse.class))),
-            @ApiResponse(responseCode = "404", description = "NOT FOUND"),
-            @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR")
-    })
-    @GetMapping("/info/{userId}")
-    public ResponseEntity<?> getUserInfo(@PathVariable Long userId) {
-        return memberService.findUser(userId);
-    }
 
     @Operation(summary = "유저 정보(본인) 획득 - 회원정보 수정 시, 본인 정보 조회", description = "본인의 회원 정보를 알고 싶을 경우 accessToken을 통해 사용자 정보를 조회할 수 있습니다. ")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = MemberInfoResponse.class))),
+            @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = Following.class))),
             @ApiResponse(responseCode = "400", description = "BAD REQUEST", content = @Content(schema = @Schema(implementation = MessageResponse.class))),
             @ApiResponse(responseCode = "404", description = "NOT FOUND"),
             @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR")
@@ -198,8 +187,22 @@ public class MemberController {
     public ResponseEntity<?> getMyInfo(HttpServletRequest request) {
         //  TOKEN에서 UserID 추출
         Long user_id = jwtUtils.getUserIdFromJwtToken(request.getHeader("Authorization"));
-        return memberService.findUser(user_id);
+        return memberService.getMyInfo(user_id);
     }
+
+
+/*    @Operation(summary = "타유저 정보 획득", description = "타 유저의 정보를 알고 싶을 경우 'info/' url 뒤 타 유저의 userId를 통해 사용자 정보를 조회할 수 있습니다. ")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = Following.class))),
+            @ApiResponse(responseCode = "400", description = "BAD REQUEST", content = @Content(schema = @Schema(implementation = MessageResponse.class))),
+            @ApiResponse(responseCode = "404", description = "NOT FOUND"),
+            @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR")
+    })
+
+    @GetMapping("/profile/{userId}")
+    public ResponseEntity<?> getUserInfo(@PathVariable Long userId) {
+        return ResponseEntity.ok(memberService.getMemberProfile(userId));
+    }*/
 }
 
 

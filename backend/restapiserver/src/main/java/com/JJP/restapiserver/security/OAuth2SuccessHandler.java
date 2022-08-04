@@ -95,8 +95,10 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
 
         String uri = UriComponentsBuilder.fromUriString(url)
                 .queryParam("accessToken", jwtToken)
-                .queryParam("nickname", nickname)
                 .queryParam("username", username)
+                /** user id 필요 **/
+                /** moggoziuser : 0(false), 1(false) **/
+                /** userImg **/
                 .build().toUriString();
 
         if (response.isCommitted()) {
