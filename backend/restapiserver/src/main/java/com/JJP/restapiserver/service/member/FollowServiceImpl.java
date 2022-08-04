@@ -26,8 +26,8 @@ public class FollowServiceImpl implements FollowService {
 
     @Override
     public ResponseEntity<?> follow(Long fromMemberId, Long toMemberId) {
-        Member fromMember = memberRepository.getById(fromMemberId);
-        Member toMember = memberRepository.getById(toMemberId);
+        Member fromMember = memberRepository.findById(fromMemberId).get();
+        Member toMember = memberRepository.findById(toMemberId).get();
         try {
             if (fromMemberId.equals(toMemberId)) throw new Exception();
 
