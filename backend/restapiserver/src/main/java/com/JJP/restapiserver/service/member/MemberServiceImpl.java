@@ -65,6 +65,7 @@ public class MemberServiceImpl implements MemberService {
         String introduce = signupRequest.getIntroduce();
         String user_img = signupRequest.getUserImg();
         int is_private = signupRequest.getIsPrivate();
+        int is_social = 0;
         Long role_no = signupRequest.getRole() == null ? 1 : signupRequest.getRole();
 
         if (memberRepository.existsByUsername(username)) {
@@ -79,7 +80,7 @@ public class MemberServiceImpl implements MemberService {
 
         Optional<Role> role = roleRepository.findById(role_no);
         // 존재하지 않는 사용자이면서도 사용되지 않은 닉네임을 사용한다면, 사용자 등록
-        saveMember(-1L, username, fullname, password, nickname, introduce, user_img, is_private, role.get());
+        saveMember(-1L, username, fullname, password, nickname, introduce, user_img, is_private, is_social, role.get());
 
         return ResponseEntity.ok(new MessageResponse("Registered a user successfully!"));
     }
@@ -121,13 +122,14 @@ public class MemberServiceImpl implements MemberService {
         String introduce = updateUserRequest.getIntroduce();
         String user_img = updateUserRequest.getUserImg();
         int is_private = updateUserRequest.getIsPrivate();
+        int is_social = member.get().getIs_social();
 
         if (memberRepository.existsByNickname(nickname) && !nickname.equals(member.get().getNickname())) {
             return ResponseEntity.badRequest().body(new MessageResponse("Error: Written Nickname already exists."));
         }
 
         // 존재하지 않는 사용자이면서도 사용되지 않은 닉네임을 사용한다면, 사용자 등록
-        saveMember(user_id, username, fullname, member.get().getPassword(), nickname, introduce, user_img, is_private, member.get().getRole());
+        saveMember(user_id, username, fullname, member.get().getPassword(), nickname, introduce, user_img, is_private, is_social, member.get().getRole());
 
         return ResponseEntity.ok(new MessageResponse("Updated user information successfully!"));
 
@@ -241,6 +243,7 @@ public class MemberServiceImpl implements MemberService {
                 .introduce(member.getIntroduce())
                 .userImg(member.getUser_img())
                 .isPrivate(member.getIs_private())
+                .isSocial(member.getIs_social())
                 .build();
 
         return ResponseEntity.ok(updateInfoResponse);
@@ -270,20 +273,20 @@ public class MemberServiceImpl implements MemberService {
     }
 
     // 사용자 정보 저장 / 수정
-    private void saveMember(Long user_id, String username, String fullname, String password, String nickname, String introduce, String user_img, int is_private, Role role) {
+    private void saveMember(Long user_id, String username, String fullname, String password, String nickname, String introduce, String user_img, int is_private, int is_social, Role role) {
         Member member = null;
         if (user_id == -1L) {
             member = Member.builder().
                     username(username).fullname(fullname)
                     .password(password).nickname(nickname)
                     .introduce(introduce).user_img(user_img)
-                    .is_private(is_private).role(role).build();
+                    .is_private(is_private).role(role).is_social(is_social).build();
         } else {
             member = Member.builder().id(user_id)
                     .username(username).fullname(fullname)
                     .password(password).nickname(nickname)
                     .introduce(introduce).user_img(user_img)
-                    .is_private(is_private).role(role).build();
+                    .is_private(is_private).role(role).is_social(is_social).build();
         }
         memberRepository.save(member);
     }

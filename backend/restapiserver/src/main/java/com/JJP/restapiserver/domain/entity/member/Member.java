@@ -59,6 +59,8 @@ public class Member {
     // 마이페이지 공개 여부 - 0: false, 1: true - 정호진
     private int is_private;
 
+    private int is_social;
+
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "role_id", referencedColumnName = "role_id")
     private Role role;
