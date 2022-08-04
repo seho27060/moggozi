@@ -206,7 +206,7 @@ public class ChallengeServiceImpl implements ChallengeService{
                         .state(o.getState())
                         .build())
                         .collect(Collectors.toList());
-        challengeSlice.
+//        challengeSlice.
         return null;
     }
 
