@@ -11,8 +11,8 @@ spring:
       client:
         registration:
           google:
-            client-id: 948844328868-cos0sa2t47h5qva1glcsoijkt2690g35.apps.googleusercontent.com
-            client-secret: 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
+            client-id: 948844328868-f5hrdfjme3cdqgqcvd2jquoku03sgqk6.apps.googleusercontent.com
+            client-secret: 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
             scope: profile, email
 
           naver:
