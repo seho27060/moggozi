@@ -23,8 +23,8 @@ public interface FollowRepository extends JpaRepository<Follow, Long> {
 
     // 대상이 팔로우 하는 사람들에 관한 리스트
     @Query(value = "SELECT m.member_id as id, m.nickname as nickname, m.user_img as UserImg FROM MEMBER m INNER JOIN " +
-            "(SELECT * FROM FOLLOW " +
-            "WHERE FOLLOW.from_member_id = :fromMemberId) f " +
+            "(SELECT * FROM follow " +
+            "WHERE follow.from_member_id = :fromMemberId) f " +
             "ON m.member_id = f.to_member_id", nativeQuery = true)
     List<Following> findAllByFrom_member(@Param("fromMemberId") Long fromMemberId);
 
@@ -39,6 +39,6 @@ public interface FollowRepository extends JpaRepository<Follow, Long> {
 
     // 언팔로우
     @Modifying
-    @Query(value = "DELETE FROM FOLLOW WHERE from_member_id = :fromMemberId AND to_member_id = :toMemberId", nativeQuery = true)
+    @Query(value = "DELETE FROM follow WHERE from_member_id = :fromMemberId AND to_member_id = :toMemberId", nativeQuery = true)
     int deleteByFrom_memberAndTo_member(@Param("fromMemberId") Long fromMemberId, @Param("toMemberId") Long toMemberId);
 }
