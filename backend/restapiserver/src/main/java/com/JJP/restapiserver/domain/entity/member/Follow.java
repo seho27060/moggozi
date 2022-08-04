@@ -11,14 +11,14 @@ import javax.persistence.*;
 @Entity
 @Getter
 @NoArgsConstructor
-//@Table(
-//        uniqueConstraints = {
-//                @UniqueConstraint(
-//                        name="subscribe_uk",
-//                        columnNames = {"from_member_id", "to_member_id"}
-//                )
-//        }
-//)
+@Table(
+        uniqueConstraints = {
+                @UniqueConstraint(
+                        name="subscribe_uk",
+                        columnNames = {"from_member_id", "to_member_id"}
+                )
+        }
+)
 public class Follow extends BaseTimeEntity {
 
     @Id
