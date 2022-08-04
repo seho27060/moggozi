@@ -32,7 +32,7 @@ public class FollowServiceImpl implements FollowService {
             if (fromMemberId.equals(toMemberId)) throw new Exception();
 
             Follow follow = Follow.builder().from_member(fromMember).to_member(toMember).build();
-            followRepository.save(follow);
+            followRepository.saveAndFlush(follow);
 
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new MessageResponse("Error: 팔로우에 실패했습니다."));
