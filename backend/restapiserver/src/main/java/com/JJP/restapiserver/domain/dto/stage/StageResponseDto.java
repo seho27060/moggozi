@@ -25,8 +25,8 @@ public class StageResponseDto {
         this.period = entity.getPeriod();
         this.content = entity.getContent();
         this.stageImg = entity.getStage_img();
-        this.createdDate = entity.getCreated_date();
-        this.modifiedDate = entity.getModified_date();
+        this.createdDate = entity.getCreatedDate();
+        this.modifiedDate = entity.getModifiedDate();
         this.postOrder = entity.getPost_order();
     }
 }

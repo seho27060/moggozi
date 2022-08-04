@@ -62,7 +62,7 @@ public class ChallengeResponseDto {
         this.hobbyList = new ArrayList<>();
         this.userProgress = 0;
         this.description = challenge.getDescription();
-        this.createdTime = challenge.getCreated_date();
-        this.modifiedTime = challenge.getModified_date();
+        this.createdTime = challenge.getCreatedDate();
+        this.modifiedTime = challenge.getModifiedDate();
     }
 }

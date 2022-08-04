@@ -35,7 +35,7 @@ public class CommentResponseDto {
         this.text = comment.getText();
         this.order = comment.getCommentOrder();
         this.state = comment.getState();
-        this.createdTime = comment.getCreated_date();
-        this.modifiedTime = comment.getModified_date();
+        this.createdTime = comment.getCreatedDate();
+        this.modifiedTime = comment.getModifiedDate();
     }
 }

@@ -33,7 +33,7 @@ public class PostResponseDto {
         this.content = post.getContent();
         this.postImg = post.getPostImg();
         this.writer = new Writer(post.getMember().getId(), post.getMember().getNickname());
-        this.createdTime = post.getCreated_date();
-        this.modifiedTime = post.getModified_date();
+        this.createdTime = post.getCreatedDate();
+        this.modifiedTime = post.getModifiedDate();
     }
 }
