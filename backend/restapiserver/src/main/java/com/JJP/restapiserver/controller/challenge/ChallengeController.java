@@ -63,9 +63,16 @@ public class ChallengeController {
     @GetMapping("/{challenge_id}")
     public ResponseEntity getChallengeDatail(@PathVariable Long challenge_id, HttpServletRequest request)
     {
-        Long member_id = jwtUtils.getUserIdFromJwtToken(request.getHeader("Authorization"));
-        ChallengeResponseDto challengeResponseDto = challengeService.getChallengeDetail(challenge_id, member_id);
-        return new ResponseEntity(challengeResponseDto, HttpStatus.OK);
+        if(request.getHeader("Authorization") != null)
+        {
+            Long member_id = jwtUtils.getUserIdFromJwtToken(request.getHeader("Authorization"));
+            ChallengeResponseDto challengeResponseDto = challengeService.getChallengeDetail(challenge_id, member_id);
+            return new ResponseEntity(challengeResponseDto, HttpStatus.OK);
+        }
+        else {
+            ChallengeResponseDto challengeResponseDto = challengeService.getChallengeDetail(challenge_id);
+            return new ResponseEntity(challengeResponseDto, HttpStatus.OK);
+        }
     }
 
     @PostMapping("/save")
