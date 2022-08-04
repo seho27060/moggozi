@@ -12,6 +12,8 @@ import java.util.List;
 
 public interface FollowRepository extends JpaRepository<Follow, Long> {
 
+    boolean existsByFrom_memberAndTo_member(Long fromMemberId, Long toMemberId);
+
     // 대상을 팔로우 하는 사람들에 관한 리스트 (리스트 유저를 로그인한 유저가 팔로우하는지 상태 표시)
     @Query(value = "SELECT m.member_id as id, m.nickname as nickname, m.user_img as UserImg, " +
             "CASE WHEN m.member_id IN " +
@@ -22,7 +24,7 @@ public interface FollowRepository extends JpaRepository<Follow, Long> {
 
 
     // 대상이 팔로우 하는 사람들에 관한 리스트
-    @Query(value = "SELECT m.member_id as id, m.nickname as nickname, m.user_img as UserImg FROM MEMBER m INNER JOIN " +
+    @Query(value = "SELECT m.member_id as id, m.nickname as nickname, m.user_img as UserImg FROM member m INNER JOIN " +
             "(SELECT * FROM follow " +
             "WHERE follow.from_member_id = :fromMemberId) f " +
             "ON m.member_id = f.to_member_id", nativeQuery = true)
