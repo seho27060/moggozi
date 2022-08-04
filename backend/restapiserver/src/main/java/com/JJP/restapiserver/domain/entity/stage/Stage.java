@@ -28,10 +28,13 @@ public class Stage extends BaseTimeEntity {
     @JsonBackReference
     private Challenge challenge;
 
-    @OneToMany(mappedBy = "stage")
+    @OneToMany(mappedBy = "stage", cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<Post> postList = new ArrayList<>();
 
+    @OneToMany(mappedBy = "stage", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private List<StageUser> stageUserList = new ArrayList<>();
 
     @Column(length = 20)
     private String name;
