@@ -1,7 +1,7 @@
 import KakaoLogin from "./KakaoLogin";
 import NaverLogin from "./NaverLogin";
 import GoogleLogin from "./GoogleLogin";
-import EmailModal from "../ui/EmailModal"
+import Modal from "../ui/Modal"
 
 import React, { useRef, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -84,9 +84,9 @@ const LoginForm: React.FC = () => {
           <button type="submit">Login</button>
         </form>
         <React.Fragment>
-          <EmailModal open={loginModalOpen} close={loginCloseModal} header="로그인 에러">
-            <p>로그인 정보가 잘못되었습니다.</p>
-          </EmailModal>
+          <Modal open={loginModalOpen} close={loginCloseModal} header="로그인 에러">
+            <p>비밀번호가 틀렸습니다.</p>
+          </Modal>
         </React.Fragment>
         <p>
           <KakaoLogin />

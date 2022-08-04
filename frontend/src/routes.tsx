@@ -14,6 +14,7 @@ import Login from "./pages/accounts/Login";
 import CompleteSignUp from "./pages/accounts/CompleteSignUp";
 import Signup from "./pages/accounts/Signup";
 import UserUpdate from "./pages/accounts/UserUpdate";
+import UpdatePassword from "./pages/accounts/UpdatePassword"
 import PasswordReissue from "./pages/accounts/PasswordReissue";
 
 //OAuth
@@ -105,6 +106,10 @@ export default function Router() {
         {
           path: "passwordReissue",
           element: <PasswordReissue />,
+        },
+        {
+          path: "updatePw",
+          element: <UpdatePassword />
         }
       ],
     },

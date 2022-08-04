@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { signUpApi, checkId, checkNickname } from "../../lib/generalApi";
 
-import EmailModal from "../ui/EmailModal"
+import Modal from "../ui/Modal"
 // 박세호, 회원가입 폼, 비밀번호 체크. axios 추가 필요. 요청성공시 메인페이지로 이동
 
 const AccountForm: React.FC = () => {
@@ -114,9 +114,9 @@ const AccountForm: React.FC = () => {
             <input type="text" required id="email" ref={emailInputRef} />
             <button onClick={emailCheckHandler}>중복 확인</button>
             <React.Fragment>
-              <EmailModal open={emailModalOpen} close={emailCloseModal} header="이메일 중복 확인">
+              <Modal open={emailModalOpen} close={emailCloseModal} header="이메일 중복 확인">
                 <p>{emailContent}</p>
-              </EmailModal>
+              </Modal>
             </React.Fragment>
 
           </div>
@@ -157,9 +157,9 @@ const AccountForm: React.FC = () => {
             <input type="text" required id="nickname" ref={nicknameInputRef} />
             <button onClick={nicknameCheckHandler}>중복확인</button>
             <React.Fragment>
-              <EmailModal open={nicknameModalOpen} close={nicknameCloseModal} header="닉네임 중복 확인">
+              <Modal open={nicknameModalOpen} close={nicknameCloseModal} header="닉네임 중복 확인">
                 <p>{nicknameContent}</p>
-              </EmailModal>
+              </Modal>
             </React.Fragment>
           </div>
           <button
