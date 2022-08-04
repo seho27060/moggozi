@@ -9,7 +9,7 @@ const PostCommentList: React.FC<{ comments: Comment[] | null }> = ({
   comments,
 }) => {
   // 원댓글 추려내기
-  console.log(comments)
+  console.log('comment',comments)
   const commentList = (comments?.filter(
     (comment) => comment.id === comment.parentId
   ))
@@ -17,6 +17,7 @@ const PostCommentList: React.FC<{ comments: Comment[] | null }> = ({
   commentList?.sort((a:Comment, b:Comment) => (
     (a.id > b.id) ? 1: -1
   ))
+  console.log("commentlist",commentList)
   return (
     <div>
       PostComment

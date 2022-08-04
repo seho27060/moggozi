@@ -120,15 +120,14 @@ export const postUpdate = async (post_id: number) => {
   return data;
 };
 
-export const postRead = async (challenge_id: number) => {
-  const { data } = await withTokenApi.get(`/stage/post/${challenge_id}`);
+export const postRead = async (stageId: number) => {
+  const { data } = await withTokenApi.get(`/stage/post/${stageId}`);
   return data;
 };
 
 // 댓글 관련
 export const commentRead = async (post_id: number) => {
   const { data } = await withTokenApi.get(`/comment/${post_id}`);
-  console.log(data);
   return data;
 };
 
