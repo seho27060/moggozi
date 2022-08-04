@@ -1,9 +1,6 @@
 package com.JJP.restapiserver.service.challenge;
 
-import com.JJP.restapiserver.domain.dto.challenge.ChallengeCompleteRequestDto;
-import com.JJP.restapiserver.domain.dto.challenge.ChallengeListResponseDto;
-import com.JJP.restapiserver.domain.dto.challenge.ChallengeRequestDto;
-import com.JJP.restapiserver.domain.dto.challenge.ChallengeResponseDto;
+import com.JJP.restapiserver.domain.dto.challenge.*;
 import com.JJP.restapiserver.domain.dto.tag.TagRequestDto;
 import com.JJP.restapiserver.domain.dto.tag.TagResponseDto;
 import com.JJP.restapiserver.domain.entity.Tag.ChallengeTag;
@@ -18,12 +15,15 @@ import com.JJP.restapiserver.repository.challenge.JoinedChallengeRepository;
 import com.JJP.restapiserver.repository.member.MemberRepository;
 import com.JJP.restapiserver.repository.stage.StageUserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @CrossOrigin("*")
@@ -192,6 +192,22 @@ public class ChallengeServiceImpl implements ChallengeService{
         }
         return challengeListResponseDtoList;
 
+    }
+
+    @Override
+    public List<ChallengeSimpleResponseDto> infiniteChallengeList(Long member_id, Pageable pageable) {
+        Slice<Challenge> challengeSlice = joinedChallengeRepository.findByMember_idOrderByStateDesc(member_id, pageable);
+        List<ChallengeSimpleResponseDto> challengeSimpleResponseDtoList =
+                challengeSlice.stream().map(o -> ChallengeSimpleResponseDto.builder()
+                        .id(o.getId())
+                        .img(o.getChallenge_img())
+                        .level(o.getLevel())
+                        .name(o.getName())
+                        .state(o.getState())
+                        .build())
+                        .collect(Collectors.toList());
+        challengeSlice.
+        return null;
     }
 
     public List<ChallengeResponseDto> challengeIntoDto(List<Challenge> challengeList, List<ChallengeResponseDto> responseDtoList
