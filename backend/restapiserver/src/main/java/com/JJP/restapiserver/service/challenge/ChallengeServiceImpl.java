@@ -36,7 +36,6 @@ public class ChallengeServiceImpl implements ChallengeService{
     private final MemberRepository memberRepository;
     private final TagRepository tagRepository;
     private final ChallengeTagRepository challengeTagRepository;
-    private final StageUserRepository stageUserRepository;
 
 
     @Override
@@ -171,6 +170,28 @@ public class ChallengeServiceImpl implements ChallengeService{
         // 완료되었다는 상태가 2임
         joinedChallenge.setState(2);
         return 0;
+    }
+
+    @Override
+    public Long joinedChallengeNum(Long member_id) {
+        return joinedChallengeRepository.countByMember_id(member_id);
+    }
+
+    @Override
+    public List<ChallengeListResponseDto> joinedChallengeList8(Long member_id) {
+        List<JoinedChallenge> joinedChallengeList = joinedChallengeRepository.findTop8ByMember_idOrderByModifiedDateDesc(member_id);
+        List<ChallengeListResponseDto> challengeListResponseDtoList = new ArrayList<>();
+        if(joinedChallengeList != null)
+        {
+            for(int i = 0; i < joinedChallengeList.size(); i++)
+            {
+                Challenge challenge = joinedChallengeList.get(i).getChallenge();
+                ChallengeListResponseDto challengeResponseDto = new ChallengeListResponseDto(challenge);
+                challengeListResponseDtoList.add(challengeResponseDto);
+            }
+        }
+        return challengeListResponseDtoList;
+
     }
 
     public List<ChallengeResponseDto> challengeIntoDto(List<Challenge> challengeList, List<ChallengeResponseDto> responseDtoList

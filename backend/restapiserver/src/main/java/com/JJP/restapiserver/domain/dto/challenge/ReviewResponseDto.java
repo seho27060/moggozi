@@ -19,7 +19,7 @@ public class ReviewResponseDto {
         this.id = review.getId();
         this.reviewContent = review.getReview_content();
         this.rate = review.getRate();
-        this.createdTime = review.getCreated_date();
-        this.modifiedTime = review.getModified_date();
+        this.createdTime = review.getCreatedDate();
+        this.modifiedTime = review.getModifiedDate();
     }
 }
