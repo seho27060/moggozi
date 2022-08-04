@@ -203,6 +203,11 @@ public class MemberServiceImpl implements MemberService {
     @Transactional
     @Override
     public ResponseEntity<?> login(LoginRequest loginRequest) {
+
+        Member member = memberRepository.findByUsername(loginRequest.getUsername()).get();
+        if(member.getRole().equals(ERole.ROLE_INVALIDATED_USER))
+            return ResponseEntity.badRequest().body("Error: The user doesn't exist.");
+
         // Authentication 객체를 생성한다 by AuthenticationManager
         Authentication authentication = authenticationManager
                 .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
