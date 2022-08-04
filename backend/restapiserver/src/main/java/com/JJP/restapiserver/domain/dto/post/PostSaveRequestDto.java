@@ -10,19 +10,19 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class PostSaveRequestDto {
-    private Long member_id;
-    private Long stage_id;
+    private Long memberId;
+    private Long stageId;
     private String title;
     private String content;
-    private String post_img;
+    private String postImg;
 
     @Builder
-    public PostSaveRequestDto(Long member_id, Long stage_id, String title, String content, String post_img) {
-        this.member_id = member_id;
-        this.stage_id = stage_id;
+    public PostSaveRequestDto(Long memberId, Long stageId, String title, String content, String postImg) {
+        this.memberId = memberId;
+        this.stageId = stageId;
         this.title = title;
         this.content = content;
-        this.post_img = post_img;
+        this.postImg = postImg;
     }
 
     public Post toEntity(Member member, Stage stage){
@@ -31,7 +31,7 @@ public class PostSaveRequestDto {
                 .stage(stage)
                 .title(title)
                 .content(content)
-                .post_img(post_img)
+                .post_img(postImg)
                 .build();
     }
 }

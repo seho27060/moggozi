@@ -1,5 +1,6 @@
 package com.JJP.restapiserver.service.post;
 
+import com.JJP.restapiserver.domain.dto.post.PostResponseDto;
 import com.JJP.restapiserver.domain.dto.post.PostSaveRequestDto;
 import com.JJP.restapiserver.domain.dto.post.PostUpdateRequestDto;
 import com.JJP.restapiserver.domain.entity.stage.Post;
@@ -10,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -22,18 +24,20 @@ public class PostServiceImpl implements PostService {
 
     @Transactional
     @Override
-    public Long savePost(PostSaveRequestDto postSaveRequestDto) {
-        return postRepository.save(postSaveRequestDto.toEntity(memberRepository.getById(postSaveRequestDto.getMember_id()), stageRepository.getById(postSaveRequestDto.getStage_id()))).getId();
+    public PostResponseDto savePost(PostSaveRequestDto postSaveRequestDto) {
+        Post post = postRepository.save(postSaveRequestDto.toEntity(memberRepository.getById(postSaveRequestDto.getMemberId()), stageRepository.getById(postSaveRequestDto.getStageId())));
+        return new PostResponseDto(post);
     }
 
+    @Transactional
     @Override
-    public Long updatePost(PostUpdateRequestDto postUpdateRequestDto) {
-        Long post_id = postUpdateRequestDto.getPost_id();
+    public PostResponseDto updatePost(PostUpdateRequestDto postUpdateRequestDto) {
+        Long post_id = postUpdateRequestDto.getPostId();
         Post entity = postRepository.findById(post_id).orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + post_id));
 
-        entity.update(postUpdateRequestDto.getTitle(), postUpdateRequestDto.getContent(), postUpdateRequestDto.getPost_img());
+        entity.update(postUpdateRequestDto.getTitle(), postUpdateRequestDto.getContent(), postUpdateRequestDto.getPostImg());
 
-        return post_id;
+        return new PostResponseDto(entity);
     }
 
     @Override
@@ -44,12 +48,46 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<Post> getStagePost(Long stage_id) {
-        return postRepository.findAllByStage_id(stage_id);
+    public List<PostResponseDto> getStagePost(Long stage_id) {
+        List<Post> postList = postRepository.findAllByStage_id(stage_id);
+        List<PostResponseDto> postResponseDtoList = new ArrayList<>();
+        for(int i = 0; i < postList.size(); i++)
+        {
+            Post post = postList.get(i);
+            postResponseDtoList.add(new PostResponseDto(post));
+        }
+        return postResponseDtoList;
     }
 
     @Override
-    public List<Post> getMemberPost(Long member_id) {
-        return postRepository.findAllByMember_id(member_id);
+    public Long writtenPostNum(Long member_id) {
+        return postRepository.countByMember_id(member_id);
+    }
+
+    @Override
+    public List<PostResponseDto> writtenPostList8(Long member_id) {
+        List<Post> postList = postRepository.findTop8ByMember_idOrderByModifiedDateDesc(member_id);
+        List<PostResponseDto> postResponseDtoList = new ArrayList<>();
+        if(postList != null)
+        {
+            for(Post post : postList)
+            {
+                postResponseDtoList.add(new PostResponseDto(post));
+            }
+        }
+        return postResponseDtoList;
+    }
+
+    @Override
+    public List<PostResponseDto> getMemberPost(Long member_id) {
+        List<Post> postList = postRepository.findAllByMember_id(member_id);
+
+        List<PostResponseDto> postResponseDtoList = new ArrayList<>();
+        for(int i = 0; i < postList.size(); i++)
+        {
+            Post post = postList.get(i);
+            postResponseDtoList.add(new PostResponseDto(post));
+        }
+        return postResponseDtoList;
     }
 }

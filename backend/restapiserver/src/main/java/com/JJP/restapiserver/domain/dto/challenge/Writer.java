@@ -9,5 +9,5 @@ import lombok.Setter;
 @AllArgsConstructor
 public class Writer {
     public Long id;
-    public String name;
+    public String nickname;
 }

@@ -1,5 +1,6 @@
 package com.JJP.restapiserver.controller.stage;
 
+import com.JJP.restapiserver.domain.dto.post.PostResponseDto;
 import com.JJP.restapiserver.domain.dto.post.PostSaveRequestDto;
 import com.JJP.restapiserver.domain.dto.post.PostUpdateRequestDto;
 import com.JJP.restapiserver.domain.entity.stage.Post;
@@ -8,7 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
+@CrossOrigin("*")
 @RequiredArgsConstructor
 @RequestMapping("/stage/post")
 @RestController
@@ -17,12 +18,12 @@ public class PostController {
     private final PostService postService;
 
     @PostMapping
-    private Long save(@RequestBody PostSaveRequestDto postSaveRequestDto){
+    private PostResponseDto save(@RequestBody PostSaveRequestDto postSaveRequestDto){
         return postService.savePost(postSaveRequestDto);
     }
 
     @PutMapping
-    private Long update(@RequestBody PostUpdateRequestDto postUpdateRequestDto){
+    private PostResponseDto update(@RequestBody PostUpdateRequestDto postUpdateRequestDto){
         return postService.updatePost(postUpdateRequestDto);
     }
 
@@ -33,12 +34,12 @@ public class PostController {
     }
 
     @GetMapping("/member/{member_id}")
-    private List<Post> memberPostList(@PathVariable Long member_id){
+    private List<PostResponseDto> memberPostList(@PathVariable Long member_id){
         return postService.getMemberPost(member_id);
     }
 
     @GetMapping("/{stage_id}")
-    private List<Post> stagePostList(@PathVariable Long stage_id){
+    private List<PostResponseDto> stagePostList(@PathVariable Long stage_id){
         return postService.getStagePost(stage_id);
     }
 }

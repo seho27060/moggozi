@@ -38,11 +38,11 @@ public class Post extends BaseTimeEntity {
     private String content;
 
     @Column(length = 300)
-    private String post_img;
+    private String postImg;
 
 
     // 포스트 좋아요와 다대일 양방향 관계
-    @OneToMany(mappedBy = "post")
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<PostLike> postLikeList = new ArrayList<>();
 
@@ -53,12 +53,12 @@ public class Post extends BaseTimeEntity {
         this.stage = stage;
         this.title = title;
         this.content = content;
-        this.post_img = post_img;
+        this.postImg = post_img;
     }
 
     public void update(String title, String content, String post_img) {
         this.title = title;
         this.content = content;
-        this.post_img = post_img;
+        this.postImg = post_img;
     }
 }

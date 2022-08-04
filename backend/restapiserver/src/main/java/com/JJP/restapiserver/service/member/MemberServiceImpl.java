@@ -16,6 +16,7 @@ import com.JJP.restapiserver.security.JwtUtils;
 import com.JJP.restapiserver.security.UserDetailsImpl;
 import com.JJP.restapiserver.service.RefreshTokenService;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -224,7 +225,6 @@ public class MemberServiceImpl implements MemberService {
         Long role = userDetails.getAuthority();
 
         RefreshToken refreshToken = refreshTokenService.createRefreshToken(userDetails.getId());
-
         return ResponseEntity.ok(JwtResponse.builder().accessToken(jwt)
                 .refreshToken(refreshToken.getToken())
                 .id(userDetails.getId())

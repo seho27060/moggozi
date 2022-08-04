@@ -1,18 +1,16 @@
 package com.JJP.restapiserver.domain.dto.challenge;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class ReviewRequestDto {
-    private String review_content;
+    private String reviewContent;
     private int rate;
-    private Long user_id;
-    private Long challenge_id;
+    private Long memberId;
+    private Long challengeId;
 
 }

@@ -23,7 +23,4 @@ public interface StageService {
 
     // 스테이지 삭제
     void deleteStage(Long stage_id);
-
-    // 스테이지 도전
-    Long challengeStage(Long stage_id, Long stageuser_id);
 }
