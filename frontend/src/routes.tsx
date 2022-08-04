@@ -16,6 +16,7 @@ import Signup from "./pages/accounts/Signup";
 import UserUpdate from "./pages/accounts/UserUpdate";
 import UpdatePassword from "./pages/accounts/UpdatePassword"
 import PasswordReissue from "./pages/accounts/PasswordReissue";
+import Withdrawal from "./pages/accounts/Withdrawal"
 
 //OAuth
 import KakaoOAuthRedirectHandler from "./pages/KakaoOAuthRedirectHandler";
@@ -110,6 +111,10 @@ export default function Router() {
         {
           path: "updatePw",
           element: <UpdatePassword />
+        },
+        {
+          path: "withdrawal",
+          element: <Withdrawal />
         }
       ],
     },

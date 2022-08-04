@@ -21,6 +21,10 @@ const LoginForm: React.FC = () => {
     setLoginModalOpen(false);
   };
 
+  const [overlapModalOpen, setOverlapModalOpen] = useState(false);
+  const overlapCloseModal = () => {
+    setOverlapModalOpen(false);
+  };
   // input값 가져오기
   const inputEmail = useRef<HTMLInputElement>(null);
   const inputPw = useRef<HTMLInputElement>(null);
@@ -36,7 +40,6 @@ const LoginForm: React.FC = () => {
 
     // 둘다 비어있다면 에러 출력 / 이후에 수정해야함.
     // 정합성 검사
-    // axios.defaults.withCredentials = true;
     if (enteredEmail.trim().length === 0 || enteredPw.trim().length === 0) {
       alert("입력을 해주세요.");
       return;
@@ -54,16 +57,20 @@ const LoginForm: React.FC = () => {
           navigate("/");
         })
         .catch((err) => {
-          setLoginModalOpen(true);
-          console.log(err);
+          if (err.response.data.message === "Error: The user doesn't exist") {
+            setOverlapModalOpen(true);
+          } else {
+            setLoginModalOpen(true);
+            console.log(err);
+          }
         });
     }
   }
 
   const reIssueHandler = (event: React.MouseEvent) => {
-    event.preventDefault()
-    navigate('/account/passwordReissue')
-  }
+    event.preventDefault();
+    navigate("/account/passwordReissue");
+  };
 
   // 이미 로그인해 있을 경우 메인페이지로 이동시킴
   const token = sessionStorage.getItem("accessToken");
@@ -86,7 +93,7 @@ const LoginForm: React.FC = () => {
             <label htmlFor="password">password : </label>
             <input type="password" required id="password" ref={inputPw} />
           </div>
-          <p onClick={ reIssueHandler }>비밀번호를 잊으셨나요?</p>
+          <p onClick={reIssueHandler}>비밀번호를 잊으셨나요?</p>
           <button type="submit">Login</button>
         </form>
         <React.Fragment>
@@ -96,6 +103,13 @@ const LoginForm: React.FC = () => {
             header="로그인 에러"
           >
             <p>비밀번호가 틀렸습니다.</p>
+          </Modal>
+          <Modal
+            open={overlapModalOpen}
+            close={overlapCloseModal}
+            header="로그인 에러"
+          >
+            <p>탈퇴한 회원입니다.</p>
           </Modal>
         </React.Fragment>
         <p>
