@@ -144,7 +144,7 @@ public class EchoHandler extends TextWebSocketHandler {
                 .sender(memberRepository.getById(senderId))
                 .receiver(memberRepository.getById(receiverId))
                 .message(msg)
-                .index(index)
+                .sequence(index)
                 .type(type)
                 .build();
         alert = alertRepository.save(alert);
@@ -155,7 +155,7 @@ public class EchoHandler extends TextWebSocketHandler {
                 .receiverId(alert.getReceiver().getId())
                 .receiverName(alert.getReceiver().getNickname())
                 .type(alert.getType())
-                .index(alert.getIndex())
+                .index(alert.getSequence())
                 .message(alert.getMessage())
                 .createdTime(alert.getCreatedDate())
                 .build();
