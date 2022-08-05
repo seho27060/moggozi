@@ -5,14 +5,13 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Getter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class SnsInfoResponse {
-
-    private String username;
-    private String fullname;
-    // private String user_img;
-
+public class FollowingListResponse {
+    int totalCount;
+    List<Following> memberInfoList;
 }

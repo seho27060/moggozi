@@ -5,16 +5,13 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Getter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class FollowResponse {
-
-    private Long id;
-    private String username;
-    private String nickname;
-    private String userImgUrl;
-    private int followState;
-
+public class FollowedListResponse {
+    int totalCount;
+    List<Followed> memberInfoList;
 }

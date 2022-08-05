@@ -69,16 +69,18 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
         }
 
         Optional<Member> member = memberRepository.findByUsername(username);
-
+        int enrolled = 0;
         String password = encoder.encode(username.split("@")[0] + "1234");
 //        String url = "http://localhost:8080"; /** 추후 주소 변경 필요 **/
         String url = "https://i7c201.p.ssafy.io";
 
         if(member.isEmpty()) {
             // 유저 객체 만들기
+            enrolled = 1;
             Member newMember = Member.builder().username(username)
-                    .fullname(fullname).nickname(nickname).password(password).build();
+                    .fullname(fullname).nickname(nickname).password(password).is_social(1).build();
             memberRepository.save(newMember);
+            member = memberRepository.findByUsername(username);
 
             /** 추후 사용자 페이지로 리다이렉트 필요 **/
             // 사용자 수정 페이지로 리다이렉트 URL
@@ -95,8 +97,7 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
 
         String uri = UriComponentsBuilder.fromUriString(url)
                 .queryParam("accessToken", jwtToken)
-                .queryParam("nickname", nickname)
-                .queryParam("username", username)
+                .queryParam("enrolled", enrolled)
                 .build().toUriString();
 
         if (response.isCommitted()) {

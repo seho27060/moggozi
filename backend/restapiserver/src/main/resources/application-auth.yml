@@ -11,8 +11,9 @@ spring:
       client:
         registration:
           google:
-            client-id: 948844328868-cos0sa2t47h5qva1glcsoijkt2690g35.apps.googleusercontent.com
-            client-secret: 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
+            client-id: 286378831968-b4upq7oh9t3sl9c2lqb5m7g8fjm34vo5.apps.googleusercontent.com
+            client-secret: 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
+            redirect-uri: "https://i7c201.p.ssafy.io:443/login/oauth2/code/google"
             scope: profile, email
 
           naver:
@@ -55,6 +56,16 @@ spring:
     properties:
       mail.smtp.auth: true
       mail.smtp.ssl.enable: true
+
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 3MB
+
+
+properties:
+  profile: ../img/profile/
+
 
 #  mvc:
 #    pathmatch:

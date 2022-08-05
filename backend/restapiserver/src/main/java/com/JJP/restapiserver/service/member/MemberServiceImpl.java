@@ -3,18 +3,19 @@ package com.JJP.restapiserver.service.member;
 import com.JJP.restapiserver.domain.dto.MessageResponse;
 import com.JJP.restapiserver.domain.dto.member.request.*;
 import com.JJP.restapiserver.domain.dto.member.response.JwtResponse;
-import com.JJP.restapiserver.domain.dto.member.response.MemberInfoResponse;
+import com.JJP.restapiserver.domain.dto.member.response.ProfileResponse;
+import com.JJP.restapiserver.domain.dto.member.response.UpdateInfoResponse;
 import com.JJP.restapiserver.domain.entity.member.ERole;
 import com.JJP.restapiserver.domain.entity.member.Member;
 import com.JJP.restapiserver.domain.entity.member.RefreshToken;
 import com.JJP.restapiserver.domain.entity.member.Role;
+import com.JJP.restapiserver.repository.member.FollowRepository;
 import com.JJP.restapiserver.repository.member.MemberRepository;
 import com.JJP.restapiserver.repository.member.RoleRepository;
 import com.JJP.restapiserver.security.JwtUtils;
 import com.JJP.restapiserver.security.UserDetailsImpl;
 import com.JJP.restapiserver.service.RefreshTokenService;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -34,11 +35,13 @@ import java.util.Random;
 
 @RequiredArgsConstructor
 @Service
+@Transactional
 public class MemberServiceImpl implements MemberService {
 
     private final AuthenticationManager authenticationManager;
     private final MemberRepository memberRepository;
     private final RoleRepository roleRepository;
+    private final FollowRepository followRepository;
     private final PasswordEncoder encoder;
     private final JwtUtils jwtUtils;           // jwt 토큰 생성, 분해, 검증, 유효성 검사
 
@@ -52,7 +55,7 @@ public class MemberServiceImpl implements MemberService {
     /**
      * 회원등록
      */
-    @Transactional
+
     @Override
     public ResponseEntity<?> register(SignupRequest signupRequest) {
 
@@ -63,6 +66,7 @@ public class MemberServiceImpl implements MemberService {
         String introduce = signupRequest.getIntroduce();
         String user_img = signupRequest.getUserImg();
         int is_private = signupRequest.getIsPrivate();
+        int is_social = 0;
         Long role_no = signupRequest.getRole() == null ? 1 : signupRequest.getRole();
 
         if (memberRepository.existsByUsername(username)) {
@@ -77,7 +81,7 @@ public class MemberServiceImpl implements MemberService {
 
         Optional<Role> role = roleRepository.findById(role_no);
         // 존재하지 않는 사용자이면서도 사용되지 않은 닉네임을 사용한다면, 사용자 등록
-        saveMember(-1L, username, fullname, password, nickname, introduce, user_img, is_private, role.get());
+        saveMember(-1L, username, fullname, password, nickname, introduce, user_img, is_private, is_social, role.get());
 
         return ResponseEntity.ok(new MessageResponse("Registered a user successfully!"));
     }
@@ -85,7 +89,7 @@ public class MemberServiceImpl implements MemberService {
     /**
      * 회원탈퇴
      */
-    @Transactional
+//    @Transactional
     @Override
     public ResponseEntity<?> delete(String password, Long user_id) {
         Optional<Member> member = memberRepository.findById(user_id);
@@ -106,7 +110,7 @@ public class MemberServiceImpl implements MemberService {
     /**
      * 회원정보 수정
      */
-    @Transactional
+//    @Transactional
     @Override
     public ResponseEntity<?> update(Long user_id, UpdateUserRequest updateUserRequest) {
         Optional<Member> member = memberRepository.findById(user_id);
@@ -119,13 +123,14 @@ public class MemberServiceImpl implements MemberService {
         String introduce = updateUserRequest.getIntroduce();
         String user_img = updateUserRequest.getUserImg();
         int is_private = updateUserRequest.getIsPrivate();
+        int is_social = member.get().getIs_social();
 
         if (memberRepository.existsByNickname(nickname) && !nickname.equals(member.get().getNickname())) {
             return ResponseEntity.badRequest().body(new MessageResponse("Error: Written Nickname already exists."));
         }
 
         // 존재하지 않는 사용자이면서도 사용되지 않은 닉네임을 사용한다면, 사용자 등록
-        saveMember(user_id, username, fullname, member.get().getPassword(), nickname, introduce, user_img, is_private, member.get().getRole());
+        saveMember(user_id, username, fullname, member.get().getPassword(), nickname, introduce, user_img, is_private, is_social, member.get().getRole());
 
         return ResponseEntity.ok(new MessageResponse("Updated user information successfully!"));
 
@@ -134,7 +139,7 @@ public class MemberServiceImpl implements MemberService {
     /**
      * 패스워드 변경
      */
-    @Transactional
+//    @Transactional
     @Override
     public ResponseEntity<?> updatePassword(PwUpdateRequest pwUpdateRequest, Long userid) {
         Optional<Member> member = memberRepository.findById(userid);
@@ -152,7 +157,7 @@ public class MemberServiceImpl implements MemberService {
     /**
      * 패스워드 찾기 - 리셋
      */
-    @Transactional
+//    @Transactional
     @Override
     public ResponseEntity<?> resetPassword(PasswordRequest passwordRequest) {
         Optional<Member> member = memberRepository.findByUsername(passwordRequest.getUsername());
@@ -173,7 +178,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     /**
-     * 아이디 중복 접사
+     * 아이디 중복 검사
      */
     @Override
     public ResponseEntity<?> usernameCheck(String username) {
@@ -196,9 +201,14 @@ public class MemberServiceImpl implements MemberService {
     /**
      * 로그인
      */
-    @Transactional
+//    @Transactional
     @Override
     public ResponseEntity<?> login(LoginRequest loginRequest) {
+
+        Member member = memberRepository.findByUsername(loginRequest.getUsername()).get();
+        if(member.getRole().equals(ERole.ROLE_INVALIDATED_USER))
+            return ResponseEntity.badRequest().body("Error: The user doesn't exist.");
+
         // Authentication 객체를 생성한다 by AuthenticationManager
         Authentication authentication = authenticationManager
                 .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
@@ -226,40 +236,64 @@ public class MemberServiceImpl implements MemberService {
      * 사용자 세부정보 얻기 - 회원정보 조회
      */
     @Override
-    public ResponseEntity<?> findUser(Long user_id) {
-        Optional<Member> member = memberRepository.findById(user_id);
+    public ResponseEntity<?> getMyInfo(Long user_id) {
 
-        MemberInfoResponse memberInfoResponse = MemberInfoResponse.builder()
-                .id(member.get().getId())
-                .username(member.get().getUsername())
-                .fullname(member.get().getFullname())
-                .nickname(member.get().getNickname())
-                .introduce(member.get().getIntroduce())
-                .userImg(member.get().getUser_img())
-                .isPrivate(member.get().getIs_private()).build();
+        Member member = memberRepository.findById(user_id).get();
 
-        if (member.isEmpty()) {
-            return ResponseEntity.badRequest().body(new MessageResponse("User information doesn't exist."));
-        } else {
-            return ResponseEntity.ok(memberInfoResponse);
-        }
+        UpdateInfoResponse updateInfoResponse = UpdateInfoResponse.builder()
+                .id(member.getId())
+                .fullname(member.getFullname())
+                .username(member.getUsername())
+                .nickname(member.getNickname())
+                .introduce(member.getIntroduce())
+                .userImg(member.getUser_img())
+                .isPrivate(member.getIs_private())
+                .isSocial(member.getIs_social())
+                .build();
+
+        return ResponseEntity.ok(updateInfoResponse);
+    }
+
+    /**
+     * 조회하고 싶은 사용자 아이디를 인자로 넣어주면, 유저의 프로필 정보를 반환합니다.
+     * 프로필 정보: id, username(=email), nickname, user_img, introduce, is_private(프로필 정보 공개 여부)
+     * @param userId: 조회하고자하는 사용자의 id
+     * @return ProfileResponse
+     */
+    @Override
+    public ProfileResponse getMemberProfile(Long userId, Long loginId) {
+        Member member = memberRepository.findById(userId).get();
+        int followedCnt = followRepository.countByFollower(member.getId());
+        int followingCnt = followRepository.countByFollowing(member.getId());
+        int followStatus = followRepository.existsByFrom_memberAndTo_member(loginId, userId) >= 1 ? 1 : 0; // 1: follow, 0: unfollow
+
+        return ProfileResponse.builder()
+                .id(member.getId())
+                .nickname(member.getNickname())
+                .introduce(member.getIntroduce())
+                .userImg(member.getUser_img())
+                .isPrivate(member.getIs_private())
+                .followedCnt(followedCnt)
+                .followingCnt(followingCnt)
+                .isFollowing(followStatus)
+                .build();
     }
 
     // 사용자 정보 저장 / 수정
-    private void saveMember(Long user_id, String username, String fullname, String password, String nickname, String introduce, String user_img, int is_private, Role role) {
+    private void saveMember(Long user_id, String username, String fullname, String password, String nickname, String introduce, String user_img, int is_private, int is_social, Role role) {
         Member member = null;
         if (user_id == -1L) {
             member = Member.builder().
                     username(username).fullname(fullname)
                     .password(password).nickname(nickname)
                     .introduce(introduce).user_img(user_img)
-                    .is_private(is_private).role(role).build();
+                    .is_private(is_private).role(role).is_social(is_social).build();
         } else {
             member = Member.builder().id(user_id)
                     .username(username).fullname(fullname)
                     .password(password).nickname(nickname)
                     .introduce(introduce).user_img(user_img)
-                    .is_private(is_private).role(role).build();
+                    .is_private(is_private).role(role).is_social(is_social).build();
         }
         memberRepository.save(member);
     }

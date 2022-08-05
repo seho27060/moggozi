@@ -10,8 +10,7 @@ import java.util.Optional;
 
 public interface MemberRepository extends JpaRepository<Member, Long> {
 
-    /** READ **/
-
+    Optional<Member> findByNickname(String nickname);
     // username(email)을 통한 사용자 조회
     Optional<Member> findByUsername(String username);
 

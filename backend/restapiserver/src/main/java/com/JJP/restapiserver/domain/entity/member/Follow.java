@@ -31,7 +31,6 @@ public class Follow extends BaseTimeEntity {
      */
 
 
-
     // 멤버와 다대일 양방향 관계
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "from_member_id")

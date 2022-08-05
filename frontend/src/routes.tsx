@@ -11,8 +11,10 @@ import SearchLayout from "./layout/SearchLayout";
 
 // Accounts
 import Login from "./pages/accounts/Login";
+import CompleteSignUp from "./pages/accounts/CompleteSignUp";
 import Signup from "./pages/accounts/Signup";
 import UserUpdate from "./pages/accounts/UserUpdate";
+import UpdatePassword from "./pages/accounts/UpdatePassword"
 import PasswordReissue from "./pages/accounts/PasswordReissue";
 
 //OAuth
@@ -45,6 +47,7 @@ import MainPage from "./pages/MainPage";
 import SearchPage from "./pages/SearchPage";
 import UnknownPage from "./pages/UnknownPage";
 import WebsocketPage from "./pages/WebsocketTest";
+import PostCommentTestPage from "./pages/PostCommentTestPage";
 
 export default function Router() {
   return useRoutes([
@@ -89,6 +92,10 @@ export default function Router() {
           element: <Login />,
         },
         {
+          path: "complete",
+          element: <CompleteSignUp />,
+        },
+        {
           path: "signup",
           element: <Signup />,
         },
@@ -99,6 +106,10 @@ export default function Router() {
         {
           path: "passwordReissue",
           element: <PasswordReissue />,
+        },
+        {
+          path: "updatePw",
+          element: <UpdatePassword />
         }
       ],
     },
@@ -172,6 +183,10 @@ export default function Router() {
     {
       path: "/websocketTest",
       element: <WebsocketPage />,
+    },
+    {
+      path: "/postcommentTest",
+      element: <PostCommentTestPage />,
     },
     {
       path: "/*",
