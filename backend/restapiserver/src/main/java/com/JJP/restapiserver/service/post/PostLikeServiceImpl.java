@@ -1,4 +1,4 @@
-package com.JJP.restapiserver.service.stage;
+package com.JJP.restapiserver.service.post;
 
 import com.JJP.restapiserver.domain.dto.stage.PostLikeRequestDto;
 import com.JJP.restapiserver.domain.entity.stage.PostLike;
@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -25,16 +27,18 @@ public class PostLikeServiceImpl implements PostLikeService{
                 .post(postRepository.getById(postLikeRequestDto.getPostId()))
                 .member(memberRepository.getById(postLikeRequestDto.getMemberId()))
                 .build();
-        postLikeRepository.save(postLike);
+        Optional<PostLike> postLikeOptional = postLikeRepository.findByPost_idAndMember_id(
+                postLikeRequestDto.getPostId(), postLikeRequestDto.getMemberId());
+        if(postLikeOptional.isPresent()) {
+            postLikeRepository.delete(postLikeOptional.get());
+        }
+        else {
+            postLikeRepository.save(PostLike.builder()
+                    .member(memberRepository.getById(postLikeRequestDto.getMemberId()))
+                    .post(postRepository.getById(postLikeRequestDto.getPostId()))
+                    .build());
+        }
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @Override
-    public ResponseEntity unlike(PostLikeRequestDto postLikeRequestDto) {
-        PostLike postLike = postLikeRepository.findByPost_idAndMember_id(
-                postLikeRequestDto.getPostId(), postLikeRequestDto.getMemberId()).get();
-        postLikeRepository.delete(postLike);
-
-        return new ResponseEntity(HttpStatus.OK);
-    }
 }

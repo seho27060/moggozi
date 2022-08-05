@@ -18,10 +18,4 @@ public class ChallengeLikeController {
     {
         return challengeLikeService.like(challengeLikeRequestDto);
     }
-
-    @DeleteMapping("/unlike")
-    public ResponseEntity unlike(@RequestBody ChallengeLikeRequestDto challengeLikeRequestDto)
-    {
-        return challengeLikeService.unlike(challengeLikeRequestDto);
-    }
 }

@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class ChallengeLikeServiceImpl implements ChallengeLikeService{
@@ -21,19 +23,18 @@ public class ChallengeLikeServiceImpl implements ChallengeLikeService{
     @Override
     public ResponseEntity like(ChallengeLikeRequestDto challengeLikeRequestDto) {
 
-        ChallengeLike challengeLike = ChallengeLike.builder()
-                .member(memberRepository.getById(challengeLikeRequestDto.getMemberId()))
-                .challenge(challengeRepository.getById(challengeLikeRequestDto.getChallengeId()))
-                .build();
-        challengeLikeRepository.save(challengeLike);
+        Optional<ChallengeLike> challengeLike = challengeLikeRepository.findByMember_idAndChallenge_id(
+                challengeLikeRequestDto.getMemberId(), challengeLikeRequestDto.getChallengeId()
+        );
+        if(challengeLike.isPresent())
+            challengeLikeRepository.delete(challengeLike.get());
+        else
+            challengeLikeRepository.save(ChallengeLike.builder()
+                    .member(memberRepository.getById(challengeLikeRequestDto.getMemberId()))
+                    .challenge(challengeRepository.getById(challengeLikeRequestDto.getChallengeId()))
+                    .build());
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @Override
-    public ResponseEntity unlike(ChallengeLikeRequestDto challengeLikeRequestDto) {
-        ChallengeLike challengeLike = challengeLikeRepository.findByMember_idAndChallenge_id(challengeLikeRequestDto.getMemberId(),
-                challengeLikeRequestDto.getChallengeId()).get();
-        challengeLikeRepository.delete(challengeLike);
-        return new ResponseEntity(HttpStatus.OK);
-    }
+
 }
