@@ -1,5 +1,6 @@
 package com.JJP.restapiserver.service.post;
 
+import com.JJP.restapiserver.domain.dto.challenge.ChallengeListResponseDto;
 import com.JJP.restapiserver.domain.dto.post.PostResponseDto;
 import com.JJP.restapiserver.domain.dto.post.PostSaveRequestDto;
 import com.JJP.restapiserver.domain.dto.post.PostUpdateRequestDto;
@@ -23,4 +24,8 @@ public interface PostService {
 
     // 특정 스테이지 전체 포스트 조회
     List getStagePost(Long stage_id);
+
+    Long writtenPostNum(Long member_id);
+
+    List<PostResponseDto> writtenPostList8(Long member_id);
 }

@@ -60,6 +60,25 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    public Long writtenPostNum(Long member_id) {
+        return postRepository.countByMember_id(member_id);
+    }
+
+    @Override
+    public List<PostResponseDto> writtenPostList8(Long member_id) {
+        List<Post> postList = postRepository.findTop8ByMember_idOrderByModifiedDateDesc(member_id);
+        List<PostResponseDto> postResponseDtoList = new ArrayList<>();
+        if(postList != null)
+        {
+            for(Post post : postList)
+            {
+                postResponseDtoList.add(new PostResponseDto(post));
+            }
+        }
+        return postResponseDtoList;
+    }
+
+    @Override
     public List<PostResponseDto> getMemberPost(Long member_id) {
         List<Post> postList = postRepository.findAllByMember_id(member_id);
 

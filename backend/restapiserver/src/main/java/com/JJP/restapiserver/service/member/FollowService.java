@@ -9,5 +9,8 @@ public interface FollowService {
 
     ResponseEntity<?> unfollow(Long fromMemberId, Long toMemberId);
 
+    ResponseEntity<?> followingList(Long fromMemberId);
+
+    ResponseEntity<?> followedList(Long toMemberId, Long loginId);
 }
 

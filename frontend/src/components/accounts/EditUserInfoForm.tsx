@@ -43,7 +43,7 @@ const EditUserInfoForm: React.FC = () => {
   }
 
   useEffect(() => {
-    if ( isLoggedIn ){
+    if (isLoggedIn) {
       userDetail().then((res) => {
         const currentState: UserEditState = {
           username: res.username,
@@ -54,10 +54,10 @@ const EditUserInfoForm: React.FC = () => {
           isPrivate: res.isPrivate,
         };
         setOption(currentState);
-      })
+      });
     } else {
-      alert("잘못된 접근입니다.")
-      navigate("/")
+      alert("잘못된 접근입니다.");
+      navigate("/");
     }
   }, [isLoggedIn, navigate]);
 
@@ -65,6 +65,13 @@ const EditUserInfoForm: React.FC = () => {
     <div>
       <h3>EditUserInfoForm form</h3>
       <div>
+        <button
+          onClick={() => {
+            navigate("/account/withdrawal");
+          }}
+        >
+          회원탈퇴
+        </button>
         <form>
           <div>
             <label htmlFor="email">이메일 : </label>

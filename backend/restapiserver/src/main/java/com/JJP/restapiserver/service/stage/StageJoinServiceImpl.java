@@ -3,6 +3,7 @@ package com.JJP.restapiserver.service.stage;
 import com.JJP.restapiserver.domain.dto.MessageResponse;
 import com.JJP.restapiserver.domain.dto.stage.StageCompleteDto;
 import com.JJP.restapiserver.domain.dto.stage.StageJoinRequestDto;
+import com.JJP.restapiserver.domain.dto.stage.StageResponseDto;
 import com.JJP.restapiserver.domain.entity.member.Member;
 import com.JJP.restapiserver.domain.entity.stage.Stage;
 import com.JJP.restapiserver.domain.entity.stage.StageUser;
@@ -12,6 +13,9 @@ import com.JJP.restapiserver.repository.stage.StageUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Service
@@ -45,5 +49,24 @@ public class StageJoinServiceImpl implements StageJoinService{
         entity.complete();
 
         return stageCompleteDto.getId();
+    }
+
+    @Override
+    public Long joinedStageNum(Long member_id) {
+        Long num = stageUserRepository.countByMember_id(member_id);
+        return num;
+    }
+
+    @Override
+    public List<StageResponseDto> joinedStageList8(Long member_id) {
+        List<StageUser> stageUserList = stageUserRepository.findTop8ByMember_idOrderByJoinTimeDesc(member_id);
+        List<StageResponseDto> stageResponseDtoList = new ArrayList<>();
+        if(stageUserList != null){
+            for(StageUser stageUser : stageUserList){
+                Stage stage = stageUser.getStage();
+                stageResponseDtoList.add(new StageResponseDto(stage));
+            }
+        }
+        return stageResponseDtoList;
     }
 }

@@ -36,7 +36,6 @@ public class ChallengeServiceImpl implements ChallengeService{
     private final MemberRepository memberRepository;
     private final TagRepository tagRepository;
     private final ChallengeTagRepository challengeTagRepository;
-    private final StageUserRepository stageUserRepository;
 
 
     @Override
@@ -76,6 +75,24 @@ public class ChallengeServiceImpl implements ChallengeService{
         List<ChallengeListResponseDto> responseDtoList = new ArrayList<>();
         return challengeIntoListDto(challengeList, responseDtoList, member_id);
     }
+    public List<ChallengeListResponseDto> getChallengeListByLikeWithoutLogin() {
+        List<Object[]> list = challengeRepository.findByLike();
+        List<Challenge> challengeList = new ArrayList<>();
+        List<ChallengeListResponseDto> responseDtoList = new ArrayList<>();
+        if(list != null)
+        {
+
+            for(int i = 0; i < list.size(); i++)
+            {
+                Challenge challenge = challengeRepository.findById(Long.parseLong(list.get(i)[0].toString())).get();
+                challengeList.add(challenge);
+            }
+            for(int i = 0; i < challengeList.size(); i++){
+                responseDtoList.add(new ChallengeListResponseDto(challengeList.get(i)));
+            }
+        }
+        return responseDtoList;
+    }
 
     @Override
     public ChallengeResponseDto getChallengeDetail(Long challenge_id, Long member_id) {
@@ -87,9 +104,14 @@ public class ChallengeServiceImpl implements ChallengeService{
         return challengeIntoDto(challengeList, challengeResponseDtoList, member_id).get(0);
     }
 
-    public Challenge getChallengeDetail2(Long challenge_id, Long member_id) {
+    @Override
+    public ChallengeResponseDto getChallengeDetail(Long challenge_id) {
         Challenge challenge = challengeRepository.findById(challenge_id).get();
-        return challenge;
+        List<Challenge> challengeList = new ArrayList<>();
+        challengeList.add(challenge);
+
+        List<ChallengeResponseDto> challengeResponseDtoList = new ArrayList<>();
+        return challengeIntoDto(challengeList, challengeResponseDtoList).get(0);
     }
 
     @Override
@@ -150,6 +172,28 @@ public class ChallengeServiceImpl implements ChallengeService{
         return 0;
     }
 
+    @Override
+    public Long joinedChallengeNum(Long member_id) {
+        return joinedChallengeRepository.countByMember_id(member_id);
+    }
+
+    @Override
+    public List<ChallengeListResponseDto> joinedChallengeList8(Long member_id) {
+        List<JoinedChallenge> joinedChallengeList = joinedChallengeRepository.findTop8ByMember_idOrderByModifiedDateDesc(member_id);
+        List<ChallengeListResponseDto> challengeListResponseDtoList = new ArrayList<>();
+        if(joinedChallengeList != null)
+        {
+            for(int i = 0; i < joinedChallengeList.size(); i++)
+            {
+                Challenge challenge = joinedChallengeList.get(i).getChallenge();
+                ChallengeListResponseDto challengeResponseDto = new ChallengeListResponseDto(challenge);
+                challengeListResponseDtoList.add(challengeResponseDto);
+            }
+        }
+        return challengeListResponseDtoList;
+
+    }
+
     public List<ChallengeResponseDto> challengeIntoDto(List<Challenge> challengeList, List<ChallengeResponseDto> responseDtoList
                                  , Long member_id)
     {
@@ -169,6 +213,21 @@ public class ChallengeServiceImpl implements ChallengeService{
             if(joinedChallenge.isPresent())
             {
                 challengeResponseDto.setUserProgress(joinedChallenge.get().getState());
+            }
+            responseDtoList.add(challengeResponseDto);
+        }
+        return responseDtoList;
+    }
+    public List<ChallengeResponseDto> challengeIntoDto(List<Challenge> challengeList, List<ChallengeResponseDto> responseDtoList)
+    {
+        for(int i = 0; i < challengeList.size(); i++)
+        {
+            Challenge challenge = challengeList.get(i);
+            ChallengeResponseDto challengeResponseDto = new ChallengeResponseDto(challenge);
+            for(int j = 0; j < challenge.getChallengeTagList().size(); j++)
+            {
+                Tag tag = challenge.getChallengeTagList().get(j).getTag();
+                challengeResponseDto.getHobbyList().add(new TagResponseDto(tag.getId(), tag.getTag()));
             }
             responseDtoList.add(challengeResponseDto);
         }

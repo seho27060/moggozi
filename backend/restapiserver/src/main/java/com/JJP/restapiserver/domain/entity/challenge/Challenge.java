@@ -11,6 +11,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -48,25 +49,25 @@ public class Challenge extends BaseTimeEntity {
     private String description;
 
     // 스테이지와 다대일 양방향 관계
-    @OneToMany(mappedBy = "challenge")
+    @OneToMany(mappedBy = "challenge", cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<Stage> stageList = new ArrayList<>();
 
     // 좋아요와 다대일 단방향 관계
-    @OneToMany(mappedBy = "challenge")
+    @OneToMany(mappedBy = "challenge", cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<ChallengeLike> challengeLikeList = new ArrayList<>();
 
     // 한줄평과 일대다 단방향 관계
-    @OneToMany(mappedBy = "challenge")
+    @OneToMany(mappedBy = "challenge", cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<Review> reviewList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "challenge")
+    @OneToMany(mappedBy = "challenge" , cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<JoinedChallenge> joinedChallengeList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "challenge")
+    @OneToMany(mappedBy = "challenge", cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<ChallengeTag> challengeTagList = new ArrayList<>();
 

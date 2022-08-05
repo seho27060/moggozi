@@ -16,6 +16,7 @@ import Signup from "./pages/accounts/Signup";
 import UserUpdate from "./pages/accounts/UserUpdate";
 import UpdatePassword from "./pages/accounts/UpdatePassword";
 import PasswordReissue from "./pages/accounts/PasswordReissue";
+import Withdrawal from "./pages/accounts/Withdrawal";
 
 //OAuth
 import KakaoOAuthRedirectHandler from "./pages/KakaoOAuthRedirectHandler";
@@ -44,6 +45,7 @@ import SearchPage from "./pages/SearchPage";
 import UnknownPage from "./pages/UnknownPage";
 import WebsocketPage from "./pages/WebsocketTest";
 import StageEdit from "./pages/stage/StageEdit";
+import PostCommentTestPage from "./pages/PostCommentTestPage";
 
 export default function Router() {
   return useRoutes([
@@ -107,6 +109,10 @@ export default function Router() {
           path: "updatePw",
           element: <UpdatePassword />,
         },
+        {
+          path: "withdrawal",
+          element: <Withdrawal />,
+        },
       ],
     },
     {
@@ -167,6 +173,10 @@ export default function Router() {
     {
       path: "/websocketTest",
       element: <WebsocketPage />,
+    },
+    {
+      path: "/postcommentTest",
+      element: <PostCommentTestPage />,
     },
     {
       path: "/*",
