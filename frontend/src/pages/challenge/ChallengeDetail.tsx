@@ -8,7 +8,6 @@ import StageList from "../../components/stage/StageList";
 import { fetchChallenge } from "../../lib/generalApi";
 import { isLoginFetchChallenge } from "../../lib/withTokenApi";
 import { ChallengeDetailState } from "../../store/challenge";
-import { fetchStage } from "../../store/stage";
 import { RootState } from "../../store/store";
 
 const ChallengeDetail: React.FC = () => {
@@ -31,9 +30,7 @@ const ChallengeDetail: React.FC = () => {
             };
             setIsLoading(false);
             setLoadedChallenge(challenge);
-            dispatch(fetchStage(challenge.stageList));
           })
-          // console.log(res)
           .catch((err) => {
             console.log(err);
             setIsLoading(false);
@@ -47,9 +44,7 @@ const ChallengeDetail: React.FC = () => {
             };
             setIsLoading(false);
             setLoadedChallenge(challenge);
-            dispatch(fetchStage(challenge.stageList));
           })
-          // console.log(res)
           .catch((err) => {
             console.log(err);
             setIsLoading(false);
@@ -82,7 +77,7 @@ const ChallengeDetail: React.FC = () => {
           <p>챌린지 취미</p>
           <HobbyList hobbies={loadedChallenge!.hobbyList} />
           <p>스테이지</p>
-          <StageList />
+          <StageList stages={loadedChallenge!.stageList} />
 
           <Link to={`/stage/${id}`}>
             <button>스테이지 편집</button>

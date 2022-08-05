@@ -1,14 +1,14 @@
-import { useSelector } from "react-redux";
-import { RootState } from "../../store/store";
+import { StageState } from "../../store/stage";
 import StageItem from "./StageItem";
 
-const StageList: React.FC = () => {
-  const stages = useSelector((state: RootState) => state.stages);
+const StageList: React.FC<{ stages: StageState[] }> = ({ stages }) => {
   return (
     <div>
       <ul>
         {stages.map((stage) => (
-          <StageItem key={stage.id} stage={stage} />
+          <li key={stage.id}>
+            <StageItem stage={stage} />
+          </li>
         ))}
       </ul>
     </div>

@@ -1,16 +1,17 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { PostItemState } from "./post";
 
-export interface StageState {
-  id: number | null;
-  challengeId: number | null;
+export interface StageSaveState {
   name: string | null;
-  period: number | null;
   content: string | null;
   stageImg: string | undefined;
+}
+
+export interface StageState extends StageSaveState {
+  id: number | null;
+  challengeId: number | null;
   createDate: number | null;
   modifiedDate: number | null;
-  postOrder: number | null;
   postList: PostItemState[] | null;
 }
 
@@ -25,8 +26,19 @@ export const stageSlice = createSlice({
         return state.push(stage);
       });
     },
+    addStage(state, action) {
+      state.push(action.payload);
+    },
+    deleteStage(state, action) {
+      state = state.filter((item) => action.payload !== item.id);
+    },
+    updateStage(state, action) {
+      const index = state.findIndex((stage) => stage.id === action.payload.id);
+      state[index] = action.payload;
+    },
   },
 });
 
-export const { fetchStage } = stageSlice.actions;
+export const { fetchStage, addStage, deleteStage, updateStage } =
+  stageSlice.actions;
 export default stageSlice.reducer;
