@@ -275,7 +275,7 @@ public class MemberServiceImpl implements MemberService {
                 .isPrivate(member.getIs_private())
                 .followedCnt(followedCnt)
                 .followingCnt(followingCnt)
-                .is_following(followStatus)
+                .isFollowing(followStatus)
                 .build();
     }
 
