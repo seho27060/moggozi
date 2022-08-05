@@ -39,9 +39,11 @@ public class EchoHandler extends TextWebSocketHandler {
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
         sessions.add(session);
-        System.out.println("연결 됐음");
         Long senderId = getId(session);
+        System.out.println("연결 됐음 + " + senderId);
         userSessionsMap.put(senderId , session);
+        System.out.println(userSessionsMap.keySet());
+        System.out.println(userSessionsMap.values());
     }
 
     //소켓에 메세지를 보냈을때
