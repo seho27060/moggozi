@@ -93,11 +93,11 @@ public class Member {
     @JsonManagedReference
     private List<Post> posts = new ArrayList<>();
 
-    @OneToMany(mappedBy = "caller")
+    @OneToMany(mappedBy = "sender")
     @JsonManagedReference
     private List<Alert> caller_alerts = new ArrayList<>();
 
-    @OneToMany(mappedBy = "callee")
+    @OneToMany(mappedBy = "receiver")
     @JsonManagedReference
     private List<Alert> callee_alerts = new ArrayList<>();
 

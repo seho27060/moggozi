@@ -3,6 +3,8 @@ package com.JJP.restapiserver.domain.dto.member.response;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.time.LocalDateTime;
+
 @Builder
 @Getter
 public class AlertResponseDto {
@@ -14,6 +16,8 @@ public class AlertResponseDto {
     private String type;
     private Long index;
     private String message;
+
+    private LocalDateTime createdTime;
 
     @Override
     public String toString(){

@@ -157,6 +157,7 @@ public class EchoHandler extends TextWebSocketHandler {
                 .type(alert.getType())
                 .index(alert.getIndex())
                 .message(alert.getMessage())
+                .createdTime(alert.getCreatedDate())
                 .build();
     }
 }
