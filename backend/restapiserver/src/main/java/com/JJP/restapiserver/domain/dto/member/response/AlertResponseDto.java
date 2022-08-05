@@ -1,5 +1,6 @@
 package com.JJP.restapiserver.domain.dto.member.response;
 
+import com.JJP.restapiserver.domain.entity.member.Alert;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -17,6 +18,8 @@ public class AlertResponseDto {
     private Long index;
     private String message;
 
+    private int check;
+
     private LocalDateTime createdTime;
 
     @Override
@@ -30,4 +33,5 @@ public class AlertResponseDto {
                 ", \"message\" : "+this.message + "}";
         return str;
     }
+
 }
