@@ -5,10 +5,10 @@ const PostCommentChild: React.FC<{ child: Comment }> = ({ child }) => {
     <div>
       <p>{child.order}</p>
       <p>{child.writer?.nickname}</p>
-      <p>
+      <div>
         <div>{child.text}</div>
         <div>{child.modifiedTime?.toString()}</div>
-      </p>
+      </div>
     </div>
   );
 };

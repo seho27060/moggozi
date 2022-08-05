@@ -50,7 +50,7 @@ export const postSlice = createSlice({
   name: "post",
   initialState: initialPostState,
   reducers: {
-    setPostSlice:(state,action) => {
+    setModalPostState:(state:PostTest,action) => {
       state.id = action.payload.id
       state.title = action.payload.title
       state.content = action.payload.content
@@ -62,5 +62,5 @@ export const postSlice = createSlice({
     }
   },
 }); 
-export const {setPostSlice} = postSlice.actions
+export const {setModalPostState} = postSlice.actions
 export default postSlice.reducer;

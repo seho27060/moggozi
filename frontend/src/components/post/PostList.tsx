@@ -1,31 +1,33 @@
 import { MouseEvent } from "react";
-import { PostTest } from "../../store/post";
+import { PostTest, setModalPostState } from "../../store/post";
+import { useDispatch } from "react-redux";
 
 import PostItem from "./PostItem";
 
 const PostList: React.FC<{
   posts: PostTest[] | null;
-  setModalContentState: (post: PostTest) => void | null;
   openModal:()=>void |null
-}> = ({ posts, setModalContentState, openModal }) => {
+}> = ({ posts, openModal }) => {
+  const dispatch = useDispatch()
+  
   return (
     <div>
       PostList
       <hr />
       {posts?.map((post) => (
-        <>
-          <PostItem key={post.id} post={post} />
+        <div key={post.id}>
+          <PostItem  post={post} />
           <button
             onClick={(event: MouseEvent) => {
               event.preventDefault();
-              setModalContentState(post);
+              dispatch(setModalPostState(post));
               openModal()
             }}
           >
             해당 포스팅 열기
           </button>
           <hr />
-        </>
+        </div>
       ))}
     </div>
   );

@@ -12,31 +12,48 @@ export interface Comment {
   modifiedTime: Date | null;
 }
 
+// state : 0(숨김), 1(활성), 2(삭제)
+export interface CommentSend {
+  postId: number | null;
+  text: string | null;
+  parent: number | null;
+  order: number | null;
+  state: number | null;
+}
+
 export interface CommentListState {
   comments: Comment[] | null;
 }
 
 const initialCommentState: CommentListState = {
-  comments: null,
+  comments: [],
 };
 
 export const commentSlice = createSlice({
   name: "comment",
   initialState: initialCommentState,
   reducers: {
-    commentAdd: (state, action) => {
-      state.comments?.push(action.payload)
+    commentSet: (state: CommentListState, action) => {
+      console.log("commentSet", action);
+      state.comments = action.payload;
     },
-    commentDelete: (state, action) => {
+    commentRegister: (state: CommentListState, action) => {
+      console.log("commentRegister", action);
+      state.comments = [...state.comments!, action.payload];
     },
-    commentUpdate: (state, action) => {
-
+    commentModify: (state: CommentListState, action) => {
+      console.log("commentRemove", action);
+      //0(숨김), 1(활성), 2(삭제)
+      const commentsModified = state.comments!.filter((comment)=>(comment.id !== action.payload.id))
+      state.comments = [...commentsModified,action.payload]
     },
-    commentSet: (state,action) => {
-      state.comments = action.payload.comments
-    }
+    commentRemove: (state: CommentListState, action) => {
+      console.log("commentRemove", action);
+      //0(숨김), 1(활성), 2(삭제)
+      state.comments = state.comments!.filter((comment)=>comment.id !== action.payload)
+    },
   },
 });
 
-export const {commentAdd, commentDelete, commentUpdate,commentSet} = commentSlice.actions
+export const { commentSet,commentRegister,commentModify } = commentSlice.actions;
 export default commentSlice.reducer;

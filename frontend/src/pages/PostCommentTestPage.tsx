@@ -1,23 +1,31 @@
 import { FormEvent, useRef, useState } from "react";
+import { useSelector } from "react-redux";
 import PostDetailItem from "../components/post/PostDetailItem";
 import PostList from "../components/post/PostList";
 import Modal from "../components/ui/Modal";
 import { commentRead, postRead } from "../lib/withTokenApi";
-import { Comment } from "../store/comment";
-import { PostTest } from "../store/post";
+import { PostTest,  } from "../store/post";
+import { RootState } from "../store/store";
 
 const PostCommentTestPage = () => {
   const [postState, setPostState] = useState<PostTest[] | null>(null);
-  const stageIdRef = useRef<HTMLInputElement>(null);
 
-  const [commentState, setCommentState] = useState<Comment | null>(null);
+  const stageIdRef = useRef<HTMLInputElement>(null);
   const postIdRef = useRef<HTMLInputElement>(null);
 
   const [modalOpen, setModalOpen] = useState(false);
-  const [modalPostState, setModalPostState] = useState<PostTest | null>(null);
-  const [modalCommentsState, setModalCommentsState] = useState<PostTest | null>(
-    null
+  // const [modalPostState, setModalPostState] = useState<PostTest | null>(null);
+  const modalPostState = useSelector(
+    (state: RootState) => state.post
   );
+  
+  const openModal = () => {
+    setModalOpen(true);
+  };
+  const closeModal = () => {
+    setModalOpen(false);
+  };
+
   const readStagePosts = (event: FormEvent) => {
     event.preventDefault();
     console.log(
@@ -41,19 +49,12 @@ const PostCommentTestPage = () => {
     commentRead(Number(postIdRef.current?.value))
       .then((res) => {
         console.log("댓글 불러오기 성공", res);
-        setCommentState(res);
       })
       .catch((err) => {
         console.log("ERR", err);
       });
   };
 
-  const openModal = () => {
-    setModalOpen(true);
-  };
-  const closeModal = () => {
-    setModalOpen(false);
-  };
   return (
     <div>
       <h1>PostCommentTest</h1>
@@ -70,7 +71,6 @@ const PostCommentTestPage = () => {
       {postState && (
         <PostList
           posts={postState}
-          setModalContentState={setModalPostState}
           openModal={openModal}
         />
       )}

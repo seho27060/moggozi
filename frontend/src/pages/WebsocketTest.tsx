@@ -1,6 +1,4 @@
 import { FormEvent, useRef } from "react";
-// import SockJS from "sockjs-client";
-// import WebSocketProvider from "../lib/WebSocketProvider";
 
 const WebsocketPage = () => {
   const messageRef = useRef<HTMLInputElement>(null);
@@ -16,12 +14,12 @@ const WebsocketPage = () => {
   function onSend() {
     //senderId,senderName, receiverId, receiverName, type, index
     var jsonSend = {
-      senderId: "777",
+      senderId: "36",
       senderName: "세호팍",
-      receiverId: "666",
+      receiverId: "36",
       receiverName: "성민초",
       type: "challenge",
-      index: 1,
+      index: "1",
       message: "",
     };
     jsonSend.message = messageRef.current!.value;
@@ -43,26 +41,10 @@ const WebsocketPage = () => {
   wsocket.onclose = onClose;
   wsocket.onopen = onOpen;
   wsocket.onmessage = onMessage;
-  // var sock = new SockJS('https://i7c201.p.ssafy.io:443/ws/notification',);
-  // sock.onopen = function() {
-  //     console.log('open');
-  //     sock.send('test');
-  // };
-
-  // sock.onmessage = function(e) {
-  //     console.log('message', e.data);
-  //     sock.close();
-  // };
-
-  // sock.onclose = function() {
-  //     console.log('close');
-  // };
 
   return (
     <div>
       <h1>WebSocket TEST</h1>
-      {/* <WebSocketProvider>
-      </WebSocketProvider> */}
       <button onClick={onOpen}>open</button>
       <form>
         <label htmlFor="message">message : </label>
