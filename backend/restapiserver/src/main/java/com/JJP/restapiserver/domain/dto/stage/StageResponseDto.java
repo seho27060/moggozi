@@ -11,7 +11,6 @@ public class StageResponseDto {
     private Long id;
     private Long challengeId;
     private String name;
-    private int period;
     private String content;
     private String stageImg;
     private LocalDateTime createdDate;
@@ -22,7 +21,6 @@ public class StageResponseDto {
         this.id = entity.getId();
         this.challengeId = entity.getChallenge().getId();
         this.name = entity.getName();
-        this.period = entity.getPeriod();
         this.content = entity.getContent();
         this.stageImg = entity.getStage_img();
         this.createdDate = entity.getCreatedDate();

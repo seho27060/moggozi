@@ -39,8 +39,6 @@ public class Stage extends BaseTimeEntity {
     @Column(length = 20)
     private String name;
 
-    private int period;
-
     @Column(length = 500)
     private String content;
 
@@ -48,12 +46,11 @@ public class Stage extends BaseTimeEntity {
     private String stage_img;
 
     @Builder
-    public Stage(Long id, Long post_order, Challenge challenge, String name, int period, String content, String stage_img) {
+    public Stage(Long id, Long post_order, Challenge challenge, String name, String content, String stage_img) {
         this.id = id;
         this.post_order = post_order;
         this.challenge = challenge;
         this.name = name;
-        this.period = period;
         this.content = content;
         this.stage_img = stage_img;
     }
