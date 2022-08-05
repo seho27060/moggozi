@@ -151,7 +151,7 @@ public class EchoHandler extends TextWebSocketHandler {
                 .message(msg)
                 .sequence(index)
                 .type(type)
-                .read(0)
+                .is_read(0)
                 .build();
         alert = alertRepository.save(alert);
         return AlertResponseDto.builder()
