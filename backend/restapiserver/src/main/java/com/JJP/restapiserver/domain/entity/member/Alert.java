@@ -41,9 +41,9 @@ public class Alert extends BaseTimeEntity {
 
     private String message;
 
-    private int check;
+    private int read;
 
     public void read(){
-        this.check = 1;
+        this.read = 1;
     }
 }
