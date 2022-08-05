@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+@CrossOrigin(origins = "*", maxAge = 3600) /**TODO: 프론트 서버 배포 후 삭제 예정 **/
 @Tag(name = "FileController", description = "파일업로드 API")
 @RequiredArgsConstructor
 @RestController
