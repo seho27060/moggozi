@@ -85,19 +85,17 @@ public class EchoHandler extends TextWebSocketHandler {
             if(true) {
                 // 알림을 받아야 하는 사람이 로그인 해서 있다면
                 // userSessionMap에서 그 값을 찾아봐야 함.
-//                WebSocketSession receiver = userSessionsMap.get(receiverId);
-                WebSocketSession sender = userSessionsMap.get(-1L);
+                WebSocketSession receiver = userSessionsMap.get(receiverId);
+//                WebSocketSession sender = userSessionsMap.get(-1L);
 
 //                if(receiver == null){
 //                    System.out.println("수신자가 로그아웃된 상태");
 //                }
-                System.out.println(sender);
+                System.out.println(receiver);
                 String msg = senderName + "님이 등록하신 챌린지에 좋아요를 눌렀습니다.";
-                sender.sendMessage(new TextMessage(msg));
+                receiver.sendMessage(new TextMessage(msg));
                 // 알람이 챌린지에서부터 온 것이고 == 챌린지 좋아요 발생
-                // 수신자가 현재 로그인한 상태라면
-//                "<a type='external' href='/mentor/menteeboard/menteeboardView?seq="+seq+"&pg=1'>" + seq + "</a> 번 게시글에 댓글을 남겼습니다.
-                if(type.equals("challenge") && sender != null) {
+                if(type.equals("challenge") && receiver != null) {
                     System.out.println("여기까진 오나?");
                     // 알림 저장 - B
                     // 알림 전송 - B
@@ -109,7 +107,7 @@ public class EchoHandler extends TextWebSocketHandler {
 
                     TextMessage tmpMsg = new TextMessage(alertResponseDto.toString());
 //                    receiver.sendMessage(tmpMsg);
-                    sender.sendMessage(tmpMsg);
+                    receiver.sendMessage(tmpMsg);
 
 //                }else if(type.equals("post") && receiver != null) {
 //                    TextMessage tmpMsg = new TextMessage(senderName + "님이 포스트에 좋아요를 눌렀습니다.");
