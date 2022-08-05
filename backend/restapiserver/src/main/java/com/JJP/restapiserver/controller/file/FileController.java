@@ -16,19 +16,19 @@ public class FileController {
 
     private final FileService fileService;
 
-    @Operation(summary = "이미지업로드", description = "path: 이미지 변경 시, 기존 이미지 경로 / pageName: 저장하고자하는 폴더명 / " +
+    @Operation(summary = "이미지업로드", description = "existingPath: 등록된 이미지 경로 / pageName: 저장하고자하는 폴더명 / " +
             "file: enctype='multipart/form-data'")
     @PostMapping("/upload")
-    public ResponseEntity<?> saveFile(@RequestParam("path") String path, @RequestParam("pageName") String pageName, @PathVariable MultipartFile file) throws Exception {
+    public ResponseEntity<?> saveFile(@RequestParam("existingPath") String path, @RequestParam("pageName") String pageName, @PathVariable MultipartFile file) throws Exception {
 
         return fileService.saveFile(file, pageName, path);
     }
 
-//    // 파일 삭제
-//    @PostMapping("/delete/{filePath}")
-//    public ResponseEntity<?> deleteFile(@PathVariable("filePath") String filePath) {
-//        return fileService.deleteFile(filePath);
-//    }
+    // 파일 삭제
+    @PostMapping("/delete/{filePath}")
+    public ResponseEntity<?> deleteFile(@PathVariable("filePath") String filePath) {
+        return fileService.removeFile(filePath);
+    }
 
     /* TODO: MULTIPLE FILES UPLOAD/GET
     @PostMapping("/uploadM")

@@ -43,7 +43,7 @@ public class FileServiceImpl implements FileService {
         // 등록된 이미지가 있다면 등록된 이미지 삭제
         if (filePath.isEmpty()) {
             // 데이터 베이스에서 파일 삭제
-            deleteFile(filePath);
+            delete(filePath);
             // 경로에서 파일 삭제
             try {
                 Files.delete(Path.of(filePath));
@@ -100,11 +100,17 @@ public class FileServiceImpl implements FileService {
         return ResponseEntity.ok(UploadSuccessResponse.builder().name(fileName).path(path).build());
     }
 
+    @Override
+    public ResponseEntity<?> removeFile(String filePath) {
+        delete(filePath);
+        return ResponseEntity.ok("Deleted the image successfully.");
+    }
+
     /**
      * db에서 주어진 경로에 있는 파일 삭제
      * @param filePath : 삭제할 파일이 있는 경로명
      */
-    private void deleteFile(String filePath) {
+    private void delete(String filePath) {
         Image image = fileRepository.findByName(filePath).get();
         fileRepository.delete(image);
     }

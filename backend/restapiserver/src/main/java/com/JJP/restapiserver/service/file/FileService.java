@@ -9,5 +9,7 @@ public interface FileService {
 
     ResponseEntity<?> saveFile(MultipartFile file, String pageName, String filePath) throws IOException;
 
+    ResponseEntity<?> removeFile(String filePath);
+
 //    ResponseEntity<?> getFile(String fileName);
 }

@@ -2,6 +2,7 @@ package com.JJP.restapiserver.controller.member;
 
 import com.JJP.restapiserver.security.JwtUtils;
 import com.JJP.restapiserver.service.member.FollowService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,17 +19,19 @@ public class FollowController {
     private final FollowService followService;
     private final JwtUtils jwtUtils;
 
+    @Operation(summary = "팔로우, 언팔로우 토글", description = "상대를 이미 팔로우하고 있으면 언팔로우 합니다.")
+    // 팔로우, 언팔로우 - 토글
     @PostMapping("/follow/{toId}")
     public final ResponseEntity<?> followMember(@PathVariable("toId") Long toMemberId, HttpServletRequest servletRequest) {
         Long fromMemberId = getMemberId(servletRequest);
         return followService.follow(fromMemberId, toMemberId);
     }
 
-    @PostMapping("/unfollow/{toId}")
+/*    @PostMapping("/unfollow/{toId}")
     public final ResponseEntity<?> unfollowMember(@PathVariable("toId") Long toMemberId, HttpServletRequest servletRequest) {
         Long fromMemberId = getMemberId(servletRequest);
         return followService.unfollow(fromMemberId, toMemberId);
-    }
+    }*/
 
     // 조회하는 유저가 팔로우하는 리스트
     @GetMapping("/following/{fromMemberId}")
