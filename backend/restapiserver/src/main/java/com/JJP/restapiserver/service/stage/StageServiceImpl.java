@@ -47,7 +47,7 @@ public class StageServiceImpl implements StageService {
 
         Stage entity = stageRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + id));
 
-        entity.update(stageUpdateRequestDto.getName(), stageUpdateRequestDto.getContent(), stageUpdateRequestDto.getStageImg());
+        entity.update(stageUpdateRequestDto.getName(), stageUpdateRequestDto.getContent(), stageUpdateRequestDto.getImg());
 
         return id;
     }
