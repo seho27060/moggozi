@@ -3,6 +3,7 @@ package com.JJP.restapiserver.service.member;
 import com.JJP.restapiserver.domain.dto.member.response.AlertResponseDto;
 import com.JJP.restapiserver.domain.entity.member.Alert;
 import com.JJP.restapiserver.repository.member.AlertRepository;
+import com.JJP.restapiserver.repository.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +18,7 @@ public class AlertServiceImpl implements AlertService {
 
     private final AlertRepository alertRepository;
 
+    private final MemberRepository memberRepository;
     @Override
     public List<AlertResponseDto> getRecentAlertList(Long member_id) {
         List<Alert> alertList = alertRepository.findTop6ByReceiver_idOrderByCreatedDateDesc(member_id);
@@ -77,5 +79,29 @@ public class AlertServiceImpl implements AlertService {
             }
         }
         return alertResponseDtoList;
+    }
+
+    @Override
+    public AlertResponseDto saveAlert(Long senderId, Long receiverId, String type, Long index, String msg) {
+        Alert alert = Alert.builder()
+                .sender(memberRepository.getById(2L))
+                .receiver(memberRepository.getById(2L))
+                .message(msg)
+                .sequence(index)
+                .type(type)
+                .is_read(0)
+                .build();
+        alert = alertRepository.save(alert);
+        return AlertResponseDto.builder()
+                .id(alert.getId())
+                .senderId(alert.getSender().getId())
+                .senderName(alert.getSender().getNickname())
+                .receiverId(alert.getReceiver().getId())
+                .receiverName(alert.getReceiver().getNickname())
+                .type(alert.getType())
+                .index(alert.getSequence())
+                .message(alert.getMessage())
+                .createdTime(alert.getCreatedDate())
+                .build();
     }
 }

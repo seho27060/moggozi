@@ -13,7 +13,6 @@ import javax.persistence.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 public class Alert extends BaseTimeEntity {
     // "alertIndex, senderId,senderName, receiverId, receiverName, type, index, 메시지"
     @Id
@@ -43,5 +42,12 @@ public class Alert extends BaseTimeEntity {
 
     public void read(){
         this.is_read = 1;
+    }
+
+    @Override
+    public String toString(){
+        String str = id + " " + sender.getId() + " "+receiver.getId()
+                ;
+        return str;
     }
 }
