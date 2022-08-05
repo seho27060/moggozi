@@ -5,7 +5,6 @@ import { challengeDelete } from "../../lib/withTokenApi";
 const ChallengeDeleteBtn: React.FC = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-  console.log(Number(id));
   const deleteHandler = (event: React.MouseEvent) => {
     event.preventDefault();
     const isChk = window.confirm("정말 삭제하시겠습니까?");

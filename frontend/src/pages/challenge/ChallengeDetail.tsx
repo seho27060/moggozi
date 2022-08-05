@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import ChallengeDeleteBtn from "../../components/challenge/ChallengeDeleteBtn";
@@ -16,6 +16,8 @@ const ChallengeDetail: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [loadedChallenge, setLoadedChallenge] =
     useState<ChallengeDetailState>();
+  const dispatch = useDispatch();
+
   useEffect(() => {
     setIsLoading(true);
     if (id) {
@@ -29,7 +31,6 @@ const ChallengeDetail: React.FC = () => {
             setIsLoading(false);
             setLoadedChallenge(challenge);
           })
-          // console.log(res)
           .catch((err) => {
             console.log(err);
             setIsLoading(false);
@@ -44,14 +45,14 @@ const ChallengeDetail: React.FC = () => {
             setIsLoading(false);
             setLoadedChallenge(challenge);
           })
-          // console.log(res)
           .catch((err) => {
             console.log(err);
             setIsLoading(false);
           });
       }
     }
-  }, [id, isLoggedIn]);
+  }, [id, isLoggedIn, dispatch]);
+
   return (
     <div>
       ChallengeDetail
@@ -77,12 +78,16 @@ const ChallengeDetail: React.FC = () => {
           <HobbyList hobbies={loadedChallenge!.hobbyList} />
           <p>스테이지</p>
           <StageList stages={loadedChallenge!.stageList} />
+
+          <Link to={`/stage/${id}`}>
+            <button>스테이지 편집</button>
+          </Link>
+          <Link to={`/challenge/${id}/update`} state={loadedChallenge}>
+            <button>챌린지 수정</button>
+          </Link>
+          {id && <ChallengeDeleteBtn />}
         </div>
       )}
-      <Link to={`/challenge/${id}/update`} state={loadedChallenge}>
-        <button>챌린지 수정</button>
-      </Link>
-      {id && <ChallengeDeleteBtn />}
     </div>
   );
 };

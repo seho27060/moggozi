@@ -1,29 +1,37 @@
 import React, { useRef } from "react";
+import { useDispatch } from "react-redux";
+import { useParams } from "react-router-dom";
+import { fetchStages, stageAdd } from "../../lib/withTokenApi";
+import { fetchStage } from "../../store/stage";
 
-function StageForm() {
+const StageForm: React.FC = () => {
+  const dispatch = useDispatch();
   const nameInputRef = useRef<HTMLInputElement>(null);
-  const periodInputRef = useRef<HTMLInputElement>(null);
   const contentInputRef = useRef<HTMLTextAreaElement>(null);
   const imgInputRef = useRef<HTMLInputElement>(null);
-  const orderInputRef = useRef<HTMLInputElement>(null);
-
+  const { challengeId } = useParams();
   function stageSubmitHandler(event: React.FormEvent) {
     event.preventDefault();
-
-    const enteredName = nameInputRef.current!.value;
-    const enteredPeriod = periodInputRef.current!.value;
-    const enteredContent = contentInputRef.current!.value;
-    const enteredStageImg = imgInputRef.current!.value;
-    const enteredOrder = orderInputRef.current!.value;
-
     const stageData = {
-      name: enteredName,
-      period: enteredPeriod,
-      content: enteredContent,
-      stage_img: enteredStageImg,
-      order: enteredOrder,
+      name: nameInputRef.current!.value,
+      content: contentInputRef.current!.value,
+      img: imgInputRef.current!.value,
     };
-    console.log(stageData);
+    stageAdd(stageData, Number(challengeId!))
+      .then((res) => {
+        alert("스테이지 생성이 완료되었습니다.");
+        fetchStages(Number(challengeId!))
+          .then((res) => {
+            console.log(res);
+            dispatch(fetchStage(res));
+          })
+          .catch((err) => {
+            alert(err.response);
+          });
+      })
+      .catch((err) => {
+        alert(err.response);
+      });
   }
   return (
     <div>
@@ -35,20 +43,12 @@ function StageForm() {
             <input type="text" required id="name" ref={nameInputRef} />
           </div>
           <div>
-            <label htmlFor="period">period :</label>
-            <input type="text" required id="period" ref={periodInputRef} />
-          </div>
-          <div>
             <label htmlFor="content">content :</label>
             <textarea required id="content" ref={contentInputRef} />
           </div>
           <div>
-            <label htmlFor="stage_img">stage_img :</label>
-            <input type="text" required id="stage_img" ref={imgInputRef} />
-          </div>
-          <div>
-            <label htmlFor="order">order :</label>
-            <input type="text" required id="order" ref={orderInputRef} />
+            <label htmlFor="img">img :</label>
+            <input type="text" required id="img" ref={imgInputRef} />
           </div>
           <button type="button" onClick={stageSubmitHandler}>
             Register
@@ -57,5 +57,5 @@ function StageForm() {
       </div>
     </div>
   );
-}
+};
 export default StageForm;
