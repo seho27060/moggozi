@@ -1,7 +1,11 @@
 import { FormEvent, useRef } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "../store/store";
 
 const WebsocketPage = () => {
   const messageRef = useRef<HTMLInputElement>(null);
+  const userIdRef = useRef<HTMLInputElement>(null);
+  const userId = useSelector((state: RootState) => state.auth.userInfo.id);
 
   // 웹소켓
   function onClose(evt: any) {
@@ -14,18 +18,19 @@ const WebsocketPage = () => {
   function onSend() {
     //senderId,senderName, receiverId, receiverName, type, index
     var jsonSend = {
-      senderId: "36",
+      senderId: userId?.toString(),
       senderName: "세호팍",
-      receiverId: "36",
+      receiverId: "",
       receiverName: "성민초",
       type: "challenge",
       index: "1",
       message: "",
     };
     jsonSend.message = messageRef.current!.value;
+    jsonSend.receiverId = userIdRef.current!.value;
     wsocket?.send(JSON.stringify(jsonSend));
 
-    console.log("send", messageRef.current!.value);
+    console.log("send to",userIdRef.current?.value,"message :", messageRef.current!.value);
     messageRef.current!.value = "";
   }
   const messageSendHandler = (event: FormEvent) => {
@@ -47,6 +52,8 @@ const WebsocketPage = () => {
       <h1>WebSocket TEST</h1>
       <button onClick={onOpen}>open</button>
       <form>
+        <label htmlFor="userId">userId :</label>
+        <input type="text" id="userId" ref={userIdRef} />
         <label htmlFor="message">message : </label>
         <input type="text" id="message" ref={messageRef} />
         <button onClick={messageSendHandler}>send</button>

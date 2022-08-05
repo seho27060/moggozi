@@ -42,7 +42,7 @@ export const commentSlice = createSlice({
       state.comments = [...state.comments!, action.payload];
     },
     commentModify: (state: CommentListState, action) => {
-      console.log("commentRemove", action);
+      console.log("commentModify", action);
       //0(숨김), 1(활성), 2(삭제)
       const commentsModified = state.comments!.filter((comment)=>(comment.id !== action.payload.id))
       state.comments = [...commentsModified,action.payload]
@@ -55,5 +55,5 @@ export const commentSlice = createSlice({
   },
 });
 
-export const { commentSet,commentRegister,commentModify } = commentSlice.actions;
+export const { commentSet,commentRegister,commentModify,commentRemove } = commentSlice.actions;
 export default commentSlice.reducer;

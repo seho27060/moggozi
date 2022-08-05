@@ -29,6 +29,7 @@ const CommentForm: React.FC<{
       .catch((err) => {
         alert(`comment register err ${err}`);
       });
+      enteredText.current!.value = ""
   };
 
   return (

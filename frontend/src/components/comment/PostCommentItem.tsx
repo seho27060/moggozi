@@ -25,10 +25,10 @@ const PostCommentItem: React.FC<{
     <div style={{ border: "solid", margin: "1rem", padding: "1rem" }}>
       {/* 댓글내용과 해당 댓글의 대댓글 출력. */}
       {/* 사용자이미지, img태그에 null값이 못들어감 수정필요 */}
-      <p>
+      <div>
         작성자 : {comment.writer?.nickname}
-        <CommentModifyBtn comment={comment} />
-      </p>
+        <CommentModifyBtn comment={comment} postId={postId}/>
+      </div>
       <div>
         <div>{comment.text}</div>
         <div>{comment.modifiedTime?.toString()}</div>
