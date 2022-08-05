@@ -57,6 +57,16 @@ spring:
       mail.smtp.auth: true
       mail.smtp.ssl.enable: true
 
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 3MB
+
+
+properties:
+  profile: ../img/profile/
+
+
 #  mvc:
 #    pathmatch:
 #      matching-strategy: ant_path_matcher
