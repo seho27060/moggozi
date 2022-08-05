@@ -5,10 +5,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.JJP.restapiserver.domain.dto.member.response.AlertResponseDto;
+import com.JJP.restapiserver.domain.entity.member.Alert;
 import com.JJP.restapiserver.domain.entity.member.Member;
+import com.JJP.restapiserver.repository.AlertRepository;
+import com.JJP.restapiserver.repository.member.MemberRepository;
 import com.JJP.restapiserver.service.member.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
+import org.json.JSONObject;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
@@ -21,6 +26,10 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
 public class EchoHandler extends TextWebSocketHandler {
 
     private final MemberService memberService;
+
+    private final MemberRepository memberRepository;
+
+    private final AlertRepository alertRepository;
 //    public EchoHandler(){};
     //로그인 한 전체
     List<WebSocketSession> sessions = new ArrayList<WebSocketSession>();
@@ -46,22 +55,26 @@ public class EchoHandler extends TextWebSocketHandler {
 		}
 
         System.out.println("메세지 받았음!!!");
-        // 메세지가 어떤 형식으로 오느냐
-        // "senderId,senderName, receiverId, receiverName, type, index"
-        String msg = message.getPayload();
-        System.out.println(msg);
-        if(StringUtils.isNotEmpty(msg)) {
-            String str = msg.substring(1, msg.length());
-            str = msg.substring(0, msg.length()-1);
-            String[] strs = msg.split(",");
-            if(strs != null && strs.length == 5) {
-                Long senderId = Long.parseLong(strs[0]);
-                String senderName = strs[1];
-                Long receiverId = Long.parseLong(strs[2]);
-                String receiverName = strs[3];
-                String type = strs[4];
-                Long index = Long.parseLong(strs[5]);
 
+        String strJson = message.getPayload();
+        System.out.println(strJson);
+
+
+        JSONObject jsonObj = new JSONObject(strJson);
+
+        // "alertIndex, senderId,senderName, receiverId, receiverName, type, index, 메시지"
+        if(StringUtils.isNotEmpty(strJson)) {
+            Long senderId = Long.parseLong(jsonObj.getString("serderId"));
+            String senderName = jsonObj.getString("serderName");
+            Long receiverId = Long.parseLong(jsonObj.getString("recieverId"));
+            String receiverName = jsonObj.getString("recieverName");
+            String type = jsonObj.getString("type");
+            Long index = Long.parseLong(jsonObj.getString("index"));
+
+            for (WebSocketSession sess : sessions) {
+                sess.sendMessage(new TextMessage( message.getPayload()));
+            }
+            if(receiverId != null) {
                 // 알림을 받아야 하는 사람이 로그인 해서 있다면
                 // userSessionMap에서 그 값을 찾아봐야 함.
                 WebSocketSession receiver = userSessionsMap.get(receiverId);
@@ -74,8 +87,11 @@ public class EchoHandler extends TextWebSocketHandler {
                     // 알림 전송 - B
                     // 알림의 내용물이 무엇이냐 ->  "senderId,senderName, receiverId, receiverName, 게시물 type, 게시물의 index"
                     // 메세지 처리 -> F
-                    //
-                    TextMessage tmpMsg = new TextMessage(senderName + "님이 챌린지에 좋아요를 눌렀습니다.");
+                    String msg = senderName + "님이 등록하신 챌린지에 좋아요를 눌렀습니다.";
+                    // 알림 저장
+                    AlertResponseDto alertResponseDto = saveAlarm(senderId, receiverId, type, index, msg);
+
+                    TextMessage tmpMsg = new TextMessage(alertResponseDto.toString());
                     receiver.sendMessage(tmpMsg);
 
                 }else if(type.equals("post") && receiver != null) {
@@ -121,5 +137,26 @@ public class EchoHandler extends TextWebSocketHandler {
         } else {
             return loginUser;
         }
+    }
+
+    private AlertResponseDto saveAlarm(Long senderId, Long receiverId, String type, Long index, String msg){
+        Alert alert = Alert.builder()
+                .sender(memberRepository.getById(senderId))
+                .receiver(memberRepository.getById(receiverId))
+                .message(msg)
+                .index(index)
+                .type(type)
+                .build();
+        alert = alertRepository.save(alert);
+        return AlertResponseDto.builder()
+                .id(alert.getId())
+                .senderId(alert.getSender().getId())
+                .senderName(alert.getSender().getNickname())
+                .receiverId(alert.getReceiver().getId())
+                .receiverName(alert.getReceiver().getNickname())
+                .type(alert.getType())
+                .index(alert.getIndex())
+                .message(alert.getMessage())
+                .build();
     }
 }

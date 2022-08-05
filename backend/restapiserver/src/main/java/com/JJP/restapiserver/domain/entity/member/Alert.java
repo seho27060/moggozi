@@ -2,7 +2,10 @@ package com.JJP.restapiserver.domain.entity.member;
 
 import com.JJP.restapiserver.domain.entity.BaseTimeEntity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
@@ -10,29 +13,33 @@ import javax.persistence.*;
 // BaseTimeEntity로 알림확인일시를 잘 가공해주면 좋을 듯!
 @Getter
 @Entity
+@Builder
 public class Alert extends BaseTimeEntity {
+    // "alertIndex, senderId,senderName, receiverId, receiverName, type, index, 메시지"
+
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
 
     // 멤버와 다대일 양방향 관계
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "caller_id")
+    @JoinColumn(name = "sender_id")
     @JsonBackReference
-    private Member caller;
+    private Member sender;
 
+//    private String senderName;
     // 멤버와 다대일 양방향 관계
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "callee_id")
+    @JoinColumn(name = "receiver_id")
     @JsonBackReference
-    private Member callee;
+    private Member receiver;
 
-    private String alert_type;
+//    private String receiverName;
 
-    private int alert_post_id;
+    private String type;
 
-    @Column(length = 20)
-    private String alert_message;
+    private Long index;
 
+    private String message;
 
 }
