@@ -35,6 +35,8 @@ public class ChallengeResponseDto {
 
     private String description;
 
+    private boolean isLiked;
+
     public ChallengeResponseDto(Challenge challenge){
         this.id = challenge.getId();
         this.writer = new Writer(challenge.getMember().getId(), challenge.getMember().getFullname());
@@ -64,5 +66,6 @@ public class ChallengeResponseDto {
         this.description = challenge.getDescription();
         this.createdTime = challenge.getCreatedDate();
         this.modifiedTime = challenge.getModifiedDate();
+        this.isLiked = false;
     }
 }
