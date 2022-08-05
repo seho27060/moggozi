@@ -7,14 +7,12 @@ import java.util.Map;
 
 import com.JJP.restapiserver.domain.dto.member.response.AlertResponseDto;
 import com.JJP.restapiserver.domain.entity.member.Alert;
-import com.JJP.restapiserver.domain.entity.member.Member;
-import com.JJP.restapiserver.repository.AlertRepository;
+import com.JJP.restapiserver.repository.member.AlertRepository;
 import com.JJP.restapiserver.repository.member.MemberRepository;
 import com.JJP.restapiserver.service.member.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONObject;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
@@ -146,6 +144,7 @@ public class EchoHandler extends TextWebSocketHandler {
                 .message(msg)
                 .sequence(index)
                 .type(type)
+                .check(0)
                 .build();
         alert = alertRepository.save(alert);
         return AlertResponseDto.builder()
