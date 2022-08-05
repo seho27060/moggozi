@@ -33,27 +33,26 @@ public class Member {
     private Long id;
 
     // username은 email이다. - 정호진
-    @Column(nullable = false, length = 30, unique= true)
+    @Column(nullable = false, length = 100, unique= true)
     private String username; // 사용자의 아이디: email
 
     // 가입하는 사람의 성+이름이 합쳐진 이름이다. - 정호진
-    @Column(nullable = false, length =  20)
+    @Column(nullable = false, length =  50)
     private String fullname; // 사용자의 이름: last name + first name - 정호진
 
     // 비밀번호 - 정호진
-    @Column(nullable = false, length = 100)
+    @Column(nullable = false, length = 300)
     private String password; // BCrypt에 의해 Encoding되어 저장된다.
 
     // 가입자의 닉네임 - 정호진
-    @Column(nullable = false, length = 10, unique= true)
+    @Column(nullable = false, length = 30, unique= true)
     private String nickname;
 
     // 한 줄 소개 - 정호진
-    @Column(length = 100)
+    @Column(length = 300)
     private String introduce;
 
     // 프로필 이미지 - 정호진
-    @Column(length = 300) /** 크기 변경 예정 **/
     private String user_img;
 
     // 마이페이지 공개 여부 - 0: false, 1: true - 정호진

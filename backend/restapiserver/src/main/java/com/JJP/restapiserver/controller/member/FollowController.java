@@ -2,12 +2,14 @@ package com.JJP.restapiserver.controller.member;
 
 import com.JJP.restapiserver.security.JwtUtils;
 import com.JJP.restapiserver.service.member.FollowService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
+@Tag(name = "FollowController", description = "Followed(조회하는 유저를 팔로우)/Following API(조회하는 유저가 팔로우)")
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/user")
