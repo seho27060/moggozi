@@ -6,10 +6,12 @@ import com.JJP.restapiserver.domain.dto.tag.TagResponseDto;
 import com.JJP.restapiserver.domain.entity.Tag.ChallengeTag;
 import com.JJP.restapiserver.domain.entity.Tag.Tag;
 import com.JJP.restapiserver.domain.entity.challenge.Challenge;
+import com.JJP.restapiserver.domain.entity.challenge.ChallengeLike;
 import com.JJP.restapiserver.domain.entity.challenge.JoinedChallenge;
 import com.JJP.restapiserver.domain.entity.member.Member;
 import com.JJP.restapiserver.repository.Tag.ChallengeTagRepository;
 import com.JJP.restapiserver.repository.Tag.TagRepository;
+import com.JJP.restapiserver.repository.challenge.ChallengeLikeRepository;
 import com.JJP.restapiserver.repository.challenge.ChallengeRepository;
 import com.JJP.restapiserver.repository.challenge.JoinedChallengeRepository;
 import com.JJP.restapiserver.repository.member.MemberRepository;
@@ -37,6 +39,7 @@ public class ChallengeServiceImpl implements ChallengeService{
     private final TagRepository tagRepository;
     private final ChallengeTagRepository challengeTagRepository;
 
+    private final ChallengeLikeRepository challengeLikeRepository;
 
     @Override
     public List<ChallengeListResponseDto> getChallengeListByHobby(String hobby, Long member_id) {
@@ -217,6 +220,11 @@ public class ChallengeServiceImpl implements ChallengeService{
         {
             Challenge challenge = challengeList.get(i);
             ChallengeResponseDto challengeResponseDto = new ChallengeResponseDto(challenge);
+            Optional<ChallengeLike> challengeLike = challengeLikeRepository.findByMember_idAndChallenge_id(
+                    member_id, challenge.getId()
+            );
+            if(challengeLike.isPresent())
+                challengeResponseDto.setLiked(true);
             List<String> temp = new ArrayList<>();
             for(int j = 0; j < challenge.getChallengeTagList().size(); j++)
             {
