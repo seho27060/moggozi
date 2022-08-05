@@ -2,10 +2,7 @@ package com.JJP.restapiserver.domain.entity.member;
 
 import com.JJP.restapiserver.domain.entity.BaseTimeEntity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -16,6 +13,7 @@ import javax.persistence.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class Alert extends BaseTimeEntity {
     // "alertIndex, senderId,senderName, receiverId, receiverName, type, index, 메시지"
     @Id

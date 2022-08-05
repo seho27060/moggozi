@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONObject;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
@@ -127,7 +128,7 @@ public class EchoHandler extends TextWebSocketHandler {
     //연결 해제될때
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
-        //System.out.println("afterConnectionClosed " + session + ", " + status);
+        System.out.println("연결이 끊겼음");
         userSessionsMap.remove(session.getId());
         sessions.remove(session);
     }
@@ -144,6 +145,7 @@ public class EchoHandler extends TextWebSocketHandler {
         }
     }
 
+    @Transactional
     private AlertResponseDto saveAlarm(Long senderId, Long receiverId, String type, Long index, String msg){
         Alert alert = Alert.builder()
                 .sender(memberRepository.getById(senderId))
@@ -153,7 +155,11 @@ public class EchoHandler extends TextWebSocketHandler {
                 .type(type)
                 .is_read(0)
                 .build();
+        System.out.println("실제로 알림이 만들어졌나?");
+        System.out.println(alert.toString());
         alert = alertRepository.save(alert);
+        System.out.println(alert.getClass());
+        System.out.println(alert.getId());
         return AlertResponseDto.builder()
                 .id(alert.getId())
                 .senderId(alert.getSender().getId())
