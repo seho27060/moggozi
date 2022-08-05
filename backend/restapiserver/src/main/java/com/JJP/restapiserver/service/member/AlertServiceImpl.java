@@ -32,7 +32,7 @@ public class AlertServiceImpl implements AlertService {
                         .type(alert.getType())
                         .index(alert.getSequence())
                         .message(alert.getMessage())
-                        .check(alert.getCheck())
+                        .check(alert.getRead())
                         .createdTime(alert.getCreatedDate())
                         .build());
             }
@@ -51,7 +51,7 @@ public class AlertServiceImpl implements AlertService {
     public void readAllAlert(Long member_id) {
         List<Alert> alertList = alertRepository.findByReceiver_id(member_id);
         for(Alert alert : alertList){
-            if(alert.getCheck() == 0)
+            if(alert.getRead() == 0)
                 alert.read();
         }
     }
@@ -71,7 +71,7 @@ public class AlertServiceImpl implements AlertService {
                         .type(alert.getType())
                         .index(alert.getSequence())
                         .message(alert.getMessage())
-                        .check(alert.getCheck())
+                        .check(alert.getRead())
                         .createdTime(alert.getCreatedDate())
                         .build());
             }
