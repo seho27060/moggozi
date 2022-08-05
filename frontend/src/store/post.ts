@@ -1,3 +1,4 @@
+import { createSlice } from "@reduxjs/toolkit";
 import { UserInfo } from "./auth";
 
 export interface PostState {
@@ -28,8 +29,38 @@ export interface PostTest {
   id: number | null;
   title: string | null;
   content: string | null;
-  created_date: Date | null;
-  modified_date: Date | null;
+  createdTime: Date | null;
+  modifiedTime: Date | null;
   postImg: string | null;
   postLikeList: like[]|null,
+  writer : UserInfo | null
 }
+const initialPostState:PostTest={
+  id: null,
+  title:  null,
+  content: null,
+  createdTime: null,
+  modifiedTime: null,
+  postImg: null,
+  postLikeList: null,
+  writer : null,
+}
+
+export const postSlice = createSlice({
+  name: "post",
+  initialState: initialPostState,
+  reducers: {
+    setModalPostState:(state:PostTest,action) => {
+      state.id = action.payload.id
+      state.title = action.payload.title
+      state.content = action.payload.content
+      state.createdTime = action.payload.createdTime
+      state.modifiedTime = action.payload.modifiedTime
+      state.postImg = action.payload.postImg
+      state.postLikeList = action.payload.postLikeList
+      state.writer = action.payload.writer
+    }
+  },
+}); 
+export const {setModalPostState} = postSlice.actions
+export default postSlice.reducer;
