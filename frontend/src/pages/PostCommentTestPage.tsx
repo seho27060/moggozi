@@ -7,16 +7,14 @@ import { Comment } from "../store/comment";
 import { PostTest } from "../store/post";
 
 const PostCommentTestPage = () => {
-  const [postState, setPostState] = useState<PostTest[]|null>(null);
+  const [postState, setPostState] = useState<PostTest[] | null>(null);
   const stageIdRef = useRef<HTMLInputElement>(null);
 
-  const [commentState, setCommentState] = useState<Comment|null>(null);
+  const [commentState, setCommentState] = useState<Comment | null>(null);
   const postIdRef = useRef<HTMLInputElement>(null);
 
   const [modalOpen, setModalOpen] = useState(false);
-  const [modalPostState, setModalPostState] = useState<PostTest | null>(
-    null
-  );
+  const [modalPostState, setModalPostState] = useState<PostTest | null>(null);
   const [modalCommentsState, setModalCommentsState] = useState<PostTest | null>(
     null
   );
@@ -28,7 +26,7 @@ const PostCommentTestPage = () => {
     );
     postRead(Number(stageIdRef.current?.value))
       .then((res) => {
-        console.log("포스팅 불러오기 성공");
+        console.log("포스팅 불러오기 성공", res);
         setPostState(res);
       })
       .catch((err) => {
@@ -38,14 +36,11 @@ const PostCommentTestPage = () => {
 
   const readPostComments = (event: FormEvent) => {
     event.preventDefault();
-    console.log(
-      postIdRef.current?.value,
-      "번 포스팅의 댓글들을 불러옵니다."
-    );
-    console.log(Number(postIdRef.current?.value))
+    console.log(postIdRef.current?.value, "번 포스팅의 댓글들을 불러옵니다.");
+    console.log(Number(postIdRef.current?.value));
     commentRead(Number(postIdRef.current?.value))
       .then((res) => {
-        console.log("댓글 불러오기 성공");
+        console.log("댓글 불러오기 성공", res);
         setCommentState(res);
       })
       .catch((err) => {
@@ -79,9 +74,12 @@ const PostCommentTestPage = () => {
           openModal={openModal}
         />
       )}
-      <Modal open={modalOpen} close={closeModal} header="Modal heading">
-        <PostDetailItem post={modalCommentsState!} />
-      </Modal>
+      {/* 일단 모달자체를 누르면 사라지게 onClick={closeModal}*/}
+      <div  style={{height:"200rem"}}>
+        <Modal open={modalOpen} close={closeModal} header="Modal heading">
+          <PostDetailItem post={modalPostState!} />
+        </Modal>
+      </div>
     </div>
   );
 };

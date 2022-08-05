@@ -8,8 +8,8 @@ export interface Comment {
   parentId: number | null;
   text: string | null;
   writer: UserInfo | null;
-  createdDate: Date | null;
-  modifiedDate: Date | null;
+  createdTime: Date | null;
+  modifiedTime: Date | null;
 }
 
 export interface CommentListState {
@@ -29,9 +29,14 @@ export const commentSlice = createSlice({
     },
     commentDelete: (state, action) => {
     },
-    commentUpdate: (state, action) => {},
+    commentUpdate: (state, action) => {
+
+    },
+    commentSet: (state,action) => {
+      state.comments = action.payload.comments
+    }
   },
 });
 
-export const {commentAdd, commentDelete, commentUpdate} = commentSlice.actions
+export const {commentAdd, commentDelete, commentUpdate,commentSet} = commentSlice.actions
 export default commentSlice.reducer;
