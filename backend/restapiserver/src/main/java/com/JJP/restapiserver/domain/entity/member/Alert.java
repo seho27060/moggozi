@@ -18,7 +18,6 @@ import javax.persistence.*;
 @AllArgsConstructor
 public class Alert extends BaseTimeEntity {
     // "alertIndex, senderId,senderName, receiverId, receiverName, type, index, 메시지"
-
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
@@ -36,11 +35,9 @@ public class Alert extends BaseTimeEntity {
     @JsonBackReference
     private Member receiver;
 
-//    private String receiverName;
-
     private String type;
 
-    private Long index;
+    private Long sequence;
 
     private String message;
 
