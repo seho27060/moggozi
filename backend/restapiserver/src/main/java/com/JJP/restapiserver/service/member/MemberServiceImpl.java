@@ -261,10 +261,11 @@ public class MemberServiceImpl implements MemberService {
      * @return ProfileResponse
      */
     @Override
-    public ProfileResponse getMemberProfile(Long userId) {
+    public ProfileResponse getMemberProfile(Long userId, Long loginId) {
         Member member = memberRepository.findById(userId).get();
         int followedCnt = followRepository.countByFollower(member.getId());
         int followingCnt = followRepository.countByFollowing(member.getId());
+        int followStatus = followRepository.existsByFrom_memberAndTo_member(loginId, userId) >= 1 ? 1 : 0; // 1: follow, 0: unfollow
 
         return ProfileResponse.builder()
                 .id(member.getId())
@@ -274,6 +275,7 @@ public class MemberServiceImpl implements MemberService {
                 .isPrivate(member.getIs_private())
                 .followedCnt(followedCnt)
                 .followingCnt(followingCnt)
+                .isFollowing(followStatus)
                 .build();
     }
 

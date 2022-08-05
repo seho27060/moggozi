@@ -25,7 +25,7 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 @Tag(name = "MemberController", description = "사용자 API")
-@CrossOrigin(origins = "*", maxAge = 3600)
+//@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/user")
 public class MemberController {
@@ -197,7 +197,8 @@ public class MemberController {
     }
 
 
-/*    @Operation(summary = "타유저 정보 획득", description = "타 유저의 정보를 알고 싶을 경우 'info/' url 뒤 타 유저의 userId를 통해 사용자 정보를 조회할 수 있습니다. ")
+
+ /*   @Operation(summary = "타유저 정보 획득", description = "타 유저의 정보를 알고 싶을 경우 'info/' url 뒤 타 유저의 userId를 통해 사용자 정보를 조회할 수 있습니다. ")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = Following.class))),
             @ApiResponse(responseCode = "400", description = "BAD REQUEST", content = @Content(schema = @Schema(implementation = MessageResponse.class))),
@@ -206,8 +207,9 @@ public class MemberController {
     })
 
     @GetMapping("/profile/{userId}")
-    public ResponseEntity<?> getUserInfo(@PathVariable Long userId) {
-        return ResponseEntity.ok(memberService.getMemberProfile(userId));
+    public ResponseEntity<?> getUserInfo(@PathVariable Long userId, HttpServletRequest request) {
+
+        return ResponseEntity.ok(memberService.getMemberProfile(userId, jwtUtils.getUserIdFromJwtToken(request.getHeader("Authorization"))));
     }*/
 }
 
