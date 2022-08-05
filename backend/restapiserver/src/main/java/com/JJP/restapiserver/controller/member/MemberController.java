@@ -17,6 +17,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -49,13 +50,15 @@ public class MemberController {
             @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR")
     })
     @PostMapping("/login")
-    public ResponseEntity<?> login(@Valid @RequestBody LoginRequest loginRequest, HttpSession session) { // 아이디, 비밀번호를 body에 담아 전송
+    public ResponseEntity<?> login(@Valid @RequestBody LoginRequest loginRequest, HttpServletRequest request) { // 아이디, 비밀번호를 body에 담아 전송
 
+        HttpSession session = request.getSession();
         ResponseEntity responseEntity = memberService.login(loginRequest);
         JwtResponse jwtResponse = (JwtResponse)(responseEntity.getBody());
         Long memberId = jwtResponse.getId();
-//        System.out.println("나는 말이야 " + memberId);
+        System.out.println("나는 말이야 " + memberId);
         session.setAttribute("memberId", memberId);
+        System.out.println("내가 세션에 넣었다고요 " + (Long)session.getAttribute("memberId"));
         return responseEntity;
     }
 
