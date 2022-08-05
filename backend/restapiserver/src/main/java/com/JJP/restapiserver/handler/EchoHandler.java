@@ -9,6 +9,7 @@ import com.JJP.restapiserver.domain.dto.member.response.AlertResponseDto;
 import com.JJP.restapiserver.domain.entity.member.Alert;
 import com.JJP.restapiserver.repository.member.AlertRepository;
 import com.JJP.restapiserver.repository.member.MemberRepository;
+import com.JJP.restapiserver.service.member.AlertService;
 import com.JJP.restapiserver.service.member.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
@@ -29,6 +30,8 @@ public class EchoHandler extends TextWebSocketHandler {
     private final MemberRepository memberRepository;
 
     private final AlertRepository alertRepository;
+
+    private final AlertService alertService;
 //    public EchoHandler(){};
     //로그인 한 전체
     List<WebSocketSession> sessions = new ArrayList<WebSocketSession>();
@@ -79,33 +82,38 @@ public class EchoHandler extends TextWebSocketHandler {
             System.out.println(type);
             System.out.println(index);
 
-            if(receiverId != null) {
+            if(true) {
                 // 알림을 받아야 하는 사람이 로그인 해서 있다면
                 // userSessionMap에서 그 값을 찾아봐야 함.
-                WebSocketSession receiver = userSessionsMap.get(receiverId);
+//                WebSocketSession receiver = userSessionsMap.get(receiverId);
+                WebSocketSession sender = userSessionsMap.get(-1L);
 
-                if(receiver == null){
-                    System.out.println("수신자가 로그아웃된 상태");
-                }
+//                if(receiver == null){
+//                    System.out.println("수신자가 로그아웃된 상태");
+//                }
+                System.out.println(sender);
+                String msg = senderName + "님이 등록하신 챌린지에 좋아요를 눌렀습니다.";
+                sender.sendMessage(new TextMessage(msg));
                 // 알람이 챌린지에서부터 온 것이고 == 챌린지 좋아요 발생
                 // 수신자가 현재 로그인한 상태라면
 //                "<a type='external' href='/mentor/menteeboard/menteeboardView?seq="+seq+"&pg=1'>" + seq + "</a> 번 게시글에 댓글을 남겼습니다.
-                if(type.equals("challenge") && receiver != null) {
+                if(type.equals("challenge") && sender != null) {
                     System.out.println("여기까진 오나?");
                     // 알림 저장 - B
                     // 알림 전송 - B
                     // 알림의 내용물이 무엇이냐 ->  "senderId,senderName, receiverId, receiverName, 게시물 type, 게시물의 index"
                     // 메세지 처리 -> F
-                    String msg = senderName + "님이 등록하신 챌린지에 좋아요를 눌렀습니다.";
+//                    String msg = senderName + "님이 등록하신 챌린지에 좋아요를 눌렀습니다.";
                     // 알림 저장
                     AlertResponseDto alertResponseDto = saveAlarm(senderId, receiverId, type, index, msg);
 
                     TextMessage tmpMsg = new TextMessage(alertResponseDto.toString());
-                    receiver.sendMessage(tmpMsg);
+//                    receiver.sendMessage(tmpMsg);
+                    sender.sendMessage(tmpMsg);
 
-                }else if(type.equals("post") && receiver != null) {
-                    TextMessage tmpMsg = new TextMessage(senderName + "님이 포스트에 좋아요를 눌렀습니다.");
-                    receiver.sendMessage(tmpMsg);
+//                }else if(type.equals("post") && receiver != null) {
+//                    TextMessage tmpMsg = new TextMessage(senderName + "님이 포스트에 좋아요를 눌렀습니다.");
+//                    receiver.sendMessage(tmpMsg);
                 }
             }
         }
@@ -131,31 +139,7 @@ public class EchoHandler extends TextWebSocketHandler {
         }
     }
 
-    @Transactional
     private AlertResponseDto saveAlarm(Long senderId, Long receiverId, String type, Long index, String msg){
-        Alert alert = Alert.builder()
-                .sender(memberRepository.getById(senderId))
-                .receiver(memberRepository.getById(receiverId))
-                .message(msg)
-                .sequence(index)
-                .type(type)
-                .is_read(0)
-                .build();
-        System.out.println("실제로 알림이 만들어졌나?");
-        System.out.println(alert.toString());
-        alert = alertRepository.save(alert);
-        System.out.println(alert.getClass());
-        System.out.println(alert.getId());
-        return AlertResponseDto.builder()
-                .id(alert.getId())
-                .senderId(alert.getSender().getId())
-                .senderName(alert.getSender().getNickname())
-                .receiverId(alert.getReceiver().getId())
-                .receiverName(alert.getReceiver().getNickname())
-                .type(alert.getType())
-                .index(alert.getSequence())
-                .message(alert.getMessage())
-                .createdTime(alert.getCreatedDate())
-                .build();
+        return alertService.saveAlert(senderId, receiverId, type, index, msg);
     }
 }
