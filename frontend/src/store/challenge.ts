@@ -75,7 +75,7 @@ export const hobbySlice = createSlice({
     },
     fetchHobby(state, action) {
       state.hobbyList = action.payload;
-      state.hobbyCnt = state.hobbyCnt = state.hobbyList.length;
+      state.hobbyCnt = state.hobbyList.length;
     },
   },
 });

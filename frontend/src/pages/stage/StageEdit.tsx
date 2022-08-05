@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
+import StageAddBtn from "../../components/stage/StageAddBtn";
 import StageDeleteBtn from "../../components/stage/StageDeleteBtn";
 import StageItem from "../../components/stage/StageItem";
 import StageUpdateBtn from "../../components/stage/StageUpdateBtn";
@@ -32,6 +33,7 @@ const StageEdit: React.FC = () => {
   return (
     <div>
       <h3>StageEdit</h3>
+      <StageAddBtn />
       {isLoading === true && (
         <section>
           <p>Loading...</p>

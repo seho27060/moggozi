@@ -1,7 +1,8 @@
 import { FormEvent, useRef } from "react";
 import { useDispatch } from "react-redux";
-import { stageUpdate } from "../../lib/withTokenApi";
-import { StageState, updateStage } from "../../store/stage";
+import { useParams } from "react-router-dom";
+import { fetchStages, stageUpdate } from "../../lib/withTokenApi";
+import { fetchStage, StageState } from "../../store/stage";
 
 // 수정하기가 글쓴이가 수정할 수 있도록 해야함.
 
@@ -9,7 +10,8 @@ const StageUpdateForm: React.FC<{ stage: StageState }> = ({ stage }) => {
   const dispatch = useDispatch();
   const contentInputRef = useRef<HTMLTextAreaElement>(null);
   const nameInputRef = useRef<HTMLInputElement>(null);
-  const stageImgInputRef = useRef<HTMLInputElement>(null);
+  const imgInputRef = useRef<HTMLInputElement>(null);
+  const { challengeId } = useParams();
 
   function stateUpdateHandler(event: FormEvent) {
     event.preventDefault();
@@ -18,13 +20,18 @@ const StageUpdateForm: React.FC<{ stage: StageState }> = ({ stage }) => {
       // estimatedDay: Number(estimateDayInputRef.current!.value),
       // estimatedTime: Number(estimateTimeInputRef.current!.value),
       content: contentInputRef.current!.value,
-      stageImg: stageImgInputRef.current!.value,
+      img: imgInputRef.current!.value,
     };
     stageUpdate(stageUpdateData, stage.id!) // DB 값 변경
       .then((res) => {
-        console.log(res);
         alert("스테이지 수정이 완료되었습니다.");
-        dispatch(updateStage(res)); // 리덕스 값 변경
+        fetchStages(Number(challengeId!))
+          .then((res) => {
+            dispatch(fetchStage(res));
+          })
+          .catch((err) => {
+            alert(err.response);
+          });
       })
       .catch((err) => {
         alert(err.response);
@@ -75,13 +82,13 @@ const StageUpdateForm: React.FC<{ stage: StageState }> = ({ stage }) => {
             />
           </div>
           <div>
-            <label htmlFor="stageImg">사진 첨부 :</label>
+            <label htmlFor="img">사진 첨부 :</label>
             <input
               type="text"
               required
-              id="stageImg"
-              defaultValue={stage.stageImg || ""}
-              ref={stageImgInputRef}
+              id="img"
+              defaultValue={stage.img || ""}
+              ref={imgInputRef}
             />
           </div>
           <button onClick={stateUpdateHandler}>submit</button>

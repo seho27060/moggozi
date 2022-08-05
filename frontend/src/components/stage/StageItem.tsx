@@ -13,7 +13,7 @@ const StageItem: React.FC<{
         스테이지 기간 : {stage.estimatedDay} : {stage.estimatedDay}
       </p> */}
       <p>스테이지 내용 : {stage.content}</p>
-      <img src={stage.stageImg} alt="img" />
+      <img src={stage.img} alt="img" />
     </div>
   );
 };

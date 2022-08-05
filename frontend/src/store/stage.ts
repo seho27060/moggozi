@@ -4,12 +4,11 @@ import { PostItemState } from "./post";
 export interface StageSaveState {
   name: string | null;
   content: string | null;
-  stageImg: string | undefined;
+  img: string | undefined;
 }
 
 export interface StageState extends StageSaveState {
   id: number | null;
-  challengeId: number | null;
   createDate: number | null;
   modifiedDate: number | null;
   postList: PostItemState[] | null;
@@ -22,23 +21,14 @@ export const stageSlice = createSlice({
   initialState: initialStagesState,
   reducers: {
     fetchStage(state, action) {
+      state = [];
       action.payload.map((stage: StageState) => {
-        return state.push(stage);
+        state.push(stage);
       });
-    },
-    addStage(state, action) {
-      state.push(action.payload);
-    },
-    deleteStage(state, action) {
-      state = state.filter((item) => action.payload !== item.id);
-    },
-    updateStage(state, action) {
-      const index = state.findIndex((stage) => stage.id === action.payload.id);
-      state[index] = action.payload;
+      return state;
     },
   },
 });
 
-export const { fetchStage, addStage, deleteStage, updateStage } =
-  stageSlice.actions;
+export const { fetchStage } = stageSlice.actions;
 export default stageSlice.reducer;
