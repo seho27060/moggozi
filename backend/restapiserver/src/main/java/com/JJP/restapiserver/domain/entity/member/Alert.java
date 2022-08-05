@@ -14,6 +14,8 @@ import javax.persistence.*;
 @Getter
 @Entity
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Alert extends BaseTimeEntity {
     // "alertIndex, senderId,senderName, receiverId, receiverName, type, index, 메시지"
 
