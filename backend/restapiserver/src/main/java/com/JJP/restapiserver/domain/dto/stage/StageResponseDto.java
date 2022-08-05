@@ -12,19 +12,19 @@ public class StageResponseDto {
     private Long challengeId;
     private String name;
     private String content;
-    private String stageImg;
+    private String img;
     private LocalDateTime createdDate;
     private LocalDateTime modifiedDate;
-    private Long postOrder;
+    private Long order;
 
     public StageResponseDto(Stage entity) {
         this.id = entity.getId();
         this.challengeId = entity.getChallenge().getId();
         this.name = entity.getName();
         this.content = entity.getContent();
-        this.stageImg = entity.getStage_img();
+        this.img = entity.getImg();
         this.createdDate = entity.getCreatedDate();
         this.modifiedDate = entity.getModifiedDate();
-        this.postOrder = entity.getPost_order();
+        this.order = entity.getStage_order();
     }
 }

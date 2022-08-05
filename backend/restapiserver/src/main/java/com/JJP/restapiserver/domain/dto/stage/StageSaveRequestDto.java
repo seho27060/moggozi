@@ -12,15 +12,13 @@ import lombok.NoArgsConstructor;
 public class StageSaveRequestDto {
     private String name;
     private String content;
-    private String stageImg;
-    private Long order;
+    private String img;
 
     @Builder
-    public StageSaveRequestDto(String name, String content, String stage_img, Long order){
+    public StageSaveRequestDto(String name, String content, String img){
         this.name = name;
         this.content = content;
-        this.stageImg = stage_img;
-        this.order = order;
+        this.img = img;
     }
 
     public Stage toEntity(Long challenge_id, ChallengeRepository challengeRepository){
@@ -28,8 +26,7 @@ public class StageSaveRequestDto {
         return Stage.builder()
                 .name(name)
                 .content(content)
-                .stage_img(stageImg)
-                .post_order(order)
+                .img(img)
                 .challenge(challenge)
                 .build();
     }

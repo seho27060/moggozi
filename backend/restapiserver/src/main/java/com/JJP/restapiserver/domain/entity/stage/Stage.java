@@ -20,7 +20,8 @@ public class Stage extends BaseTimeEntity {
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
 
-    private Long post_order;
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    private Long stage_order;
 
     // 챌린지와 다대일 양방향 관계
     @ManyToOne(fetch = FetchType.LAZY)
@@ -43,21 +44,21 @@ public class Stage extends BaseTimeEntity {
     private String content;
 
     @Column(length = 200)
-    private String stage_img;
+    private String img;
 
     @Builder
-    public Stage(Long id, Long post_order, Challenge challenge, String name, String content, String stage_img) {
+    public Stage(Long id, Long order, Challenge challenge, String name, String content, String img) {
         this.id = id;
-        this.post_order = post_order;
+        this.stage_order = order;
         this.challenge = challenge;
         this.name = name;
         this.content = content;
-        this.stage_img = stage_img;
+        this.img = img;
     }
 
-    public void update(String name, String content, String stage_img){
+    public void update(String name, String content, String img){
         this.name = name;
         this.content = content;
-        this.stage_img = stage_img;
+        this.img = img;
     }
 }
