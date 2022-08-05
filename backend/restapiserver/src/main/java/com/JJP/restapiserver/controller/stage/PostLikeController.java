@@ -1,7 +1,7 @@
 package com.JJP.restapiserver.controller.stage;
 
 import com.JJP.restapiserver.domain.dto.stage.PostLikeRequestDto;
-import com.JJP.restapiserver.service.stage.PostLikeService;
+import com.JJP.restapiserver.service.post.PostLikeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,9 +19,4 @@ public class PostLikeController {
         return postLikeService.like(postLikeRequestDto);
     }
 
-    @DeleteMapping("/unlike")
-    public ResponseEntity unlike(@RequestBody PostLikeRequestDto postLikeRequestDto)
-    {
-        return postLikeService.unlike(postLikeRequestDto);
-    }
 }
