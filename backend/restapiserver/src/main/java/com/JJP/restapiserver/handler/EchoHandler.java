@@ -48,9 +48,9 @@ public class EchoHandler extends TextWebSocketHandler {
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
 //		String senderEmail = getEmail(session);
         //모든 유저에게 보낸다 - 브로드 캐스팅
-		for (WebSocketSession sess : sessions) {
-			sess.sendMessage(new TextMessage( message.getPayload()));
-		}
+//		for (WebSocketSession sess : sessions) {
+//			sess.sendMessage(new TextMessage( message.getPayload()));
+//		}
 
         System.out.println("메세지 받았음!!!");
 
@@ -62,12 +62,19 @@ public class EchoHandler extends TextWebSocketHandler {
 
         // "alertIndex, senderId,senderName, receiverId, receiverName, type, index, 메시지"
         if(StringUtils.isNotEmpty(strJson)) {
-            Long senderId = Long.parseLong(jsonObj.getString("serderId"));
-            String senderName = jsonObj.getString("serderName");
-            Long receiverId = Long.parseLong(jsonObj.getString("recieverId"));
-            String receiverName = jsonObj.getString("recieverName");
+            Long senderId = Long.parseLong(jsonObj.getString("senderId"));
+            String senderName = jsonObj.getString("senderName");
+            Long receiverId = Long.parseLong(jsonObj.getString("receiverId"));
+            String receiverName = jsonObj.getString("receiverName");
             String type = jsonObj.getString("type");
             Long index = Long.parseLong(jsonObj.getString("index"));
+
+            System.out.println(senderId);
+            System.out.println(senderName);
+            System.out.println(receiverId);
+            System.out.println(receiverName);
+            System.out.println(type);
+            System.out.println(index);
 
             for (WebSocketSession sess : sessions) {
                 sess.sendMessage(new TextMessage( message.getPayload()));
