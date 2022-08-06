@@ -12,7 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Tag(name = "FileController", description = "파일업로드 API")
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/file")
+@RequestMapping("/file")
 public class FileController {
 
     private final FileService fileService;
