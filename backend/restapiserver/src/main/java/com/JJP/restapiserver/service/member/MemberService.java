@@ -20,6 +20,7 @@ public interface MemberService {
 
     ResponseEntity<?> getMyInfo(Long userId); // 회원정보 수정을 위한 정보 조회
 
+    ResponseEntity<?> searchMember(String keyword);
     ProfileResponse getMemberProfile(Long userId, Long loginId); // 사용자 프로필 정보
 
 }

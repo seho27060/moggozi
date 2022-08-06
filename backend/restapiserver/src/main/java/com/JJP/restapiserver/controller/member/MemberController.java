@@ -196,6 +196,19 @@ public class MemberController {
         return memberService.getMyInfo(user_id);
     }
 
+    @Operation(summary = "유저 조회", description = "Keyword를 이용하여 유저를 검색합니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = Following.class))),
+            @ApiResponse(responseCode = "400", description = "BAD REQUEST", content = @Content(schema = @Schema(implementation = MessageResponse.class))),
+            @ApiResponse(responseCode = "404", description = "NOT FOUND"),
+            @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR")
+    })
+    @GetMapping("/search/{keyword}")
+    public ResponseEntity<?> searchMember(@PathVariable("keyword") String keyword) {
+        // keyword를 이용하여 유저를 검색합니다.
+        return memberService.searchMember(keyword);
+    }
+
 
 
  /*   @Operation(summary = "타유저 정보 획득", description = "타 유저의 정보를 알고 싶을 경우 'info/' url 뒤 타 유저의 userId를 통해 사용자 정보를 조회할 수 있습니다. ")
