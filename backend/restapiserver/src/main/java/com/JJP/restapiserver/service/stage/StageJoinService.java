@@ -13,4 +13,6 @@ public interface StageJoinService {
     Long joinedStageNum(Long member_id);
 
     List<StageResponseDto> joinedStageList8(Long member_id);
+
+    int stateStage(Long member_id, Long stage_id);
 }

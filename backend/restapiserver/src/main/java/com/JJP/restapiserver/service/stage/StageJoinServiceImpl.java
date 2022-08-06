@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -68,5 +69,16 @@ public class StageJoinServiceImpl implements StageJoinService{
             }
         }
         return stageResponseDtoList;
+    }
+
+    @Override
+    public int stateStage(Long member_id, Long stage_id){
+        Optional<StageUser> entity = stageUserRepository.findByMember_idAndStage_id(member_id, stage_id);
+
+        if(entity.isEmpty()){
+            return 0;
+        }
+
+        return entity.get().getState();
     }
 }

@@ -32,7 +32,7 @@ public class StageJoinRequestDto {
                 .join_time(LocalDateTime.now())
                 .member(member_id)
                 .stage(stage_id)
-                .state(0)
+                .state(1)
                 .build();
     }
 }
