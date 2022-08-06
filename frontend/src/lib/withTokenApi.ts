@@ -1,11 +1,8 @@
 import axios from "axios";
 import { apiConfig } from "../config";
 import { ChallengeSaveState } from "../store/challenge";
-<<<<<<< HEAD
 import { CommentSend } from "../store/comment";
-=======
 import { StageSaveState } from "../store/stage";
->>>>>>> a6219d461f88c1a1f3800d87f53432fa8cf39843
 import { refresh, refreshErrorHandle } from "./refresh";
 
 const withTokenApi = axios.create({
