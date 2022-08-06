@@ -1,58 +1,66 @@
 import { FormEvent, useRef } from "react";
-// import SockJS from "sockjs-client";
-// import WebSocketProvider from "../lib/WebSocketProvider";
+import { useSelector } from "react-redux";
+import { RootState } from "../store/store";
 
 const WebsocketPage = () => {
-  const messageRef = useRef<HTMLInputElement>(null)
+  const messageRef = useRef<HTMLInputElement>(null);
+  const userIdRef = useRef<HTMLInputElement>(null);
+  const userId = useSelector((state: RootState) => state.auth.userInfo.id);
 
   // 웹소켓
   function onClose(evt: any) {
     alert("연결 끊김");
+    console.log(evt)
   }
-  function onOpen(evt:any) {
-    console.log("open");
-    wsocket?.send("open request from SEHO");
-  };
+  function onOpen(evt: any) {
+    console.log("open",evt);
+  }
+  function onError(evt:any) {
+    console.log("ERR",evt)
+  }
   // // 보내는 사람/ 받는사람/ 알림타입:포스팅좋아요,댓글..등등등
   function onSend() {
-    wsocket?.send(JSON.stringify(messageRef.current!.value))
+    //senderId,senderName, receiverId, receiverName, type, index
+    var jsonSend = {
+      senderId: userId?.toString(),
+      senderName: "세호팍",
+      receiverId: "",
+      receiverName: "성민초",
+      type: "challenge",
+      index: "1",
+      message: "",
+    };
+    jsonSend.message = messageRef.current!.value;
+    jsonSend.receiverId = userIdRef.current!.value;
+    wsocket?.send(JSON.stringify(jsonSend));
 
-    console.log('send',messageRef.current!.value)
+    console.log("send to",userIdRef.current?.value,"message :", messageRef.current!.value);
+    messageRef.current!.value = "";
   }
-  const messageSendHandler = (event:FormEvent) =>{
-    event.preventDefault()
-
-    onSend()
+  const messageSendHandler = (event: FormEvent) => {
+    event.preventDefault();
+    onSend();
+  };
+  function onMessage(evt: MessageEvent) {
+    console.log("form server :", evt);
+    console.log(JSON.parse(evt.data));
   }
-   var wsocket: WebSocket | null = null;
-  wsocket = new WebSocket("ws://i7c201.p.ssafy.io:8080/ws/notification");
+  var wsocket: WebSocket | null = null;
+  wsocket = new WebSocket("ws://i7c201.p.ssafy.io:8080/api/ws/notification");
   wsocket.onclose = onClose;
-  wsocket.onopen = onOpen
-
-  // var sock = new SockJS('https://i7c201.p.ssafy.io:443/ws/notification',);
-  // sock.onopen = function() {
-  //     console.log('open');
-  //     sock.send('test');
-  // };
- 
-  // sock.onmessage = function(e) {
-  //     console.log('message', e.data);
-  //     sock.close();
-  // };
- 
-  // sock.onclose = function() {
-  //     console.log('close');
-  // };
+  wsocket.onopen = onOpen;
+  wsocket.onmessage = onMessage;
+  wsocket.onerror = onError
 
   return (
     <div>
       <h1>WebSocket TEST</h1>
-      {/* <WebSocketProvider>
-      </WebSocketProvider> */}
       <button onClick={onOpen}>open</button>
       <form>
-        <label htmlFor="message">message : </label>
-        <input type="text" id="message" ref={messageRef}/>
+        <label htmlFor="userId">userId :</label>
+        <input type="text" id="userId" ref={userIdRef} />
+        <label htmlFor="message">message :  </label>
+        <input type="text" id="message" ref={messageRef} />
         <button onClick={messageSendHandler}>send</button>
       </form>
     </div>

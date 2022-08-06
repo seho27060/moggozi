@@ -1,6 +1,7 @@
 import axios from "axios";
 import { apiConfig } from "../config";
 import { ChallengeSaveState } from "../store/challenge";
+import { CommentSend } from "../store/comment";
 import { StageSaveState } from "../store/stage";
 import { refresh, refreshErrorHandle } from "./refresh";
 
@@ -102,6 +103,39 @@ export const setHobby = async (hobby: { name: string }) => {
   return data;
 };
 
+// 한줄평 관련
+export const fetchReview = async (challengeId: number) => {
+  const { data } = await withTokenApi.get(`/review/${challengeId}`);
+  return data;
+};
+
+export const reviewAdd = async (reviewData: {
+  reviewContent: string;
+  rate: number;
+  memberId: number;
+  challengeId: number;
+}) => {
+  const { data } = await withTokenApi.post("/review/register", reviewData);
+  return data;
+};
+
+export const reviewUpdate = async (
+  reviewData: {
+    reviewId: number;
+    reviewContent: string;
+    rate: number;
+  },
+  challengeId: number
+) => {
+  const { data } = await withTokenApi.put(`/review/${challengeId}`, reviewData);
+  return data;
+};
+
+export const reviewDelete = async (id: number) => {
+  const { data } = await withTokenApi.delete(`/review/${id}`);
+  return data;
+};
+
 // 스테이지 관련
 export const stageAdd = async (
   stageAddData: StageSaveState,
@@ -156,6 +190,23 @@ export const postRead = async (stageId: number) => {
 // 댓글 관련
 export const commentRead = async (post_id: number) => {
   const { data } = await withTokenApi.get(`/comment/${post_id}`);
+  return data;
+};
+export const commentAdd = async (comment: CommentSend) => {
+  const { data } = await withTokenApi.post(`/comment/register`, comment);
+  return data;
+};
+
+export const commentDelete = async (comment_id: number) => {
+  const { data } = await withTokenApi.delete(`/comment/${comment_id}`);
+  return data;
+};
+
+export const commentUpdate = async (
+  comment_id: number,
+  comment: CommentSend
+) => {
+  const { data } = await withTokenApi.put(`/comment/${comment_id}`, comment);
   return data;
 };
 
