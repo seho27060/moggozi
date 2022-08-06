@@ -2,6 +2,7 @@
 // 스타일링 하는 과정에서 다시 기존 Modal로 병합될 가능성 농후 - 재영
 
 import React, { ReactElement} from 'react';
+
 import styles from "./ReturnMainModal.module.scss"
 
 interface Props {
@@ -23,15 +24,15 @@ const ReturnMainModal = (props: Props): ReactElement => {
       {open ? (
         <section>
           <header>
-            {header}
+            <div>{header}</div>
             <button className="close" onClick={close}>
               &times;
             </button>
           </header>
           <main>{props.children}</main>
           <footer>
-            <button className="close" onClick={close}>
-              close
+            <button className='close' onClick={close}>
+              확인
             </button>
           </footer>
         </section>
