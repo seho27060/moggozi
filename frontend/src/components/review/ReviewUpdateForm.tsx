@@ -1,22 +1,19 @@
 import React, { ChangeEvent, useRef, useState } from "react";
-import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
-import { fetchReview, reviewAdd } from "../../lib/withTokenApi";
-import { reviewFetch } from "../../store/review";
-import { RootState } from "../../store/store";
+import { fetchReview, reviewUpdate } from "../../lib/withTokenApi";
+import { ReviewState, reviewFetch } from "../../store/review";
 import StarRating from "./StarRating";
 
-const ReviewForm: React.FC = () => {
+const ReviewUpdateForm: React.FC<{
+  review: ReviewState;
+  closeHandler: () => void;
+}> = ({ review, closeHandler }) => {
   const dispatch = useDispatch();
   const contentInputRef = useRef<HTMLInputElement>(null);
   const { id } = useParams();
-  const currentUserId = useSelector(
-    (state: RootState) => state.auth.userInfo.id
-  );
-
-  const [inputs, setInputs] = useState({ content: "" });
-  const [rate, setRate] = useState(0);
+  const [inputs, setInputs] = useState({ content: review.content || "" });
+  const [rate, setRate] = useState(review.rate || 0);
 
   const { content } = inputs;
 
@@ -39,19 +36,17 @@ const ReviewForm: React.FC = () => {
       alert("평점을 입력해주세요.");
     } else {
       const reviewData = {
-        rate: rate,
-        reviewContent: content,
-        memberId: Number(currentUserId),
-        challengeId: Number(id),
+        rate: rate!,
+        reviewContent: content!,
+        reviewId: review.id!,
       };
       console.log(reviewData);
-      reviewAdd(reviewData).then((res) => {
-        alert("review 생성이 완료되었습니다.");
+      reviewUpdate(reviewData, Number(id)).then((res) => {
+        alert("review 수정이 완료되었습니다.");
         fetchReview(Number(id))
           .then((res) => {
             dispatch(reviewFetch(res));
-            setRate(0);
-            setInputs({ content: "" });
+            closeHandler();
           })
           .catch((err) => {
             alert(err.response);
@@ -62,7 +57,7 @@ const ReviewForm: React.FC = () => {
 
   return (
     <div>
-      <h3>리뷰 생성 Form</h3>
+      <h3>리뷰 수정 Form</h3>
       <form>
         <div>
           <label htmlFor="content">content :</label>
@@ -77,12 +72,12 @@ const ReviewForm: React.FC = () => {
             ref={contentInputRef}
           />
         </div>
-        <StarRating rateInit={0} rateChangeHandler={rateChangeHandler} />
+        <StarRating rateInit={rate!} rateChangeHandler={rateChangeHandler} />
         <button type="button" onClick={reviewSubmitHandler}>
-          Register
+          submit
         </button>
       </form>
     </div>
   );
 };
-export default ReviewForm;
+export default ReviewUpdateForm;

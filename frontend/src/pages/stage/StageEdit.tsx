@@ -7,7 +7,7 @@ import StageDeleteBtn from "../../components/stage/StageDeleteBtn";
 import StageItem from "../../components/stage/StageItem";
 import StageUpdateBtn from "../../components/stage/StageUpdateBtn";
 import { fetchStages } from "../../lib/withTokenApi";
-import { fetchStage } from "../../store/stage";
+import { stageFetch } from "../../store/stage";
 import { RootState } from "../../store/store";
 
 const StageEdit: React.FC = () => {
@@ -20,7 +20,7 @@ const StageEdit: React.FC = () => {
     setIsLoading(true);
     fetchStages(Number(challengeId))
       .then((res) => {
-        dispatch(fetchStage(res));
+        dispatch(stageFetch(res));
         setIsLoading(false);
       })
       .catch((err) => {

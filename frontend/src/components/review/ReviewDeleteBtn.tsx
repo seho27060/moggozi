@@ -1,21 +1,21 @@
 import React from "react";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
-import { fetchStages, stageDelete } from "../../lib/withTokenApi";
-import { stageFetch } from "../../store/stage";
+import { fetchReview, reviewDelete } from "../../lib/withTokenApi";
+import { reviewFetch } from "../../store/review";
 
-const StageDeleteBtn: React.FC<{ id: number }> = ({ id }) => {
+const ReviewDeleteBtn: React.FC<{ id: number }> = ({ id }) => {
   const dispatch = useDispatch();
-  const { challengeId } = useParams();
+  const challengeId = useParams().id;
 
   const deleteHandler = (event: React.MouseEvent) => {
     event.preventDefault();
-    stageDelete(id)
+    reviewDelete(id)
       .then((res) => {
         alert("삭제가 완료되었습니다.");
-        fetchStages(Number(challengeId!))
+        fetchReview(Number(challengeId))
           .then((res) => {
-            dispatch(stageFetch(res));
+            dispatch(reviewFetch(res));
           })
           .catch((err) => {
             alert(err.response);
@@ -32,4 +32,4 @@ const StageDeleteBtn: React.FC<{ id: number }> = ({ id }) => {
   );
 };
 
-export default StageDeleteBtn;
+export default ReviewDeleteBtn;

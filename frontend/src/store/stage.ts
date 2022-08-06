@@ -20,7 +20,7 @@ export const stageSlice = createSlice({
   name: "stages",
   initialState: initialStagesState,
   reducers: {
-    fetchStage(state, action) {
+    stageFetch(state, action) {
       state = [];
       action.payload.map((stage: StageState) => state.push(stage));
       return state;
@@ -28,5 +28,5 @@ export const stageSlice = createSlice({
   },
 });
 
-export const { fetchStage } = stageSlice.actions;
+export const { stageFetch } = stageSlice.actions;
 export default stageSlice.reducer;

@@ -2,7 +2,7 @@ import { FormEvent, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import { fetchStages, stageUpdate } from "../../lib/withTokenApi";
-import { fetchStage, StageState } from "../../store/stage";
+import { stageFetch, StageState } from "../../store/stage";
 
 // 수정하기가 글쓴이가 수정할 수 있도록 해야함.
 
@@ -27,7 +27,7 @@ const StageUpdateForm: React.FC<{ stage: StageState }> = ({ stage }) => {
         alert("스테이지 수정이 완료되었습니다.");
         fetchStages(Number(challengeId!))
           .then((res) => {
-            dispatch(fetchStage(res));
+            dispatch(stageFetch(res));
           })
           .catch((err) => {
             alert(err.response);
