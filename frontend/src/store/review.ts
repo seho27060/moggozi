@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { UserInfo } from "./auth";
 
-export interface Review {
+export interface ReviewState {
   id: number | null;
   createdTime: string | null;
   modifiedTime: string | null;
@@ -10,30 +10,19 @@ export interface Review {
   writer: UserInfo;
 }
 
-export interface ReviewState {
-  reviewList: Review[];
-  rate: number;
-}
-
-const initialReviewState: ReviewState = {
-  reviewList: [],
-  rate: 0,
-};
+const initialReviewState: ReviewState[] = [];
 
 export const reviewSlice = createSlice({
   name: "review",
   initialState: initialReviewState,
   reducers: {
     reviewFetch(state, action) {
-      state.reviewList = [];
-      action.payload.map((review: Review) => state.reviewList.push(review));
+      state = [];
+      action.payload.map((review: ReviewState) => state.push(review));
       return state;
-    },
-    rateChange(state, action) {
-      state.rate = action.payload;
     },
   },
 });
 
-export const { reviewFetch, rateChange } = reviewSlice.actions;
+export const { reviewFetch } = reviewSlice.actions;
 export default reviewSlice.reducer;

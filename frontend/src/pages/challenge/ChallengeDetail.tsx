@@ -20,7 +20,7 @@ const ChallengeDetail: React.FC = () => {
   const [loadedChallenge, setLoadedChallenge] =
     useState<ChallengeDetailState>();
   const dispatch = useDispatch();
-  const reviews = useSelector((state: RootState) => state.review.reviewList);
+  const reviews = useSelector((state: RootState) => state.review);
   // 좋아요
   const likeHandler = (event: React.MouseEvent) => {
     event.preventDefault();

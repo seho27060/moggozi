@@ -7,7 +7,6 @@ import { reviewFetch } from "../../store/review";
 const ReviewDeleteBtn: React.FC<{ id: number }> = ({ id }) => {
   const dispatch = useDispatch();
   const challengeId = useParams().id;
-  console.log(challengeId);
 
   const deleteHandler = (event: React.MouseEvent) => {
     event.preventDefault();

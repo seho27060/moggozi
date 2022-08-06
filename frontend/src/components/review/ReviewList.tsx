@@ -1,7 +1,7 @@
-import { Review } from "../../store/review";
+import { ReviewState } from "../../store/review";
 import ReviewItem from "./ReviewItem";
 
-const ReviewList: React.FC<{ reviews: Review[] }> = ({ reviews }) => {
+const ReviewList: React.FC<{ reviews: ReviewState[] }> = ({ reviews }) => {
   return (
     <div>
       <ul>

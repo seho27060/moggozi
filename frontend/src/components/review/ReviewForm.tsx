@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import { fetchReview, reviewAdd } from "../../lib/withTokenApi";
-import { rateChange, reviewFetch } from "../../store/review";
+import { reviewFetch } from "../../store/review";
 import { RootState } from "../../store/store";
 import StarRating from "./StarRating";
 
@@ -16,7 +16,7 @@ const ReviewForm: React.FC = () => {
   );
 
   const [inputs, setInputs] = useState({ content: "" });
-  const rate = useSelector((state: RootState) => state.review.rate);
+  const [rate, setRate] = useState(0);
 
   const { content } = inputs;
 
@@ -27,6 +27,10 @@ const ReviewForm: React.FC = () => {
       ...inputs, // 기존의 input 객체를 복사한 뒤
       [name]: value, // content 키를 가진 값을 value 로 설정
     });
+  };
+
+  const rateChangeHandler = (star: number) => {
+    setRate(star);
   };
 
   const reviewSubmitHandler = (event: React.FormEvent) => {
@@ -46,7 +50,7 @@ const ReviewForm: React.FC = () => {
         fetchReview(Number(id))
           .then((res) => {
             dispatch(reviewFetch(res));
-            dispatch(rateChange(0));
+            setRate(0);
             setInputs({ content: "" });
           })
           .catch((err) => {
@@ -73,7 +77,7 @@ const ReviewForm: React.FC = () => {
             ref={contentInputRef}
           />
         </div>
-        <StarRating />
+        <StarRating rateInit={0} rateChangeHandler={rateChangeHandler} />
         <button type="button" onClick={reviewSubmitHandler}>
           Register
         </button>

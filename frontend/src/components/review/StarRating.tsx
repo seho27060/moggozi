@@ -1,18 +1,18 @@
-import React from "react";
-import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
-import { rateChange } from "../../store/review";
-import { RootState } from "../../store/store";
+import React, { useState } from "react";
 
-const StarRating: React.FC = () => {
-  const rate = useSelector((state: RootState) => state.review.rate);
+const StarRating: React.FC<{
+  rateInit: number;
+  rateChangeHandler: (star: number) => void;
+}> = ({ rateInit, rateChangeHandler }) => {
+  const [rate, setRate] = useState(rateInit);
   const starArray = [1, 2, 3, 4, 5];
-  const dispatch = useDispatch();
 
   const starHandler = (star: number, event: React.MouseEvent) => {
     event.preventDefault();
-    dispatch(rateChange(star));
+    setRate(star);
+    rateChangeHandler(star);
   };
+
   return (
     <div>
       {starArray.map((starIndex) => {
