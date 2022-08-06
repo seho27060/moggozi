@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
-@CrossOrigin(origins = "*", maxAge = 3600) /**TODO: 프론트 서버 배포 후 삭제 예정 **/
+//@CrossOrigin(origins = "*", maxAge = 3600) /**TODO: 프론트 서버 배포 후 삭제 예정 **/
 @Tag(name = "FollowController", description = "Followed(조회하는 유저를 팔로우)/Following API(조회하는 유저가 팔로우)")
 @RequiredArgsConstructor
 @RestController
