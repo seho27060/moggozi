@@ -1,7 +1,11 @@
 import axios from "axios";
 import { apiConfig } from "../config";
 import { ChallengeSaveState } from "../store/challenge";
+<<<<<<< HEAD
+import { CommentSend } from "../store/comment";
+=======
 import { StageSaveState } from "../store/stage";
+>>>>>>> a6219d461f88c1a1f3800d87f53432fa8cf39843
 import { refresh, refreshErrorHandle } from "./refresh";
 
 const withTokenApi = axios.create({
@@ -156,6 +160,23 @@ export const postRead = async (stageId: number) => {
 // 댓글 관련
 export const commentRead = async (post_id: number) => {
   const { data } = await withTokenApi.get(`/comment/${post_id}`);
+  return data;
+};
+export const commentAdd = async (comment: CommentSend) => {
+  const { data } = await withTokenApi.post(`/comment/register`, comment);
+  return data;
+};
+
+export const commentDelete = async (comment_id: number) => {
+  const { data } = await withTokenApi.delete(`/comment/${comment_id}`);
+  return data;
+};
+
+export const commentUpdate = async (
+  comment_id: number,
+  comment: CommentSend
+) => {
+  const { data } = await withTokenApi.put(`/comment/${comment_id}`, comment);
   return data;
 };
 

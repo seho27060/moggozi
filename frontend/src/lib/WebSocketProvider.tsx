@@ -22,7 +22,8 @@ export default ({ children }: { children: React.ReactNode }) => {
     };
     ws.current.onmessage = (evt:MessageEvent) => {
       console.log(evt.data)
-      ws.current?.send(evt.data)
+      // console.log(JSON.parse(ev))
+      
     }
   }
 
