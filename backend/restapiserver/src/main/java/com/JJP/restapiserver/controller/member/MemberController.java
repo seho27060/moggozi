@@ -26,7 +26,7 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 @Tag(name = "MemberController", description = "사용자 API")
-//@CrossOrigin(origins = "*", maxAge = 3600)
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("user")
 public class MemberController {
