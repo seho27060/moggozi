@@ -53,11 +53,16 @@ public class MemberController {
     public ResponseEntity<?> login(@Valid @RequestBody LoginRequest loginRequest, HttpServletRequest request) { // 아이디, 비밀번호를 body에 담아 전송
 
         HttpSession session = request.getSession();
+        System.out.println("----------------------------------");
+        System.out.println(session);
+        System.out.println(session.getClass());
+        System.out.println(session.getId());
         ResponseEntity responseEntity = memberService.login(loginRequest);
         JwtResponse jwtResponse = (JwtResponse)(responseEntity.getBody());
         Long memberId = jwtResponse.getId();
         session.setAttribute("memberId", memberId);
         System.out.println("내가 세션에 넣었다고요 " + (Long)session.getAttribute("memberId"));
+        System.out.println("----------------------------------");
         return responseEntity;
     }
 
