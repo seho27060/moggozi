@@ -98,7 +98,7 @@ const LoginForm: React.FC = () => {
             id="email"
             ref={inputEmail}
             placeholder="이메일"
-            autoComplete="off"
+            autoComplete="on"
           />
           <input
             className={style.password}
