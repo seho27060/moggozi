@@ -25,9 +25,10 @@ public class FileController {
         return fileService.saveFile(file, directory, registeredImg);
     }
 
+    @Operation(summary = "이미지 삭제", description = "filePath: 등록된 이미지 경로")
     // 파일 삭제
-    @PostMapping("/delete/{filePath}")
-    public ResponseEntity<?> deleteFile(@PathVariable("filePath") String filePath) {
+    @PostMapping("/delete/{registeredImg}")
+    public ResponseEntity<?> deleteFile(@PathVariable("registeredImg") String filePath) {
         return fileService.removeFile(filePath);
     }
 
