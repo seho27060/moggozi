@@ -15,6 +15,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.CorsUtils;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Configuration
@@ -56,8 +57,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors().and().csrf().disable()
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-                .authorizeRequests().antMatchers("/**").permitAll()
-                .anyRequest().permitAll()
+                .authorizeRequests()
+                .requestMatchers(request -> CorsUtils.isPreFlightRequest(request)).permitAll()
+                .antMatchers("/**").permitAll()
+//                .anyRequest().permitAll()
                 .and()
                 .oauth2Login()
                 .successHandler(oAuth2SuccessHandler)
