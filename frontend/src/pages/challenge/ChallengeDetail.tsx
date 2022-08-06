@@ -4,10 +4,13 @@ import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import ChallengeDeleteBtn from "../../components/challenge/ChallengeDeleteBtn";
 import HobbyList from "../../components/challenge/HobbyList";
+import ReviewForm from "../../components/review/ReviewForm";
+import ReviewList from "../../components/review/ReviewList";
 import StageList from "../../components/stage/StageList";
 import { fetchChallenge } from "../../lib/generalApi";
 import { challengeLike, isLoginFetchChallenge } from "../../lib/withTokenApi";
 import { ChallengeDetailState } from "../../store/challenge";
+import { reviewFetch } from "../../store/review";
 import { RootState } from "../../store/store";
 
 const ChallengeDetail: React.FC = () => {
@@ -17,18 +20,12 @@ const ChallengeDetail: React.FC = () => {
   const [loadedChallenge, setLoadedChallenge] =
     useState<ChallengeDetailState>();
   const dispatch = useDispatch();
-
+  const reviews = useSelector((state: RootState) => state.review.reviewList);
+  // 좋아요
   const likeHandler = (event: React.MouseEvent) => {
     event.preventDefault();
     challengeLike({ challengeId: Number(id) })
       .then((res) => {
-        console.log({
-          ...loadedChallenge!,
-          liked: !loadedChallenge!.liked,
-          likeNum:
-            Number(loadedChallenge!.likeNum) +
-            (Number(!loadedChallenge!.liked) ? 1 : -1),
-        });
         setLoadedChallenge({
           ...loadedChallenge!,
           liked: !loadedChallenge!.liked,
@@ -42,6 +39,7 @@ const ChallengeDetail: React.FC = () => {
       });
   };
 
+  // 페이지 데이터 받아오기
   useEffect(() => {
     setIsLoading(true);
     if (id) {
@@ -55,6 +53,7 @@ const ChallengeDetail: React.FC = () => {
             };
             setIsLoading(false);
             setLoadedChallenge(challenge);
+            dispatch(reviewFetch(challenge.reviewList));
           })
           .catch((err) => {
             console.log(err);
@@ -70,6 +69,7 @@ const ChallengeDetail: React.FC = () => {
             };
             setIsLoading(false);
             setLoadedChallenge(challenge);
+            dispatch(reviewFetch(challenge.reviewList));
           })
           .catch((err) => {
             console.log(err);
@@ -125,6 +125,9 @@ const ChallengeDetail: React.FC = () => {
             <button>챌린지 수정</button>
           </Link>
           {id && <ChallengeDeleteBtn />}
+
+          {isLoggedIn && <ReviewForm />}
+          <ReviewList reviews={reviews} />
         </div>
       )}
     </div>
