@@ -14,9 +14,9 @@ import Login from "./pages/accounts/Login";
 import CompleteSignUp from "./pages/accounts/CompleteSignUp";
 import Signup from "./pages/accounts/Signup";
 import UserUpdate from "./pages/accounts/UserUpdate";
-import UpdatePassword from "./pages/accounts/UpdatePassword"
+import UpdatePassword from "./pages/accounts/UpdatePassword";
 import PasswordReissue from "./pages/accounts/PasswordReissue";
-import Withdrawal from "./pages/accounts/Withdrawal"
+import Withdrawal from "./pages/accounts/Withdrawal";
 
 //OAuth
 import KakaoOAuthRedirectHandler from "./pages/KakaoOAuthRedirectHandler";
@@ -35,10 +35,6 @@ import PostNew from "./pages/post/PostNew";
 import PostUpdate from "./pages/post/PostUpdate";
 
 // Stage
-// import StageMain from "./pages/stage/StageMain";
-// import StageDetail from "./pages/stage/StageDetail";
-import StageNew from "./pages/stage/StageNew";
-import StageUpdate from "./pages/stage/StageUpdate";
 
 // User
 import UserPage from "./pages/user/UserPage";
@@ -48,6 +44,7 @@ import MainPage from "./pages/MainPage";
 import SearchPage from "./pages/SearchPage";
 import UnknownPage from "./pages/UnknownPage";
 import WebsocketPage from "./pages/WebsocketTest";
+import StageEdit from "./pages/stage/StageEdit";
 import PostCommentTestPage from "./pages/PostCommentTestPage";
 
 export default function Router() {
@@ -74,15 +71,15 @@ export default function Router() {
     },
     {
       path: "/oauth/callback/kakao",
-      element: <KakaoOAuthRedirectHandler />
+      element: <KakaoOAuthRedirectHandler />,
     },
     {
       path: "/oauth/callback/naver",
-      element: <NaverOAuthRedirectHandler />
+      element: <NaverOAuthRedirectHandler />,
     },
     {
       path: "/oauth/callback/google",
-      element: <GoogleOAuthRedirectHandler />
+      element: <GoogleOAuthRedirectHandler />,
     },
     {
       path: "/account",
@@ -110,12 +107,12 @@ export default function Router() {
         },
         {
           path: "updatePw",
-          element: <UpdatePassword />
+          element: <UpdatePassword />,
         },
         {
           path: "withdrawal",
-          element: <Withdrawal />
-        }
+          element: <Withdrawal />,
+        },
       ],
     },
     {
@@ -162,21 +159,9 @@ export default function Router() {
       path: "/stage",
       element: <StageLayout />,
       children: [
-        // {
-        //   path: "",
-        //   element: <StageMain />,
-        // },
-        // {
-        //   path: ":id",
-        //   element: <StageDetail />,
-        // },
         {
-          path: ":id/update",
-          element: <StageUpdate />,
-        },
-        {
-          path: "new",
-          element: <StageNew />,
+          path: ":challengeId",
+          element: <StageEdit />,
         },
       ],
     },

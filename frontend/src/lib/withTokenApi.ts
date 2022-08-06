@@ -1,6 +1,7 @@
 import axios from "axios";
 import { apiConfig } from "../config";
 import { ChallengeSaveState } from "../store/challenge";
+import { StageSaveState } from "../store/stage";
 import { refresh, refreshErrorHandle } from "./refresh";
 
 const withTokenApi = axios.create({
@@ -41,8 +42,8 @@ export const updatePw = async (option: object) => {
 
 export const withdrawal = async (option: object) => {
   const { data } = await withTokenApi.post("/user/delete", option);
-  return data
-}
+  return data;
+};
 
 // 챌린지 관련
 export const isLoginFetchChallenge = async (id: number) => {
@@ -55,21 +56,34 @@ export const isLoginFetchChallengeRankList = async () => {
   return data;
 };
 
-export const challengeAdd = async (challengeData: ChallengeSaveState) => {
-  const { data } = await withTokenApi.post("/challenge/save", challengeData);
+export const challengeAdd = async (challengeAddData: ChallengeSaveState) => {
+  const { data } = await withTokenApi.post("/challenge/save", challengeAddData);
   return data;
 };
 
 export const challengeUpdate = async (
-  challengeData: ChallengeSaveState,
+  challengeUpdateData: ChallengeSaveState,
   id: number
 ) => {
-  const { data } = await withTokenApi.put(`/challenge/${id}`, challengeData);
+  const { data } = await withTokenApi.put(
+    `/challenge/${id}`,
+    challengeUpdateData
+  );
   return data;
 };
 
 export const challengeDelete = async (id: number) => {
   const { data } = await withTokenApi.delete(`/challenge/${id}`);
+  return data;
+};
+
+export const challengeLike = async (challengeIdData: {
+  challengeId: number;
+}) => {
+  const { data } = await withTokenApi.post(
+    "/challengeLike/like",
+    challengeIdData
+  );
   return data;
 };
 
@@ -89,23 +103,32 @@ export const setHobby = async (hobby: { name: string }) => {
 };
 
 // 스테이지 관련
-export const stageAdd = async (challenge_id: number) => {
-  const { data } = await withTokenApi.post(`/stage/${challenge_id}`);
+export const stageAdd = async (
+  stageAddData: StageSaveState,
+  challengeId: number
+) => {
+  const { data } = await withTokenApi.post(
+    `/stage/${challengeId}`,
+    stageAddData
+  );
   return data;
 };
 
-export const stageDelete = async (stage_id: number | null) => {
-  const { data } = await withTokenApi.delete(`/stage/${stage_id}`);
+export const stageDelete = async (id: number | null) => {
+  const { data } = await withTokenApi.delete(`/stage/${id}`);
   return data;
 };
 
-export const stageUpdate = async (stage_id: number) => {
-  const { data } = await withTokenApi.put(`/stage/${stage_id}`);
+export const stageUpdate = async (
+  stageUpdateData: StageSaveState,
+  id: number
+) => {
+  const { data } = await withTokenApi.put(`/stage/${id}`, stageUpdateData);
   return data;
 };
 
-export const stageRead = async (stage_id: number) => {
-  const { data } = await withTokenApi.get(`/stage/${stage_id}`);
+export const fetchStages = async (ChallengeId: number) => {
+  const { data } = await withTokenApi.get(`/stage/${ChallengeId}`);
   return data;
 };
 

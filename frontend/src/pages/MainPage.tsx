@@ -22,7 +22,6 @@ const MainPage: React.FC = () => {
       // 로그인 한 경우
       isLoginFetchChallengeRankList()
         .then((res) => {
-          console.log(res);
           const challengeRankList: ChallengeItemState[] = [];
 
           for (const key in res) {
@@ -43,7 +42,6 @@ const MainPage: React.FC = () => {
       // 로그인 안 한 경우
       fetchChallengeRankList()
         .then((res) => {
-          console.log(res);
           const challengeRankList: ChallengeItemState[] = [];
 
           for (const key in res) {
@@ -76,7 +74,10 @@ const MainPage: React.FC = () => {
         </section>
       )}
       {isLoading === false && (
-        <ChallengeList challenges={loadedChallengeRankList} />
+        <div>
+          <p>좋아요 순으로 정렬한 챌린지 리스트</p>
+          <ChallengeList challenges={loadedChallengeRankList} />
+        </div>
       )}
     </div>
   );
