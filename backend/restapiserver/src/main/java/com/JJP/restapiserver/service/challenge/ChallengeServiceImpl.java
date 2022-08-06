@@ -90,11 +90,8 @@ public class ChallengeServiceImpl implements ChallengeService{
                 Challenge challenge = challengeRepository.findById(Long.parseLong(list.get(i)[0].toString())).get();
                 challengeList.add(challenge);
             }
-            for(int i = 0; i < challengeList.size(); i++){
-                responseDtoList.add(new ChallengeListResponseDto(challengeList.get(i)));
-            }
         }
-        return responseDtoList;
+        return challengeIntoListDto(challengeList, responseDtoList);
     }
 
     @Override
@@ -276,6 +273,22 @@ public class ChallengeServiceImpl implements ChallengeService{
             if(joinedChallenge.isPresent())
             {
                 challengeListResponseDto.setUserProgress(joinedChallenge.get().getState());
+            }
+            responseDtoList.add(challengeListResponseDto);
+        }
+        return responseDtoList;
+    }
+    public List<ChallengeListResponseDto> challengeIntoListDto(List<Challenge> challengeList, List<ChallengeListResponseDto> responseDtoList)
+    {
+        for(int i = 0; i < challengeList.size(); i++)
+        {
+            Challenge challenge = challengeList.get(i);
+            ChallengeListResponseDto challengeListResponseDto = new ChallengeListResponseDto(challenge);
+            List<String> temp = new ArrayList<>();
+            for(int j = 0; j < challenge.getChallengeTagList().size(); j++)
+            {
+                Tag tag = challenge.getChallengeTagList().get(j).getTag();
+                challengeListResponseDto.getHobbyList().add(new TagResponseDto(tag.getId(), tag.getTag()));
             }
             responseDtoList.add(challengeListResponseDto);
         }

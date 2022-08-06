@@ -35,7 +35,6 @@ public class ChallengeController {
     public ResponseEntity getChallengeListByHobby(@PathVariable("hobby") String hobby,
                                                   HttpServletRequest request){
         Long user_id = jwtUtils.getUserIdFromJwtToken(request.getHeader("Authorization"));
-        System.out.println("***************** jwt TOken: " + request.getHeader("Authorization"));
         List<ChallengeListResponseDto> challengeList = challengeService.getChallengeListByHobby(hobby, user_id);
         return new ResponseEntity<List<ChallengeListResponseDto>>(challengeList,HttpStatus.OK);
     }
