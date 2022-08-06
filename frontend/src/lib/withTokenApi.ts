@@ -2,6 +2,7 @@ import axios from "axios";
 import { apiConfig } from "../config";
 import { ChallengeSaveState } from "../store/challenge";
 import { CommentSend } from "../store/comment";
+import { PostSend, PostUpdateSend } from "../store/postModal";
 import { StageSaveState } from "../store/stage";
 import { refresh, refreshErrorHandle } from "./refresh";
 
@@ -134,8 +135,8 @@ export const fetchStages = async (ChallengeId: number) => {
 };
 
 // 포스팅 관련
-export const postAdd = async () => {
-  const { data } = await withTokenApi.post(`/stage/post`);
+export const postAdd = async (postAddData:PostSend) => {
+  const { data } = await withTokenApi.post(`/stage/post`,postAddData);
   return data;
 };
 
@@ -144,8 +145,8 @@ export const postDelete = async (post_id: number) => {
   return data;
 };
 
-export const postUpdate = async (post_id: number) => {
-  const { data } = await withTokenApi.put(`/stage/post/${post_id}`);
+export const postUpdate = async (post:PostUpdateSend) => {
+  const { data } = await withTokenApi.put(`/stage/post`,post);
   return data;
 };
 

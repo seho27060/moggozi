@@ -3,13 +3,16 @@ import authReducer from './auth'
 import hobbyReducer from './challenge'
 import commentReducer from './comment'
 import postReducer from './post'
+import postModalReducer from './postModal'
 import stageReducer from "./stage";
+
 export const store = configureStore({
   reducer: {
     auth: authReducer,
     hobby: hobbyReducer,
     comment : commentReducer,
     post : postReducer,
+    postModal : postModalReducer,
     stages: stageReducer,
   },
 });
