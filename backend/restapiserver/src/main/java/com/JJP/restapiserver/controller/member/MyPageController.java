@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 @CrossOrigin("*")
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/mypage")
+@RequestMapping("mypage")
 public class MyPageController {
 
     private final ChallengeService challengeService;
