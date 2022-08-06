@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 @Tag(name = "FollowController", description = "Followed(조회하는 유저를 팔로우)/Following API(조회하는 유저가 팔로우)")
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("api/user")
+@RequestMapping("user")
 public class FollowController {
 
     private final FollowService followService;
