@@ -1,4 +1,5 @@
 $mainColor: #9b78ff;
+$cloudGray: #adadad;
 $cloudLine: #afafaf;
 
 .purpleButton {
@@ -6,7 +7,7 @@ $cloudLine: #afafaf;
   border-radius: 5px;
   font-size: 12px;
   border: 0px solid;
-  color: #fff;
+  color: #fff
 }
 
 @mixin mobile {
