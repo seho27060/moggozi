@@ -4,6 +4,7 @@ import com.JJP.restapiserver.domain.dto.MessageResponse;
 import com.JJP.restapiserver.domain.dto.member.request.*;
 import com.JJP.restapiserver.domain.dto.member.response.JwtResponse;
 import com.JJP.restapiserver.domain.dto.member.response.ProfileResponse;
+import com.JJP.restapiserver.domain.dto.member.response.SearchMemberResponse;
 import com.JJP.restapiserver.domain.dto.member.response.UpdateInfoResponse;
 import com.JJP.restapiserver.domain.entity.member.ERole;
 import com.JJP.restapiserver.domain.entity.member.Member;
@@ -30,6 +31,7 @@ import org.springframework.stereotype.Service;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
@@ -252,6 +254,16 @@ public class MemberServiceImpl implements MemberService {
                 .build();
 
         return ResponseEntity.ok(updateInfoResponse);
+    }
+
+    @Override
+    public ResponseEntity<?> searchMember(String keyword) {
+        List<SearchMemberResponse> memberList = memberRepository.findByKeyword("%"+keyword+"%");
+        if(memberList.isEmpty()) {
+            return ResponseEntity.ok(new MessageResponse("No user"));
+        } else {
+            return ResponseEntity.ok(memberList);
+        }
     }
 
     /**
