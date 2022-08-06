@@ -14,6 +14,21 @@ export interface UserInfo {
   img: string | undefined;
 }
 
+export interface followed {
+  id: number | null;
+  loginFollowState: number | null;
+  nickname: string | null;
+  userImg: string | null;
+  username: string | null;
+}
+
+export interface following {
+  id: number | null;
+  nickname: string | null;
+  userImg: string | null;
+  username: string | null;
+}
+
 const initialToken = sessionStorage.getItem("accessToken");
 
 const initialAuthState: UserState = {

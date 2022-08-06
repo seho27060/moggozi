@@ -5,8 +5,11 @@ import { Link } from "react-router-dom";
 import { useState } from "react"
 
 import { userDetail } from "../../lib/withTokenApi"
+
+import MypageFollow from "../../components/accounts/MypageFollow";
+
 function UserPage() {
-  
+  // const userId = Number(useParams())
   const [ nickname, setNickname ] = useState("")
   const [ introduce, setIntroduce ] = useState("")
   const [ userImg, setUserImg ] = useState("")
@@ -34,6 +37,7 @@ function UserPage() {
         <li>자기소개 : {introduce}</li>
         <li>프로필사진 : {userImg}</li>
       </ul>
+    <MypageFollow />
     </div>
   );
 }

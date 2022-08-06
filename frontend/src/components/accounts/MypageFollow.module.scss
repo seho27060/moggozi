@@ -1,0 +1,13 @@
+@use "../../styles/mixin.scss" as mixin;
+
+@include mixin.desktop {
+  .margin {
+    margin:100px;
+    padding: 100px;
+    border: 1px solid rgb(0, 0, 0);
+  }
+}
+
+@include mixin.mobile {
+
+}
