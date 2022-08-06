@@ -42,8 +42,8 @@ export const updatePw = async (option: object) => {
 
 export const withdrawal = async (option: object) => {
   const { data } = await withTokenApi.post("/user/delete", option);
-  return data
-}
+  return data;
+};
 
 // 챌린지 관련
 export const isLoginFetchChallenge = async (id: number) => {
@@ -74,6 +74,16 @@ export const challengeUpdate = async (
 
 export const challengeDelete = async (id: number) => {
   const { data } = await withTokenApi.delete(`/challenge/${id}`);
+  return data;
+};
+
+export const challengeLike = async (challengeIdData: {
+  challengeId: number;
+}) => {
+  const { data } = await withTokenApi.post(
+    "/challengeLike/like",
+    challengeIdData
+  );
   return data;
 };
 

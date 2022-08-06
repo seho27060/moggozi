@@ -11,27 +11,20 @@ export interface ChallengeItemState {
   hobbyList: Hobby[];
   writer: UserInfo;
   level: number | null;
-  userProgress: number | null;
+  userProgress: number | 0;
   likeNum: number | null;
 }
 
 // 챌린지 디테일 정보
-export interface ChallengeDetailState {
-  id: number | null;
+export interface ChallengeDetailState extends ChallengeItemState {
   createdTime: string | null;
   modifiedTime: string | null;
-  name: string | null;
-  img: string | null;
-  description: string | null;
   content: string | null;
-  level: number | null;
-  userProgress: number | null;
-  writer: UserInfo;
   stageList: StageState[];
-  likeNum: number | null;
   // 리뷰
   // reviewList:
   hobbyList: Hobby[];
+  liked: boolean | false;
 }
 
 // 챌린지 저장할 때 Form

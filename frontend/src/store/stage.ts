@@ -22,9 +22,7 @@ export const stageSlice = createSlice({
   reducers: {
     fetchStage(state, action) {
       state = [];
-      action.payload.map((stage: StageState) => {
-        state.push(stage);
-      });
+      action.payload.map((stage: StageState) => state.push(stage));
       return state;
     },
   },
