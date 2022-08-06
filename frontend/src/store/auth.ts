@@ -11,7 +11,7 @@ export interface UserState {
 export interface UserInfo {
   id: number | null;
   nickname: string | null;
-  img: string | null;
+  img: string | undefined;
 }
 
 const initialToken = sessionStorage.getItem("accessToken");
@@ -20,7 +20,7 @@ const initialAuthState: UserState = {
   userInfo: {
     id: null,
     nickname: null,
-    img: null,
+    img: "",
   },
   isLoggedIn: !!initialToken,
 };                                                                                             

@@ -1,44 +1,41 @@
 import { FormEvent, useRef } from "react";
-import { GoBackButton } from "../../layout/HistoryButton";
-import { Stage } from "../../store/stage"
+import { useDispatch } from "react-redux";
+import { useParams } from "react-router-dom";
+import { fetchStages, stageUpdate } from "../../lib/withTokenApi";
+import { fetchStage, StageState } from "../../store/stage";
 
 // 수정하기가 글쓴이가 수정할 수 있도록 해야함.
 
-
-const StageUpdateForm: React.FC<{ stage: Stage }> = ({ stage }) => {
-  const contentInputRef = useRef<HTMLTextAreaElement>(
-    stage.content as unknown as HTMLTextAreaElement
-  );
-  const periodInputRef = useRef<HTMLInputElement>(
-    stage.period as unknown as HTMLInputElement
-  );
-  const nameInputRef = useRef<HTMLInputElement>(
-    stage.name as unknown as HTMLInputElement
-  );
-  const stageImgInputRef = useRef<HTMLInputElement>(
-    stage.stageImg as unknown as HTMLInputElement
-  );
-  const orderInputRef = useRef<HTMLInputElement>(
-    stage.postOrder as unknown as HTMLInputElement
-  );
+const StageUpdateForm: React.FC<{ stage: StageState }> = ({ stage }) => {
+  const dispatch = useDispatch();
+  const contentInputRef = useRef<HTMLTextAreaElement>(null);
+  const nameInputRef = useRef<HTMLInputElement>(null);
+  const imgInputRef = useRef<HTMLInputElement>(null);
+  const { challengeId } = useParams();
 
   function stateUpdateHandler(event: FormEvent) {
     event.preventDefault();
-    const stageUpdateData: Stage = { 
-      challengeId: stage.challengeId,
-      content: contentInputRef.current!.value,
+    const stageUpdateData = {
       name: nameInputRef.current!.value,
-      postOrder: Number(orderInputRef.current!.value),
-      period: Number(periodInputRef.current!.value),
-      id: stage.id,
-      stageImg: stageImgInputRef.current!.value,
-      createDate : stage.createDate,
-      modifiedDate : stage.modifiedDate,
-      postList: stage.postList,
+      // estimatedDay: Number(estimateDayInputRef.current!.value),
+      // estimatedTime: Number(estimateTimeInputRef.current!.value),
+      content: contentInputRef.current!.value,
+      img: imgInputRef.current!.value,
     };
-
-    // 수정 반영된 data를 api로 서버에 전달.
-    console.log(stageUpdateData);
+    stageUpdate(stageUpdateData, stage.id!) // DB 값 변경
+      .then((res) => {
+        alert("스테이지 수정이 완료되었습니다.");
+        fetchStages(Number(challengeId!))
+          .then((res) => {
+            dispatch(fetchStage(res));
+          })
+          .catch((err) => {
+            alert(err.response);
+          });
+      })
+      .catch((err) => {
+        alert(err.response);
+      });
   }
   return (
     <div>
@@ -51,52 +48,49 @@ const StageUpdateForm: React.FC<{ stage: Stage }> = ({ stage }) => {
               type="text"
               required
               id="name"
-              defaultValue={stage.name as string | undefined}
+              defaultValue={stage.name || ""}
               ref={nameInputRef}
             />
           </div>
-          <div>
-            <label htmlFor="period">스테이지 기간 :</label>
+          {/* <div>
+            <p>예상 소요 시간</p>
+            <label htmlFor="day">Day :</label>
             <input
               type="text"
               required
-              id="period"
-              defaultValue={stage.period as number | undefined}
-              ref={periodInputRef}
+              id="day"
+              defaultValue={stage.estimatedDay || ""}
+              ref={estimateDayInputRef}
             />
-          </div>
+            <label htmlFor="time">Hour :</label>
+            <input
+              type="text"
+              required
+              id="time"
+              defaultValue={stage.estimatedTime || ""}
+              ref={estimateTimeInputRef}
+            />
+          </div> */}
           <div>
             <label htmlFor="content">스테이지 설명 :</label>
             <textarea
               required
               id="content"
-              defaultValue={stage.content as string | undefined}
+              defaultValue={stage.content || ""}
               ref={contentInputRef}
-              rows = {5}
+              rows={5}
             />
           </div>
           <div>
-            <label htmlFor="stage_img">사진 첨부 :</label>
+            <label htmlFor="img">사진 첨부 :</label>
             <input
               type="text"
               required
-              id="stage_img"
-              defaultValue={stage.stageImg as string | undefined}
-              ref={stageImgInputRef}
+              id="img"
+              defaultValue={stage.img || ""}
+              ref={imgInputRef}
             />
           </div>
-          <div>
-            <label htmlFor="order">스테이지 순서 :</label>
-            <input
-              type="text"
-              required
-              id="order"
-              defaultValue={stage.postOrder as number | undefined}
-              ref={orderInputRef}
-            />
-          </div>
-          {/* 뒤로가기시 오류 있음. */}
-          <GoBackButton/>
           <button onClick={stateUpdateHandler}>submit</button>
         </form>
       </div>

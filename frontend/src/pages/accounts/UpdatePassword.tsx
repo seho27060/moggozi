@@ -25,6 +25,8 @@ const UpdatePassword: React.FC = () => {
         window.location.reload()
       })
       .catch((err) => {
+
+        
         console.log(err);
       });
   };
