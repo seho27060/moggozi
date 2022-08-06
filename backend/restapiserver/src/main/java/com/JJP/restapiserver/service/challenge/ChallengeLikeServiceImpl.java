@@ -21,16 +21,16 @@ public class ChallengeLikeServiceImpl implements ChallengeLikeService{
     private final MemberRepository memberRepository;
 
     @Override
-    public ResponseEntity like(ChallengeLikeRequestDto challengeLikeRequestDto) {
+    public ResponseEntity like(ChallengeLikeRequestDto challengeLikeRequestDto, Long member_id) {
 
         Optional<ChallengeLike> challengeLike = challengeLikeRepository.findByMember_idAndChallenge_id(
-                challengeLikeRequestDto.getMemberId(), challengeLikeRequestDto.getChallengeId()
+                member_id, challengeLikeRequestDto.getChallengeId()
         );
         if(challengeLike.isPresent())
             challengeLikeRepository.delete(challengeLike.get());
         else
             challengeLikeRepository.save(ChallengeLike.builder()
-                    .member(memberRepository.getById(challengeLikeRequestDto.getMemberId()))
+                    .member(memberRepository.getById(member_id))
                     .challenge(challengeRepository.getById(challengeLikeRequestDto.getChallengeId()))
                     .build());
         return new ResponseEntity(HttpStatus.OK);

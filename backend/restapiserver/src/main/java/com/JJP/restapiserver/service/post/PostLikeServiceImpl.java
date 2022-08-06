@@ -22,19 +22,19 @@ public class PostLikeServiceImpl implements PostLikeService{
     private final MemberRepository memberRepository;
 
     @Override
-    public ResponseEntity like(PostLikeRequestDto postLikeRequestDto) {
+    public ResponseEntity like(PostLikeRequestDto postLikeRequestDto, Long member_id) {
         PostLike postLike = PostLike.builder()
                 .post(postRepository.getById(postLikeRequestDto.getPostId()))
-                .member(memberRepository.getById(postLikeRequestDto.getMemberId()))
+                .member(memberRepository.getById(member_id))
                 .build();
         Optional<PostLike> postLikeOptional = postLikeRepository.findByPost_idAndMember_id(
-                postLikeRequestDto.getPostId(), postLikeRequestDto.getMemberId());
+                postLikeRequestDto.getPostId(), member_id);
         if(postLikeOptional.isPresent()) {
             postLikeRepository.delete(postLikeOptional.get());
         }
         else {
             postLikeRepository.save(PostLike.builder()
-                    .member(memberRepository.getById(postLikeRequestDto.getMemberId()))
+                    .member(memberRepository.getById(member_id))
                     .post(postRepository.getById(postLikeRequestDto.getPostId()))
                     .build());
         }
