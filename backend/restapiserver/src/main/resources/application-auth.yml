@@ -64,7 +64,7 @@ spring:
 
 
 properties:
-  profile: ../img/user/
+  user: ../img/user/
 
 
 #  mvc:

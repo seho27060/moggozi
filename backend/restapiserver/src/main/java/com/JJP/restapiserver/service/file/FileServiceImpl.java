@@ -24,7 +24,7 @@ import java.util.UUID;
 public class FileServiceImpl implements FileService {
 
     // 프로필 이미지 경로
-    @Value("${properties.profile}")
+    @Value("${properties.user}")
     private String uploadPath;
 
     private final FileRepository fileRepository;
