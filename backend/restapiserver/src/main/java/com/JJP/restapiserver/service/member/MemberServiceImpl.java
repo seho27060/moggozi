@@ -320,13 +320,17 @@ public class MemberServiceImpl implements MemberService {
         mimeMessageHelper.setSubject("[Moggozi] 임시 비밀번호 안내");
 
         StringBuilder body = new StringBuilder();
-        body.append(username).append(" 님의 임시 비밀번호를 안내드립니다.\n").append(password).append("\n")
-                .append("\n 고객님의 안전한 비밀번호 사용을 위해 \n 빠른 시일 내 새로운 비밀번호로 변경해주세요~ :) ");
+        body.append(mailBodyUtil(username, password));
         mimeMessageHelper.setText(body.toString(), true);
 /**        메일에 덧붙일 이미지 ---           */
 //        mimeMessageHelper.addInline("Moggozi", new FileDataSource("files/..."));
         javaMailSender.send(mimeMessage);
     }
+
+    private String mailBodyUtil(String username, String passwrod) {
+        return null;
+    }
+
 }
 
 //    @Override
