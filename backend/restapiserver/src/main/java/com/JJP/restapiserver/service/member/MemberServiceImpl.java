@@ -229,7 +229,7 @@ public class MemberServiceImpl implements MemberService {
                 .refreshToken(refreshToken.getToken())
                 .id(userDetails.getId())
                 .username(userDetails.getUsername())
-                .nickname(userDetails.getNickname()).build());
+                .nickname(userDetails.getNickname()).userImg(member.getUser_img()).build());
     }
 
     /**
