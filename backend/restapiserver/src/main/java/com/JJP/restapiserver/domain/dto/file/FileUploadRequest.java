@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class FileUploadRequest {
 
-    String pageName;
+    String fileName;
     String path;
 
 }

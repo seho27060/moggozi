@@ -7,7 +7,7 @@ import java.io.IOException;
 
 public interface FileService {
 
-    ResponseEntity<?> saveFile(MultipartFile file, String pageName, String filePath) throws IOException;
+    ResponseEntity<?> saveFile(MultipartFile file, String directory, String registeredImg) throws IOException;
 
     ResponseEntity<?> removeFile(String filePath);
 

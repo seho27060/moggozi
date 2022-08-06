@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class UploadSuccessResponse {
 
-    private String name;
+    private String fileName;
     private String path;
 
 }
