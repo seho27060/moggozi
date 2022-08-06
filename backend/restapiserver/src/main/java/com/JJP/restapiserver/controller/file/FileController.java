@@ -17,12 +17,12 @@ public class FileController {
 
     private final FileService fileService;
 
-    @Operation(summary = "이미지업로드", description = "existingPath: 등록된 이미지 경로 / pageName: 저장하고자하는 폴더명 / " +
+    @Operation(summary = "이미지업로드", description = "registeredPath: 등록된 이미지 경로 / directory: 저장하고자하는 폴더명 / " +
             "file: enctype='multipart/form-data'")
     @PostMapping("/upload")
-    public ResponseEntity<?> saveFile(@RequestParam("existingPath") String path, @RequestParam("pageName") String pageName, @PathVariable MultipartFile file) throws Exception {
+    public ResponseEntity<?> saveFile(@RequestParam("registeredImg") String registeredImg, @RequestParam("directory") String directory, @PathVariable MultipartFile file) throws Exception {
 
-        return fileService.saveFile(file, pageName, path);
+        return fileService.saveFile(file, directory, registeredImg);
     }
 
     // 파일 삭제

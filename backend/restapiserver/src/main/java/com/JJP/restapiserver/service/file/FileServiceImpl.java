@@ -24,7 +24,7 @@ import java.util.UUID;
 public class FileServiceImpl implements FileService {
 
     // 프로필 이미지 경로
-    @Value("${properties.profile}")
+    @Value("${properties.user}")
     private String uploadPath;
 
     private final FileRepository fileRepository;
@@ -33,34 +33,34 @@ public class FileServiceImpl implements FileService {
      * 이미지 파일 업로드, 이미 업로드한 이미지가 있을 경우, 이미지 삭제 후 이미지 업로드
      *
      * @param file: 이미지파일
-     * @param pageName: 저장할 폴더명(ex. profile - 사용자의 프로필 사진들을 보관하는 폴더명)
-     * @param filePath: 기존에 저장된 이미지의 경로 - 없다면, 새로운 이미지 등록
+     * @param directory: 저장할 폴더명(ex. profile - 사용자의 프로필 사진들을 보관하는 폴더명)
+     * @param registeredImg: 기존에 저장된 이미지의 경로 - 없다면, 새로운 이미지 등록
      * @return 파일이 저장된 경로명
      */
     @Override
-    public ResponseEntity<?> saveFile(MultipartFile file, String pageName, String filePath) {
+    public ResponseEntity<?> saveFile(MultipartFile file, String directory, String registeredImg) {
 
         // 등록된 이미지가 있다면 등록된 이미지 삭제
-        if (filePath.isEmpty()) {
+        if (registeredImg.isEmpty()) {
             // 데이터 베이스에서 파일 삭제
-            delete(filePath);
+            delete(registeredImg);
             // 경로에서 파일 삭제
             try {
-                Files.delete(Path.of(filePath));
+                Files.delete(Path.of(registeredImg));
             } catch (IOException e) {
-                return ResponseEntity.badRequest().body(new MessageResponse("Error: Failed to delete the existing file."));
+                return ResponseEntity.badRequest().body(new MessageResponse("Error: Failed to delete the registered file."));
             }
         }
 
         String path = null;
 
         /** TODO: Stage, Post 별 경로 설정 */
-        switch (pageName) {
+        switch (directory) {
             case "user":
                 path = uploadPath;
                 break;
             case "stage":
-//                path = ??;
+//                path = ../img/stage
                 break;
             case "post":
 //                path = ??;
@@ -89,7 +89,7 @@ public class FileServiceImpl implements FileService {
             // 파일 업로드
             Files.write(Path.of(path), file.getBytes());
 
-            Image uploadImage = Image.builder().name(path)
+            Image uploadImage = Image.builder().path(path)
                     .type(file.getContentType()).build();
 
             fileRepository.save(uploadImage);
@@ -97,7 +97,7 @@ public class FileServiceImpl implements FileService {
         } catch (IOException e) {
             return ResponseEntity.badRequest().body(new MessageResponse("Error: saving file has failed."));
         }
-        return ResponseEntity.ok(UploadSuccessResponse.builder().name(fileName).path(path).build());
+        return ResponseEntity.ok(UploadSuccessResponse.builder().fileName(fileName).path(path).build());
     }
 
     @Override
@@ -111,7 +111,7 @@ public class FileServiceImpl implements FileService {
      * @param filePath : 삭제할 파일이 있는 경로명
      */
     private void delete(String filePath) {
-        Image image = fileRepository.findByName(filePath).get();
+        Image image = fileRepository.findByPath(filePath).get();
         fileRepository.delete(image);
     }
 

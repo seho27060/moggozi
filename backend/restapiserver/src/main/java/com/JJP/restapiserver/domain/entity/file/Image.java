@@ -17,7 +17,7 @@ public class Image extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name; // 파일 경로
+    private String path; // 파일 경로
 
     private String type; // 파일 타입
 
@@ -25,8 +25,8 @@ public class Image extends BaseTimeEntity {
 //    private byte[] data;
 
     @Builder
-    public Image(String name, String type) {
-        this.name = name;
+    public Image(String path, String type) {
+        this.path = path;
         this.type = type;
     }
 
