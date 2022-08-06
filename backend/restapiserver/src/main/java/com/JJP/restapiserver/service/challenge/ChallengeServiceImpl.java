@@ -20,6 +20,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.util.ArrayList;
@@ -31,6 +32,7 @@ import java.util.stream.Collectors;
 @CrossOrigin("*")
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class ChallengeServiceImpl implements ChallengeService{
 
     private final JoinedChallengeRepository joinedChallengeRepository;
@@ -137,14 +139,21 @@ public class ChallengeServiceImpl implements ChallengeService{
     public ChallengeResponseDto updateChallenge(Long challenge_id, ChallengeRequestDto challengeData) {
 
         Challenge challenge = challengeRepository.findById(challenge_id).get();
+//        System.out.println(challengeData.getHobbyList().toString());
         challenge.updateChallenge(challengeData);
-        challengeRepository.save(challenge);
 
-        for(int i = 0; i < challenge.getChallengeTagList().size(); i++)
+        if(challenge.getChallengeTagList() != null)
         {
-            Long index = challenge.getChallengeTagList().get(i).getId();
-            challengeTagRepository.deleteById(index);
+            for(int i = 0; i < challenge.getChallengeTagList().size(); i++)
+            {
+                Long index = challenge.getChallengeTagList().get(i).getId();
+                ChallengeTag challengeTag = challengeTagRepository.getById(index);
+//                System.out.println("삭제할 번호 입니다. " + index);
+                challengeTagRepository.delete(challengeTag);
+            }
         }
+        challenge.getChallengeTagList().clear();
+//        challengeRepository.save(challenge);
 
         tagRegister(challenge_id, challengeData);
         ChallengeResponseDto challengeResponseDto = new ChallengeResponseDto(challenge);
@@ -261,7 +270,6 @@ public class ChallengeServiceImpl implements ChallengeService{
         {
             Challenge challenge = challengeList.get(i);
             ChallengeListResponseDto challengeListResponseDto = new ChallengeListResponseDto(challenge);
-            List<String> temp = new ArrayList<>();
             for(int j = 0; j < challenge.getChallengeTagList().size(); j++)
             {
                 Tag tag = challenge.getChallengeTagList().get(j).getTag();
@@ -298,11 +306,12 @@ public class ChallengeServiceImpl implements ChallengeService{
     public void tagRegister(Long challenge_id, ChallengeRequestDto challengeData)
     {
         Challenge challenge = challengeRepository.findById(challenge_id).get();
-
+        System.out.println(challenge.getId());
         List<TagRequestDto> tagList = challengeData.getHobbyList();
         if(tagList != null)
             for(int i = 0; i < tagList.size(); i++)
             {
+//            System.out.println("---------------------");
                 String tag = tagList.get(i).getName();
                 Tag tagEntity;
                 // 태그 리스트 중에서 이미 태그가 존재한다면
@@ -312,12 +321,13 @@ public class ChallengeServiceImpl implements ChallengeService{
                     // 아예 처음 생기는 태그라면, 태그 테이블에 집어넣고
                     // 사용자 취미 태그 테이블에도 집어넣어 준다.
                 else{
-                    tagEntity = Tag.builder()
+                    tagEntity = tagRepository.save(Tag.builder()
                             .tag(tag)
-                            .build();
-                    tagRepository.save(tagEntity);
+                            .build());
                 }
-                challengeTagRepository.save(ChallengeTag.builder()
+//                System.out.println(tagEntity.getId() + " " + tagEntity.getTag());
+//                challenge.getChallengeTagList().add
+                        challengeTagRepository.save(ChallengeTag.builder()
                         .challenge(challenge)
                         .tag(tagEntity)
                         .build());
