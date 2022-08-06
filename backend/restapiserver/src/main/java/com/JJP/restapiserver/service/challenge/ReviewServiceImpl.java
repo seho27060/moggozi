@@ -1,6 +1,7 @@
 package com.JJP.restapiserver.service.challenge;
 
 import com.JJP.restapiserver.domain.dto.challenge.ReviewRequestDto;
+import com.JJP.restapiserver.domain.dto.challenge.ReviewResponseDto;
 import com.JJP.restapiserver.domain.dto.challenge.ReviewUpdateRequestDto;
 import com.JJP.restapiserver.domain.entity.challenge.Review;
 import com.JJP.restapiserver.repository.challenge.ChallengeRepository;
@@ -11,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -24,29 +26,33 @@ public class ReviewServiceImpl implements ReviewService{
     private final MemberRepository memberRepository;
 
     @Override
-    public ResponseEntity registerReview(ReviewRequestDto reviewRequestDto) {
+    public ReviewResponseDto registerReview(ReviewRequestDto reviewRequestDto) {
         Review review = Review.builder()
                 .review_content(reviewRequestDto.getReviewContent())
                 .rate(reviewRequestDto.getRate())
                 .challenge(challengeRepository.getById(reviewRequestDto.getChallengeId()))
                 .member(memberRepository.getById(reviewRequestDto.getMemberId()))
                 .build();
-        reviewRepository.save(review);
-        return new ResponseEntity(HttpStatus.OK);
+        return new ReviewResponseDto(reviewRepository.save(review));
     }
 
     @Override
-    public List<Review> getReviewList(Long challenge_id) {
+    public List<ReviewResponseDto> getReviewList(Long challenge_id) {
         List<Review> reviewList = reviewRepository.findAllByChallenge_id(challenge_id);
-        return reviewList;
+        List<ReviewResponseDto> reviewResponseDtoList = new ArrayList<>();
+        if(reviewList != null){
+            for(int i = 0; i < reviewList.size(); i++){
+                reviewResponseDtoList.add(new ReviewResponseDto(reviewList.get(i)));
+            }
+        }
+        return reviewResponseDtoList;
     }
 
     @Override
-    public ResponseEntity updateReview(ReviewUpdateRequestDto reviewUpdateRequestDto) {
+    public ReviewResponseDto updateReview(ReviewUpdateRequestDto reviewUpdateRequestDto) {
         Review review = reviewRepository.getById(reviewUpdateRequestDto.getReviewId());
         review.update(reviewUpdateRequestDto);
-        reviewRepository.save(review);
-        return new ResponseEntity(HttpStatus.OK);
+        return new ReviewResponseDto(reviewRepository.save(review));
     }
 
     @Override

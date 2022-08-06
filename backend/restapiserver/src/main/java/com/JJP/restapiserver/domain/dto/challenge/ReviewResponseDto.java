@@ -10,14 +10,17 @@ import java.time.LocalDateTime;
 @Setter
 public class ReviewResponseDto {
     private Long id;
-    private String reviewContent;
+
+    private Writer writer;
+    private String content;
     private int rate;
     private LocalDateTime createdTime;
     private LocalDateTime modifiedTime;
     public ReviewResponseDto(Review review)
     {
         this.id = review.getId();
-        this.reviewContent = review.getReview_content();
+        this.writer = new Writer(review.getMember().getId(), review.getMember().getNickname());
+        this.content = review.getReview_content();
         this.rate = review.getRate();
         this.createdTime = review.getCreatedDate();
         this.modifiedTime = review.getModifiedDate();
