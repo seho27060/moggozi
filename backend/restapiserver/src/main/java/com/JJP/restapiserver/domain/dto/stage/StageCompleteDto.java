@@ -22,6 +22,6 @@ public class StageCompleteDto {
         this.complete_time = LocalDateTime.now();
         this.member_id = member_id;
         this.stage_id = stage_id;
-        this.state = 1;
+        this.state = 2;
     }
 }
