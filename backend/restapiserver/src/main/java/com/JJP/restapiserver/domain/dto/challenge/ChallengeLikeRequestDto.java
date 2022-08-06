@@ -10,6 +10,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ChallengeLikeRequestDto {
-    private Long memberId;
+//    private Long memberId;
     private Long challengeId;
 }
