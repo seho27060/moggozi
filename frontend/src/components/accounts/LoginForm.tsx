@@ -1,8 +1,3 @@
-import KakaoLogin from "./KakaoLogin";
-import NaverLogin from "./NaverLogin";
-import GoogleLogin from "./GoogleLogin";
-import Modal from "../ui/Modal";
-
 import React, { useRef, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -10,6 +5,14 @@ import { loginApi } from "../../lib/generalApi";
 import Cookie from "js-cookie";
 import moment from "moment";
 import { login } from "../../store/auth";
+
+import Modal from "../ui/Modal";
+
+import logo from "../../asset/moggo.png";
+import style from "./LoginForm.module.scss";
+import facebook from "../../asset/facebook.svg"
+import kakao from "../../asset/kakao.svg"
+import naver from "../../asset/naver.svg"
 
 const LoginForm: React.FC = () => {
   const dispatch = useDispatch();
@@ -57,7 +60,7 @@ const LoginForm: React.FC = () => {
           navigate("/");
         })
         .catch((err) => {
-          console.log(err)
+          console.log(err);
           // if (err.response.data.message === "Error: The user doesn't exist") {
           //   setOverlapModalOpen(true);
           // } else {
@@ -83,48 +86,70 @@ const LoginForm: React.FC = () => {
 
   return (
     <div>
-      <h3>Login form</h3>
-      <div>
+      <div className={style.loginForm}>
+        <div className={style.logoImg}>
+          <img src={logo} alt="logo" onClick={() => {navigate("/")}}/>
+        </div>
         <form onSubmit={loginHandler}>
-          <div>
-            <label htmlFor="email">email : </label>
-            <input type="text" required id="email" ref={inputEmail} />
-          </div>
-          <div>
-            <label htmlFor="password">password : </label>
-            <input type="password" required id="password" ref={inputPw} />
-          </div>
-          <p onClick={reIssueHandler}>비밀번호를 잊으셨나요?</p>
-          <button type="submit">Login</button>
+          <input
+            className={style.email}
+            type="text"
+            required
+            id="email"
+            ref={inputEmail}
+            placeholder="이메일"
+            autoComplete="on"
+          />
+          <input
+            className={style.password}
+            type="password"
+            required
+            id="password"
+            ref={inputPw}
+            placeholder="비밀번호"
+          />
+          <button
+            className={`${style.purpleButton} ${style.loginButton}`}
+            type="submit"
+          >
+            로그인
+          </button>
         </form>
-        <React.Fragment>
-          <Modal
-            open={loginModalOpen}
-            close={loginCloseModal}
-            header="로그인 에러"
+        <div className={style.resetSignup}>
+          <div onClick={reIssueHandler}>비밀번호 재설정</div>
+          <div
+            onClick={() => {
+              navigate("/account/signup");
+            }}
           >
-            <p>비밀번호가 틀렸습니다.</p>
-          </Modal>
-          <Modal
-            open={overlapModalOpen}
-            close={overlapCloseModal}
-            header="로그인 에러"
-          >
-            <p>탈퇴한 회원입니다.</p>
-          </Modal>
-        </React.Fragment>
-        <p>
-          <KakaoLogin />
-        </p>
-        <p>
-          <NaverLogin />
-        </p>
-        <p>
-          <GoogleLogin />
-        </p>
-        <p></p>
-        {/* <SocialLoginForm value={"KAKAO"}></SocialLoginForm>
-        <SocialLoginForm value={"GOOGLE"}></SocialLoginForm> */}
+            회원가입
+          </div>
+        </div>
+
+        <div className={style.socialLogin}>
+          <div className={style.sns}>SNS 계정으로 간편하게 시작하기</div>
+          <React.Fragment>
+            <Modal
+              open={loginModalOpen}
+              close={loginCloseModal}
+              header="로그인 에러"
+            >
+              <p>비밀번호가 틀렸습니다.</p>
+            </Modal>
+            <Modal
+              open={overlapModalOpen}
+              close={overlapCloseModal}
+              header="로그인 에러"
+            >
+              <p>탈퇴한 회원입니다.</p>
+            </Modal>
+          </React.Fragment>
+          <div className={style.socialLink}>
+            <a href="https://www.facebook.com"><img src={facebook} alt="facebook" /></a>
+            <a href="https://www.kakao.com"><img src={kakao} alt="kakao" /></a>
+            <a href="https://www.naver.com"><img src={naver} alt="naver" /></a>
+          </div>
+        </div>
       </div>
     </div>
   );

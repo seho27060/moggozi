@@ -2,7 +2,7 @@ import React, { useRef } from "react";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import { fetchStages, stageAdd } from "../../lib/withTokenApi";
-import { fetchStage } from "../../store/stage";
+import { stageFetch } from "../../store/stage";
 
 const StageForm: React.FC = () => {
   const dispatch = useDispatch();
@@ -22,8 +22,7 @@ const StageForm: React.FC = () => {
         alert("스테이지 생성이 완료되었습니다.");
         fetchStages(Number(challengeId!))
           .then((res) => {
-            console.log(res);
-            dispatch(fetchStage(res));
+            dispatch(stageFetch(res));
           })
           .catch((err) => {
             alert(err.response);

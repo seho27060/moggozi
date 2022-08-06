@@ -4,7 +4,7 @@ import LoginForm from "../../components/accounts/LoginForm"
 function Login (){
   return (
     <div>
-      <h1>Login Page</h1>
+      <h1>여기에 배경 들어간드아</h1>
       <LoginForm/>
     </div>
   )

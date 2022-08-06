@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { UserInfo } from "./auth";
+import { ReviewState } from "./review";
 import { StageState } from "./stage";
 
 // 챌린지 리스트 정보
@@ -22,7 +23,7 @@ export interface ChallengeDetailState extends ChallengeItemState {
   content: string | null;
   stageList: StageState[];
   // 리뷰
-  // reviewList:
+  reviewList: ReviewState[];
   hobbyList: Hobby[];
   liked: boolean | false;
 }

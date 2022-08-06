@@ -4,19 +4,21 @@ import { passwordReissue } from "../../lib/generalApi";
 
 import ReturnMainModal from "../ui/ReturnMainModal";
 
+import style from "./PasswordReissueForm.module.scss";
+
 const PasswordReissueForm: React.FC = () => {
   const navigate = useNavigate();
 
   const inputEmail = useRef<HTMLInputElement>(null);
   const inputName = useRef<HTMLInputElement>(null);
 
-  const [ modalOpen, setModalOpen ] = useState(false)
+  const [modalOpen, setModalOpen] = useState(false);
   const closeModal = () => {
-    navigate('/', { replace: true });
-  }
+    navigate("/", { replace: true });
+  };
 
   const passwordFindHandler = (event: React.FormEvent) => {
-    event.preventDefault()
+    event.preventDefault();
     // 입력된 input값 변수에 담기
     const enteredEmail = inputEmail.current!.value;
     const enteredName = inputName.current!.value;
@@ -31,36 +33,63 @@ const PasswordReissueForm: React.FC = () => {
       };
       passwordReissue(option)
         .then((res) => {
-          setModalOpen(true)
+          setModalOpen(true);
         })
         .catch((err) => {
-          console.log(err)
-          alert("에러가 발생했습니다. 다시 시도해주세요")
+          console.log(err);
+          alert("에러가 발생했습니다. 다시 시도해주세요");
           // window.location.reload();
         });
     }
   };
 
   return (
-    <div>
-      <p>비밀번호를 잃어버리셨나요?</p>
-      <p>하단의 정보를 상세히 입력해주세요.</p>
-      <form>
+    <div className={style.main}>
+      <div className={style.title}>
+        <div className={style.a1}>비밀번호 재설정</div>
+        <div className={style.a2}>비밀번호를 잊으셨나요?</div>
+        <div className={style.a2}>하단의 정보를 상세히 입력해주세요.</div>
+      </div>
+      <form className={style.form}>
         <div>
-          <label htmlFor="email">email : </label>
-          <input type="text" required id="email" ref={inputEmail} autoComplete="false"/>
+          <div className={style.email}>
+            <div>
+              <label htmlFor="email">이메일</label>
+            </div>
+            <input
+              type="text"
+              required
+              id="email"
+              ref={inputEmail}
+              autoComplete="off"
+              placeholder="가입시 사용한 이메일을 입력해주세요."
+            />
+          </div>
         </div>
         <div>
-          <label htmlFor="name">본명 : </label>
-          <input type="text" required id="name" ref={inputName} />
+          <div className={style.name}>
+            <div>
+              <label htmlFor="name">이름</label>
+            </div>
+            <input
+              type="text"
+              required
+              id="name"
+              ref={inputName}
+              autoComplete="off"
+              placeholder="이름"
+            />
+          </div>
         </div>
-        <button onClick={passwordFindHandler}>비밀번호 재발급</button>
+        <li>전송된 메일로 임시 비밀번호가 발급됩니다.</li>
+        <li>발급된 임시 비밀번호를 이용하여 로그인하세요.</li>
+        <button className={`${style.purpleButton}`} onClick={passwordFindHandler}>임시비밀번호 발급</button>
       </form>
       <React.Fragment>
         <ReturnMainModal
           open={modalOpen}
           close={closeModal}
-          header="비밀번호 초기화 완료"
+          header="안내"
         >
           <p>비밀번호가 초기화 되었습니다.</p>
           <p>이메일을 확인해주세요!</p>
