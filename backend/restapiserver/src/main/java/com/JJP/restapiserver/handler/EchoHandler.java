@@ -128,9 +128,12 @@ public class EchoHandler extends TextWebSocketHandler {
     //웹소켓 email 가져오기
     private Long getId(WebSocketSession session) {
         Map<String, Object> httpSession = session.getAttributes();
-        System.out.println("서버 세션 체크");
+        System.out.println("----------------핸들러 속에서--------------------------");
+        System.out.println(httpSession);
+        System.out.println(httpSession.getClass());
         System.out.println(httpSession.keySet());
         System.out.println("서버 세션 체크");
+        System.out.println("------------------------------------------");
         Long loginUser = (Long)httpSession.get("memberId");
 
         if(loginUser == null) {
