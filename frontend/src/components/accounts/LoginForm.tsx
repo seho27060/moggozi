@@ -88,7 +88,7 @@ const LoginForm: React.FC = () => {
     <div>
       <div className={style.loginForm}>
         <div className={style.logoImg}>
-          <img src={logo} alt="logo" />
+          <img src={logo} alt="logo" onClick={() => {navigate("/")}}/>
         </div>
         <form onSubmit={loginHandler}>
           <input
