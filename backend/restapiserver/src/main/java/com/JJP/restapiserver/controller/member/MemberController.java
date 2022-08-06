@@ -27,7 +27,7 @@ import javax.validation.Valid;
 @Tag(name = "MemberController", description = "사용자 API")
 @CrossOrigin("*")
 @RestController
-@RequestMapping("user")
+@RequestMapping("/api/user")
 public class MemberController {
 
     @Autowired
