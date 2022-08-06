@@ -6,7 +6,7 @@ import { commentRead } from "../../lib/withTokenApi";
 import { commentSet } from "../../store/comment";
 
 import { PostTest } from "../../store/post";
-import PostCommentList from "../comment/PostCommentList";
+import CommentList from "../comment/CommentList";
 import { useDispatch } from "react-redux";
 
 const PostDetailItem: React.FC<{ post: PostTest }> = ({ post }) => {
@@ -49,7 +49,7 @@ const PostDetailItem: React.FC<{ post: PostTest }> = ({ post }) => {
           댓글창
           {/* // 해당 포스팅에 대한 댓글 불러온다는 가정하에 구현
         // comment store에 state 저장해서 사용할것. */}
-          <PostCommentList comments={commentState} />
+          <CommentList comments={commentState} />
         </div>
         <button>게시</button>
         <button>닫기</button>

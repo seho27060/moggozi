@@ -10,9 +10,13 @@ const WebsocketPage = () => {
   // 웹소켓
   function onClose(evt: any) {
     alert("연결 끊김");
+    console.log(evt)
   }
   function onOpen(evt: any) {
-    console.log("open");
+    console.log("open",evt);
+  }
+  function onError(evt:any) {
+    console.log("ERR",evt)
   }
   // // 보내는 사람/ 받는사람/ 알림타입:포스팅좋아요,댓글..등등등
   function onSend() {
@@ -42,10 +46,11 @@ const WebsocketPage = () => {
     console.log(JSON.parse(evt.data));
   }
   var wsocket: WebSocket | null = null;
-  wsocket = new WebSocket("ws://i7c201.p.ssafy.io:8080/ws/notification");
+  wsocket = new WebSocket("ws://i7c201.p.ssafy.io:8080/api/ws/notification");
   wsocket.onclose = onClose;
   wsocket.onopen = onOpen;
   wsocket.onmessage = onMessage;
+  wsocket.onerror = onError
 
   return (
     <div>
@@ -54,7 +59,7 @@ const WebsocketPage = () => {
       <form>
         <label htmlFor="userId">userId :</label>
         <input type="text" id="userId" ref={userIdRef} />
-        <label htmlFor="message">message : </label>
+        <label htmlFor="message">message :  </label>
         <input type="text" id="message" ref={messageRef} />
         <button onClick={messageSendHandler}>send</button>
       </form>

@@ -1,13 +1,13 @@
 import { Comment } from "../../store/comment";
 import CommentForm from "./CommentForm";
-import PostCommentItem from "./PostCommentItem";
+import CommentItem from "./CommentItem";
 
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 // id == parentID => 댓글 else 대댓글
 // order : 댓글 = 0, 대댓글 = 1,2,3..n
 
-const PostCommentList: React.FC<{ comments: Comment[] | null }> = ({
+const CommentList: React.FC<{ comments: Comment[] | null }> = ({
   comments,
 }) => {
   // 원댓글 추려내기
@@ -22,7 +22,7 @@ const PostCommentList: React.FC<{ comments: Comment[] | null }> = ({
         <CommentForm postId={postId} parentId={0} order={0} />
       </div>
       {commentList?.map((comment) => (
-        <PostCommentItem
+        <CommentItem
           key={comment.id}
           comment={comment}
         />
@@ -31,4 +31,4 @@ const PostCommentList: React.FC<{ comments: Comment[] | null }> = ({
   );
 };
 
-export default PostCommentList;
+export default CommentList;

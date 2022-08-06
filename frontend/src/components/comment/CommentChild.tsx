@@ -1,6 +1,6 @@
 import { Comment } from "../../store/comment";
 
-const PostCommentChild: React.FC<{ child: Comment }> = ({ child }) => {
+const CommentChild: React.FC<{ child: Comment }> = ({ child }) => {
   return (
     <div>
       <p>{child.order}</p>
@@ -13,4 +13,4 @@ const PostCommentChild: React.FC<{ child: Comment }> = ({ child }) => {
   );
 };
 
-export default PostCommentChild;
+export default CommentChild;
