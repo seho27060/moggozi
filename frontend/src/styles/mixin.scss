@@ -1,20 +1,28 @@
-$mainColor: #9B78FF;
+$mainColor: #9b78ff;
+$cloudLine: #afafaf;
+
+.purpleButton {
+  background: $mainColor;
+  border-radius: 5px;
+  font-size: 12px;
+  border: 0px solid;
+  color: #fff;
+}
 
 @mixin mobile {
-    @media only screen and (max-width: 767px) {
-        @content;
-    }
+  @media only screen and (max-width: 767px) {
+    @content;
+  }
 }
 
 @mixin tablet {
-    @media only screen and (min-width: 768px) and (max-width: 991px) {
-        @content;
-    }
+  @media only screen and (min-width: 768px) and (max-width: 991px) {
+    @content;
+  }
 }
 
 @mixin desktop {
-    @media only screen and (min-width: 992px) {
-        @content;
-    }
+  @media only screen and (min-width: 992px) {
+    @content;
+  }
 }
-
