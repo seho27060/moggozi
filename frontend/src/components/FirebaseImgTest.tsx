@@ -31,12 +31,19 @@ const FirebaseImgText: React.FC = () => {
     //   return;
     // }
   };
-  let num = 0;
-  const submitHandler = async (event: FormEvent) => {
+
+  // 이미지 맨 뒤로 넣어주기
+  const uploadHandler = (event: FormEvent, target: string) => {
     event.preventDefault();
-    num += 1;
-    const imgRef = ref(storageService, `a/${num}`);
-    const response = await uploadBytes(imgRef, file!);
+    const listRef = ref(storageService, target);
+    listAll(listRef)
+      .then((res) => {
+        return Number(res.items.at(-1)?.name); // 마지막 요소의 id 읽기
+      })
+      .then((imagId) => {
+        const imgRef = ref(storageService, `${target}/${imagId + 1}`); // 맨 마지막 id에 1을 더해 넣어주기
+        uploadBytes(imgRef, file!);
+      });
   };
 
   // 배열로 읽어오기 완료
@@ -44,6 +51,7 @@ const FirebaseImgText: React.FC = () => {
     event.preventDefault();
     const listRef = ref(storageService, "a");
     listAll(listRef).then((res) => {
+      // id 폴더 안의 이미지들 모두 읽어오기
       res.items.forEach((itemRef) => {
         console.log(itemRef.name);
         const url = getDownloadURL(itemRef).then((res) => {
@@ -58,8 +66,8 @@ const FirebaseImgText: React.FC = () => {
       <form>
         <label htmlFor="img">img 생성</label>
         <input type="file" accept="image/*" id="img" onChange={onLoadHandler} />
-        <button type="button" onClick={submitHandler}>
-          생성
+        <button type="button" onClick={(e) => uploadHandler(e, "challenge/1")}>
+          업로드
         </button>
       </form>
       <button onClick={readHandler}>가져오기</button>
