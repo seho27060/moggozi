@@ -23,7 +23,7 @@ const initialAuthState: UserState = {
     img: "",
   },
   isLoggedIn: !!initialToken,
-};                                                                                             
+};
 
 // 해당 데이터에 접근할 때에는 , useSelector 를 이용하여 state를 조회
 // useDispatch를 이용하면 action을 줄 수 있다.
@@ -58,12 +58,15 @@ export const authSlice = createSlice({
       };
       state.isLoggedIn = !!initialToken;
     },
-    KakaoLogin: (state, action) => {
-
-    }
+    kakaoLogin: (state, action) => {},
+    // 유저이미지 불러오기
+    userImgFetch: (state, action) => {
+      state.userInfo.img = action.payload;
+    },
   },
 });
 
-export const { login, logout, authentication, KakaoLogin } = authSlice.actions;
+export const { login, logout, authentication, kakaoLogin, userImgFetch } =
+  authSlice.actions;
 
 export default authSlice.reducer;

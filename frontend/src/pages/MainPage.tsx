@@ -1,5 +1,3 @@
-import LogoutBtn from "../components/accounts/LogoutBtn";
-
 import ChallengeList from "../components/challenge/ChallengeList";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -64,7 +62,6 @@ const MainPage: React.FC = () => {
   return (
     <div>
       MainPage
-      <LogoutBtn />
       <Link to={`/challenge/new`}>
         <button>챌린지 생성</button>
       </Link>
