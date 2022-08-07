@@ -13,7 +13,7 @@ spring:
           google:
             client-id: 286378831968-b4upq7oh9t3sl9c2lqb5m7g8fjm34vo5.apps.googleusercontent.com
             client-secret: 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
-            redirect-uri: "https://i7c201.p.ssafy.io:443/login/oauth2/code/google"
+            redirect-uri: "https://i7c201.p.ssafy.io/api/login/oauth2/code/google"
             scope: profile, email
 
           naver:
@@ -21,7 +21,7 @@ spring:
             client-secret: YOT4zpMnPj
             client-authentication-method: POST
             authorization-grant-type: authorization_code
-            redirect-uri: "https://i7c201.p.ssafy.io:443/login/oauth2/code/naver"
+            redirect-uri: "https://i7c201.p.ssafy.io/api/login/oauth2/code/naver"
             scope: name, email, profile_image
             client-name: Naver
 
@@ -30,7 +30,7 @@ spring:
             client-secret: dOji2PQP9kao6dUKxa6DoqMXl0NgC4CV
             client-authentication-method: POST
             authorization-grant-type: authorization_code
-            redirect-uri: "https://i7c201.p.ssafy.io:443/login/oauth2/code/kakao"
+            redirect-uri: "https://i7c201.p.ssafy.io/api/login/oauth2/code/kakao"
             scope: profile_nickname, profile_image, account_email
             client-name: Kakao
 
