@@ -39,7 +39,7 @@ public class ChallengeResponseDto {
 
     public ChallengeResponseDto(Challenge challenge){
         this.id = challenge.getId();
-        this.writer = new Writer(challenge.getMember().getId(), challenge.getMember().getFullname());
+        this.writer = new Writer(challenge.getMember().getId(), challenge.getMember().getNickname());
         this.name = challenge.getName();
         this.img = challenge.getChallenge_img();
         this.content = challenge.getContent();
