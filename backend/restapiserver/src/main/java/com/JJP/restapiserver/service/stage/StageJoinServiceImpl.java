@@ -39,7 +39,7 @@ public class StageJoinServiceImpl implements StageJoinService{
             new MessageResponse("해당 스테이지가 없습니다. id=" + stage);
             return null;
         }
-        if(stageUserRepository.findByMember_idAndStage_id(member.getId(), stage.getId()).isEmpty()){
+        if(!stageUserRepository.findByMember_idAndStage_id(member.getId(), stage.getId()).isEmpty()){
             System.out.println("already joined");
             return Long.valueOf(9999);
         }
