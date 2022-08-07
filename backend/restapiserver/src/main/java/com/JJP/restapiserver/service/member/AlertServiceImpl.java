@@ -84,8 +84,8 @@ public class AlertServiceImpl implements AlertService {
     @Override
     public AlertResponseDto saveAlert(Long senderId, Long receiverId, String type, Long index, String msg) {
         Alert alert = Alert.builder()
-                .sender(memberRepository.getById(2L))
-                .receiver(memberRepository.getById(2L))
+                .sender(memberRepository.getById(senderId))
+                .receiver(memberRepository.getById(receiverId))
                 .message(msg)
                 .sequence(index)
                 .type(type)
