@@ -67,7 +67,7 @@ public class FollowServiceImpl implements FollowService {
         return ResponseEntity.ok(followingListResponse);
     }
 
-    // 상대를 팔로우하는 사람들의 리스트 반환 (나 역시 상대를 팔로우하는지를 나타낼 것
+    // 상대를 팔로우하는 사람들의 리스트 반환 (나 역시 상대를 팔로우하는지를 나타낼 것)
 
     @Override
     public ResponseEntity<?> followedList(Long toMemberId, Long loginId) {
