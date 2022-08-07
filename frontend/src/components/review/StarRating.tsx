@@ -1,15 +1,13 @@
-import React, { useState } from "react";
+import React from "react";
 
 const StarRating: React.FC<{
-  rateInit: number;
+  rate: number;
   rateChangeHandler: (star: number) => void;
-}> = ({ rateInit, rateChangeHandler }) => {
-  const [rate, setRate] = useState(rateInit);
+}> = ({ rate, rateChangeHandler }) => {
   const starArray = [1, 2, 3, 4, 5];
 
   const starHandler = (star: number, event: React.MouseEvent) => {
     event.preventDefault();
-    setRate(star);
     rateChangeHandler(star);
   };
 

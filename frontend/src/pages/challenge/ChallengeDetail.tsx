@@ -8,6 +8,7 @@ import ReviewForm from "../../components/review/ReviewForm";
 import ReviewList from "../../components/review/ReviewList";
 import StageList from "../../components/stage/StageList";
 import { fetchChallenge } from "../../lib/generalApi";
+import { challengeImgFetchAPI } from "../../lib/imgApi";
 import { challengeLike, isLoginFetchChallenge } from "../../lib/withTokenApi";
 import { ChallengeDetailState } from "../../store/challenge";
 import { reviewFetch } from "../../store/review";
@@ -16,6 +17,7 @@ import { RootState } from "../../store/store";
 const ChallengeDetail: React.FC = () => {
   const { id } = useParams();
   const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
+  const userId = useSelector((state: RootState) => state.auth.userInfo.id);
   const [isLoading, setIsLoading] = useState(true);
   const [loadedChallenge, setLoadedChallenge] =
     useState<ChallengeDetailState>();
@@ -47,13 +49,28 @@ const ChallengeDetail: React.FC = () => {
         // 로그인 한 경우
         isLoginFetchChallenge(Number(id))
           .then((res) => {
-            console.log(res);
             const challenge: ChallengeDetailState = {
               ...res,
+              img: "",
             };
-            setIsLoading(false);
             setLoadedChallenge(challenge);
-            dispatch(reviewFetch(challenge.reviewList));
+
+            challengeImgFetchAPI(challenge.id!)
+              .then((res) => {
+                setLoadedChallenge({
+                  ...challenge,
+                  img: res,
+                });
+                dispatch(reviewFetch(challenge.reviewList));
+              })
+              .catch((err) => {
+                setLoadedChallenge({
+                  ...challenge,
+                  img: "",
+                });
+                dispatch(reviewFetch(challenge.reviewList));
+              });
+            setIsLoading(false);
           })
           .catch((err) => {
             console.log(err);
@@ -61,20 +78,29 @@ const ChallengeDetail: React.FC = () => {
           });
       } else {
         // 로그인 안 한 경우
-        fetchChallenge(Number(id))
-          .then((res) => {
-            console.log(res);
-            const challenge: ChallengeDetailState = {
-              ...res,
-            };
-            setIsLoading(false);
-            setLoadedChallenge(challenge);
-            dispatch(reviewFetch(challenge.reviewList));
-          })
-          .catch((err) => {
-            console.log(err);
-            setIsLoading(false);
-          });
+        fetchChallenge(Number(id)).then((res) => {
+          const challenge: ChallengeDetailState = {
+            ...res,
+          };
+          setLoadedChallenge(challenge);
+          challengeImgFetchAPI(challenge.id!)
+            .then((res) => {
+              setLoadedChallenge({
+                ...challenge,
+                img: res,
+              });
+              dispatch(reviewFetch(challenge.reviewList));
+              setIsLoading(false);
+            })
+            .catch((err) => {
+              setLoadedChallenge({
+                ...challenge,
+                img: "",
+              });
+              dispatch(reviewFetch(challenge.reviewList));
+              setIsLoading(false);
+            });
+        });
       }
     }
   }, [id, isLoggedIn, dispatch]);
@@ -93,7 +119,6 @@ const ChallengeDetail: React.FC = () => {
           {loadedChallenge!.img && (
             <img src={loadedChallenge!.img} alt="challenge Img"></img>
           )}
-          <p>챌린지 취미들: {loadedChallenge!.name}</p>
           <p>챌린지 만든 사람: {loadedChallenge!.writer.nickname}</p>
           <p>챌린지 level: {loadedChallenge!.level}</p>
           {isLoggedIn === true && (
@@ -117,14 +142,17 @@ const ChallengeDetail: React.FC = () => {
           <HobbyList hobbies={loadedChallenge!.hobbyList} />
           <p>스테이지</p>
           <StageList stages={loadedChallenge!.stageList} />
-
-          <Link to={`/stage/${id}`}>
-            <button>스테이지 편집</button>
-          </Link>
-          <Link to={`/challenge/${id}/update`} state={loadedChallenge}>
-            <button>챌린지 수정</button>
-          </Link>
-          {id && <ChallengeDeleteBtn />}
+          {userId === loadedChallenge!.writer.id && (
+            <div>
+              <Link to={`/stage/${id}`}>
+                <button>스테이지 편집</button>
+              </Link>
+              <Link to={`/challenge/${id}/update`} state={loadedChallenge}>
+                <button>챌린지 수정</button>
+              </Link>
+              <ChallengeDeleteBtn />
+            </div>
+          )}
 
           {isLoggedIn && <ReviewForm />}
           <ReviewList reviews={reviews} />

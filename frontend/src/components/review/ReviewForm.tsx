@@ -35,8 +35,8 @@ const ReviewForm: React.FC = () => {
 
   const reviewSubmitHandler = (event: React.FormEvent) => {
     event.preventDefault();
-    if (rate === 0) {
-      alert("평점을 입력해주세요.");
+    if (rate === 0 || !content) {
+      alert("평점과 내용은 필수입니다.");
     } else {
       const reviewData = {
         rate: rate,
@@ -77,7 +77,7 @@ const ReviewForm: React.FC = () => {
             ref={contentInputRef}
           />
         </div>
-        <StarRating rateInit={0} rateChangeHandler={rateChangeHandler} />
+        <StarRating rate={rate} rateChangeHandler={rateChangeHandler} />
         <button type="button" onClick={reviewSubmitHandler}>
           Register
         </button>

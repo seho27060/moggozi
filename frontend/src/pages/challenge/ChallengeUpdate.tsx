@@ -1,9 +1,11 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
+import ChallengeImgForm from "../../components/challenge/ChallengeImgForm";
 import ChallengeUpdateForm from "../../components/challenge/ChallengeUpdateForm";
 import { fetchChallenge } from "../../lib/generalApi";
+import { challengeImgFetchAPI } from "../../lib/imgApi";
 import { isLoginFetchChallenge } from "../../lib/withTokenApi";
 import { ChallengeDetailState } from "../../store/challenge";
 import { RootState } from "../../store/store";
@@ -26,8 +28,21 @@ const ChallengeUpdate: React.FC = () => {
             const challenge: ChallengeDetailState = {
               ...res,
             };
-            setIsLoading(false);
             setLoadedChallenge(challenge);
+            challengeImgFetchAPI(challenge.id!)
+              .then((res) =>
+                setLoadedChallenge({
+                  ...challenge,
+                  img: res,
+                })
+              )
+              .catch((err) => {
+                setLoadedChallenge({
+                  ...challenge,
+                  img: "",
+                });
+              });
+            setIsLoading(false);
           })
           // console.log(res)
           .catch((err) => {
@@ -41,10 +56,22 @@ const ChallengeUpdate: React.FC = () => {
             const challenge: ChallengeDetailState = {
               ...res,
             };
-            setIsLoading(false);
             setLoadedChallenge(challenge);
+            challengeImgFetchAPI(challenge.id!)
+              .then((res) =>
+                setLoadedChallenge({
+                  ...challenge,
+                  img: res,
+                })
+              )
+              .catch((err) => {
+                setLoadedChallenge({
+                  ...challenge,
+                  img: "",
+                });
+              });
+            setIsLoading(false);
           })
-          // console.log(res)
           .catch((err) => {
             console.log(err);
             setIsLoading(false);
@@ -52,6 +79,13 @@ const ChallengeUpdate: React.FC = () => {
       }
     }
   }, [id, isLoggedIn, dispatch]);
+
+  const imgHandler = (url: string) => {
+    setLoadedChallenge({
+      ...loadedChallenge!,
+      img: url,
+    });
+  };
 
   return (
     <div>
@@ -62,7 +96,13 @@ const ChallengeUpdate: React.FC = () => {
         </section>
       )}
       {isLoading === false && (
-        <ChallengeUpdateForm challenge={loadedChallenge!}></ChallengeUpdateForm>
+        <div>
+          <ChallengeUpdateForm challenge={loadedChallenge!} />
+          <ChallengeImgForm
+            challengeImg={loadedChallenge!.img || ""}
+            imgHandler={imgHandler}
+          />
+        </div>
       )}
     </div>
   );
