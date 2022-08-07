@@ -28,10 +28,10 @@ public class StageJoinServiceImpl implements StageJoinService{
 
     @Transactional
     @Override
-    public Long joinStage(StageJoinRequestDto stageJoinRequestDto) {
-        Member member = memberRepository.getById(stageJoinRequestDto.getMember_id());
+    public Long joinStage(Long member_id, StageJoinRequestDto stageJoinRequestDto) {
+        Member member = memberRepository.getById(member_id);
         if(member.getId() == null){
-            new MessageResponse("해당 유저가 없습니다. id=" + member.getId());
+            new MessageResponse("해당 유저가 없습니다. id=" + member_id);
             return null;
         }
         Stage stage = stageRepository.getById(stageJoinRequestDto.getStage_id());
@@ -44,8 +44,8 @@ public class StageJoinServiceImpl implements StageJoinService{
 
     @Transactional
     @Override
-    public Long completeStage(StageCompleteDto stageCompleteDto) {
-        StageUser entity = stageUserRepository.findByMember_idAndStage_id(stageCompleteDto.getMember_id(), stageCompleteDto.getStage_id()).orElseThrow(() -> new IllegalArgumentException("스테이지에 참여하지 않았습니다. id=" + stageCompleteDto.getId()));
+    public Long completeStage(Long member_id, StageCompleteDto stageCompleteDto) {
+        StageUser entity = stageUserRepository.findByMember_idAndStage_id(member_id, stageCompleteDto.getStage_id()).orElseThrow(() -> new IllegalArgumentException("스테이지에 참여하지 않았습니다. id=" + member_id));
 
         entity.complete();
 

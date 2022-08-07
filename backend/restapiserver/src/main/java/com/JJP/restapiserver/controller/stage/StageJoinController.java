@@ -19,15 +19,15 @@ public class StageJoinController {
     private final JwtUtils jwtUtils;
 
     @PostMapping
-    public Long join(@RequestBody StageJoinRequestDto stageJoinRequestDto){
-
-        return stageJoinService.joinStage(stageJoinRequestDto);
+    public Long join(@RequestBody StageJoinRequestDto stageJoinRequestDto, HttpServletRequest request){
+        Long member_id = jwtUtils.getUserIdFromJwtToken(request.getHeader("Authorization"));
+        return stageJoinService.joinStage(member_id, stageJoinRequestDto);
     }
 
     @PutMapping
-    public Long complete(@RequestBody StageCompleteDto stageCompleteDto){
-
-        return stageJoinService.completeStage(stageCompleteDto);
+    public Long complete(@RequestBody StageCompleteDto stageCompleteDto, HttpServletRequest request){
+        Long member_id = jwtUtils.getUserIdFromJwtToken(request.getHeader("Authorization"));
+        return stageJoinService.completeStage(member_id, stageCompleteDto);
     }
 
     @DeleteMapping

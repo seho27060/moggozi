@@ -8,8 +8,8 @@ import com.JJP.restapiserver.domain.dto.stage.StageResponseDto;
 import java.util.List;
 
 public interface StageJoinService {
-    Long joinStage(StageJoinRequestDto stageJoinRequestDto);
-    Long completeStage(StageCompleteDto stageCompleteDto);
+    Long joinStage(Long member_id, StageJoinRequestDto stageJoinRequestDto);
+    Long completeStage(Long member_id, StageCompleteDto stageCompleteDto);
     Long joinedStageNum(Long member_id);
 
     List<StageResponseDto> joinedStageList8(Long member_id);
