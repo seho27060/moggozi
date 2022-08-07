@@ -15,6 +15,8 @@ import com.JJP.restapiserver.service.member.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.oauth2.client.web.server.WebSessionOAuth2ServerAuthorizationRequestRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +28,8 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
 @Component
 @RequiredArgsConstructor
 public class EchoHandler extends TextWebSocketHandler {
+
+    private final Logger logger = LoggerFactory.getLogger(EchoHandler.class);
 
     private final MemberService memberService;
 
@@ -40,19 +44,30 @@ public class EchoHandler extends TextWebSocketHandler {
 //    Map<Long, WebSocketSession> userSessionsMap = new HashMap<>();
     Map<WebSocketSession, Long> userSessionsMap = new HashMap<>();
 
+    /// 1. 연결을 할때마다 이루어져야할 동작
+    // 맨 처음에 var socket = new websokcket("url");
+    // 이 뒤에 내가 누구인지를 나타내는 register 타입을 담은 메세지를 하나 보냄.
     //서버에 접속이 성공 했을때
+
+    //
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-        System.out.println("-------------연결 시작--------");
+        logger.debug("-------------연결 시작--------");
         sessions.add(session);
         userSessionsMap.put(session , -1L);
-        System.out.println("-----------연결 성공--------");
+        logger.debug("-----------연결 성공--------");
     }
 
     //소켓에 메세지를 보냈을때
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-        System.out.println("-----------메세지 처리 시작----------");
+        Long session_val = userSessionsMap.get(session);
+        if(session_val == -1L){
+            logger.debug("-----------메세지 처리 시작 ----------");
+        }
+        else {
+            logger.debug("-----------메세지 처리 시작 " + session_val + "  ----------");
+        }
         String strJson = message.getPayload();
         JSONObject jsonObj = new JSONObject(strJson);
 
@@ -65,7 +80,7 @@ public class EchoHandler extends TextWebSocketHandler {
             String type = jsonObj.getString("type");
             Long index = Long.parseLong(jsonObj.getString("index"));
 
-            if (userSessionsMap.get(session) == -1L && type.equals("register")) {
+            if (session_val == -1L && type.equals("register")) {
                 userSessionsMap.put(session, senderId);
                 return;
             }
@@ -101,21 +116,20 @@ public class EchoHandler extends TextWebSocketHandler {
                     saveAndSend(senderId, receiverId, type, index, msg, receiver);
                 }
                 else{
-                    System.out.println("메세지가 비었습니다.");
+                    logger.debug("메세지가 비었습니다.");
                 }
             }
-            System.out.println("----------------메세지 처리 끝---------------------");
+            logger.debug("----------------메세지 처리 끝---------------------");
         }
     }
 
     //연결 해제될때
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
-        System.out.println("------------연결 종료 시작-----------");
-        System.out.println(userSessionsMap.get(session) + " 님의 연결이 끊어집니다.");
+        logger.debug(userSessionsMap.get(session) + " 님의 연결이 끊어집니다.");
         sessions.remove(session);
         userSessionsMap.remove(session);
-        System.out.println("------------연결 종료 -----------");
+        logger.debug("------------연결 종료 -----------");
     }
 
     private void saveAndSend(Long senderId, Long receiverId, String type, Long index,
