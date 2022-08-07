@@ -8,6 +8,7 @@ import ReviewForm from "../../components/review/ReviewForm";
 import ReviewList from "../../components/review/ReviewList";
 import StageList from "../../components/stage/StageList";
 import { fetchChallenge } from "../../lib/generalApi";
+import { challengeImgFetchAPI } from "../../lib/imgApi";
 import { challengeLike, isLoginFetchChallenge } from "../../lib/withTokenApi";
 import { ChallengeDetailState } from "../../store/challenge";
 import { reviewFetch } from "../../store/review";
@@ -52,7 +53,19 @@ const ChallengeDetail: React.FC = () => {
               ...res,
             };
             setIsLoading(false);
-            setLoadedChallenge(challenge);
+            challengeImgFetchAPI(challenge.id!)
+              .then((res) =>
+                setLoadedChallenge({
+                  ...challenge,
+                  img: res,
+                })
+              )
+              .catch((err) => {
+                setLoadedChallenge({
+                  ...challenge,
+                  img: "",
+                });
+              });
             dispatch(reviewFetch(challenge.reviewList));
           })
           .catch((err) => {
@@ -68,8 +81,19 @@ const ChallengeDetail: React.FC = () => {
               ...res,
             };
             setIsLoading(false);
-            setLoadedChallenge(challenge);
-            dispatch(reviewFetch(challenge.reviewList));
+            challengeImgFetchAPI(challenge.id!)
+              .then((res) =>
+                setLoadedChallenge({
+                  ...challenge,
+                  img: res,
+                })
+              )
+              .catch((err) => {
+                setLoadedChallenge({
+                  ...challenge,
+                  img: "",
+                });
+              });
           })
           .catch((err) => {
             console.log(err);

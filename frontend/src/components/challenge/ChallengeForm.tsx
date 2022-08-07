@@ -8,7 +8,6 @@ import HobbySetList from "./HobbySetList";
 
 const ChallengeForm: React.FC = () => {
   const nameInputRef = useRef<HTMLInputElement>(null);
-  const imgInputRef = useRef<HTMLInputElement>(null);
   const descriptionInputRef = useRef<HTMLInputElement>(null);
   const contentInputRef = useRef<HTMLTextAreaElement>(null);
   const levelSelectRef = useRef<HTMLSelectElement>(null);
@@ -24,15 +23,14 @@ const ChallengeForm: React.FC = () => {
       // 취미가 없을 땐 전송되지 않도록 한다.
     } else {
       const enteredName = nameInputRef.current!.value;
-      const enteredImg = imgInputRef.current!.value;
       const enteredDescription = descriptionInputRef.current!.value;
       const enteredContent = contentInputRef.current!.value;
       const enteredLevel = levelSelectRef.current!.value;
 
       const challengeData = {
         name: enteredName,
+        img: "",
         content: enteredContent,
-        img: enteredImg,
         level: Number(enteredLevel),
         description: enteredDescription,
         hobbyList: hobbyList,
@@ -57,9 +55,6 @@ const ChallengeForm: React.FC = () => {
       <form>
         <label htmlFor="name">챌린지 이름: </label>
         <input type="text" id="name" ref={nameInputRef} />
-        <br />
-        <label htmlFor="img">챌린지 이미지 등록: </label>
-        <input type="text" id="img" ref={imgInputRef} />
         <br />
         <label htmlFor="description">챌린지 간단 설명: </label>
         <input type="text" id="description" ref={descriptionInputRef} />

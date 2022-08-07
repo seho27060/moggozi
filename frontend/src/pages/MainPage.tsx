@@ -6,6 +6,7 @@ import { ChallengeItemState } from "../store/challenge";
 import { useSelector } from "react-redux";
 import { RootState } from "../store/store";
 import { fetchChallengeRankList } from "../lib/generalApi";
+import { challengeImgFetchAPI } from "../lib/imgApi";
 
 const MainPage: React.FC = () => {
   const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
@@ -13,6 +14,24 @@ const MainPage: React.FC = () => {
   const [loadedChallengeRankList, setLoadedChallengeRankList] = useState<
     ChallengeItemState[]
   >([]);
+
+  async function addChallenge(
+    challenges: ChallengeItemState[],
+    newChallenges: ChallengeItemState[]
+  ) {
+    for (const challenge of challenges) {
+      await challengeImgFetchAPI(challenge.id!)
+        .then((challenges) => {
+          challenge.img = challenges;
+          newChallenges.push(challenge);
+        })
+        .catch((err) => {
+          challenge.img = "";
+          newChallenges.push(challenge);
+        });
+    }
+  }
+
   useEffect(() => {
     setIsLoading(true);
 
@@ -21,17 +40,11 @@ const MainPage: React.FC = () => {
       isLoginFetchChallengeRankList()
         .then((res) => {
           const challengeRankList: ChallengeItemState[] = [];
-
-          for (const key in res) {
-            const challenge: ChallengeItemState = {
-              ...res[key],
-            };
-            challengeRankList.push(challenge);
-          }
-          setIsLoading(false);
-          setLoadedChallengeRankList(challengeRankList);
+          addChallenge(res, challengeRankList).then(() => {
+            setLoadedChallengeRankList(challengeRankList);
+            setIsLoading(false);
+          });
         })
-        // console.log(res)
         .catch((err) => {
           console.log(err);
           setIsLoading(false);
@@ -41,15 +54,10 @@ const MainPage: React.FC = () => {
       fetchChallengeRankList()
         .then((res) => {
           const challengeRankList: ChallengeItemState[] = [];
-
-          for (const key in res) {
-            const challenge: ChallengeItemState = {
-              ...res[key],
-            };
-            challengeRankList.push(challenge);
-          }
-          setIsLoading(false);
-          setLoadedChallengeRankList(challengeRankList);
+          addChallenge(res, challengeRankList).then(() => {
+            setLoadedChallengeRankList(challengeRankList);
+            setIsLoading(false);
+          });
         })
         // console.log(res)
         .catch((err) => {
