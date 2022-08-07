@@ -31,7 +31,7 @@ public class AlertController {
 
     private final AlertRepository alertRepository;
 
-    private JwtUtils jwtUtils;
+    private final JwtUtils jwtUtils;
     @GetMapping("/recent")
     public ResponseEntity getRecentAlerts(HttpServletRequest request){
         Long member_id = jwtUtils.getUserIdFromJwtToken(request.getHeader("Authorization"));
