@@ -10,13 +10,9 @@ import {
 import React, { ChangeEvent, useState } from "react";
 
 const FirebaseImgText: React.FC = () => {
-  //const imgRef = ref(storageService, "/");
-  //uploadBytes(주소, '들어갈 파일');
-  //getDownloadURL(주소)
-  // 비동기 처리
-  //deleteObject(주소)
   const [file, setFile] = useState<File>(); // 여러 개면 FileList 사용!
   const [images, setImages] = useState<{ id: number; url: string }[]>([]);
+  const [fileImage, setFileImage] = useState("");
 
   const onLoadHandler = (event: ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
@@ -25,7 +21,9 @@ const FirebaseImgText: React.FC = () => {
     if (fileList) {
       console.log(fileList[0]);
       setFile(fileList[0]);
+      setFileImage(URL.createObjectURL(fileList[0]));
     }
+
     // 파일 용량 체크
     // if(files.size > FILE_SIZE_MAX_LIMIT) {
     //   target.value = '';
@@ -40,7 +38,7 @@ const FirebaseImgText: React.FC = () => {
     const listRef = ref(storageService, target);
     listAll(listRef)
       .then((res) => {
-        return Number(res.items.at(-1)?.name); // 마지막 요소의 id 읽기
+        return Number(res.items.at(-1)?.name) || 1; // 마지막 요소의 id 읽기, 없다면 1부터
       })
       .then((imagId) => {
         const imgRef = ref(storageService, `${target}/${imagId + 1}`); // 맨 마지막 id에 1을 더해 넣어주기
@@ -51,23 +49,26 @@ const FirebaseImgText: React.FC = () => {
   // 여러 사진 한 번에 읽어오기
   const readHandler = (event: React.MouseEvent, target: string) => {
     event.preventDefault();
-    let imgLength = 0;
+
     const readURL = (ref: StorageReference, imgId: number) => {
       getDownloadURL(ref).then((res) => {
         imgList.push({ id: imgId, url: res });
         if (imgLength === imgList.length) {
           imgList.sort(function (a, b) {
+            // id로 정렬
             return a.id - b.id;
           });
-          setImages(imgList);
+          setImages(imgList); // images에 담기
         }
       });
     };
 
+    let imgLength = 0; // 이미지 개수 찾기
+    const imgList: { id: number; url: string }[] = []; // 순서대로 이미지 값 넣기
+
     setImages([]); // 이미지 초기화
     const listRef = ref(storageService, target);
 
-    const imgList: { id: number; url: string }[] = [];
     listAll(listRef).then((res) => {
       // id 폴더 안의 이미지들 모두 읽어오기
       imgLength = Number(res.items.length); // 마지막 요소의 id 읽기
@@ -84,10 +85,17 @@ const FirebaseImgText: React.FC = () => {
     deleteObject(imgRef);
   };
 
+  // 사진 몽땅 제거
   const deleteAllHandler = (event: React.MouseEvent, target: string) => {
     event.preventDefault();
-    const imgRef = ref(storageService, target);
-    deleteObject(imgRef);
+
+    const listRef = ref(storageService, target);
+    listAll(listRef).then((res) => {
+      // id 폴더 안의 이미지들 모두 읽어오기
+      res.items.forEach((itemRef) => {
+        deleteObject(itemRef);
+      });
+    });
   };
 
   return (
@@ -100,6 +108,10 @@ const FirebaseImgText: React.FC = () => {
         </button>
       </form>
       <button onClick={(e) => readHandler(e, "challenge/1")}>가져오기</button>
+      <p>이미지 미리보기</p>
+      <img src={fileImage} alt="img" />
+
+      <p>이미지 목록</p>
       <ul>
         {images.map((item) => (
           <li key={item.id}>

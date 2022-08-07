@@ -1,5 +1,3 @@
-import LogoutBtn from "../components/accounts/LogoutBtn";
-
 import ChallengeList from "../components/challenge/ChallengeList";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -8,7 +6,6 @@ import { ChallengeItemState } from "../store/challenge";
 import { useSelector } from "react-redux";
 import { RootState } from "../store/store";
 import { fetchChallengeRankList } from "../lib/generalApi";
-import FirebaseImgText from "../components/FirebaseImgTest";
 
 const MainPage: React.FC = () => {
   const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
@@ -65,8 +62,6 @@ const MainPage: React.FC = () => {
   return (
     <div>
       MainPage
-      <FirebaseImgText />
-      <LogoutBtn />
       <Link to={`/challenge/new`}>
         <button>챌린지 생성</button>
       </Link>
