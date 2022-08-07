@@ -9,6 +9,8 @@ import { followApi } from "../../lib/withTokenApi";
 
 import MypageFollow from "../../components/accounts/MypageFollow";
 
+import styles from "./UserPage.module.scss";
+
 function UserPage() {
   const userId = Number(useParams().id);
   // console.log(userId)
@@ -20,7 +22,7 @@ function UserPage() {
   const [introduce, setIntroduce] = useState("");
   const [userImg, setUserImg] = useState("");
   const [isPrivate, setIsPrivate] = useState(false);
-  const [followedCnt, setFollowedCnt ] = useState(0);
+  const [followedCnt, setFollowedCnt] = useState(0);
   const [followingCnt, setFollowingCnt] = useState(0);
   const [followState, setFollowState] = useState(false);
 
@@ -45,34 +47,80 @@ function UserPage() {
     setFollowState(!followState);
     followApi(userId)
       .then((res) => {
-        console.log(res)
-      }).catch((err) => {
-        console.log(err)
+        console.log(res);
       })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   return (
     <div>
-      <Link to={"/account/userUpdate"}>회원정보 수정</Link>
-      UsersPage
-      <Link to={``}>
-        <button>챌린지 생성</button>
-      </Link>
-      <ul>
-        <li>닉네임 : {nickname}</li>
-        <li>자기소개 : {introduce}</li>
-        <li>프로필사진 : {userImg}</li>
-      </ul>
-      <MypageFollow followedCnt={followedCnt} followingCnt={followingCnt} />
-      {loginData.isLoggedIn ? (
-        <div>
-          {loginId === userId ? ("") : (<button onClick={followHandler}> {followState ? "언팔로우" : "팔로우"}
-            </button>
-          )}
-        </div>
-      ) : (
-        <div></div>
-      )}
+      <div style={{ margin: "20px" }}>
+        <a href="#/">공유버튼</a>
+      </div>
+      <div className={styles.info}>
+        {loginId === userId ? (
+          <Link
+            to={"/account/userUpdate"}
+            className={styles.editImg}
+            style={{
+              backgroundImage: `url(${userImg})`,
+              backgroundPosition: "center",
+              backgroundSize: "cover",
+              backgroundRepeat: "no-repeat",
+            }}
+          >
+            <div className={styles.edit}></div>
+          </Link>
+        ) : (
+          <div>
+            {userImg ? (
+              <div
+                className={styles.editImg}
+                style={{
+                  backgroundImage: `url(${userImg})`,
+                  backgroundPosition: "center",
+                  backgroundSize: "cover",
+                  backgroundRepeat: "no-repeat",
+                }}
+              ></div>
+            ) : (
+              <div
+                className={styles.editImg}
+                style={{
+                  backgroundImage: `url(https://i.pinimg.com/236x/f2/a1/d6/f2a1d6d87b1231ce39710e6ba1c1e129.jpg)`,
+                  backgroundPosition: "center",
+                  backgroundSize: "cover",
+                  backgroundRepeat: "no-repeat",
+                }}
+              ></div>
+            )}
+          </div>
+        )}
+
+        <div className={styles.nickname}>{nickname}</div>
+        {introduce ? (
+          <div className={styles.introduce}>{introduce}</div>
+        ) : (
+          <div></div>
+        )}
+        <MypageFollow followedCnt={followedCnt} followingCnt={followingCnt} />
+        {loginData.isLoggedIn ? (
+          <div>
+            {loginId === userId ? (
+              ""
+            ) : (
+              <button onClick={followHandler} className={styles.followButton}> 
+                {" "}
+                {followState ? "♥ 언팔로우" : "♥ 팔로우"}
+              </button>
+            )}
+          </div>
+        ) : (
+          <div></div>
+        )}
+      </div>
       {isPrivate ? <div>블러 처리 가림막</div> : <div>보여주기</div>}
     </div>
   );

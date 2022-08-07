@@ -5,11 +5,12 @@ import { useParams } from "react-router-dom";
 
 import { followedApi, followingApi } from "../../lib/withTokenApi";
 import { followed, following } from "../../store/auth";
-import styles from "./MypageFollow.module.scss";
 
 import Modal from "../ui/FollowModal";
 import FollowerList from "./FollowerList";
 import FollowingList from "./FollowingList";
+
+import styles from "./MypageFollow.module.scss";
 
 interface Props {
   followedCnt: number;
@@ -62,9 +63,18 @@ const MypageFollow = (props: Props) => {
   }, [toId, userId]);
 
   return (
-    <div className={styles.margin}>
-      <span onClick={followedModalHandler}>팔로워: {followedCnt}</span> |
-      <span onClick={followingModalHandler}>팔로잉: {followingCnt}</span>
+    <div>
+      <div>
+        <span onClick={followedModalHandler} className={styles.follow}>
+          팔로워{" "}
+        </span>
+        <span className={styles.cnt} style={{ marginRight: "10px"}}>{followedCnt}</span>{" "}
+        <span className={styles.line}></span>
+        <span onClick={followingModalHandler} className={styles.follow} style={{ marginLeft: "10px"}}>
+        {" "}팔로잉{" "}
+        </span>
+        <span className={styles.cnt}> {followingCnt}</span>
+      </div>
       <Modal open={followedOpenModal} close={CloseModalHandler} header="팔로워">
         {!!followedInfo.length ? (
           <div>
@@ -88,16 +98,21 @@ const MypageFollow = (props: Props) => {
         close={CloseModalHandler}
         header="팔로잉"
       >
-        {!!followingInfo.length ?
-        <div>{followingInfo.map((object) => (
-          <FollowingList
-            key={object.id}
-            id={object.id}
-            userImg={object.userImg}
-            nickname={object.nickname}
-            close={CloseModalHandler}
-          />
-        ))}</div> : "팔로잉이 없습니다."}
+        {!!followingInfo.length ? (
+          <div>
+            {followingInfo.map((object) => (
+              <FollowingList
+                key={object.id}
+                id={object.id}
+                userImg={object.userImg}
+                nickname={object.nickname}
+                close={CloseModalHandler}
+              />
+            ))}
+          </div>
+        ) : (
+          "팔로잉이 없습니다."
+        )}
       </Modal>
     </div>
   );
