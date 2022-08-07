@@ -29,8 +29,13 @@ export const checkNickname = async (nickname: string) => {
 };
 
 export const passwordReissue = async (option: object) => {
-    const { data }  = await generalApi.post('/user/resetpw', option)
+    const { data } = await generalApi.post('/user/resetpw', option)
     return data
+}
+
+export const otheruserDetail = async (userId: number, loginId: number | null) => {
+  const { data } = await generalApi.get(`/user/profile/${userId}/${loginId}`)
+  return data
 }
 
 // 챌린지

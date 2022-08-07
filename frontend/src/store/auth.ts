@@ -33,7 +33,7 @@ const initialToken = sessionStorage.getItem("accessToken");
 
 const initialAuthState: UserState = {
   userInfo: {
-    id: null,
+    id: 0,
     nickname: null,
     img: "",
   },

@@ -11,14 +11,18 @@ import Modal from "../ui/FollowModal";
 import FollowerList from "./FollowerList";
 import FollowingList from "./FollowingList";
 
-const MypageFollow = () => {
+interface Props {
+  followedCnt: number;
+  followingCnt: number;
+}
+
+const MypageFollow = (props: Props) => {
+  const { followedCnt, followingCnt } = props;
+
   const userId = Number(
     useSelector((state: RootState) => state.auth.userInfo.id)
   );
   const toId = Number(useParams().id);
-
-  const [followedCnt, setFollowedCnt] = useState(0);
-  const [followingCnt, setFollowingCnt] = useState(0);
 
   const [followedOpenModal, setFollowedOpenModal] = useState(false);
   const [followingOpenModal, setFollowingOpenModal] = useState(false);
@@ -42,7 +46,6 @@ const MypageFollow = () => {
   useEffect(() => {
     followedApi(toId, userId)
       .then((res) => {
-        setFollowedCnt(res.totalCount);
         setFollowedInfo(res.memberInfoList);
       })
       .catch((err) => {
@@ -51,7 +54,6 @@ const MypageFollow = () => {
 
     followingApi(toId)
       .then((res) => {
-        setFollowingCnt(res.totalCount);
         setFollowingInfo(res.memberInfoList);
       })
       .catch((err) => {
