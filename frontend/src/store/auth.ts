@@ -49,8 +49,7 @@ export const authSlice = createSlice({
   reducers: {
     // 리덕스가 제공하는 현재 상태를 state 인자로 받음. // "전달받은" 인자는 action.payload
     login: (state, action) => {
-      // console.log("페이로드");
-      // console.log(action.payload);
+      // console.log(!!action.payload.accessToken);
       state.userInfo = {
         id: action.payload.id,
         nickname: action.payload.nickname,
@@ -71,7 +70,7 @@ export const authSlice = createSlice({
         nickname: action.payload.nickname,
         img: action.payload.userImg,
       };
-      state.isLoggedIn = !!initialToken;
+      // state.isLoggedIn = !!initialToken;
     },
     kakaoLogin: (state, action) => {},
     // 유저이미지 불러오기
