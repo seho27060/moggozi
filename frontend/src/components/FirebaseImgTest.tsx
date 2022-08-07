@@ -4,8 +4,9 @@ import {
   uploadBytes,
   getDownloadURL,
   deleteObject,
+  listAll,
 } from "firebase/storage";
-import { ChangeEvent, FormEvent, useState } from "react";
+import React, { ChangeEvent, FormEvent, useState } from "react";
 
 const FirebaseImgText: React.FC = () => {
   //const imgRef = ref(storageService, "/");
@@ -30,12 +31,28 @@ const FirebaseImgText: React.FC = () => {
     //   return;
     // }
   };
+  let num = 0;
   const submitHandler = async (event: FormEvent) => {
     event.preventDefault();
-
-    const imgRef = ref(storageService, "a");
+    num += 1;
+    const imgRef = ref(storageService, `a/${num}`);
     const response = await uploadBytes(imgRef, file!);
   };
+
+  // 배열로 읽어오기 완료
+  const readHandler = (event: React.MouseEvent) => {
+    event.preventDefault();
+    const listRef = ref(storageService, "a");
+    listAll(listRef).then((res) => {
+      res.items.forEach((itemRef) => {
+        console.log(itemRef.name);
+        const url = getDownloadURL(itemRef).then((res) => {
+          console.log(res);
+        });
+      });
+    });
+  };
+
   return (
     <div>
       <form>
@@ -45,6 +62,7 @@ const FirebaseImgText: React.FC = () => {
           생성
         </button>
       </form>
+      <button onClick={readHandler}>가져오기</button>
     </div>
   );
 };
