@@ -41,7 +41,7 @@ public class StageJoinServiceImpl implements StageJoinService{
         }
         if(!stageUserRepository.findByMember_idAndStage_id(member.getId(), stage.getId()).isEmpty()){
             System.out.println("already joined");
-            return Long.valueOf(9999);
+            return Long.valueOf(-1);
         }
         return stageUserRepository.save(stageJoinRequestDto.toEntity(member, stage)).getId();
     }
