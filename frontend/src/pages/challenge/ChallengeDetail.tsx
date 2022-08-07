@@ -51,22 +51,26 @@ const ChallengeDetail: React.FC = () => {
             console.log(res);
             const challenge: ChallengeDetailState = {
               ...res,
+              img: "",
             };
-            setIsLoading(false);
+            setLoadedChallenge(challenge);
+
             challengeImgFetchAPI(challenge.id!)
-              .then((res) =>
+              .then((res) => {
                 setLoadedChallenge({
                   ...challenge,
                   img: res,
-                })
-              )
+                });
+                dispatch(reviewFetch(challenge.reviewList));
+              })
               .catch((err) => {
                 setLoadedChallenge({
                   ...challenge,
                   img: "",
                 });
+                dispatch(reviewFetch(challenge.reviewList));
               });
-            dispatch(reviewFetch(challenge.reviewList));
+            setIsLoading(false);
           })
           .catch((err) => {
             console.log(err);
@@ -74,31 +78,29 @@ const ChallengeDetail: React.FC = () => {
           });
       } else {
         // 로그인 안 한 경우
-        fetchChallenge(Number(id))
-          .then((res) => {
-            console.log(res);
-            const challenge: ChallengeDetailState = {
-              ...res,
-            };
-            setIsLoading(false);
-            challengeImgFetchAPI(challenge.id!)
-              .then((res) =>
-                setLoadedChallenge({
-                  ...challenge,
-                  img: res,
-                })
-              )
-              .catch((err) => {
-                setLoadedChallenge({
-                  ...challenge,
-                  img: "",
-                });
+        fetchChallenge(Number(id)).then((res) => {
+          console.log(res);
+          const challenge: ChallengeDetailState = {
+            ...res,
+          };
+          setIsLoading(false);
+          challengeImgFetchAPI(challenge.id!)
+            .then((res) => {
+              setLoadedChallenge({
+                ...challenge,
+                img: res,
               });
-          })
-          .catch((err) => {
-            console.log(err);
-            setIsLoading(false);
-          });
+              dispatch(reviewFetch(challenge.reviewList));
+            })
+            .catch((err) => {
+              setLoadedChallenge({
+                ...challenge,
+                img: "",
+              });
+              dispatch(reviewFetch(challenge.reviewList));
+            });
+          setIsLoading(false);
+        });
       }
     }
   }, [id, isLoggedIn, dispatch]);
