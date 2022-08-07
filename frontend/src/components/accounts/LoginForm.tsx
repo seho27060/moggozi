@@ -10,9 +10,9 @@ import Modal from "../ui/Modal";
 
 import logo from "../../asset/moggo.png";
 import style from "./LoginForm.module.scss";
-import facebook from "../../asset/facebook.svg"
-import kakao from "../../asset/kakao.svg"
-import naver from "../../asset/naver.svg"
+import facebook from "../../asset/facebook.svg";
+import kakao from "../../asset/kakao.svg";
+import naver from "../../asset/naver.svg";
 
 const LoginForm: React.FC = () => {
   const dispatch = useDispatch();
@@ -61,12 +61,12 @@ const LoginForm: React.FC = () => {
         })
         .catch((err) => {
           console.log(err);
-          // if (err.response.data.message === "Error: The user doesn't exist") {
-          //   setOverlapModalOpen(true);
-          // } else {
-          //   setLoginModalOpen(true);
-          //   console.log(err);
-          // }
+          if (err.response.data.message === "Error: The user doesn't exist") {
+            setOverlapModalOpen(true);
+          } else {
+            setLoginModalOpen(true);
+            console.log(err);
+          }
         });
     }
   }
@@ -88,7 +88,13 @@ const LoginForm: React.FC = () => {
     <div>
       <div className={style.loginForm}>
         <div className={style.logoImg}>
-          <img src={logo} alt="logo" onClick={() => {navigate("/")}}/>
+          <img
+            src={logo}
+            alt="logo"
+            onClick={() => {
+              navigate("/");
+            }}
+          />
         </div>
         <form onSubmit={loginHandler}>
           <input
@@ -145,9 +151,15 @@ const LoginForm: React.FC = () => {
             </Modal>
           </React.Fragment>
           <div className={style.socialLink}>
-            <a href="https://www.facebook.com"><img src={facebook} alt="facebook" /></a>
-            <a href="https://www.kakao.com"><img src={kakao} alt="kakao" /></a>
-            <a href="https://www.naver.com"><img src={naver} alt="naver" /></a>
+            <a href="https://www.facebook.com">
+              <img src={facebook} alt="facebook" />
+            </a>
+            <a href="https://www.kakao.com">
+              <img src={kakao} alt="kakao" />
+            </a>
+            <a href="https://www.naver.com">
+              <img src={naver} alt="naver" />
+            </a>
           </div>
         </div>
       </div>

@@ -1,5 +1,3 @@
-@use "../../styles/mixin.scss" as mixin;
-
 .modal {
   display: none;
   position: fixed;
@@ -29,19 +27,18 @@
       header {
         position: relative;
         padding: 16px 64px 16px 16px;
-        background-color: RGB(195, 174, 255);
+        background-color: #f1f1f1;
         font-weight: 700;
-        color: #fff;
 
         button {
           position: absolute;
-          top: 12px;
+          top: 15px;
           right: 15px;
           width: 30px;
           font-size: 21px;
           font-weight: 700;
           text-align: center;
-          color: rgb(255, 255, 255);
+          color: #999;
           background-color: transparent;
         }
       }
@@ -59,7 +56,7 @@
         button {
           padding: 6px 12px;
           color: #fff;
-          background-color: mixin.$mainColor;
+          background-color: #6c757d;
           border-radius: 5px;
           font-size: 13px;
         }
