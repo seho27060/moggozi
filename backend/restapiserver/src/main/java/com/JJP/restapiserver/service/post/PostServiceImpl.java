@@ -5,6 +5,7 @@ import com.JJP.restapiserver.domain.dto.post.PostSaveRequestDto;
 import com.JJP.restapiserver.domain.dto.post.PostUpdateRequestDto;
 import com.JJP.restapiserver.domain.entity.stage.Post;
 import com.JJP.restapiserver.repository.member.MemberRepository;
+import com.JJP.restapiserver.repository.stage.PostLikeRepository;
 import com.JJP.restapiserver.repository.stage.PostRepository;
 import com.JJP.restapiserver.repository.stage.StageRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +23,9 @@ public class PostServiceImpl implements PostService {
     private final MemberRepository memberRepository;
     private final StageRepository stageRepository;
 
+    private final PostLikeRepository postLikeRepository;
+
+
     @Transactional
     @Override
     public PostResponseDto savePost(PostSaveRequestDto postSaveRequestDto) {
@@ -36,8 +40,12 @@ public class PostServiceImpl implements PostService {
         Post entity = postRepository.findById(post_id).orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + post_id));
 
         entity.update(postUpdateRequestDto.getTitle(), postUpdateRequestDto.getContent(), postUpdateRequestDto.getPostImg());
-
-        return new PostResponseDto(entity);
+        PostResponseDto postResponseDto= new PostResponseDto(entity);
+        if(postLikeRepository.findByPost_idAndMember_id(postResponseDto.getId(), postResponseDto.getWriter().getId()).isPresent())
+        {
+            postResponseDto.setLiked(true);
+        }
+        return postResponseDto;
     }
 
     @Override
@@ -54,7 +62,12 @@ public class PostServiceImpl implements PostService {
         for(int i = 0; i < postList.size(); i++)
         {
             Post post = postList.get(i);
-            postResponseDtoList.add(new PostResponseDto(post));
+            PostResponseDto postResponseDto = new PostResponseDto(post);
+            if(postLikeRepository.findByPost_idAndMember_id(postResponseDto.getId(), postResponseDto.getWriter().getId()).isPresent())
+            {
+                postResponseDto.setLiked(true);
+            }
+            postResponseDtoList.add(postResponseDto);
         }
         return postResponseDtoList;
     }
@@ -72,7 +85,12 @@ public class PostServiceImpl implements PostService {
         {
             for(Post post : postList)
             {
-                postResponseDtoList.add(new PostResponseDto(post));
+                PostResponseDto postResponseDto = new PostResponseDto(post);
+                if(postLikeRepository.findByPost_idAndMember_id(postResponseDto.getId(), postResponseDto.getWriter().getId()).isPresent())
+                {
+                    postResponseDto.setLiked(true);
+                }
+                postResponseDtoList.add(postResponseDto);
             }
         }
         return postResponseDtoList;
@@ -86,7 +104,12 @@ public class PostServiceImpl implements PostService {
         for(int i = 0; i < postList.size(); i++)
         {
             Post post = postList.get(i);
-            postResponseDtoList.add(new PostResponseDto(post));
+            PostResponseDto postResponseDto = new PostResponseDto(post);
+            if(postLikeRepository.findByPost_idAndMember_id(postResponseDto.getId(), postResponseDto.getWriter().getId()).isPresent())
+            {
+                postResponseDto.setLiked(true);
+            }
+            postResponseDtoList.add(postResponseDto);
         }
         return postResponseDtoList;
     }

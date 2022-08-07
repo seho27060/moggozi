@@ -23,6 +23,9 @@ public class PostResponseDto {
 
     private Writer writer;
 
+    private boolean isLiked;
+
+    private int likeNum;
     private LocalDateTime createdTime;
 
     private LocalDateTime modifiedTime;
@@ -33,6 +36,11 @@ public class PostResponseDto {
         this.content = post.getContent();
         this.postImg = post.getPostImg();
         this.writer = new Writer(post.getMember().getId(), post.getMember().getNickname());
+        this.likeNum = 0;
+        this.isLiked = false;
+        if(post.getPostLikeList() != null){
+            this.likeNum = post.getPostLikeList().size();
+        }
         this.createdTime = post.getCreatedDate();
         this.modifiedTime = post.getModifiedDate();
     }
