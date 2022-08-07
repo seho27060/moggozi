@@ -116,7 +116,7 @@ public class Member {
     @JsonManagedReference
     private List<Review> reviews = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<MemberTag> memberTagList = new ArrayList<>();
 
