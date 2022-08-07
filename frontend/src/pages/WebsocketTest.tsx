@@ -1,66 +1,119 @@
-import { FormEvent, useRef } from "react";
+import { FormEvent, MouseEvent, useRef } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../store/store";
 
 const WebsocketPage = () => {
+  const user = useSelector((state: RootState) => state.auth.userInfo);
+  const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
   const messageRef = useRef<HTMLInputElement>(null);
-  const userIdRef = useRef<HTMLInputElement>(null);
-  const userId = useSelector((state: RootState) => state.auth.userInfo.id);
+  const receiverIdRef = useRef<HTMLInputElement>(null);
+  const typeRef = useRef<HTMLInputElement>(null);
+  const senderIdRef = useRef<HTMLInputElement>(null);
+  const senderNameRef = useRef<HTMLInputElement>(null);
+  const indexRef = useRef<HTMLInputElement>(null);
+  const receiverNameRef = useRef<HTMLInputElement>(null);
 
-  // 웹소켓
-  function onClose(evt: any) {
-    alert("연결 끊김");
-    console.log(evt)
-  }
-  function onOpen(evt: any) {
-    console.log("open",evt);
-  }
-  function onError(evt:any) {
-    console.log("ERR",evt)
-  }
-  // // 보내는 사람/ 받는사람/ 알림타입:포스팅좋아요,댓글..등등등
+  var wsocket: WebSocket | null = null;
+  wsocket = new WebSocket("wss://i7c201.p.ssafy.io:443/api/ws/notification")
+  let jsonSend = {
+    index: "1",
+    message: "message",
+    receiverId: "1",
+    receiverName: "start",
+    senderId: "36",
+    senderName: "seh",
+    type: "register",
+  };
+
+  const connect = (wsocket:WebSocket|null) => {
+    wsocket = new WebSocket("wss://i7c201.p.ssafy.io:443/api/ws/notification");
+
+    wsocket!.onopen = function onOpen(evt: any) {
+      if (isLoggedIn) {
+        jsonSend.senderId = user.id!.toString();
+        jsonSend.senderName = user.nickname!.toString();
+      }
+      console.log("open", evt, "open user", jsonSend);
+      wsocket?.send(JSON.stringify(jsonSend));
+    };
+    wsocket!.onclose = function onClose(evt: any) {
+      console.log("연결 끊김", evt);
+      setTimeout(function () {
+        console.log("reconnect after a second")
+        connect(wsocket);
+      }, 1000);
+      // setConnectState(true)
+    };
+    wsocket!.onerror = function onError(evt: any) {
+      console.log("ERR", evt);
+    };
+    wsocket!.onmessage = function onMessage(evt: MessageEvent) {
+      console.log("form server :", evt);
+      console.log(evt.data);
+      // // 보내는 사람/ 받는사람/ 알림타입:포스팅좋아요,댓글..등등등
+    };
+  };
   function onSend() {
     //senderId,senderName, receiverId, receiverName, type, index
-    var jsonSend = {
-      senderId: userId?.toString(),
-      senderName: "세호팍",
-      receiverId: "",
-      receiverName: "성민초",
-      type: "challenge",
-      index: "1",
-      message: "",
-    };
     jsonSend.message = messageRef.current!.value;
-    jsonSend.receiverId = userIdRef.current!.value;
-    wsocket?.send(JSON.stringify(jsonSend));
+    jsonSend.senderId = senderIdRef.current!.value;
+    jsonSend.index = senderIdRef.current!.value;
+    jsonSend.type = typeRef.current!.value;
+    jsonSend.receiverId = receiverIdRef.current!.value;
+    jsonSend.receiverName = receiverNameRef.current!.value;
+    jsonSend.senderName = senderIdRef.current!.value;
 
-    console.log("send to",userIdRef.current?.value,"message :", messageRef.current!.value);
+    wsocket!.send(JSON.stringify(jsonSend));
+
+    console.log("send to", receiverIdRef.current?.value, "json :", jsonSend);
     messageRef.current!.value = "";
   }
+
   const messageSendHandler = (event: FormEvent) => {
     event.preventDefault();
     onSend();
   };
-  function onMessage(evt: MessageEvent) {
-    console.log("form server :", evt);
-    console.log(JSON.parse(evt.data));
-  }
-  var wsocket: WebSocket | null = null;
-  wsocket = new WebSocket("ws://i7c201.p.ssafy.io:8080/api/ws/notification");
-  wsocket.onclose = onClose;
-  wsocket.onopen = onOpen;
-  wsocket.onmessage = onMessage;
-  wsocket.onerror = onError
 
+  // 웹소켓 연결
+  connect(wsocket)
+
+  const connectHandler = (event: MouseEvent) => {
+    event.preventDefault()
+    connect(wsocket)
+  }
   return (
     <div>
       <h1>WebSocket TEST</h1>
-      <button onClick={onOpen}>open</button>
+      <button onClick={connectHandler}>open</button>
       <form>
-        <label htmlFor="userId">userId :</label>
-        <input type="text" id="userId" ref={userIdRef} />
-        <label htmlFor="message">message :  </label>
-        <input type="text" id="message" ref={messageRef} />
+        <div>
+          <label htmlFor="senderId">senderId :</label>
+          <input type="text" id="senderId" ref={senderIdRef} />
+        </div>
+        <div>
+          <label htmlFor="senderName">senderName :</label>
+          <input type="text" id="senderName" ref={senderNameRef} />
+        </div>
+        <div>
+          <label htmlFor="receiverId">receiverId :</label>
+          <input type="text" id="receiverId" ref={receiverIdRef} />
+        </div>
+        <div>
+          <label htmlFor="receiverName">receiverName :</label>
+          <input type="text" id="receiverName" ref={receiverNameRef} />
+        </div>
+        <div>
+          <label htmlFor="type">type :</label>
+          <input type="text" id="type" ref={typeRef} />
+        </div>
+        <div>
+          <label htmlFor="index">index :</label>
+          <input type="text" id="index" ref={indexRef} />
+        </div>
+        <div>
+          <label htmlFor="message">message : </label>
+          <input type="text" id="message" ref={messageRef} />
+        </div>
         <button onClick={messageSendHandler}>send</button>
       </form>
     </div>

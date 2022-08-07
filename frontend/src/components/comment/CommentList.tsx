@@ -11,10 +11,10 @@ const CommentList: React.FC<{ comments: Comment[] | null }> = ({
   comments,
 }) => {
   // 원댓글 추려내기
-  console.log("comment", comments);
+  // console.log("comment", comments);
   const commentList = comments?.filter((comment) => comment.parentId === 0);
   commentList?.sort((a: Comment, b: Comment) => (a.id >= b.id ? 1 : -1));
-  const postId = useSelector((state: RootState) => state.post.id);
+  const postId = useSelector((state: RootState) => state.postModal.PostModalState!.id);
   return (
     <div>
       PostComment
