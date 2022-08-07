@@ -61,12 +61,12 @@ const LoginForm: React.FC = () => {
         })
         .catch((err) => {
           console.log(err);
-          // if (err.response.data.message === "Error: The user doesn't exist") {
-          //   setOverlapModalOpen(true);
-          // } else {
-          //   setLoginModalOpen(true);
-          //   console.log(err);
-          // }
+          if (err.response.data.message === "Error: The user doesn't exist") {
+            setOverlapModalOpen(true);
+          } else {
+            setLoginModalOpen(true);
+            console.log(err);
+          }
         });
     }
   }

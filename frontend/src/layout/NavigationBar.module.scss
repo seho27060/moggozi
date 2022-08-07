@@ -1,7 +1,7 @@
 @use "../styles/mixin.scss" as mixin;
 
 @include mixin.desktop {
-  header {
+  .header {
     height: 90px;
     font-size: 1.1rem;
     font-weight: 500;
