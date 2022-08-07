@@ -47,6 +47,21 @@ export const withdrawal = async (option: object) => {
   return data;
 };
 
+export const followApi = async(toId: number | null) => {
+  const { data } = await withTokenApi.post(`/user/follow/${toId}`);
+  return data
+}
+
+export const followedApi = async(toMember: number, loginID: number) => {
+  const { data } = await withTokenApi.get(`user/followed/${toMember}/${loginID}`)
+  return data;
+}
+
+export const followingApi = async(fromMemberId: number) => {
+  const { data } = await withTokenApi.get(`user/following/${fromMemberId}`) 
+  return data;
+}
+
 // 챌린지 관련
 export const isLoginFetchChallenge = async (id: number) => {
   const { data } = await withTokenApi.get(`/challenge/${id}`);
