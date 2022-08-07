@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @CrossOrigin("*")
 @RequiredArgsConstructor
-@RequestMapping("/stage/join")
+@RequestMapping("/stage/join/{stage_id}")
 @RestController()
 public class StageJoinController {
 
@@ -19,24 +19,30 @@ public class StageJoinController {
     private final JwtUtils jwtUtils;
 
     @PostMapping
-    public Long join(@RequestBody StageJoinRequestDto stageJoinRequestDto, HttpServletRequest request){
+    public Long join(@PathVariable Long stage_id, HttpServletRequest request){
         Long member_id = jwtUtils.getUserIdFromJwtToken(request.getHeader("Authorization"));
-        return stageJoinService.joinStage(member_id, stageJoinRequestDto);
+        StageJoinRequestDto stageJoinRequestDto = StageJoinRequestDto.builder()
+                .stage_id(stage_id)
+                .member_id(member_id)
+                .build();
+        return stageJoinService.joinStage(stageJoinRequestDto);
     }
 
     @PutMapping
-    public Long complete(@RequestBody StageCompleteDto stageCompleteDto, HttpServletRequest request){
+    public Long complete(@PathVariable Long stage_id, HttpServletRequest request){
         Long member_id = jwtUtils.getUserIdFromJwtToken(request.getHeader("Authorization"));
-        return stageJoinService.completeStage(member_id, stageCompleteDto);
+        StageCompleteDto stageCompleteDto = new StageCompleteDto(stage_id, member_id);
+        return stageJoinService.completeStage(stageCompleteDto);
     }
 
     @DeleteMapping
-    public Long delete(){
-
-        return null;
+    public Long delete(@PathVariable Long stage_id, HttpServletRequest request){
+        Long member_id = jwtUtils.getUserIdFromJwtToken(request.getHeader("Authorization"));
+        stageJoinService.deleteJoin(member_id, stage_id);
+        return stage_id;
     }
 
-    @GetMapping("/{stage_id}")
+    @GetMapping
     public int stateStage(@PathVariable Long stage_id, HttpServletRequest request){
         Long member_id = jwtUtils.getUserIdFromJwtToken(request.getHeader("Authorization"));
         return stageJoinService.stateStage(member_id, stage_id);

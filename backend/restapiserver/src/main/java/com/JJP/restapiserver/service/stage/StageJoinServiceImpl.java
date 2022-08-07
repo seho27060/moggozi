@@ -28,24 +28,28 @@ public class StageJoinServiceImpl implements StageJoinService{
 
     @Transactional
     @Override
-    public Long joinStage(Long member_id, StageJoinRequestDto stageJoinRequestDto) {
-        Member member = memberRepository.getById(member_id);
+    public Long joinStage(StageJoinRequestDto stageJoinRequestDto) {
+        Member member = memberRepository.getById(stageJoinRequestDto.getMember_id());
         if(member.getId() == null){
-            new MessageResponse("해당 유저가 없습니다. id=" + member_id);
+            new MessageResponse("해당 유저가 없습니다. id=" + member);
             return null;
         }
         Stage stage = stageRepository.getById(stageJoinRequestDto.getStage_id());
         if(stage.getId() == null){
-            new MessageResponse("해당 스테이지가 없습니다. id=" + stage.getId());
+            new MessageResponse("해당 스테이지가 없습니다. id=" + stage);
             return null;
+        }
+        if(stageUserRepository.findByMember_idAndStage_id(member.getId(), stage.getId()).isEmpty()){
+            System.out.println("already joined");
+            return Long.valueOf(9999);
         }
         return stageUserRepository.save(stageJoinRequestDto.toEntity(member, stage)).getId();
     }
 
     @Transactional
     @Override
-    public Long completeStage(Long member_id, StageCompleteDto stageCompleteDto) {
-        StageUser entity = stageUserRepository.findByMember_idAndStage_id(member_id, stageCompleteDto.getStage_id()).orElseThrow(() -> new IllegalArgumentException("스테이지에 참여하지 않았습니다. id=" + member_id));
+    public Long completeStage(StageCompleteDto stageCompleteDto) {
+        StageUser entity = stageUserRepository.findByMember_idAndStage_id(stageCompleteDto.getMember_id(), stageCompleteDto.getStage_id()).orElseThrow(() -> new IllegalArgumentException("스테이지에 참여하지 않았습니다. id=" + stageCompleteDto.getStage_id()));
 
         entity.complete();
 
@@ -56,6 +60,12 @@ public class StageJoinServiceImpl implements StageJoinService{
     public Long joinedStageNum(Long member_id) {
         Long num = stageUserRepository.countByMember_id(member_id);
         return num;
+    }
+
+    @Override
+    public void deleteJoin(Long stage_id, Long member_id) {
+        StageUser entity = stageUserRepository.findByMember_idAndStage_id(member_id, stage_id).orElseThrow(() -> new IllegalArgumentException("해당 스테이지에 참여하지 않았습니다. id=" + stage_id));
+        stageUserRepository.delete(entity);
     }
 
     @Override
