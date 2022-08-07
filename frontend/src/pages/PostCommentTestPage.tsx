@@ -22,10 +22,10 @@ const PostCommentTestPage = () => {
   const dispatch = useDispatch();
   const postListState = useSelector((state: RootState) => state.post.posts);
   const {
-    postModalState,
+    postModalOpen: postModalState,
     postFormModalOpen,
-    postUpdateFormState,
-    postFormButtonState,
+    postUpdateFormOpen: postUpdateFormState,
+    postFormButtonOpen: postFormButtonState,
   } = useSelector((state: RootState) => state.postModal);
   const stageIdRef = useRef<HTMLInputElement>(null);
   const postIdRef = useRef<HTMLInputElement>(null);

@@ -14,7 +14,7 @@ const CommentList: React.FC<{ comments: Comment[] | null }> = ({
   // console.log("comment", comments);
   const commentList = comments?.filter((comment) => comment.parentId === 0);
   commentList?.sort((a: Comment, b: Comment) => (a.id >= b.id ? 1 : -1));
-  const postId = useSelector((state: RootState) => state.postModal.PostModalState!.id);
+  const postId = useSelector((state: RootState) => state.postModal.postModalState!.id);
   return (
     <div>
       PostComment

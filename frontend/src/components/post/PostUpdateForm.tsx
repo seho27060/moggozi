@@ -4,7 +4,7 @@ import {
   setPostUpdateFormState,
   setModalPostState,
 } from "../../store/postModal";
-import { postModify, PostTest } from "../../store/post";
+import { postModify, PostData } from "../../store/post";
 import { useDispatch, useSelector } from "react-redux";
 import { postUpdate } from "../../lib/withTokenApi";
 import { RootState } from "../../store/store";
@@ -12,7 +12,7 @@ import { RootState } from "../../store/store";
 // 수정폼 -> <PostForm post = {수정할려는 포스트 데이터}/>
 
 const PostUpdateForm: React.FC<{}> = () => {
-  const { PostModalState } = useSelector((state: RootState) => state.postModal);
+  const { postModalState: PostModalState } = useSelector((state: RootState) => state.postModal);
   console.log(PostModalState);
 
   const dispatch = useDispatch();
@@ -34,15 +34,16 @@ const PostUpdateForm: React.FC<{}> = () => {
         console.log("post 수정완료", res);
         dispatch(postModify(res));
         dispatch(setPostUpdateFormState(false));
-        const modifiedModalPost:PostTest = {
+        const modifiedModalPost: PostData = {
           id: PostModalState!.id!,
           title: titleInputRef.current!.value,
           content: contentInputRef.current!.value,
           postImg: postImgInputRef.current!.value,
           createdTime: PostModalState!.createdTime,
           modifiedTime: PostModalState!.modifiedTime,
-          postLikeList: PostModalState!.postLikeList,
-          writer: PostModalState!.writer
+          writer: PostModalState!.writer,
+          liked: PostModalState!.liked,
+          likeNum: PostModalState!.likeNum,
         };
         dispatch(setModalPostState(modifiedModalPost));
       })

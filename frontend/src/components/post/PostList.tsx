@@ -2,16 +2,16 @@ import { MouseEvent } from "react";
 import { useDispatch } from "react-redux";
 import PostItem from "./PostItem";
 import { setModalPostState, setPostModalState } from "../../store/postModal";
-import { PostTest } from "../../store/post";
+import { PostData } from "../../store/post";
 
 const PostList: React.FC<{
-  posts: PostTest[] | null;
+  posts: PostData[] | null;
 }> = ({ posts }) => {
   const dispatch = useDispatch();
   const postList = [...posts!];
-  postList!.sort((a: PostTest, b: PostTest) => (a.id >= b.id ? 1 : -1));
+  postList!.sort((a: PostData, b: PostData) => (a.id >= b.id ? 1 : -1));
 
-  console.log("postlist", postList);
+  // console.log("postlist", postList);
 
   return (
     <div>

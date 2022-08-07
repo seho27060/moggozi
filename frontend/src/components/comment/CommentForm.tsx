@@ -33,14 +33,13 @@ const CommentForm: React.FC<{
   };
 
   return (
-    <div>
-      댓글 달기
+    <>
       <form>
-        <label htmlFor="comment"></label>
-        <input type="text" id="comment" ref={enteredText} />
+        <label htmlFor="comment">댓글 달기</label>
+        <input type="text" id="comment" ref={enteredText} required/>
         <button onClick={commentSubmitHandler}>등록</button>
       </form>
-    </div>
+    </>
   );
 };
 

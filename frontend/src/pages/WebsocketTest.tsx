@@ -1,10 +1,18 @@
-import { FormEvent, MouseEvent, useRef } from "react";
+import { FormEvent, useRef } from "react";
 import { useSelector } from "react-redux";
+import { CloseEvent } from "sockjs-client";
+import AlertOnair from "../components/alert/AlertOnair";
+import { Alert } from "../store/alert";
 import { RootState } from "../store/store";
 
 const WebsocketPage = () => {
+  console.log("rendering");
+
   const user = useSelector((state: RootState) => state.auth.userInfo);
   const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
+
+  let isConnecting: boolean = false;
+
   const messageRef = useRef<HTMLInputElement>(null);
   const receiverIdRef = useRef<HTMLInputElement>(null);
   const typeRef = useRef<HTMLInputElement>(null);
@@ -14,8 +22,9 @@ const WebsocketPage = () => {
   const receiverNameRef = useRef<HTMLInputElement>(null);
 
   var wsocket: WebSocket | null = null;
-  wsocket = new WebSocket("wss://i7c201.p.ssafy.io:443/api/ws/notification")
-  let jsonSend = {
+  wsocket = new WebSocket("wss://i7c201.p.ssafy.io:443/api/ws/notification");
+
+  let jsonSend: Alert = {
     index: "1",
     message: "message",
     receiverId: "1",
@@ -24,37 +33,55 @@ const WebsocketPage = () => {
     senderName: "seh",
     type: "register",
   };
-
-  const connect = (wsocket:WebSocket|null) => {
+  if (!isConnecting && user.id) {
     wsocket = new WebSocket("wss://i7c201.p.ssafy.io:443/api/ws/notification");
-
-    wsocket!.onopen = function onOpen(evt: any) {
-      if (isLoggedIn) {
-        jsonSend.senderId = user.id!.toString();
-        jsonSend.senderName = user.nickname!.toString();
-      }
-      console.log("open", evt, "open user", jsonSend);
-      wsocket?.send(JSON.stringify(jsonSend));
-    };
-    wsocket!.onclose = function onClose(evt: any) {
-      console.log("연결 끊김", evt);
-      setTimeout(function () {
-        console.log("reconnect after a second")
-        connect(wsocket);
-      }, 1000);
-      // setConnectState(true)
-    };
-    wsocket!.onerror = function onError(evt: any) {
-      console.log("ERR", evt);
-    };
-    wsocket!.onmessage = function onMessage(evt: MessageEvent) {
-      console.log("form server :", evt);
-      console.log(evt.data);
-      // // 보내는 사람/ 받는사람/ 알림타입:포스팅좋아요,댓글..등등등
-    };
+  }
+  console.log("login check", isLoggedIn, user, isConnecting);
+  wsocket!.onopen = function onOpen(evt: any) {
+    if (isLoggedIn && user.id) {
+      jsonSend.senderId = user.id!.toString();
+      jsonSend.senderName = user.nickname!.toString();
+      console.log("open user", jsonSend, "open", evt);
+      wsocket!.send(JSON.stringify(jsonSend));
+      isConnecting = true;
+    }
+    if (isConnecting) {
+      setInterval(() => {
+        const time = new Date()
+        // console.log(`30 sec,now: ${time}`, isConnecting);
+        const connetSend: Alert = {
+          index: "1",
+          message: "connect",
+          receiverId: "1",
+          receiverName: "name",
+          senderId: user.id!.toString(),
+          senderName: user.nickname!.toString(),
+          type: "connection",
+        };
+        wsocket!.send(JSON.stringify(connetSend));
+        // console.log("persisting connection", isConnecting, connetSend);
+      }, 30000);
+    }
   };
-  function onSend() {
+  wsocket!.onclose = (evt: CloseEvent) => {
+    console.log("disconnected, 3초뒤 재연결", evt);
+    wsocket = null;
+    setTimeout(
+      () =>
+        (wsocket = new WebSocket(
+          "wss://i7c201.p.ssafy.io:443/api/ws/notification"
+        )),
+      300
+    );
+  };
+  function onSend(data: Alert, wsocket: WebSocket | null) {
     //senderId,senderName, receiverId, receiverName, type, index
+    wsocket!.send(JSON.stringify(data))
+    console.log("send to", receiverIdRef.current?.value, "json :", jsonSend);
+    messageRef.current!.value = "";
+  }
+  const messageSendHandler = (event: FormEvent) => {
+    event.preventDefault();
     jsonSend.message = messageRef.current!.value;
     jsonSend.senderId = senderIdRef.current!.value;
     jsonSend.index = senderIdRef.current!.value;
@@ -62,29 +89,12 @@ const WebsocketPage = () => {
     jsonSend.receiverId = receiverIdRef.current!.value;
     jsonSend.receiverName = receiverNameRef.current!.value;
     jsonSend.senderName = senderIdRef.current!.value;
-
-    wsocket!.send(JSON.stringify(jsonSend));
-
-    console.log("send to", receiverIdRef.current?.value, "json :", jsonSend);
-    messageRef.current!.value = "";
-  }
-
-  const messageSendHandler = (event: FormEvent) => {
-    event.preventDefault();
-    onSend();
+    onSend(jsonSend, wsocket);
   };
 
-  // 웹소켓 연결
-  connect(wsocket)
-
-  const connectHandler = (event: MouseEvent) => {
-    event.preventDefault()
-    connect(wsocket)
-  }
   return (
     <div>
       <h1>WebSocket TEST</h1>
-      <button onClick={connectHandler}>open</button>
       <form>
         <div>
           <label htmlFor="senderId">senderId :</label>
@@ -116,6 +126,7 @@ const WebsocketPage = () => {
         </div>
         <button onClick={messageSendHandler}>send</button>
       </form>
+      <AlertOnair/>
     </div>
   );
 };

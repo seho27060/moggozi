@@ -8,18 +8,19 @@ import { commentSet } from "../../store/comment";
 import CommentList from "../comment/CommentList";
 import { useDispatch } from "react-redux";
 import PostModifyBtn from "./PostModifyBtn";
+import PostLikeBtn from "./PostLikeBtn";
 
 const PostDetailItem: React.FC<{}> = () => {
   const dispatch = useDispatch();
-  const post = useSelector((state:RootState)=>state.postModal.PostModalState)
+  const post = useSelector((state:RootState)=>state.postModal)
   const commentState = useSelector(
     (state: RootState) => state.comment.comments
   );
-
+  console.log("postDetail",post.postModalState)
   useEffect(() => {
-    commentRead(post!.id)
+    commentRead(post.postModalState!.id)
       .then((res) => {
-        console.log(`${post!.id}의 댓글`);
+        console.log(`${post.postModalState!.id}의 댓글`);
         dispatch(commentSet(res));
       })
       .catch((err) => {
@@ -34,21 +35,22 @@ const PostDetailItem: React.FC<{}> = () => {
         {/* 수정 버튼 */}
         <PostModifyBtn/>
 
-        <div>postid:{post!.id}</div>
+        <div>postid:{post.postModalState!.id}</div>
         <div>
-          <div>프로필이미지 : {post!.writer?.img}</div>
-          <div>작성자 : {post!.writer?.nickname}</div>
+          <div>프로필이미지 : {post.postModalState!.writer?.img}</div>
+          <div>작성자 : {post.postModalState!.writer?.nickname}</div>
           <button>팔로잉/팔로우해체 버튼</button>
           <hr />
         </div>
         <div>
           <>
-            <div>제목 : {post!.title}</div>
-            <p>포스팅 내용 : {post!.content}</p>
-            <button>좋아요버튼</button>
-            좋아요갯수:{post!.postLikeList?.length}
+            <div>제목 : {post.postModalState!.title}</div>
+            <p>포스팅 내용 : {post.postModalState!.content}</p>
+            {/* 좋아요 버튼 */}
+            <PostLikeBtn/>
+            좋아요갯수:{post.postModalState!.likeNum}
             <br />
-            포스팅작성일 :{post!.modifiedTime}
+            포스팅작성일 :{post.postModalState!.modifiedTime}
           </>
         </div>
         <div style={{ border: "solid", margin: "1rem", padding: "1rem" }}>

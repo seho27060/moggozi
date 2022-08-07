@@ -12,7 +12,7 @@ import CommentChild from "./CommentChild";
 const CommentItem: React.FC<{
   comment: Comment;
 }> = ({ comment }) => {
-  const postId = useSelector((state: RootState) => state.postModal.PostModalState!.id);
+  const postId = useSelector((state: RootState) => state.postModal.postModalState!.id);
   const comments = useSelector((state: RootState) => state.comment.comments);
   const parentId = comment.id;
 
