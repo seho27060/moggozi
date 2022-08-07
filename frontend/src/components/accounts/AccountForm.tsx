@@ -2,28 +2,28 @@ import React, { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { signUpApi, checkId, checkNickname } from "../../lib/generalApi";
 
-import Modal from "../ui/Modal"
-// 박세호, 회원가입 폼, 비밀번호 체크. axios 추가 필요. 요청성공시 메인페이지로 이동
+import Modal from "../ui/Modal";
+
+import styles from "./AccountForm.module.scss";
 
 const AccountForm: React.FC = () => {
   const navigate = useNavigate();
 
   // 해당 상태에 따라 (emailState) 입력 input창을 빨갛게 표시
-  const [ emailModalOpen, setEmailModalOpen] = useState(false)
-  const [ emailState, setEmailState ] = useState(false)
-  const [ nicknameModalOpen, setNicknameModalOpen] = useState(false)
-  const [ nicknameState, setNicknameState ] = useState(false)
+  const [emailModalOpen, setEmailModalOpen] = useState(false);
+  const [emailState, setEmailState] = useState(false);
+  const [nicknameModalOpen, setNicknameModalOpen] = useState(false);
+  const [nicknameState, setNicknameState] = useState(false);
 
-  console.log([emailState, nicknameState])
-  
+  console.log([emailState, nicknameState]);
 
   const emailCloseModal = () => {
-    setEmailModalOpen(false)
-  }
+    setEmailModalOpen(false);
+  };
 
   const nicknameCloseModal = () => {
-    setNicknameModalOpen(false)
-  }
+    setNicknameModalOpen(false);
+  };
 
   const [passwordCheck, setPasswordCheck] = useState(true);
   const [passwordInputState, setPasswordInput] = useState("");
@@ -32,7 +32,7 @@ const AccountForm: React.FC = () => {
   const usernameInputRef = useRef<HTMLInputElement>(null);
   const nicknameInputRef = useRef<HTMLInputElement>(null);
 
-  // 회원가입 
+  // 회원가입
   function submitHandler(event: React.FormEvent) {
     event.preventDefault();
 
@@ -68,76 +68,115 @@ const AccountForm: React.FC = () => {
       });
   }
 
-  const [ emailContent, setEmailContent ] = useState("")
+  const [emailContent, setEmailContent] = useState("");
   // 이메일 중복 확인
   function emailCheckHandler(event: React.MouseEvent) {
     event.preventDefault();
-    setEmailModalOpen(true)
+    setEmailModalOpen(true);
     const enteredEmail = emailInputRef.current!.value;
     checkId(enteredEmail)
       .then((res) => {
         // 중복이 아닐 경우
-        setEmailContent("해당 이메일은 사용 가능합니다.")
+        setEmailContent("해당 이메일은 사용 가능합니다.");
         setEmailState(false);
       })
       .catch((err) => {
         // 중복일 경우
-        setEmailContent("해당 이메일은 사용할 수 없습니다.")
+        setEmailContent("해당 이메일은 사용할 수 없습니다.");
         setEmailState(true);
       });
   }
 
-  const [nicknameContent, setNicknameContent] = useState("")
+  const [nicknameContent, setNicknameContent] = useState("");
   // 닉네임 중복 확인
   function nicknameCheckHandler(event: React.MouseEvent) {
     event.preventDefault();
-    setNicknameModalOpen(true)
+    setNicknameModalOpen(true);
     const enteredNickname = nicknameInputRef.current!.value;
     checkNickname(enteredNickname)
       .then((res) => {
-        setNicknameContent("해당 닉네임은 사용 가능합니다.")
+        setNicknameContent("해당 닉네임은 사용 가능합니다.");
         setNicknameState(false);
       })
       .catch((err) => {
-        setNicknameContent("해당 닉네임은 사용 할 수 없습니다.")
+        setNicknameContent("해당 닉네임은 사용 할 수 없습니다.");
         setNicknameState(true);
       });
   }
 
   return (
-    <div>
-      <h3>Account form</h3>
+    <div className={styles.form}>
+      <div className={styles.title}>회원가입</div>
       <div>
         <form>
-          <div>
-            <label htmlFor="email">email : </label>
-            <input type="text" required id="email" ref={emailInputRef} />
-            <button onClick={emailCheckHandler}>중복 확인</button>
-            <React.Fragment>
-              <Modal open={emailModalOpen} close={emailCloseModal} header="이메일 중복 확인">
-                <p>{emailContent}</p>
-              </Modal>
-            </React.Fragment>
 
-          </div>
-          <div>
-            <label htmlFor="password">password : </label>
+            <div className={styles.email}>
+              <div className={styles.label}>
+                <label htmlFor="email">이메일</label>
+              </div>
+              <div>
+                <input
+                  type="text"
+                  required
+                  id="email"
+                  ref={emailInputRef}
+                  placeholder="이메일을 입력해주세요."
+                  autoComplete="off"
+                />
+              </div>
+              <div>
+                <button
+                  className={styles.emailbutton}
+                  onClick={emailCheckHandler}
+                >
+                  이메일 중복 확인
+                </button>
+              </div>
+              <React.Fragment>
+                <Modal
+                  open={emailModalOpen}
+                  close={emailCloseModal}
+                  header="이메일 중복 확인"
+                >
+                  <p>{emailContent}</p>
+                </Modal>
+              </React.Fragment>
+            </div>
+
+            <div className={styles.name}>
+              <div className={styles.label}><label htmlFor="username">이름</label></div>
+              <div className={styles.explain}>이름을 입력해주세요. 비밀번호 찾기에 이용됩니다.</div>
+              <input
+                type="text"
+                required
+                id="username"
+                ref={usernameInputRef}
+                placeholder="이름"
+              />
+            </div>
+            
+          <div className={styles.password}>
+            <div className={styles.label}><label htmlFor="password">비밀번호</label></div>
+            <div className={styles.explain}>영문, 숫자를 포함한 8자리 이상의 비밀번호를 입력해주세요.</div>
             <input
               type="password"
               required
               id="password"
               value={passwordInputState}
+              placeholder="비밀번호"
               onChange={(event) => {
                 setPasswordInput(event.target.value);
               }}
             />
           </div>
-          <div>
-            <label htmlFor="passwordCheck">type password again: </label>
+
+          <div className={styles.repassword}>
+            <div className={styles.label}><label htmlFor="passwordCheck">비밀번호 확인</label></div>
             <input
               type="password"
               required
               id="passwordCheck"
+              placeholder="비밀번호 확인"
               onChange={(event) => {
                 if (passwordInputState === event.target.value) {
                   setPasswordCheck(true);
@@ -146,18 +185,21 @@ const AccountForm: React.FC = () => {
                 }
               }}
             />
-            {!passwordCheck && <p>password is not match, check again plz</p>}
+            {!passwordCheck && <p className={styles.caution}>비밀번호가 일치하지 않습니다.</p>}
           </div>
-          <div>
-            <label htmlFor="username">본명 : </label>
-            <input type="text" required id="username" ref={usernameInputRef} />
-          </div>
-          <div>
-            <label htmlFor="nickname">닉네임 : </label>
-            <input type="text" required id="nickname" ref={nicknameInputRef} />
-            <button onClick={nicknameCheckHandler}>중복확인</button>
+
+          <div className={styles.nickname}>
+            <div className={styles.label}><label htmlFor="nickname">닉네임</label></div>
+            <div className={styles.nicknameCheck}>
+            <input type="text" required id="nickname" ref={nicknameInputRef} placeholder="별명 (2 ~ 15자)"/>
+            <button className={styles.nicknameButton} onClick={nicknameCheckHandler}>중복확인</button>
+            </div>
             <React.Fragment>
-              <Modal open={nicknameModalOpen} close={nicknameCloseModal} header="닉네임 중복 확인">
+              <Modal
+                open={nicknameModalOpen}
+                close={nicknameCloseModal}
+                header="닉네임 중복 확인"
+              >
                 <p>{nicknameContent}</p>
               </Modal>
             </React.Fragment>
@@ -166,8 +208,9 @@ const AccountForm: React.FC = () => {
             type="button"
             onClick={submitHandler}
             disabled={!passwordCheck}
+            className={styles.submit}
           >
-            Register
+            회원가입 하기
           </button>
         </form>
       </div>
