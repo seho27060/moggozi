@@ -1,6 +1,21 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { UserInfo } from "./auth";
 
+interface like {
+  id: number;
+}
+
+export interface PostTest {
+  id: number;
+  title: string | null;
+  content: string | null;
+  createdTime: Date | null;
+  modifiedTime: Date | null;
+  postImg: string | null;
+  postLikeList: like[] | null;
+  writer: UserInfo | null;
+}
+
 export interface PostState {
   id: number | null;
   stageId: number | null;
@@ -12,8 +27,6 @@ export interface PostState {
   writer: UserInfo;
   likeCount: number | null;
 }
-
-// 스테이지에 포함된 postings 타입np
 export interface PostItemState {
   id: number | null;
   title: string | null;
@@ -21,46 +34,45 @@ export interface PostItemState {
   img: string | null;
   writer: UserInfo;
 }
+export interface PostListState {
+  posts: PostTest[] | null;
+}
 
-interface like {
-  id: number;
-}
-export interface PostTest {
-  id: number | null;
-  title: string | null;
-  content: string | null;
-  createdTime: Date | null;
-  modifiedTime: Date | null;
-  postImg: string | null;
-  postLikeList: like[]|null,
-  writer : UserInfo | null
-}
-const initialPostState:PostTest={
-  id: null,
-  title:  null,
-  content: null,
-  createdTime: null,
-  modifiedTime: null,
-  postImg: null,
-  postLikeList: null,
-  writer : null,
-}
+const initialPostState: PostListState = {
+  posts: [],
+};
 
 export const postSlice = createSlice({
   name: "post",
   initialState: initialPostState,
   reducers: {
-    setModalPostState:(state:PostTest,action) => {
-      state.id = action.payload.id
-      state.title = action.payload.title
-      state.content = action.payload.content
-      state.createdTime = action.payload.createdTime
-      state.modifiedTime = action.payload.modifiedTime
-      state.postImg = action.payload.postImg
-      state.postLikeList = action.payload.postLikeList
-      state.writer = action.payload.writer
-    }
+    postSet: (state: PostListState, action) => {
+      console.log("postSet", action);
+      const unorderedPosts = action.payload;
+      unorderedPosts.sort((a: PostTest, b: PostTest) =>
+        a.id! >= b.id! ? 1 : -1
+      );
+      state.posts = unorderedPosts;
+    },
+    postRegister: (state: PostListState, action) => {
+      console.log("postRegister", action);
+      state.posts = [...state.posts!, action.payload];
+    },
+    postModify: (state: PostListState, action) => {
+      console.log("postModity", action);
+      const postsModified = state.posts!.filter(
+        (post) => post.id !== action.payload.id
+      );
+      state.posts = [...postsModified,action.payload]
+    },
+    postRemove: (state: PostListState, action) => {
+      console.log("postRemove", action);
+      state.posts = state.posts!.filter((post) => post.id !== action.payload.id);
+    },
   },
-}); 
-export const {setModalPostState} = postSlice.actions
+});
+
+export const { postSet, postModify, postRegister, postRemove } =
+  postSlice.actions;
+
 export default postSlice.reducer;

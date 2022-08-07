@@ -12,7 +12,7 @@ import CommentChild from "./CommentChild";
 const CommentItem: React.FC<{
   comment: Comment;
 }> = ({ comment }) => {
-  const postId = useSelector((state: RootState) => state.post.id);
+  const postId = useSelector((state: RootState) => state.postModal.PostModalState!.id);
   const comments = useSelector((state: RootState) => state.comment.comments);
   const parentId = comment.id;
 
@@ -20,7 +20,7 @@ const CommentItem: React.FC<{
   childs!.sort((a: Comment, b: Comment) => (a.id >= b.id ? 1 : -1));
   const order = Number(childs?.at(-1)?.order) + 1;
 
-  console.log(`${comment.id}의 childs`, childs);
+  // console.log(`${comment.id}의 childs`, childs);
   return (
     <div style={{ border: "solid", margin: "1rem", padding: "1rem" }}>
       {/* 댓글내용과 해당 댓글의 대댓글 출력. */}

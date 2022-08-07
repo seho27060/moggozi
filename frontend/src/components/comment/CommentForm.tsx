@@ -15,7 +15,7 @@ const CommentForm: React.FC<{
   const commentSubmitHandler = (event: FormEvent) => {
     event.preventDefault();
     const enteredComment: CommentSend = {
-      postId: 4,
+      postId: postId,
       text: enteredText.current!.value,
       parent: parentId,
       order: order,
