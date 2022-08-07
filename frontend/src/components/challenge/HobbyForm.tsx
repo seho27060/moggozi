@@ -9,7 +9,6 @@ const HobbyForm: React.FC = () => {
   const hobbyInputRef = useRef<HTMLInputElement>(null);
   const [dropDownList, setDropDownList] = useState<Hobby[]>([]); // 자동완성 기능을 위한 dropDownList
   const hobbyList = useSelector((state: RootState) => state.hobby.hobbyList);
-  
 
   function submitHandler(event: React.FormEvent) {
     event.preventDefault();
@@ -22,7 +21,7 @@ const HobbyForm: React.FC = () => {
             "취미가 존재하지 않습니다. 새로운 취미를 등록하시겠습니까?"
           );
           if (isChk) {
-            setHobby({ name: enteredHobby })    // 새로운 취미 DB에 등록 후 가져오기
+            setHobby({ name: enteredHobby }) // 새로운 취미 DB에 등록 후 가져오기
               .then((res) => {
                 dispatch(addHobby(res));
               })
@@ -53,13 +52,12 @@ const HobbyForm: React.FC = () => {
   function changeInputHandler(event: React.ChangeEvent) {
     event.preventDefault();
     const enteredQuery = hobbyInputRef.current!.value;
-    if (enteredQuery === '') {
-      setDropDownList([])
-    }
-    else {
+    if (enteredQuery === "") {
+      setDropDownList([]);
+    } else {
       hobbySearch(enteredQuery)
         .then((res) => {
-          setDropDownList(res)
+          setDropDownList(res);
         })
         .catch((err) => {
           console.log(err.response);
@@ -85,7 +83,7 @@ const HobbyForm: React.FC = () => {
       </form>
       {dropDownList.length === 0 && <p>해당하는 단어가 없습니다.</p>}
       {dropDownList.map((dropDownItem) => {
-        return(<p>{dropDownItem.name}</p>)
+        return <p>{dropDownItem.name}</p>;
       })}
     </div>
   );
