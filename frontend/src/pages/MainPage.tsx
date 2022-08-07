@@ -19,17 +19,19 @@ const MainPage: React.FC = () => {
     challenges: ChallengeItemState[],
     newChallenges: ChallengeItemState[]
   ) {
-    for (const challenge of challenges) {
+    await challenges.reduce(async (acc, challenge) => {
+      await acc.then();
       await challengeImgFetchAPI(challenge.id!)
-        .then((challenges) => {
-          challenge.img = challenges;
+        .then((res) => {
+          challenge.img = res;
           newChallenges.push(challenge);
         })
         .catch((err) => {
           challenge.img = "";
           newChallenges.push(challenge);
         });
-    }
+      return acc;
+    }, Promise.resolve());
   }
 
   useEffect(() => {

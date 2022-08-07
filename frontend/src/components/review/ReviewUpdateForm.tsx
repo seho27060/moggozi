@@ -72,7 +72,7 @@ const ReviewUpdateForm: React.FC<{
             ref={contentInputRef}
           />
         </div>
-        <StarRating rateInit={rate!} rateChangeHandler={rateChangeHandler} />
+        <StarRating rate={rate!} rateChangeHandler={rateChangeHandler} />
         <button type="button" onClick={reviewSubmitHandler}>
           submit
         </button>
