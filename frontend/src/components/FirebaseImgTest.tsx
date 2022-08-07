@@ -5,8 +5,9 @@ import {
   getDownloadURL,
   deleteObject,
   listAll,
+  StorageReference,
 } from "firebase/storage";
-import React, { ChangeEvent, FormEvent, useState } from "react";
+import React, { ChangeEvent, useState } from "react";
 
 const FirebaseImgText: React.FC = () => {
   //const imgRef = ref(storageService, "/");
@@ -15,6 +16,7 @@ const FirebaseImgText: React.FC = () => {
   // 비동기 처리
   //deleteObject(주소)
   const [file, setFile] = useState<File>(); // 여러 개면 FileList 사용!
+  const [images, setImages] = useState<{ id: number; url: string }[]>([]);
 
   const onLoadHandler = (event: ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
@@ -33,7 +35,7 @@ const FirebaseImgText: React.FC = () => {
   };
 
   // 이미지 맨 뒤로 넣어주기
-  const uploadHandler = (event: FormEvent, target: string) => {
+  const uploadHandler = (event: React.MouseEvent, target: string) => {
     event.preventDefault();
     const listRef = ref(storageService, target);
     listAll(listRef)
@@ -46,19 +48,46 @@ const FirebaseImgText: React.FC = () => {
       });
   };
 
-  // 배열로 읽어오기 완료
-  const readHandler = (event: React.MouseEvent) => {
+  // 여러 사진 한 번에 읽어오기
+  const readHandler = (event: React.MouseEvent, target: string) => {
     event.preventDefault();
-    const listRef = ref(storageService, "a");
+    let imgLength = 0;
+    const readURL = (ref: StorageReference, imgId: number) => {
+      getDownloadURL(ref).then((res) => {
+        imgList.push({ id: imgId, url: res });
+        if (imgLength === imgList.length) {
+          imgList.sort(function (a, b) {
+            return a.id - b.id;
+          });
+          setImages(imgList);
+        }
+      });
+    };
+
+    setImages([]); // 이미지 초기화
+    const listRef = ref(storageService, target);
+
+    const imgList: { id: number; url: string }[] = [];
     listAll(listRef).then((res) => {
       // id 폴더 안의 이미지들 모두 읽어오기
+      imgLength = Number(res.items.length); // 마지막 요소의 id 읽기
       res.items.forEach((itemRef) => {
-        console.log(itemRef.name);
-        const url = getDownloadURL(itemRef).then((res) => {
-          console.log(res);
-        });
+        readURL(itemRef, Number(itemRef.name));
       });
     });
+  };
+
+  // 사진 제거
+  const deleteHandler = (event: React.MouseEvent, target: string) => {
+    event.preventDefault();
+    const imgRef = ref(storageService, target);
+    deleteObject(imgRef);
+  };
+
+  const deleteAllHandler = (event: React.MouseEvent, target: string) => {
+    event.preventDefault();
+    const imgRef = ref(storageService, target);
+    deleteObject(imgRef);
   };
 
   return (
@@ -70,7 +99,21 @@ const FirebaseImgText: React.FC = () => {
           업로드
         </button>
       </form>
-      <button onClick={readHandler}>가져오기</button>
+      <button onClick={(e) => readHandler(e, "challenge/1")}>가져오기</button>
+      <ul>
+        {images.map((item) => (
+          <li key={item.id}>
+            <img src={item.url} alt="img" />
+            <button onClick={(e) => deleteHandler(e, `challenge/1/${item.id}`)}>
+              사진삭제
+            </button>
+          </li>
+        ))}
+      </ul>
+
+      <button onClick={(e) => deleteAllHandler(e, "challenge/1")}>
+        전부 삭제
+      </button>
     </div>
   );
 };
