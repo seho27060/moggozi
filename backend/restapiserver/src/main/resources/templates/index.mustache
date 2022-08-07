@@ -1,19 +1,14 @@
 {{>layout/header}}
 
-    <h1>스프링부트로 시작하는 웹 서비스 Ver.2</h1>
+    <h1>관리자 페이지 Ver.1</h1>
     <div class="col-md-12">
         <div class="row">
-            <div class="col-md-6">
-                <a href="/posts/save" role="button" class="btn btn-primary">글 등록</a>
-                {{#userName}}
-                    Logged in as: <span id="user">{{userName}}</span>
-                    <a href="/logout" class="btn btn-info active" role="button">Logout</a>
-                {{/userName}}
-                {{^userName}}
-                    <a href="/oauth2/authorization/google" class="btn btn-success active" role="button">Google Login</a>
-                    <a href="/oauth2/authorization/naver" class="btn btn-secondary active" role="button">Naver Login</a>
-                    <a href="/oauth2/authorization/kakao" class="btn btn-warning active" role="button">Kakao Login</a>
-                {{/userName}}
+            <div class="col-md-12">
+                <a href="/admin/user/" role="button" class="btn btn-primary">유저 관리 페이지</a>
+                <a href="/admin/challenge/" class="btn btn-success active" role="button">챌린지 관리 페이지</a>
+                <a href="/admin/stage/" class="btn btn-secondary active" role="button">스테이지 관리 페이지</a>
+                <a href="/admin/post/" class="btn btn-secondary active" role="button">포스트 관리 페이지</a>
+                <a href="/admin/comment" class="btn btn-warning active" role="button">댓글 관리 페이지</a>
             </div>
         </div>
         <br>
