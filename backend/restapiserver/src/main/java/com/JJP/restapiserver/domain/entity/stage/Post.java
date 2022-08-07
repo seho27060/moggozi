@@ -46,6 +46,9 @@ public class Post extends BaseTimeEntity {
     @JsonManagedReference
     private List<PostLike> postLikeList = new ArrayList<>();
 
+    @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
+    private List<Comment> postComment = new ArrayList<>();
+
     @Builder
     public Post(Long id, Member member, Stage stage, String title, String content, String post_img) {
         this.id = id;
