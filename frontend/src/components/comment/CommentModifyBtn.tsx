@@ -55,7 +55,7 @@ const CommentModifyBtn: React.FC<{
       dispatch(commentModify(commentState));
     });
     setIsFormToggle(!isFormToggle);
-    setIsToggle(!isToggle)
+    setIsToggle(!isToggle);
   };
 
   const commentRemoveHandler = (event: MouseEvent) => {
@@ -71,18 +71,18 @@ const CommentModifyBtn: React.FC<{
     <>
       <div style={{ border: "solid 1px" }}>
         <button onClick={(event: MouseEvent) => setIsToggle(!isToggle)}>
-          ...
+          ㆍㆍㆍ
         </button>
         {isToggle && (
           <div>
-            {userId !== comment.writer!.id && (
+            {(userId !== comment.writer!.id) && (
               <button onClick={commentModifyHandler}>숨김</button>
             )}
           </div>
         )}
         {isToggle && (
           <div>
-            {userId === comment.writer!.id && (
+            {(userId === comment.writer!.id) && (
               <button onClick={commentRemoveHandler}>삭제</button>
             )}
           </div>

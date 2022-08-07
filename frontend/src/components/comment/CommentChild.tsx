@@ -4,7 +4,7 @@ import { RootState } from "../../store/store";
 import CommentModifyBtn from "./CommentModifyBtn";
 
 const CommentChild: React.FC<{ child: Comment, }> = ({ child }) => {
-  const postId = useSelector((state:RootState)=>state.postModal.PostModalState!.id)
+  const postId = useSelector((state:RootState)=>state.postModal.postModalState!.id)
   return (
     <div>
       <p>{child.order}</p>

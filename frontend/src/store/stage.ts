@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { PostItemState } from "./post";
+import { PostItem } from "./post";
 
 export interface StageSaveState {
   name: string | null;
@@ -11,7 +11,7 @@ export interface StageState extends StageSaveState {
   id: number | null;
   createDate: number | null;
   modifiedDate: number | null;
-  postList: PostItemState[] | null;
+  postList: PostItem[] | null;
 }
 
 const initialStagesState: StageState[] = [];

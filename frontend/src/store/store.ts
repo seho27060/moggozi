@@ -1,19 +1,21 @@
 import { configureStore } from "@reduxjs/toolkit";
-import authReducer from './auth'
-import hobbyReducer from './challenge'
-import commentReducer from './comment'
-import postReducer from './post'
+import authReducer from "./auth";
+import hobbyReducer from "./challenge";
+import commentReducer from "./comment";
+import postReducer from "./post";
 import postModalReducer from './postModal'
 import stageReducer from "./stage";
 import reviewReducer from "./review";
+import alertReducer from "./alert"
 
 export const store = configureStore({
   reducer: {
     auth: authReducer,
+    alert : alertReducer,
     hobby: hobbyReducer,
     comment: commentReducer,
     post: postReducer,
-    postModal: postModalReducer,
+    postModal : postModalReducer,
     stages: stageReducer,
     review: reviewReducer,
   },
