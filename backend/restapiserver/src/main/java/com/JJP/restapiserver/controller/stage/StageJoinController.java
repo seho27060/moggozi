@@ -31,7 +31,10 @@ public class StageJoinController {
     @PutMapping
     public Long complete(@PathVariable Long stage_id, HttpServletRequest request){
         Long member_id = jwtUtils.getUserIdFromJwtToken(request.getHeader("Authorization"));
-        StageCompleteDto stageCompleteDto = new StageCompleteDto(stage_id, member_id);
+        StageCompleteDto stageCompleteDto = StageCompleteDto.builder()
+                .stage_id(stage_id)
+                .member_id(member_id)
+                .build();
         return stageJoinService.completeStage(stageCompleteDto);
     }
 
