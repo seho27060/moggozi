@@ -28,7 +28,7 @@ const ChallengeUpdate: React.FC = () => {
             const challenge: ChallengeDetailState = {
               ...res,
             };
-            setIsLoading(false);
+            setLoadedChallenge(challenge);
             challengeImgFetchAPI(challenge.id!)
               .then((res) =>
                 setLoadedChallenge({
@@ -42,6 +42,7 @@ const ChallengeUpdate: React.FC = () => {
                   img: "",
                 });
               });
+            setIsLoading(false);
           })
           // console.log(res)
           .catch((err) => {
@@ -55,7 +56,7 @@ const ChallengeUpdate: React.FC = () => {
             const challenge: ChallengeDetailState = {
               ...res,
             };
-            setIsLoading(false);
+            setLoadedChallenge(challenge);
             challengeImgFetchAPI(challenge.id!)
               .then((res) =>
                 setLoadedChallenge({
@@ -69,8 +70,8 @@ const ChallengeUpdate: React.FC = () => {
                   img: "",
                 });
               });
+            setIsLoading(false);
           })
-          // console.log(res)
           .catch((err) => {
             console.log(err);
             setIsLoading(false);

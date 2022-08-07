@@ -17,6 +17,7 @@ import { RootState } from "../../store/store";
 const ChallengeDetail: React.FC = () => {
   const { id } = useParams();
   const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
+  const userId = useSelector((state: RootState) => state.auth.userInfo.id);
   const [isLoading, setIsLoading] = useState(true);
   const [loadedChallenge, setLoadedChallenge] =
     useState<ChallengeDetailState>();
@@ -48,7 +49,6 @@ const ChallengeDetail: React.FC = () => {
         // 로그인 한 경우
         isLoginFetchChallenge(Number(id))
           .then((res) => {
-            console.log(res);
             const challenge: ChallengeDetailState = {
               ...res,
               img: "",
@@ -79,11 +79,10 @@ const ChallengeDetail: React.FC = () => {
       } else {
         // 로그인 안 한 경우
         fetchChallenge(Number(id)).then((res) => {
-          console.log(res);
           const challenge: ChallengeDetailState = {
             ...res,
           };
-          setIsLoading(false);
+          setLoadedChallenge(challenge);
           challengeImgFetchAPI(challenge.id!)
             .then((res) => {
               setLoadedChallenge({
@@ -91,6 +90,7 @@ const ChallengeDetail: React.FC = () => {
                 img: res,
               });
               dispatch(reviewFetch(challenge.reviewList));
+              setIsLoading(false);
             })
             .catch((err) => {
               setLoadedChallenge({
@@ -98,8 +98,8 @@ const ChallengeDetail: React.FC = () => {
                 img: "",
               });
               dispatch(reviewFetch(challenge.reviewList));
+              setIsLoading(false);
             });
-          setIsLoading(false);
         });
       }
     }
@@ -119,7 +119,6 @@ const ChallengeDetail: React.FC = () => {
           {loadedChallenge!.img && (
             <img src={loadedChallenge!.img} alt="challenge Img"></img>
           )}
-          <p>챌린지 취미들: {loadedChallenge!.name}</p>
           <p>챌린지 만든 사람: {loadedChallenge!.writer.nickname}</p>
           <p>챌린지 level: {loadedChallenge!.level}</p>
           {isLoggedIn === true && (
@@ -143,14 +142,17 @@ const ChallengeDetail: React.FC = () => {
           <HobbyList hobbies={loadedChallenge!.hobbyList} />
           <p>스테이지</p>
           <StageList stages={loadedChallenge!.stageList} />
-
-          <Link to={`/stage/${id}`}>
-            <button>스테이지 편집</button>
-          </Link>
-          <Link to={`/challenge/${id}/update`} state={loadedChallenge}>
-            <button>챌린지 수정</button>
-          </Link>
-          {id && <ChallengeDeleteBtn />}
+          {userId === loadedChallenge!.writer.id && (
+            <div>
+              <Link to={`/stage/${id}`}>
+                <button>스테이지 편집</button>
+              </Link>
+              <Link to={`/challenge/${id}/update`} state={loadedChallenge}>
+                <button>챌린지 수정</button>
+              </Link>
+              <ChallengeDeleteBtn />
+            </div>
+          )}
 
           {isLoggedIn && <ReviewForm />}
           <ReviewList reviews={reviews} />
