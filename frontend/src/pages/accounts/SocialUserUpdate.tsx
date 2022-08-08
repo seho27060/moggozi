@@ -7,9 +7,9 @@ import { useNavigate, Link } from "react-router-dom";
 import { userDetail } from "../../lib/withTokenApi";
 import { updateUserApi } from "../../lib/withTokenApi";
 import { useSelector } from "react-redux";
-import UserImgForm from "./UserImgForm";
+import UserImgForm from "../../components/accounts/UserImgForm";
 
-import styles from "./EditUserInfoForm.module.scss";
+import styles from "./SocialUserUpdate.module.scss";
 
 // html input 태그에서 value의 type에 null이 매칭이 안되서 임의로 undefined로 수정하였습니다.
 interface UserEditState {
@@ -21,7 +21,7 @@ interface UserEditState {
   isPrivate: number | undefined; // html상의 type이 매칭이 안되서 임의로 number => boolean 로 수정하였습니다.
 }
 
-const EditUserInfoForm: React.FC = () => {
+const SocialUserUpdate: React.FC = () => {
   // 성공이후 페이지이동을 위한 navigate 객체 생성
   const navigate = useNavigate();
   const userId = useSelector((state: RootState) => state.auth.userInfo.id);
@@ -70,13 +70,6 @@ const EditUserInfoForm: React.FC = () => {
         <div className={styles.card}>
           <div className={styles.title}>
             <div>회원정보 수정</div>
-            <button
-              onClick={() => {
-                navigate("/account/withdrawal");
-              }}
-            >
-              회원탈퇴
-            </button>
           </div>
           <form>
             <div>
@@ -158,4 +151,4 @@ const EditUserInfoForm: React.FC = () => {
   );
 };
 
-export default EditUserInfoForm;
+export default SocialUserUpdate;

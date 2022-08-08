@@ -1,6 +1,9 @@
 @use "../styles/mixin.scss" as mixin;
 
 @include mixin.desktop {
+  a {
+    color: black;
+  }
   .header {
     height: 90px;
     font-size: 1.1rem;
