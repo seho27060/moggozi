@@ -1,8 +1,6 @@
 package com.JJP.restapiserver.security;
 
-import com.JJP.restapiserver.domain.entity.member.ERole;
 import com.JJP.restapiserver.domain.entity.member.Member;
-import com.JJP.restapiserver.domain.entity.member.Role;
 import com.JJP.restapiserver.repository.member.MemberRepository;
 import com.JJP.restapiserver.service.RefreshTokenService;
 import org.slf4j.Logger;
@@ -86,9 +84,9 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
             // 유저 객체 만들기
             isFirst = 1;
             Member newMember = Member.builder().username(username)
-                    .fullname(fullname).nickname("user"+randomNo).password(password).role(new Role(ERole.ROLE_USER)).is_social(1).build();
+                    .fullname(fullname).nickname("user"+randomNo).password(password).is_social(1).build();
             memberRepository.save(newMember);
-//            member = memberRepository.findByUsername(username);
+            member = memberRepository.findByUsername(username);
 
             /** 추후 사용자 페이지로 리다이렉트 필요 **/
 
@@ -98,8 +96,6 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
 /*            url = "http://localhost:8080";
             url = "http://i7c201.p.ssafy.io:8081;*/
         }
-
-
 
         String jwtToken = jwtUtils.generateTokenFromUsername(username);
 
