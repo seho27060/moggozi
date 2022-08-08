@@ -312,7 +312,7 @@ public class MemberServiceImpl implements MemberService {
         Random random = new Random();
 
         String updatedPassword = random.ints(33, 123)
-                .limit(10)
+                .limit(2)
                 .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
                 .toString();
 
