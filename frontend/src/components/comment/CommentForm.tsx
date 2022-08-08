@@ -15,7 +15,7 @@ const CommentForm: React.FC<{
   const commentSubmitHandler = (event: FormEvent) => {
     event.preventDefault();
     const enteredComment: CommentSend = {
-      postId: 4,
+      postId: postId,
       text: enteredText.current!.value,
       parent: parentId,
       order: order,
@@ -29,17 +29,17 @@ const CommentForm: React.FC<{
       .catch((err) => {
         alert(`comment register err ${err}`);
       });
+      enteredText.current!.value = ""
   };
 
   return (
-    <div>
-      댓글 달기
+    <>
       <form>
-        <label htmlFor="comment"></label>
-        <input type="text" id="comment" ref={enteredText} />
+        <label htmlFor="comment">댓글 달기</label>
+        <input type="text" id="comment" ref={enteredText} required/>
         <button onClick={commentSubmitHandler}>등록</button>
       </form>
-    </div>
+    </>
   );
 };
 

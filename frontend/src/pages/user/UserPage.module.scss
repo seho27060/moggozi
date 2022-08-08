@@ -1,0 +1,68 @@
+@use "../../styles/mixin.scss" as mixin;
+
+@include mixin.desktop {
+  .info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    .editImg {
+      display: flex;
+      width: 250px;
+      height: 250px;
+      border-radius: 100%;
+
+      .edit::before {
+        display: inline-block;
+        position: relative;
+        top: 175px;
+        left: 190px;
+        content: "";
+        width: 60px;
+        height: 60px;
+        border: 0;
+        border-radius: 100%;
+        background-color: rgb(255, 255, 255);
+        box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25);
+
+        // 임시로 이미지로 박아놓음.
+        background-image: url("../../asset/setup.png");
+        background-position: "center";
+        // background-size: "cover";
+        background-repeat: "no-repeat";
+      }
+    }
+
+    .nickname {
+      margin: 30px 0 30px 0;
+      font-weight: 700;
+      font-size: 25px;
+    }
+
+    .introduce {
+      margin-bottom: 24px;
+      width: 500px;
+      font-weight: 400;
+      font-size: 20px;
+      line-height: 27px;
+      text-align: center;
+    }
+
+    .followButton {
+      margin: 20px 0 20px 0;
+      width: 175px;
+      height: 60px;
+      background: #ffffff;
+      border: 2px solid #ff6262;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 22px;
+      line-height: 27px;
+      color: #ff6262;
+    }
+  }
+}
+
+@include mixin.mobile {
+}

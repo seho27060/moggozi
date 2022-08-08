@@ -18,7 +18,6 @@ const ChallengeUpdateForm: React.FC<{ challenge: ChallengeDetailState }> = (
   }, [dispatch, props]);
 
   const nameInputRef = useRef<HTMLInputElement>(null);
-  const imgInputRef = useRef<HTMLInputElement>(null);
   const descriptionInputRef = useRef<HTMLInputElement>(null);
   const contentInputRef = useRef<HTMLTextAreaElement>(null);
   const levelSelectRef = useRef<HTMLSelectElement>(null);
@@ -31,10 +30,9 @@ const ChallengeUpdateForm: React.FC<{ challenge: ChallengeDetailState }> = (
   function submitHandler(event: React.FormEvent) {
     event.preventDefault();
     if (hobbyCnt === 0) {
-      // 취미가 없을 땐 전송되지 않도록 한다.
+      alert("취미를 입력해주세요!");
     } else {
       const enteredName = nameInputRef.current!.value;
-      const enteredImg = imgInputRef.current!.value;
       const enteredDescription = descriptionInputRef.current!.value;
       const enteredContent = contentInputRef.current!.value;
       const enteredLevel = levelSelectRef.current!.value;
@@ -42,7 +40,7 @@ const ChallengeUpdateForm: React.FC<{ challenge: ChallengeDetailState }> = (
       const challengeData = {
         name: enteredName,
         content: enteredContent,
-        img: enteredImg,
+        img: "",
         level: Number(enteredLevel),
         description: enteredDescription,
         hobbyList: hobbyList,
@@ -71,22 +69,16 @@ const ChallengeUpdateForm: React.FC<{ challenge: ChallengeDetailState }> = (
         <label htmlFor="name">챌린지 이름: </label>
         <input
           type="text"
+          required
           id="name"
           ref={nameInputRef}
           defaultValue={props.challenge.name || ""}
         />
         <br />
-        <label htmlFor="img">챌린지 이미지 등록: </label>
-        <input
-          type="text"
-          id="img"
-          ref={imgInputRef}
-          defaultValue={props.challenge.img || ""}
-        />
-        <br />
         <label htmlFor="description">챌린지 간단 설명: </label>
         <input
           type="text"
+          required
           id="description"
           ref={descriptionInputRef}
           defaultValue={props.challenge.description || ""}
@@ -96,6 +88,7 @@ const ChallengeUpdateForm: React.FC<{ challenge: ChallengeDetailState }> = (
         <textarea
           rows={5}
           id="content"
+          required
           ref={contentInputRef}
           defaultValue={props.challenge.content || ""}
         />
@@ -115,7 +108,7 @@ const ChallengeUpdateForm: React.FC<{ challenge: ChallengeDetailState }> = (
         </select>
         <br />
         <button type="button" onClick={submitHandler}>
-          생성
+          변경
         </button>
       </form>
     </div>

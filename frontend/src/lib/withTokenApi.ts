@@ -1,7 +1,10 @@
 import axios from "axios";
 import { apiConfig } from "../config";
+import { AlertSend } from "../store/alert";
 import { ChallengeSaveState } from "../store/challenge";
 import { CommentSend } from "../store/comment";
+import { PostSend, PostUpdateSend } from "../store/postModal";
+import { StageSaveState } from "../store/stage";
 import { refresh, refreshErrorHandle } from "./refresh";
 
 const withTokenApi = axios.create({
@@ -40,6 +43,26 @@ export const updatePw = async (option: object) => {
   return data;
 };
 
+export const withdrawal = async (option: object) => {
+  const { data } = await withTokenApi.post("/user/delete", option);
+  return data;
+};
+
+export const followApi = async(toId: number | null) => {
+  const { data } = await withTokenApi.post(`/user/follow/${toId}`);
+  return data
+}
+
+export const followedApi = async(toMember: number, loginID: number) => {
+  const { data } = await withTokenApi.get(`user/followed/${toMember}/${loginID}`)
+  return data;
+}
+
+export const followingApi = async(fromMemberId: number) => {
+  const { data } = await withTokenApi.get(`user/following/${fromMemberId}`) 
+  return data;
+}
+
 // 챌린지 관련
 export const isLoginFetchChallenge = async (id: number) => {
   const { data } = await withTokenApi.get(`/challenge/${id}`);
@@ -51,21 +74,34 @@ export const isLoginFetchChallengeRankList = async () => {
   return data;
 };
 
-export const challengeAdd = async (challengeData: ChallengeSaveState) => {
-  const { data } = await withTokenApi.post("/challenge/save", challengeData);
+export const challengeAdd = async (challengeAddData: ChallengeSaveState) => {
+  const { data } = await withTokenApi.post("/challenge/save", challengeAddData);
   return data;
 };
 
 export const challengeUpdate = async (
-  challengeData: ChallengeSaveState,
+  challengeUpdateData: ChallengeSaveState,
   id: number
 ) => {
-  const { data } = await withTokenApi.put(`/challenge/${id}`, challengeData);
+  const { data } = await withTokenApi.put(
+    `/challenge/${id}`,
+    challengeUpdateData
+  );
   return data;
 };
 
 export const challengeDelete = async (id: number) => {
   const { data } = await withTokenApi.delete(`/challenge/${id}`);
+  return data;
+};
+
+export const challengeLike = async (challengeIdData: {
+  challengeId: number;
+}) => {
+  const { data } = await withTokenApi.post(
+    "/challengeLike/like",
+    challengeIdData
+  );
   return data;
 };
 
@@ -84,30 +120,72 @@ export const setHobby = async (hobby: { name: string }) => {
   return data;
 };
 
+// 한줄평 관련
+export const fetchReview = async (challengeId: number) => {
+  const { data } = await withTokenApi.get(`/review/${challengeId}`);
+  return data;
+};
+
+export const reviewAdd = async (reviewData: {
+  reviewContent: string;
+  rate: number;
+  memberId: number;
+  challengeId: number;
+}) => {
+  const { data } = await withTokenApi.post("/review/register", reviewData);
+  return data;
+};
+
+export const reviewUpdate = async (
+  reviewData: {
+    reviewId: number;
+    reviewContent: string;
+    rate: number;
+  },
+  challengeId: number
+) => {
+  const { data } = await withTokenApi.put(`/review/${challengeId}`, reviewData);
+  return data;
+};
+
+export const reviewDelete = async (id: number) => {
+  const { data } = await withTokenApi.delete(`/review/${id}`);
+  return data;
+};
+
 // 스테이지 관련
-export const stageAdd = async (challenge_id: number) => {
-  const { data } = await withTokenApi.post(`/stage/${challenge_id}`);
+export const stageAdd = async (
+  stageAddData: StageSaveState,
+  challengeId: number
+) => {
+  const { data } = await withTokenApi.post(
+    `/stage/${challengeId}`,
+    stageAddData
+  );
   return data;
 };
 
-export const stageDelete = async (stage_id: number | null) => {
-  const { data } = await withTokenApi.delete(`/stage/${stage_id}`);
+export const stageDelete = async (id: number | null) => {
+  const { data } = await withTokenApi.delete(`/stage/${id}`);
   return data;
 };
 
-export const stageUpdate = async (stage_id: number) => {
-  const { data } = await withTokenApi.put(`/stage/${stage_id}`);
+export const stageUpdate = async (
+  stageUpdateData: StageSaveState,
+  id: number
+) => {
+  const { data } = await withTokenApi.put(`/stage/${id}`, stageUpdateData);
   return data;
 };
 
-export const stageRead = async (stage_id: number) => {
-  const { data } = await withTokenApi.get(`/stage/${stage_id}`);
+export const fetchStages = async (ChallengeId: number) => {
+  const { data } = await withTokenApi.get(`/stage/${ChallengeId}`);
   return data;
 };
 
 // 포스팅 관련
-export const postAdd = async () => {
-  const { data } = await withTokenApi.post(`/stage/post`);
+export const postAdd = async (postAddData: PostSend) => {
+  const { data } = await withTokenApi.post(`/stage/post`, postAddData);
   return data;
 };
 
@@ -116,13 +194,20 @@ export const postDelete = async (post_id: number) => {
   return data;
 };
 
-export const postUpdate = async (post_id: number) => {
-  const { data } = await withTokenApi.put(`/stage/post/${post_id}`);
+export const postUpdate = async (post: PostUpdateSend) => {
+  const { data } = await withTokenApi.put(`/stage/post`, post);
   return data;
 };
 
 export const postRead = async (stageId: number) => {
   const { data } = await withTokenApi.get(`/stage/post/${stageId}`);
+  return data;
+};
+
+export const postLike = async (post_Id: number) => {
+  const { data } = await withTokenApi.post(`/postlike/like`, {
+    postId: post_Id,
+  });
   return data;
 };
 
@@ -146,6 +231,33 @@ export const commentUpdate = async (
   comment: CommentSend
 ) => {
   const { data } = await withTokenApi.put(`/comment/${comment_id}`, comment);
+  return data;
+};
+
+// 알림 관련
+// 알림 확인
+export const alertRead = async (alert_id: number) => {
+  const { data } = await withTokenApi.put(`/notification/${alert_id}`);
+  return data;
+};
+// 알림 전체 기록 가져오기
+export const alertAll = async () => {
+  const { data } = await withTokenApi.get(`/notification/all`);
+  return data;
+};
+// 알림 전체 확인
+export const alertReadall = async () => {
+  const { data } = await withTokenApi.put(`/notification/readAll`);
+  return data;
+};
+// 모든 알림 통틀어서 최근 6개 가져오기 
+export const alertRecent = async () => {
+  const { data } = await withTokenApi.get(`/notification/recent`);
+  return data;
+};
+// 새로운 알림 보내기
+export const alertSend = async (alert : AlertSend) => {
+  const { data } = await withTokenApi.post(`/notification/register`,alert);
   return data;
 };
 

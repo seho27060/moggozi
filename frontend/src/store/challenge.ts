@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { UserInfo } from "./auth";
-import { Stage } from "./stage";
+import { ReviewState } from "./review";
+import { StageState } from "./stage";
 
 // 챌린지 리스트 정보
 export interface ChallengeItemState {
@@ -11,27 +12,20 @@ export interface ChallengeItemState {
   hobbyList: Hobby[];
   writer: UserInfo;
   level: number | null;
-  userProgress: number | null;
+  userProgress: number | 0;
   likeNum: number | null;
 }
 
 // 챌린지 디테일 정보
-export interface ChallengeDetailState {
-  id: number | null;
+export interface ChallengeDetailState extends ChallengeItemState {
   createdTime: string | null;
   modifiedTime: string | null;
-  name: string | null;
-  img: string | null;
-  description: string | null;
   content: string | null;
-  level: number | null;
-  userProgress: number | null;
-  writer: UserInfo;
-  stageList: Stage[];
-  likeNum: number | null;
+  stageList: StageState[];
   // 리뷰
-  // reviewList:
+  reviewList: ReviewState[];
   hobbyList: Hobby[];
+  liked: boolean | false;
 }
 
 // 챌린지 저장할 때 Form
@@ -75,7 +69,7 @@ export const hobbySlice = createSlice({
     },
     fetchHobby(state, action) {
       state.hobbyList = action.payload;
-      state.hobbyCnt = state.hobbyCnt = state.hobbyList.length;
+      state.hobbyCnt = state.hobbyList.length;
     },
   },
 });

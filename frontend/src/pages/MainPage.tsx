@@ -1,5 +1,3 @@
-import LogoutBtn from "../components/accounts/LogoutBtn";
-
 import ChallengeList from "../components/challenge/ChallengeList";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -8,6 +6,7 @@ import { ChallengeItemState } from "../store/challenge";
 import { useSelector } from "react-redux";
 import { RootState } from "../store/store";
 import { fetchChallengeRankList } from "../lib/generalApi";
+import { challengeImgFetchAPI } from "../lib/imgApi";
 
 const MainPage: React.FC = () => {
   const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
@@ -15,6 +14,26 @@ const MainPage: React.FC = () => {
   const [loadedChallengeRankList, setLoadedChallengeRankList] = useState<
     ChallengeItemState[]
   >([]);
+
+  async function addChallenge(
+    challenges: ChallengeItemState[],
+    newChallenges: ChallengeItemState[]
+  ) {
+    await challenges.reduce(async (acc, challenge) => {
+      await acc.then();
+      await challengeImgFetchAPI(challenge.id!)
+        .then((res) => {
+          challenge.img = res;
+          newChallenges.push(challenge);
+        })
+        .catch((err) => {
+          challenge.img = "";
+          newChallenges.push(challenge);
+        });
+      return acc;
+    }, Promise.resolve());
+  }
+
   useEffect(() => {
     setIsLoading(true);
 
@@ -22,19 +41,12 @@ const MainPage: React.FC = () => {
       // 로그인 한 경우
       isLoginFetchChallengeRankList()
         .then((res) => {
-          console.log(res);
           const challengeRankList: ChallengeItemState[] = [];
-
-          for (const key in res) {
-            const challenge: ChallengeItemState = {
-              ...res[key],
-            };
-            challengeRankList.push(challenge);
-          }
-          setIsLoading(false);
-          setLoadedChallengeRankList(challengeRankList);
+          addChallenge(res, challengeRankList).then(() => {
+            setLoadedChallengeRankList(challengeRankList);
+            setIsLoading(false);
+          });
         })
-        // console.log(res)
         .catch((err) => {
           console.log(err);
           setIsLoading(false);
@@ -43,17 +55,11 @@ const MainPage: React.FC = () => {
       // 로그인 안 한 경우
       fetchChallengeRankList()
         .then((res) => {
-          console.log(res);
           const challengeRankList: ChallengeItemState[] = [];
-
-          for (const key in res) {
-            const challenge: ChallengeItemState = {
-              ...res[key],
-            };
-            challengeRankList.push(challenge);
-          }
-          setIsLoading(false);
-          setLoadedChallengeRankList(challengeRankList);
+          addChallenge(res, challengeRankList).then(() => {
+            setLoadedChallengeRankList(challengeRankList);
+            setIsLoading(false);
+          });
         })
         // console.log(res)
         .catch((err) => {
@@ -66,7 +72,6 @@ const MainPage: React.FC = () => {
   return (
     <div>
       MainPage
-      <LogoutBtn />
       <Link to={`/challenge/new`}>
         <button>챌린지 생성</button>
       </Link>
@@ -76,7 +81,10 @@ const MainPage: React.FC = () => {
         </section>
       )}
       {isLoading === false && (
-        <ChallengeList challenges={loadedChallengeRankList} />
+        <div>
+          <p>좋아요 순으로 정렬한 챌린지 리스트</p>
+          <ChallengeList challenges={loadedChallengeRankList} />
+        </div>
       )}
     </div>
   );

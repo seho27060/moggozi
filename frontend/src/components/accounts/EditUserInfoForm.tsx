@@ -7,6 +7,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { userDetail } from "../../lib/withTokenApi";
 import { updateUserApi } from "../../lib/withTokenApi";
 import { useSelector } from "react-redux";
+import UserImgForm from "./UserImgForm";
 
 // html input 태그에서 value의 type에 null이 매칭이 안되서 임의로 undefined로 수정하였습니다.
 interface UserEditState {
@@ -43,7 +44,7 @@ const EditUserInfoForm: React.FC = () => {
   }
 
   useEffect(() => {
-    if ( isLoggedIn ){
+    if (isLoggedIn) {
       userDetail().then((res) => {
         const currentState: UserEditState = {
           username: res.username,
@@ -54,10 +55,10 @@ const EditUserInfoForm: React.FC = () => {
           isPrivate: res.isPrivate,
         };
         setOption(currentState);
-      })
+      });
     } else {
-      alert("잘못된 접근입니다.")
-      navigate("/")
+      alert("잘못된 접근입니다.");
+      navigate("/");
     }
   }, [isLoggedIn, navigate]);
 
@@ -65,6 +66,13 @@ const EditUserInfoForm: React.FC = () => {
     <div>
       <h3>EditUserInfoForm form</h3>
       <div>
+        <button
+          onClick={() => {
+            navigate("/account/withdrawal");
+          }}
+        >
+          회원탈퇴
+        </button>
         <form>
           <div>
             <label htmlFor="email">이메일 : </label>
@@ -134,19 +142,7 @@ const EditUserInfoForm: React.FC = () => {
               }}
             />
           </div>{" "}
-          <div>
-            <img src={option.userImg} alt="프로필 사진" />
-            <label htmlFor="img">프로필 사진 : </label>
-            <input
-              type="text"
-              required
-              id="img"
-              value={option.userImg}
-              onChange={(event) => {
-                setOption({ ...option, userImg: event.target.value });
-              }}
-            />
-          </div>{" "}
+          <UserImgForm />
           <button type="button" onClick={submitHandler}>
             Change my Info
           </button>

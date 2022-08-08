@@ -5,54 +5,60 @@ import { RootState } from "../../store/store";
 import { commentRead } from "../../lib/withTokenApi";
 import { commentSet } from "../../store/comment";
 
-import { PostTest } from "../../store/post";
-import PostCommentList from "../comment/PostCommentList";
+import CommentList from "../comment/CommentList";
 import { useDispatch } from "react-redux";
+import PostModifyBtn from "./PostModifyBtn";
+import PostLikeBtn from "./PostLikeBtn";
 
-const PostDetailItem: React.FC<{ post: PostTest }> = ({ post }) => {
+const PostDetailItem: React.FC<{}> = () => {
   const dispatch = useDispatch();
+  const post = useSelector((state:RootState)=>state.postModal)
   const commentState = useSelector(
     (state: RootState) => state.comment.comments
   );
+  console.log("postDetail",post.postModalState)
   useEffect(() => {
-    commentRead(post.id!)
+    commentRead(post.postModalState!.id)
       .then((res) => {
-        console.log(`${post.id}의 댓글 ${res}`);
+        console.log(`${post.postModalState!.id}의 댓글`);
         dispatch(commentSet(res));
       })
       .catch((err) => {
         console.log("ERR", err);
       });
-  }, [post.id, dispatch]);
+  }, [post, dispatch]);
 
-  console.log("commentSEt", commentState);
   return (
-    <div>
-      <div style={{ height: "25rem", overflow: "scroll" }}>
-        <img src="" alt="포스팅이미지/undefined로타입수정필요" />
-        <div>{post.id}</div>
-        <div style={{ border: "solid", margin: "1rem", padding: "1rem" }}>
-          <div>작성자프로필이미지 : {post.writer?.img}</div>
-          <div>작성자 : {post.writer?.nickname}</div>
+    <div style={{ height: "25rem", overflow: "scroll" }}>
+      <div style={{ border: "solid", margin: "1rem", padding: "1rem" }}>
+        <img src="" alt="포스팅이미지" />
+        {/* 수정 버튼 */}
+        <PostModifyBtn/>
+
+        <div>postid:{post.postModalState!.id}</div>
+        <div>
+          <div>프로필이미지 : {post.postModalState!.writer?.img}</div>
+          <div>작성자 : {post.postModalState!.writer?.nickname}</div>
           <button>팔로잉/팔로우해체 버튼</button>
+          <hr />
         </div>
-        <div style={{ border: "solid", margin: "1rem", padding: "1rem" }}>
+        <div>
           <>
-            <p>포스팅 내용 : {post.content}</p>
-            <button>좋아요버튼</button>
-            좋아요갯수:{post.postLikeList?.length}
+            <div>제목 : {post.postModalState!.title}</div>
+            <p>포스팅 내용 : {post.postModalState!.content}</p>
+            {/* 좋아요 버튼 */}
+            <PostLikeBtn/>
+            좋아요갯수:{post.postModalState!.likeNum}
             <br />
-            포스팅작성일 :{post.modifiedTime}
+            포스팅작성일 :{post.postModalState!.modifiedTime}
           </>
         </div>
         <div style={{ border: "solid", margin: "1rem", padding: "1rem" }}>
           댓글창
           {/* // 해당 포스팅에 대한 댓글 불러온다는 가정하에 구현
         // comment store에 state 저장해서 사용할것. */}
-          <PostCommentList comments={commentState} />
+          <CommentList comments={commentState} />
         </div>
-        <button>게시</button>
-        <button>닫기</button>
       </div>
     </div>
   );
