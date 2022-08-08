@@ -10,9 +10,10 @@ import Modal from "../ui/Modal";
 
 import logo from "../../asset/moggo.png";
 import style from "./LoginForm.module.scss";
-import facebook from "../../asset/facebook.svg";
+import google from "../../asset/google.svg";
 import kakao from "../../asset/kakao.svg";
 import naver from "../../asset/naver.svg";
+import { KAKAO_OAUTH_URL, NAVER_OAUTH_URL, GOOGLE_OAUTH_URL} from "../../lib/OAuth"
 
 const LoginForm: React.FC = () => {
   const dispatch = useDispatch();
@@ -151,13 +152,13 @@ const LoginForm: React.FC = () => {
             </Modal>
           </React.Fragment>
           <div className={style.socialLink}>
-            <a href="https://www.facebook.com">
-              <img src={facebook} alt="facebook" />
+            <a href={GOOGLE_OAUTH_URL}>
+              <img src={google} alt="google" />
             </a>
-            <a href="https://www.kakao.com">
+            <a href={KAKAO_OAUTH_URL}>
               <img src={kakao} alt="kakao" />
             </a>
-            <a href="https://www.naver.com">
+            <a href={NAVER_OAUTH_URL}>
               <img src={naver} alt="naver" />
             </a>
           </div>
