@@ -14,14 +14,13 @@ import Login from "./pages/accounts/Login";
 import CompleteSignUp from "./pages/accounts/CompleteSignUp";
 import Signup from "./pages/accounts/Signup";
 import UserUpdate from "./pages/accounts/UserUpdate";
+import SocialUserUpdate from "./pages/accounts/SocialUserUpdate";
 import UpdatePassword from "./pages/accounts/UpdatePassword";
 import PasswordReissue from "./pages/accounts/PasswordReissue";
 import Withdrawal from "./pages/accounts/Withdrawal";
 
 //OAuth
-import KakaoOAuthRedirectHandler from "./pages/KakaoOAuthRedirectHandler";
-import NaverOAuthRedirectHandler from "./pages/NaverOAuthRedirectHandler";
-import GoogleOAuthRedirectHandler from "./pages/GoogleOAuthRedirectHandler";
+import OAuthRedirectHandler from "./pages/OAuthRedirectHandler";
 
 // Challenge
 import ChallengeDetail from "./pages/challenge/ChallengeDetail";
@@ -70,16 +69,8 @@ export default function Router() {
       ],
     },
     {
-      path: "/oauth/callback/kakao",
-      element: <KakaoOAuthRedirectHandler />,
-    },
-    {
-      path: "/oauth/callback/naver",
-      element: <NaverOAuthRedirectHandler />,
-    },
-    {
-      path: "/oauth/callback/google",
-      element: <GoogleOAuthRedirectHandler />,
+      path: "/oauth/callback",
+      element: <OAuthRedirectHandler />,
     },
     {
       path: "/account",
@@ -100,6 +91,10 @@ export default function Router() {
         {
           path: "userUpdate",
           element: <UserUpdate />,
+        },
+        {
+          path: "socialUserUpdate",
+          element: <SocialUserUpdate />,
         },
         {
           path: "passwordReissue",

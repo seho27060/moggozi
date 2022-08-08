@@ -53,7 +53,7 @@ export const authSlice = createSlice({
       state.userInfo = {
         id: action.payload.id,
         nickname: action.payload.nickname,
-        img: action.payload.userImg,
+        img: "",
       };
       state.isLoggedIn = !!action.payload.accessToken;
     },
@@ -68,9 +68,9 @@ export const authSlice = createSlice({
       state.userInfo = {
         id: action.payload.id,
         nickname: action.payload.nickname,
-        img: action.payload.userImg,
+        img: "",
       };
-      // state.isLoggedIn = !!initialToken;
+      state.isLoggedIn = true;
     },
     kakaoLogin: (state, action) => {},
     // 유저이미지 불러오기
