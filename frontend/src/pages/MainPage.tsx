@@ -15,7 +15,7 @@ const MainPage: React.FC = () => {
     ChallengeItemState[]
   >([]);
 
-  async function addChallenge(
+  async function addChallengeImg(
     challenges: ChallengeItemState[],
     newChallenges: ChallengeItemState[]
   ) {
@@ -42,7 +42,7 @@ const MainPage: React.FC = () => {
       isLoginFetchChallengeRankList()
         .then((res) => {
           const challengeRankList: ChallengeItemState[] = [];
-          addChallenge(res, challengeRankList).then(() => {
+          addChallengeImg(res, challengeRankList).then(() => {
             setLoadedChallengeRankList(challengeRankList);
             setIsLoading(false);
           });
@@ -56,7 +56,7 @@ const MainPage: React.FC = () => {
       fetchChallengeRankList()
         .then((res) => {
           const challengeRankList: ChallengeItemState[] = [];
-          addChallenge(res, challengeRankList).then(() => {
+          addChallengeImg(res, challengeRankList).then(() => {
             setLoadedChallengeRankList(challengeRankList);
             setIsLoading(false);
           });

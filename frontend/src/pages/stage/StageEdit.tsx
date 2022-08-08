@@ -6,22 +6,42 @@ import StageAddBtn from "../../components/stage/StageAddBtn";
 import StageDeleteBtn from "../../components/stage/StageDeleteBtn";
 import StageItem from "../../components/stage/StageItem";
 import StageUpdateBtn from "../../components/stage/StageUpdateBtn";
+import { stageImgFetchAPI } from "../../lib/imgApi";
 import { fetchStages } from "../../lib/withTokenApi";
-import { stageFetch } from "../../store/stage";
+import { stageFetch, StageState } from "../../store/stage";
 import { RootState } from "../../store/store";
 
 const StageEdit: React.FC = () => {
   const { challengeId } = useParams();
   const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
+  const stages = useSelector((state: RootState) => state.stages);
   const [isLoading, setIsLoading] = useState(true);
   const dispatch = useDispatch();
+
+  async function addStagesImg(stages: StageState[]) {
+    await stages.reduce(async (acc, stage, idx) => {
+      await acc.then();
+      await stageImgFetchAPI(stage.id!)
+        .then((res) => {
+          stage.img = res;
+        })
+        .catch((err) => {
+          stage.img = [];
+        });
+      return acc;
+    }, Promise.resolve());
+    return stages;
+  }
 
   useEffect(() => {
     setIsLoading(true);
     fetchStages(Number(challengeId))
       .then((res) => {
-        dispatch(stageFetch(res));
-        setIsLoading(false);
+        addStagesImg(res).then((res) => {
+          console.log(res);
+          dispatch(stageFetch(res));
+          setIsLoading(false);
+        });
       })
       .catch((err) => {
         console.log(err);
@@ -29,7 +49,6 @@ const StageEdit: React.FC = () => {
       });
   }, [challengeId, isLoggedIn, dispatch]);
 
-  const stages = useSelector((state: RootState) => state.stages);
   return (
     <div>
       <h3>StageEdit</h3>
