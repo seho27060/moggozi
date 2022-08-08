@@ -1,6 +1,8 @@
 package com.JJP.restapiserver.security;
 
+import com.JJP.restapiserver.domain.entity.member.ERole;
 import com.JJP.restapiserver.domain.entity.member.Member;
+import com.JJP.restapiserver.domain.entity.member.Role;
 import com.JJP.restapiserver.repository.member.MemberRepository;
 import com.JJP.restapiserver.service.RefreshTokenService;
 import org.slf4j.Logger;
@@ -86,7 +88,7 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
 
             isFirst = 1;
             Member newMember = Member.builder().username(username)
-                    .fullname(fullname).nickname("User"+randomNo).password(password).is_social(1).build();
+                    .fullname(fullname).nickname("User"+randomNo).password(password).is_social(1).role(new Role(ERole.ROLE_USER)).build();
             memberRepository.save(newMember);
             member = memberRepository.findByUsername(username);
 
