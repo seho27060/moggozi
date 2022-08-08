@@ -2,15 +2,13 @@ package com.JJP.restapiserver.controller.Tag;
 
 import com.JJP.restapiserver.domain.dto.tag.TagRequestDto;
 import com.JJP.restapiserver.domain.dto.tag.TagResponseDto;
-import com.JJP.restapiserver.domain.entity.Tag.Tag;
-import com.JJP.restapiserver.repository.Tag.TagRepository;
 import com.JJP.restapiserver.service.Tag.TagService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin("*")
+//@CrossOrigin("*")
 @RestController
 @RequestMapping("/hobby")
 @RequiredArgsConstructor

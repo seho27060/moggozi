@@ -3,7 +3,6 @@ package com.JJP.restapiserver.controller.stage;
 import com.JJP.restapiserver.domain.dto.post.PostResponseDto;
 import com.JJP.restapiserver.domain.dto.post.PostSaveRequestDto;
 import com.JJP.restapiserver.domain.dto.post.PostUpdateRequestDto;
-import com.JJP.restapiserver.domain.entity.stage.Post;
 import com.JJP.restapiserver.service.post.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -11,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-@CrossOrigin("*")
+//@CrossOrigin("*")
 @RequiredArgsConstructor
 @RequestMapping("/stage/post")
 @RestController

@@ -2,7 +2,6 @@ package com.JJP.restapiserver.controller.stage;
 
 import com.JJP.restapiserver.domain.dto.stage.CommentRequestDto;
 import com.JJP.restapiserver.domain.dto.stage.CommentResponseDto;
-import com.JJP.restapiserver.domain.entity.stage.Comment;
 import com.JJP.restapiserver.security.JwtUtils;
 import com.JJP.restapiserver.service.stage.CommentService;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
-@CrossOrigin("*")
+//@CrossOrigin("*")
 @RequestMapping("/comment")
 @RestController
 @RequiredArgsConstructor
