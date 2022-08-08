@@ -85,7 +85,7 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
             isFirst = 1;
             Member newMember = Member.builder().username(username)
                     .fullname(fullname).nickname("user"+randomNo).password(password).is_social(1).build();
-            memberRepository.save(newMember);
+            memberRepository.saveAndFlush(newMember);
             member = memberRepository.findByUsername(username);
 
             /** 추후 사용자 페이지로 리다이렉트 필요 **/
