@@ -2,14 +2,15 @@ import type { RootState } from "../../store/store";
 import { useSelector } from "react-redux";
 
 import { Link, useParams } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-import { otheruserDetail } from "../../lib/generalApi";
+import { otherUserDetail } from "../../lib/generalApi";
 import { followApi } from "../../lib/withTokenApi";
 
 import MypageFollow from "../../components/accounts/MypageFollow";
 
 import styles from "./UserPage.module.scss";
+import { profileImgFetchAPI } from "../../lib/imgApi";
 
 function UserPage() {
   const userId = Number(useParams().id);
@@ -26,21 +27,25 @@ function UserPage() {
   const [followingCnt, setFollowingCnt] = useState(0);
   const [followState, setFollowState] = useState(false);
 
-  otheruserDetail(userId, loginData.userInfo.id)
-    .then((res) => {
-      // console.log(res)
-      setNickname(res.nickname);
-      setIntroduce(res.introduce);
-      setUserImg(res.userImg);
-      setIsPrivate(res.isPrivate);
-      setFollowState(res.isFollowing);
-      setFollowedCnt(res.followedCnt);
-      setFollowingCnt(res.followingCnt);
-    })
-    .catch((err) => {
-      // alert("오류가 발생했습니다.")
-      console.log(err);
+  useEffect(() => {
+    otherUserDetail(userId, loginData.userInfo.id)
+      .then((res) => {
+        // console.log(res)
+        setNickname(res.nickname);
+        setIntroduce(res.introduce);
+        setIsPrivate(res.isPrivate);
+        setFollowState(res.isFollowing);
+        setFollowedCnt(res.followedCnt);
+        setFollowingCnt(res.followingCnt);
+      })
+      .catch((err) => {
+        // alert("오류가 발생했습니다.")
+        console.log(err);
+      });
+    profileImgFetchAPI(userId).then((res) => {
+      setUserImg(res);
     });
+  }, [userId, loginData]);
 
   function followHandler(event: React.MouseEvent) {
     event.preventDefault();
@@ -111,7 +116,7 @@ function UserPage() {
             {loginId === userId ? (
               ""
             ) : (
-              <button onClick={followHandler} className={styles.followButton}> 
+              <button onClick={followHandler} className={styles.followButton}>
                 {" "}
                 {followState ? "♥ 언팔로우" : "♥ 팔로우"}
               </button>

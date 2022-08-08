@@ -23,6 +23,7 @@ const ChallengeDetail: React.FC = () => {
     useState<ChallengeDetailState>();
   const dispatch = useDispatch();
   const reviews = useSelector((state: RootState) => state.review);
+
   // 좋아요
   const likeHandler = (event: React.MouseEvent) => {
     event.preventDefault();
@@ -54,7 +55,7 @@ const ChallengeDetail: React.FC = () => {
               img: "",
             };
             setLoadedChallenge(challenge);
-
+            // 파이어스토어에서 챌린지 사진 가져오기
             challengeImgFetchAPI(challenge.id!)
               .then((res) => {
                 setLoadedChallenge({
@@ -83,6 +84,7 @@ const ChallengeDetail: React.FC = () => {
             ...res,
           };
           setLoadedChallenge(challenge);
+          // 파이어스토어에서 챌린지 사진 가져오기
           challengeImgFetchAPI(challenge.id!)
             .then((res) => {
               setLoadedChallenge({

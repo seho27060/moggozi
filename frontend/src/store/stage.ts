@@ -17,6 +17,7 @@ export interface StageState extends StageSaveState {
   createDate: number | null;
   modifiedDate: number | null;
   postList: PostItem[] | null;
+  state: number | 0;
 }
 
 const initialStagesState: StageState[] = [];
