@@ -8,14 +8,13 @@ const StageForm: React.FC = () => {
   const dispatch = useDispatch();
   const nameInputRef = useRef<HTMLInputElement>(null);
   const contentInputRef = useRef<HTMLTextAreaElement>(null);
-  const imgInputRef = useRef<HTMLInputElement>(null);
   const { challengeId } = useParams();
   function stageSubmitHandler(event: React.FormEvent) {
     event.preventDefault();
     const stageData = {
       name: nameInputRef.current!.value,
       content: contentInputRef.current!.value,
-      img: imgInputRef.current!.value,
+      img: "",
     };
     stageAdd(stageData, Number(challengeId!))
       .then((res) => {
@@ -44,10 +43,6 @@ const StageForm: React.FC = () => {
           <div>
             <label htmlFor="content">content :</label>
             <textarea required id="content" ref={contentInputRef} />
-          </div>
-          <div>
-            <label htmlFor="img">img :</label>
-            <input type="text" required id="img" ref={imgInputRef} />
           </div>
           <button type="button" onClick={stageSubmitHandler}>
             Register

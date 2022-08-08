@@ -4,7 +4,12 @@ import { PostItem } from "./post";
 export interface StageSaveState {
   name: string | null;
   content: string | null;
-  img: string | undefined;
+  img: imgState[] | string;
+}
+
+export interface imgState {
+  id: number | null;
+  url: string | null;
 }
 
 export interface StageState extends StageSaveState {
