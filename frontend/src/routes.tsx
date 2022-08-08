@@ -29,9 +29,9 @@ import Challenges from "./pages/challenge/Challenges";
 import ChallengeUpdate from "./pages/challenge/ChallengeUpdate";
 
 // Post
-import PostDetail from "./pages/post/PostDetail";
-import PostNew from "./pages/post/PostNew";
-import PostUpdate from "./pages/post/PostUpdate";
+import PostCommentTestPage from "./pages/PostCommentTestPage";
+import PostStage from "./pages/post/PostStage";
+import PostAll from "./pages/post/PostAll";
 
 // Stage
 
@@ -44,7 +44,7 @@ import SearchPage from "./pages/SearchPage";
 import UnknownPage from "./pages/UnknownPage";
 import WebsocketPage from "./pages/WebsocketTest";
 import StageEdit from "./pages/stage/StageEdit";
-import PostCommentTestPage from "./pages/PostCommentTestPage";
+
 
 export default function Router() {
   return useRoutes([
@@ -137,16 +137,12 @@ export default function Router() {
       element: <PostLayout />,
       children: [
         {
-          path: ":id",
-          element: <PostDetail />,
+          path: ":stageId",
+          element: <PostStage/>,
         },
         {
-          path: ":id/update",
-          element: <PostUpdate />,
-        },
-        {
-          path: "new",
-          element: <PostNew />,
+          path: "all/",
+          element: <PostAll/>,
         },
       ],
     },

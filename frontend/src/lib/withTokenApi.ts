@@ -204,6 +204,11 @@ export const postRead = async (stageId: number) => {
   return data;
 };
 
+export const postRandomRead = async (size : number) => {
+  const { data } = await withTokenApi.get(`/stage/post/random/${size}`);
+  return data;
+};
+
 export const postLike = async (post_Id: number) => {
   const { data } = await withTokenApi.post(`/postlike/like`, {
     postId: post_Id,
