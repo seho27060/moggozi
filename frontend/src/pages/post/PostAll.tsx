@@ -14,7 +14,6 @@ import { setPostStageList } from "../../store/postStage";
 import { RootState } from "../../store/store";
 
 const PostAll: React.FC<{}> = () => {
-
   const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.auth.userInfo);
   const {
@@ -28,14 +27,17 @@ const PostAll: React.FC<{}> = () => {
   };
   if (postModalOpen) {
     document.body.style.overflow = "auto"; //모달때문에 이상하게 스크롤이 안되서 강제로 스크롤 바 생성함
-    document.body.style.height = "auto"
+    document.body.style.height = "auto";
   }
-  useEffect(() => {
-    postRandomRead(16).then((res: PostData[]) => {
-      console.log("fisrt call", res);
-      const filteredRes = res.filter((post) => post.writer!.id !== user.id);
-      dispatch(setPostStageList(filteredRes));
-    });
+
+  useEffect((): void => {
+    postRandomRead(16)
+      .then((res: PostData[]) => {
+        console.log("fisrt call", res);
+        const filteredRes = res.filter((post) => post.writer!.id !== user.id);
+        dispatch(setPostStageList(filteredRes));
+      })
+      .catch((err) => console.log("err", err));
   }, [dispatch, user.id]);
   return (
     <div>

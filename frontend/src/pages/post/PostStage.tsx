@@ -1,4 +1,4 @@
-import {  useEffect } from "react";
+import {  useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { postSet } from "../../store/post";
@@ -19,7 +19,7 @@ import { useParams } from "react-router-dom";
 
 const PostStage = () => {
   document.body.style.overflow = "auto"; //모달때문에 이상하게 스크롤이 안되서 강제로 스크롤 바 생성함
-
+  document.body.style.height = "auto"
   const {stageId} = useParams()
 
   const dispatch = useDispatch();
@@ -31,6 +31,24 @@ const PostStage = () => {
     postFormButtonOpen,
   } = useSelector((state: RootState) => state.postModal);
 
+  const [isLogging, setIsLogging] = useState(false)
+
+  const handleScroll = useCallback((): void => {
+    const { innerHeight } = window;
+    const { scrollHeight } = document.body;
+    const { scrollTop } = document.documentElement;
+
+    if (Math.round(scrollTop + innerHeight) > scrollHeight) {
+ 
+    }
+  }, []);
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll, true);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll, true);
+    };
+  }, [handleScroll]);
   const closePostModal = () => {
     dispatch(setPostModalState(false));
     dispatch(setPostUpdateFormState(false));
@@ -53,7 +71,7 @@ const PostStage = () => {
       .catch((err) => {
         console.log("ERR", err);
       });
-  }, []);
+  }, [dispatch,stageId]);
 
   return (
 <div>
@@ -68,7 +86,7 @@ const PostStage = () => {
           <PostList posts={postListState} />
         </>
       )}
-      <div style={{ height: "200rem" }}>
+      <div >
         {postModalOpen && (
           <Modal
             open={postModalOpen}

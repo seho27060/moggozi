@@ -4,13 +4,18 @@ import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import ChallengeDeleteBtn from "../../components/challenge/ChallengeDeleteBtn";
 import HobbyList from "../../components/challenge/HobbyList";
+import PostDetailItem from "../../components/post/PostDetailItem";
+import PostForm from "../../components/post/PostForm";
+import PostUpdateForm from "../../components/post/PostUpdateForm";
 import ReviewForm from "../../components/review/ReviewForm";
 import ReviewList from "../../components/review/ReviewList";
 import StageList from "../../components/stage/StageList";
+import Modal from "../../components/ui/Modal";
 import { fetchChallenge } from "../../lib/generalApi";
 import { challengeImgFetchAPI } from "../../lib/imgApi";
 import { challengeLike, isLoginFetchChallenge } from "../../lib/withTokenApi";
 import { ChallengeDetailState } from "../../store/challenge";
+import { setPostFormModalOpen, setPostModalState, setPostUpdateFormState } from "../../store/postModal";
 import { reviewFetch } from "../../store/review";
 import { RootState } from "../../store/store";
 
@@ -24,6 +29,20 @@ const ChallengeDetail: React.FC = () => {
   const dispatch = useDispatch();
   const reviews = useSelector((state: RootState) => state.review);
 
+  const {
+    postModalOpen,
+    postFormModalOpen,
+    postUpdateFormOpen,
+    postFormButtonOpen,
+    postModalStageId,
+  } = useSelector((state: RootState) => state.postModal);
+  const closePostModal = () => {
+    dispatch(setPostModalState(false));
+    dispatch(setPostUpdateFormState(false));
+  };
+  const closePostFormModal = () => {
+    dispatch(setPostFormModalOpen());
+  };
   // 좋아요
   const likeHandler = (event: React.MouseEvent) => {
     event.preventDefault();
@@ -160,6 +179,32 @@ const ChallengeDetail: React.FC = () => {
           <ReviewList reviews={reviews} />
         </div>
       )}
+      <div>
+        {postModalOpen && (
+          <Modal
+            open={postModalOpen}
+            close={closePostModal}
+            header="Modal heading"
+          >
+            {!postUpdateFormOpen && <PostDetailItem />}
+            {postUpdateFormOpen && <PostUpdateForm />}
+          </Modal>
+        )}
+        {postModalOpen && (
+          <Modal
+            open={postFormModalOpen}
+            close={closePostFormModal}
+            header="Modal heading"
+          >
+            "생성폼"
+            {/* 스테이지 번호를 넘겨줄만한 트리거가 필요함 */}
+            {/* <PostForm
+              stageId={Number(stage.id)}
+              modalClose={closePostFormModal}
+            /> */}
+          </Modal>
+        )}
+      </div>
     </div>
   );
 };

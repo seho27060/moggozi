@@ -27,6 +27,7 @@ const PostRandomList: React.FC<{}> = () => {
         console.log("infinite call ver1");
         setIsLogging(true)
         dispatch(setPostStageList(res));
+        setTimeout(()=>setIsLogging(false),300)
       });
     }
   }, [dispatch]);

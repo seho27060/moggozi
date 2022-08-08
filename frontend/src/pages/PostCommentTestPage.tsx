@@ -22,14 +22,13 @@ const PostCommentTestPage = () => {
   const dispatch = useDispatch();
   const postListState = useSelector((state: RootState) => state.post.posts);
   const {
-    postModalOpen: postModalState,
+    postModalOpen,
     postFormModalOpen,
-    postUpdateFormOpen: postUpdateFormState,
-    postFormButtonOpen: postFormButtonState,
+    postUpdateFormOpen,
+    postFormButtonOpen,
   } = useSelector((state: RootState) => state.postModal);
   const stageIdRef = useRef<HTMLInputElement>(null);
   const postIdRef = useRef<HTMLInputElement>(null);
-  const modalPostState = useSelector((state: RootState) => state.postModal);
 
   const closePostModal = () => {
     dispatch(setPostModalState(false));
@@ -82,7 +81,7 @@ const PostCommentTestPage = () => {
         <input type="text" id="postId" ref={postIdRef} />
         <button onClick={readPostComments}>불러오기</button>
       </form>
-      {postFormButtonState && (
+      {postFormButtonOpen && (
         <button onClick={() => dispatch(setPostFormModalOpen())}>
           포스팅 생성
         </button>
@@ -93,14 +92,14 @@ const PostCommentTestPage = () => {
         </>
       )}
       <div style={{ height: "200rem" }}>
-        {postModalState && (
+        {postModalOpen && (
           <Modal
-            open={postModalState}
+            open={postModalOpen}
             close={closePostModal}
             header="Modal heading"
           >
-            {!postUpdateFormState && <PostDetailItem />}
-            {postUpdateFormState && <PostUpdateForm />}
+            {!postUpdateFormOpen && <PostDetailItem />}
+            {postUpdateFormOpen && <PostUpdateForm />}
           </Modal>
         )}
         {postFormModalOpen && (

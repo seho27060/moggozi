@@ -15,8 +15,7 @@ const PostList: React.FC<{
 
   return (
     <div>
-      <hr />
-      PostList
+      {/* PostList */}
       {postList!.map((post) => (
         <div key={post.id}>
           <PostItem post={post} />
