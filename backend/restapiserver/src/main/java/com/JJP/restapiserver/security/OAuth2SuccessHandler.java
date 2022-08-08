@@ -23,6 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Optional;
+import java.util.Random;
 
 @Component
 public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
@@ -75,10 +76,17 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
         String url = "http://localhost:3000/oauth/callback";
 
         if(member.isEmpty()) {
+
+            Random random = new Random();
+
+            String randomNo = random.ints(33, 123)
+                    .limit(2)
+                    .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+                    .toString();
             // 유저 객체 만들기
             enrolled = 1;
             Member newMember = Member.builder().username(username)
-                    .fullname(fullname).nickname(nickname).password(password).is_social(1).build();
+                    .fullname(fullname).nickname("user"+randomNo).password(password).is_social(1).build();
             memberRepository.save(newMember);
             member = memberRepository.findByUsername(username);
 
