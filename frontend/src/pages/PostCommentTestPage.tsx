@@ -93,7 +93,7 @@ const PostCommentTestPage = () => {
         </>
       )}
       <div style={{ height: "200rem" }}>
-        {modalPostState && (
+        {postModalState && (
           <Modal
             open={postModalState}
             close={closePostModal}
