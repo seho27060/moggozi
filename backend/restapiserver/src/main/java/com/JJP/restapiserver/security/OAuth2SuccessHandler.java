@@ -72,7 +72,7 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
         }
 
         Optional<Member> member = memberRepository.findByUsername(username);
-        int isFirst = 1;
+        int isFirst = 0;
         String password = encoder.encode(username.split("@")[0] + "1234");
 //        String url = "http://localhost:8080"; /** 추후 주소 변경 필요 **/
         String url = "http://localhost:3000/oauth/callback";
@@ -86,7 +86,7 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
                     .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
                     .toString();
             // 유저 객체 만들기
-            isFirst = 0;
+            isFirst = 1;
             Member newMember = Member.builder().username(username)
                     .fullname(fullname).nickname("user"+randomNo).password(password).role(new Role(ERole.ROLE_USER)).is_social(1).build();
             memberRepository.save(newMember);
