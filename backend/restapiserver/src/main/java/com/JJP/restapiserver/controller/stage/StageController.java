@@ -18,7 +18,7 @@ public class StageController {
     private final StageService stageService;
 
     @GetMapping("/{challenge_id}")
-    public List<Stage> findById(@PathVariable Long challenge_id){
+    public List<StageResponseDto> findById(@PathVariable Long challenge_id){
         return stageService.getStageList(challenge_id);
     }
 

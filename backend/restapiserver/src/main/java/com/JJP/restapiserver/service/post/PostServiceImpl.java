@@ -103,17 +103,9 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public List<PostResponseDto> getRandomPostList(int size) {
-            Long qty = postRepository.count();
-            int idx = (int)(Math.random() * (qty/size));
-            PageRequest pageRequest = PageRequest.of(idx, size);
-            Page<Post> randomPage = postRepository.findAll(pageRequest);
-            List<Post> postList = null;
+            List<Post> postList = postRepository.findRandomPostList(size);
             List<PostResponseDto> postResponseDtoList = new ArrayList<>();
-            if (randomPage.hasContent()) {
-                postList = randomPage.getContent();
-            }
             if(postList != null){
-
             for(int i = 0; i < postList.size(); i++)
                 postResponseDtoList.add(new PostResponseDto(postList.get(i)));
             }
