@@ -2,10 +2,7 @@ package com.JJP.restapiserver.service.member;
 
 import com.JJP.restapiserver.domain.dto.MessageResponse;
 import com.JJP.restapiserver.domain.dto.member.request.*;
-import com.JJP.restapiserver.domain.dto.member.response.JwtResponse;
-import com.JJP.restapiserver.domain.dto.member.response.ProfileResponse;
-import com.JJP.restapiserver.domain.dto.member.response.SearchMemberResponse;
-import com.JJP.restapiserver.domain.dto.member.response.UpdateInfoResponse;
+import com.JJP.restapiserver.domain.dto.member.response.*;
 import com.JJP.restapiserver.domain.entity.member.ERole;
 import com.JJP.restapiserver.domain.entity.member.Member;
 import com.JJP.restapiserver.domain.entity.member.RefreshToken;
@@ -315,7 +312,7 @@ public class MemberServiceImpl implements MemberService {
         Random random = new Random();
 
         String updatedPassword = random.ints(33, 123)
-                .limit(6)
+                .limit(10)
                 .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
                 .toString();
 
@@ -331,16 +328,10 @@ public class MemberServiceImpl implements MemberService {
         mimeMessageHelper.setTo(username);
         mimeMessageHelper.setSubject("[Moggozi] 임시 비밀번호 안내");
 
-        StringBuilder body = new StringBuilder();
-        body.append(mailBodyUtil(username, password));
-        mimeMessageHelper.setText(body.toString(), true);
-/**        메일에 덧붙일 이미지 ---           */
-//        mimeMessageHelper.addInline("Moggozi", new FileDataSource("files/..."));
+        MailBodyUtil body = new MailBodyUtil();
+        mimeMessageHelper.setText(body.getBody(username,password), true);
+//        mimeMessageHelper.addInline("Moggozi", new FileDataSource("../resources/moggozi.jpg"));
         javaMailSender.send(mimeMessage);
-    }
-
-    private String mailBodyUtil(String username, String passwrod) {
-        return null;
     }
 
 }
