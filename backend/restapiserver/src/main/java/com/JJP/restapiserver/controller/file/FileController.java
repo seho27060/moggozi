@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-@CrossOrigin("*")
+//@CrossOrigin("*")
 @Tag(name = "FileController", description = "파일업로드 API")
 @RequiredArgsConstructor
 @RestController

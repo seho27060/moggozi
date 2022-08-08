@@ -7,14 +7,13 @@ import com.JJP.restapiserver.service.post.PostService;
 import com.JJP.restapiserver.service.stage.StageJoinService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 
-@CrossOrigin("*")
+//@CrossOrigin("*")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/mypage")

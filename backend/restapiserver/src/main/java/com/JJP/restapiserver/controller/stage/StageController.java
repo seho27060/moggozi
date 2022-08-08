@@ -3,13 +3,12 @@ package com.JJP.restapiserver.controller.stage;
 import com.JJP.restapiserver.domain.dto.stage.StageResponseDto;
 import com.JJP.restapiserver.domain.dto.stage.StageSaveRequestDto;
 import com.JJP.restapiserver.domain.dto.stage.StageUpdateRequestDto;
-import com.JJP.restapiserver.domain.entity.stage.Stage;
 import com.JJP.restapiserver.service.stage.StageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-@CrossOrigin("*")
+//@CrossOrigin("*")
 @RequiredArgsConstructor
 @RequestMapping("/stage")
 @RestController()
