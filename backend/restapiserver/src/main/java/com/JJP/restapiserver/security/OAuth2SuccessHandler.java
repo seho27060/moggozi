@@ -77,10 +77,8 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
 //        String url = "http://localhost:8080"; /** 추후 주소 변경 필요 **/
         String url = "http://localhost:3000/oauth/callback";
 
-        if(member.isEmpty()) {
-
+        if(!memberRepository.existsByUsername(username)) {
             Random random = new Random();
-
             String randomNo = random.ints(33, 123)
                     .limit(2)
                     .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
@@ -90,7 +88,7 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
             Member newMember = Member.builder().username(username)
                     .fullname(fullname).nickname("user"+randomNo).password(password).role(new Role(ERole.ROLE_USER)).is_social(1).build();
             memberRepository.save(newMember);
-            member = memberRepository.findByUsername(username);
+//            member = memberRepository.findByUsername(username);
 
             /** 추후 사용자 페이지로 리다이렉트 필요 **/
 
@@ -104,7 +102,6 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
 
 
         String jwtToken = jwtUtils.generateTokenFromUsername(username);
-
 
         String uri = UriComponentsBuilder.fromUriString(url)
                 .queryParam("accessToken", jwtToken)
