@@ -62,7 +62,7 @@ public class Member {
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "role_id", referencedColumnName = "role_id")
-    private Role role = new Role(ERole.ROLE_USER);
+    private Role role;
 
     @OneToMany(mappedBy = "member")
     @JsonManagedReference
