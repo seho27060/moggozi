@@ -83,14 +83,12 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
             member = memberRepository.findByUsername(username);
 
             /** 추후 사용자 페이지로 리다이렉트 필요 **/
-            // 사용자 수정 페이지로 리다이렉트 URL
-//            url = "http://localhost:8080/user/update";
-//            url = "http://i7c201.p.ssafy.io:8080/user/register";
+
         } else {
             // 메인페이지로 redirect URL
             nickname = member.get().getNickname();
-//            url = "http://localhost:8080";
-//            url = "http://i7c201.p.ssafy.io:8081;
+/*            url = "http://localhost:8080";
+            url = "http://i7c201.p.ssafy.io:8081;*/
         }
 
 
