@@ -5,6 +5,7 @@ import com.JJP.restapiserver.domain.dto.post.PostResponseDto;
 import com.JJP.restapiserver.domain.dto.post.PostSaveRequestDto;
 import com.JJP.restapiserver.domain.dto.post.PostUpdateRequestDto;
 import com.JJP.restapiserver.domain.entity.stage.Post;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -28,4 +29,6 @@ public interface PostService {
     Long writtenPostNum(Long member_id);
 
     List<PostResponseDto> writtenPostList8(Long member_id);
+
+    List<PostResponseDto> getRandomPostList(int size);
 }
