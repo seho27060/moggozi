@@ -55,12 +55,19 @@ const StageImgForm: React.FC<{
     const imgRef = ref(storageService, target);
     deleteObject(imgRef);
 
-    stageImgFetchAPI(stage.id!).then((res) => {
-      const newStages = stages.map((item) =>
-        item.id === stage.id ? { ...item, img: res } : item
-      );
-      dispatch(stageFetch(newStages));
-    });
+    stageImgFetchAPI(stage.id!)
+      .then((res) => {
+        const newStages = stages.map((item) =>
+          item.id === stage.id ? { ...item, img: res } : item
+        );
+        dispatch(stageFetch(newStages));
+      })
+      .catch((err) => {
+        const newStages = stages.map((item) =>
+          item.id === stage.id ? { ...item, img: [] } : item
+        );
+        dispatch(stageFetch(newStages));
+      });
   };
 
   // 사진 몽땅 제거
@@ -75,12 +82,19 @@ const StageImgForm: React.FC<{
       });
     });
 
-    stageImgFetchAPI(stage.id!).then((res) => {
-      const newStages = stages.map((item) =>
-        item.id === stage.id ? { ...item, img: res } : item
-      );
-      dispatch(stageFetch(newStages));
-    });
+    stageImgFetchAPI(stage.id!)
+      .then((res) => {
+        const newStages = stages.map((item) =>
+          item.id === stage.id ? { ...item, img: res } : item
+        );
+        dispatch(stageFetch(newStages));
+      })
+      .catch((err) => {
+        const newStages = stages.map((item) =>
+          item.id === stage.id ? { ...item, img: [] } : item
+        );
+        dispatch(stageFetch(newStages));
+      });
   };
   return (
     <div>

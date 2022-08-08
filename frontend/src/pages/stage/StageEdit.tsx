@@ -18,7 +18,7 @@ const StageEdit: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const dispatch = useDispatch();
 
-  async function addStagesImg(stages: StageState[]) {
+  async function fetchStagesImg(stages: StageState[]) {
     await stages.reduce(async (acc, stage, idx) => {
       await acc.then();
       await stageImgFetchAPI(stage.id!)
@@ -37,7 +37,7 @@ const StageEdit: React.FC = () => {
     setIsLoading(true);
     fetchStages(Number(challengeId))
       .then((res) => {
-        addStagesImg(res).then((res) => {
+        fetchStagesImg(res).then((res) => {
           console.log(res);
           dispatch(stageFetch(res));
           setIsLoading(false);
