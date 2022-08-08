@@ -1,13 +1,12 @@
 package com.JJP.restapiserver.security;
 
-import com.JJP.restapiserver.domain.entity.member.ERole;
 import com.JJP.restapiserver.domain.entity.member.Member;
-import com.JJP.restapiserver.domain.entity.member.Role;
 import com.JJP.restapiserver.repository.member.MemberRepository;
+import com.JJP.restapiserver.repository.member.RoleRepository;
 import com.JJP.restapiserver.service.RefreshTokenService;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -28,20 +27,21 @@ import java.util.Optional;
 import java.util.Random;
 
 @Component
+@RequiredArgsConstructor
 public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
 
     static final Logger logger = LoggerFactory.getLogger(OAuth2SuccessHandler.class);
 
     // 토큰 생성
-    @Autowired
-    private JwtUtils jwtUtils;
+
+    private final JwtUtils jwtUtils;
 
     // 리프레시 토큰 생성
-    @Autowired
-    private RefreshTokenService refreshTokenService;
 
-    @Autowired
-    MemberRepository memberRepository;
+    private final RefreshTokenService refreshTokenService;
+
+    private final MemberRepository memberRepository;
+    private final RoleRepository roleRepository;
 
     PasswordEncoder encoder = new BCryptPasswordEncoder();
 
@@ -88,7 +88,7 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
 
             isFirst = 1;
             Member newMember = Member.builder().username(username)
-                    .fullname(fullname).nickname("User"+randomNo).password(password).is_social(1).role(new Role(ERole.ROLE_USER)).build();
+                    .fullname(fullname).nickname("User"+randomNo).password(password).is_social(1).role(roleRepository.getById(1L)).build();
             memberRepository.save(newMember);
             member = memberRepository.findByUsername(username);
 
