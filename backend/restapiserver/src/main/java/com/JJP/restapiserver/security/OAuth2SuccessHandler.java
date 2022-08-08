@@ -93,7 +93,10 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
 //            url = "http://i7c201.p.ssafy.io:8081;
         }
 
-        String jwtToken = jwtUtils.generateOAuthJwtToken(oAuth2User);
+
+
+        String jwtToken = jwtUtils.generateTokenFromUsername(username);
+
 
         String uri = UriComponentsBuilder.fromUriString(url)
                 .queryParam("accessToken", jwtToken)
