@@ -62,14 +62,14 @@ public class Member {
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "role_id", referencedColumnName = "role_id")
-    private Role role;
+    private Role role = new Role(ERole.ROLE_USER);
 
     @OneToMany(mappedBy = "member")
     @JsonManagedReference
     private List<Comment> commentList = new ArrayList<>();
 
-    @Builder
-    public Member(String username, String fullname, String password, String nickname, String introduce, String user_img, int is_private, Role role) {
+   /* @Builder
+    public Member(String username, String fullname, String password, String nickname, String introduce, String user_img, int is_private, int is_social, Role role) {
         this.username = username;
         this.fullname = fullname;
         this.password = password;
@@ -82,7 +82,7 @@ public class Member {
             this.role = new Role(ERole.ROLE_USER);
         else
             this.role = role;
-    }
+    }*/
 
     @OneToMany(mappedBy = "member")
     @JsonManagedReference

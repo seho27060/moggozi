@@ -69,14 +69,14 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
         }
 
         Optional<Member> member = memberRepository.findByUsername(username);
-        int enrolled = 0;
+        int isFirst = 0;
         String password = encoder.encode(username.split("@")[0] + "1234");
 //        String url = "http://localhost:8080"; /** 추후 주소 변경 필요 **/
         String url = "http://localhost:3000/oauth/callback";
 
         if(member.isEmpty()) {
             // 유저 객체 만들기
-            enrolled = 1;
+            isFirst = 1;
             Member newMember = Member.builder().username(username)
                     .fullname(fullname).nickname(nickname).password(password).is_social(1).build();
             memberRepository.save(newMember);
@@ -93,14 +93,12 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
 //            url = "http://i7c201.p.ssafy.io:8081;
         }
 
-
-
         String jwtToken = jwtUtils.generateTokenFromUsername(username);
 
 
         String uri = UriComponentsBuilder.fromUriString(url)
                 .queryParam("accessToken", jwtToken)
-                .queryParam("enrolled", enrolled)
+                .queryParam("isFirst", isFirst)
                 .build().toUriString();
 
         if (response.isCommitted()) {
