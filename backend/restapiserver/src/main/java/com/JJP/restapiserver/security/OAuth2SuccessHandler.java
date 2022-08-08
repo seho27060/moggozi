@@ -23,7 +23,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Optional;
-import java.util.Random;
 
 @Component
 public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
@@ -70,38 +69,38 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
         }
 
         Optional<Member> member = memberRepository.findByUsername(username);
-        int isFirst = 0;
+        int enrolled = 0;
         String password = encoder.encode(username.split("@")[0] + "1234");
 //        String url = "http://localhost:8080"; /** 추후 주소 변경 필요 **/
         String url = "http://localhost:3000/oauth/callback";
 
-        if(!memberRepository.existsByUsername(username)) {
-            Random random = new Random();
-            String randomNo = random.ints(33, 123)
-                    .limit(2)
-                    .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
-                    .toString();
+        if(member.isEmpty()) {
             // 유저 객체 만들기
-            isFirst = 1;
+            enrolled = 1;
             Member newMember = Member.builder().username(username)
-                    .fullname(fullname).nickname(fullname).password(password).is_social(1).role(null).build();
-            memberRepository.saveAndFlush(newMember);
+                    .fullname(fullname).nickname(nickname).password(password).is_social(1).build();
+            memberRepository.save(newMember);
             member = memberRepository.findByUsername(username);
 
             /** 추후 사용자 페이지로 리다이렉트 필요 **/
-
+            // 사용자 수정 페이지로 리다이렉트 URL
+//            url = "http://localhost:8080/user/update";
+//            url = "http://i7c201.p.ssafy.io:8080/user/register";
         } else {
             // 메인페이지로 redirect URL
             nickname = member.get().getNickname();
-/*            url = "http://localhost:8080";
-            url = "http://i7c201.p.ssafy.io:8081;*/
+//            url = "http://localhost:8080";
+//            url = "http://i7c201.p.ssafy.io:8081;
         }
+
+
 
         String jwtToken = jwtUtils.generateTokenFromUsername(username);
 
+
         String uri = UriComponentsBuilder.fromUriString(url)
                 .queryParam("accessToken", jwtToken)
-                .queryParam("isFirst", isFirst)
+                .queryParam("enrolled", enrolled)
                 .build().toUriString();
 
         if (response.isCommitted()) {
