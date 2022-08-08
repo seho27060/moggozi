@@ -1,6 +1,8 @@
 package com.JJP.restapiserver.security;
 
+import com.JJP.restapiserver.domain.entity.member.ERole;
 import com.JJP.restapiserver.domain.entity.member.Member;
+import com.JJP.restapiserver.domain.entity.member.Role;
 import com.JJP.restapiserver.repository.member.MemberRepository;
 import com.JJP.restapiserver.service.RefreshTokenService;
 import org.slf4j.Logger;
@@ -70,7 +72,7 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
         }
 
         Optional<Member> member = memberRepository.findByUsername(username);
-        int enrolled = 0;
+        int isFirst = 1;
         String password = encoder.encode(username.split("@")[0] + "1234");
 //        String url = "http://localhost:8080"; /** 추후 주소 변경 필요 **/
         String url = "http://localhost:3000/oauth/callback";
@@ -84,9 +86,9 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
                     .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
                     .toString();
             // 유저 객체 만들기
-            enrolled = 1;
+            isFirst = 0;
             Member newMember = Member.builder().username(username)
-                    .fullname(fullname).nickname("user"+randomNo).password(password).is_social(1).build();
+                    .fullname(fullname).nickname("user"+randomNo).password(password).role(new Role(ERole.ROLE_USER)).is_social(1).build();
             memberRepository.save(newMember);
             member = memberRepository.findByUsername(username);
 
@@ -106,7 +108,7 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
 
         String uri = UriComponentsBuilder.fromUriString(url)
                 .queryParam("accessToken", jwtToken)
-                .queryParam("enrolled", enrolled)
+                .queryParam("isFirst", isFirst)
                 .build().toUriString();
 
         if (response.isCommitted()) {
