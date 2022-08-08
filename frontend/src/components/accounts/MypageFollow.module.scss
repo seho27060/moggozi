@@ -1,13 +1,28 @@
 @use "../../styles/mixin.scss" as mixin;
 
 @include mixin.desktop {
-  .margin {
-    margin:10px;
-    padding: 10px;
-    border: 1px solid rgb(0, 0, 0);
+  .follower {
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 19px;
+  }
+
+  .cnt {
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 19px;
+  }
+
+  .line::before {
+    display: inline-block;
+    position: relative;
+    background-color: mixin.$cloudLine;
+        // display:
+    content:"";
+    width: 2px;
+    height: 12px;
   }
 }
 
 @include mixin.mobile {
-
 }
