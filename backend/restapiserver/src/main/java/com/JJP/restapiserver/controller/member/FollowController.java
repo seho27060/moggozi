@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
-//@CrossOrigin("*")
+@CrossOrigin("*")
 @Tag(name = "FollowController", description = "Followed(조회하는 유저를 팔로우)/Following API(조회하는 유저가 팔로우)")
 @RequiredArgsConstructor
 @RestController

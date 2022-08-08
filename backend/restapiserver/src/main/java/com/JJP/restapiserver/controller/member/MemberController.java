@@ -25,7 +25,7 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 @Tag(name = "MemberController", description = "사용자 API")
-//@CrossOrigin("*")
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/user")
 public class MemberController {
