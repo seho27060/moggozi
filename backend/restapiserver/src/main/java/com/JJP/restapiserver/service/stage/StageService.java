@@ -10,7 +10,7 @@ import java.util.List;
 public interface StageService {
 
     // 스테이지 리스트 조회
-    List<Stage> getStageList(Long challenge_id);
+    List<StageResponseDto> getStageList(Long challenge_id);
 
     // 스테이지 상세 페이지
     StageResponseDto getStageDetail(Long stage_id);

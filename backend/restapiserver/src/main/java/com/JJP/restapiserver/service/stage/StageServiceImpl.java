@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -23,8 +24,15 @@ public class StageServiceImpl implements StageService {
 
     @Transactional(readOnly = true)
     @Override
-    public List<Stage> getStageList(Long challenge_id) {
-        return stageRepository.findAllByChallenge_id(challenge_id);
+    public List<StageResponseDto> getStageList(Long challenge_id) {
+        List<Stage> stageList = stageRepository.findAllByChallenge_id(challenge_id);
+        List<StageResponseDto> stageResponseDtoList = new ArrayList<>();
+        if(stageList != null){
+            for(Stage stage : stageList){
+                stageResponseDtoList.add(new StageResponseDto(stage));
+            }
+        }
+        return stageResponseDtoList;
     }
 
     @Transactional(readOnly = true)
