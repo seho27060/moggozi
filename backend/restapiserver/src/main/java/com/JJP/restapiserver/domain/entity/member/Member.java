@@ -78,7 +78,7 @@ public class Member {
         this.user_img = user_img;
         this.is_private = is_private;
 
-        if(role.equals(null))
+        if(role == null)
             this.role = new Role(ERole.ROLE_USER);
         else
             this.role = role;
