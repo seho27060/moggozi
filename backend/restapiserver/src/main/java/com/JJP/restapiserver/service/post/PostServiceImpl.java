@@ -9,11 +9,16 @@ import com.JJP.restapiserver.repository.stage.PostLikeRepository;
 import com.JJP.restapiserver.repository.stage.PostRepository;
 import com.JJP.restapiserver.repository.stage.StageRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+
 
 @RequiredArgsConstructor
 @Service
@@ -95,6 +100,25 @@ public class PostServiceImpl implements PostService {
         }
         return postResponseDtoList;
     }
+
+    @Override
+    public List<PostResponseDto> getRandomPostList(int size) {
+            Long qty = postRepository.count();
+            int idx = (int)(Math.random() * (qty/size));
+            PageRequest pageRequest = PageRequest.of(idx, size);
+            Page<Post> randomPage = postRepository.findAll(pageRequest);
+            List<Post> postList = null;
+            List<PostResponseDto> postResponseDtoList = new ArrayList<>();
+            if (randomPage.hasContent()) {
+                postList = randomPage.getContent();
+            }
+            if(postList != null){
+
+            for(int i = 0; i < postList.size(); i++)
+                postResponseDtoList.add(new PostResponseDto(postList.get(i)));
+            }
+            return postResponseDtoList;
+        }
 
     @Override
     public List<PostResponseDto> getMemberPost(Long member_id) {

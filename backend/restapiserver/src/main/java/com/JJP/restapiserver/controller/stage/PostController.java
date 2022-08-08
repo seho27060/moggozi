@@ -6,6 +6,8 @@ import com.JJP.restapiserver.domain.dto.post.PostUpdateRequestDto;
 import com.JJP.restapiserver.domain.entity.stage.Post;
 import com.JJP.restapiserver.service.post.PostService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -42,4 +44,12 @@ public class PostController {
     private List<PostResponseDto> stagePostList(@PathVariable Long stage_id){
         return postService.getStagePost(stage_id);
     }
+
+
+    @GetMapping("/random/{size}")
+    private ResponseEntity getRandomListBySize(@PathVariable int size){
+        List<PostResponseDto> postResponseDtoList = postService.getRandomPostList(size);
+        return new ResponseEntity(postResponseDtoList, HttpStatus.OK);
+    }
+
 }
