@@ -1,6 +1,5 @@
 package com.JJP.restapiserver.security;
 
-import com.JJP.restapiserver.domain.entity.member.ERole;
 import com.JJP.restapiserver.domain.entity.member.Member;
 import com.JJP.restapiserver.domain.entity.member.Role;
 import com.JJP.restapiserver.repository.member.MemberRepository;
@@ -73,7 +72,9 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
         }
 
         Optional<Member> member = memberRepository.findByUsername(username);
-        int isFirst = 0;
+
+        int isFirst = 0;  // 처음 회원가입하는 유저인지를 표시하는 변수
+
         String password = encoder.encode(username.split("@")[0] + "1234");
 //        String url = "http://localhost:8080"; /** 추후 주소 변경 필요 **/
         String url = "http://localhost:3000/oauth/callback";
@@ -88,9 +89,10 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
                     .toString();
 
             isFirst = 1;
-            Role role = roleRepository.findByName(ERole.ROLE_USER).get();
+
+            Optional<Role> role = roleRepository.findById(1L);
             Member newMember = Member.builder().username(username)
-                    .fullname(fullname).nickname("User"+randomNo).password(password).is_social(1).role(role).build();
+                    .fullname(fullname).nickname("User"+randomNo).password(password).is_social(1).role(role.get()).build();
             memberRepository.save(newMember);
             member = memberRepository.findByUsername(username);
 
