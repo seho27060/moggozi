@@ -7,9 +7,12 @@ import { profileImgFetchAPI } from "../../lib/imgApi";
 import { userImgFetch } from "../../store/auth";
 import { useDispatch } from "react-redux";
 
+import styles from "./UserImgForm.module.scss";
+
 const UserImgForm: React.FC = () => {
   const [file, setFile] = useState<File>();
   const [previewImage, setPreviewImage] = useState("");
+  const [fileName, setFileName] = useState("");
   const userId = useSelector((state: RootState) => state.auth.userInfo.id);
   const userImg = useSelector((state: RootState) => state.auth.userInfo.img);
   const dispatch = useDispatch();
@@ -20,7 +23,8 @@ const UserImgForm: React.FC = () => {
     const fileList = event.target.files;
 
     if (fileList) {
-      console.log(fileList[0]);
+      // console.log(fileList[0].name);
+      setFileName(fileList[0].name);
       setFile(fileList[0]);
       setPreviewImage(URL.createObjectURL(fileList[0]));
     }
@@ -50,13 +54,20 @@ const UserImgForm: React.FC = () => {
       {!userImg ? (
         <div>
           <form>
-            <label htmlFor="img">img 생성</label>
-            <input
-              type="file"
-              accept="image/*"
-              id="img"
-              onChange={onLoadHandler}
-            />
+            <div className={styles.filebox}>
+              <input
+                className={styles.uploadName}
+                value={fileName ? fileName : "첨부파일"}
+                placeholder="첨부파일"
+              />
+              <label htmlFor="img">파일 찾기</label>
+              <input
+                type="file"
+                accept="image/*"
+                id="img"
+                onChange={onLoadHandler}
+              />
+            </div>
             <button
               type="button"
               onClick={(e) => uploadHandler(e, `user/${userId}`)}
@@ -64,16 +75,16 @@ const UserImgForm: React.FC = () => {
               업로드
             </button>
           </form>
-          <p>이미지 미리보기</p>
-          <img src={previewImage} alt="img" />
+          {previewImage && <img src={previewImage} alt="img" />}
         </div>
       ) : (
-        <div>
-          <p>유저 이미지</p>
+        <div className={styles.deleteButton}>
           <img src={userImg} alt="img" />
-          <button onClick={(e) => deleteHandler(e, `user/${userId}`)}>
-            프로필 사진 삭제
-          </button>
+          <div>
+            <button onClick={(e) => deleteHandler(e, `user/${userId}`)} >
+              프로필 사진 삭제
+            </button>
+            </div>
         </div>
       )}
     </div>
