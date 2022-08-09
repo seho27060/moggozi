@@ -1,0 +1,216 @@
+@use "../../styles/mixin.scss" as mixin;
+
+@include mixin.desktop {
+
+  // 전체 틀잡기
+  .main {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .container {
+    margin-top: 60px;
+    
+    // 챌린지 디테일 부분
+    .C_article {
+      // display: flex;
+      // flex-direction: column;
+      width: 992px;
+      margin-bottom: 0px;
+      align-items: center;
+
+      // 제목부터 사진까지
+      .title { 
+        display: flex;
+        justify-content: space-between;
+        & > div {
+          display: flex;
+        }
+        
+        .name {
+          font-weight: 700;
+          font-size: 30px;
+          line-height: 36px;
+          margin-right: 15px;
+        }
+
+        .level1 {
+          text-align: center;
+          vertical-align: middle;
+          align-items: center;
+          line-height: 24px;
+          border-radius: 5px;
+          background-color: #F0D300;;
+          font-weight: 700;
+          font-size: 20px;
+          color: #fff;
+          width: 56px;
+          height: 25px;
+        }
+
+        .level2 {
+          text-align: center;
+          vertical-align: middle;
+          align-items: center;
+          line-height: 24px;
+          border-radius: 5px;
+          background-color: #5AAE33;
+          font-weight: 700;
+          font-size: 20px;
+          color: #fff;
+          width: 56px;
+          height: 25px;
+        }
+
+        .level3 {
+          text-align: center;
+          vertical-align: middle;
+          align-items: center;
+          line-height: 24px;
+          border-radius: 5px;
+          background-color: #E2195A;;
+          font-weight: 700;
+          font-size: 20px;
+          color: #fff;
+          width: 56px;
+          height: 25px;
+        }
+        
+        button {
+          border: 0;
+          border-radius: 5px;
+          background: mixin.$mainColor;
+          font-size: 15px;
+          color: #fff;
+          width: 120px;
+          height: 40px;
+          margin: 0 10px 0 10px;
+        }
+
+        .writer {
+          display: flex;
+
+          img {
+            width: 36px;
+            height: 36px;
+            border-radius: 100%;
+            object-fit: cover;
+            margin-right: 10px;
+          }
+          .user {
+            font-weight: 700;
+            font-size: 15px;
+            line-height: 18px;
+          }
+
+          .date {
+            margin-top:4px;
+            font-size: 12px;
+            font-weight: 400;
+            line-height: 15px;
+            color: mixin.$cloudGray
+          }
+        }
+      }
+      
+      // 챌린지 이미지
+      .challengeImg {
+        width: 992px;
+        height: 450px;
+        object-fit: cover;
+        margin: 30px 0 30px 0;
+      }
+
+      // 태그
+      ul {
+        display: flex;
+        font-weight: 700;
+        font-size: 15px;
+        li {  
+          margin-right: 20px;
+        }
+      }
+
+      // 챌린지 내용
+      .C_content {
+        margin-bottom: 20px;
+        font-weight: 400;
+        font-size: 17px;
+        line-height: 21px;
+        letter-spacing: 0.02em;
+      }
+
+      // 좋아요 / 댓글
+      .like {
+        display: flex;
+
+        div:nth-child(1) {
+          font-weight: 400;
+          font-size: 14px;
+          line-height: 15px;
+          margin-right: 20px;
+
+          button {
+            margin: 0;
+            border: 0;
+            background: #fff;
+          }
+
+          span {
+            font-weight: 700;
+            font-size: 16px;
+            line-height: 15px;
+          }
+        }
+
+        div:nth-child(2) {
+          font-weight: 400;
+          font-size: 14px;
+          line-height: 15px;
+
+          span {
+            font-weight: 700;
+            font-size: 16px;
+            line-height: 15px;
+          }
+        }
+      }
+
+      // 작성자 정보
+      .writer {
+        display: flex;
+        align-items: center;
+        margin: 30px 0 20px 0;
+
+        img {
+          width: 36px;
+          height: 36px;
+          border-radius: 100%;
+          object-fit: cover;
+          margin-right: 10px;
+        }
+        .user {
+          font-weight: 700;
+          font-size: 15px;
+          line-height: 18px;
+        }
+      }
+    }
+
+    .horizon::before {
+      display: inline-block;
+      position: relative;
+      background-color: mixin.$cloudLine;
+      content:"";
+      width: 992px;
+      height: 1px;
+    }
+
+    
+    //
+  }
+}
+
+@include mixin.mobile {
+
+}
