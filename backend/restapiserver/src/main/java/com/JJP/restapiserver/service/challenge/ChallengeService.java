@@ -35,7 +35,7 @@ public interface ChallengeService {
 
     List<ChallengeListResponseDto> joinedChallengeList8(Long member_id);
 
-    List<ChallengeSimpleResponseDto> infiniteChallengeList(Long member_id, Pageable pageable);
+    ChallengePageDto infiniteChallengeList(Long member_id, Pageable pageable);
 
     List<ChallengeListResponseDto> getChallengeRecommendationList(Long member_id);
 

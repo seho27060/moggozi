@@ -37,5 +37,6 @@ public interface ChallengeRepository extends JpaRepository<Challenge, Long> {
 
     Page<Challenge> findByIdIn(List<Long> ids, Pageable pageable);
 
+    List<Challenge> findByIdIn(List<Long> ids);
 
 }

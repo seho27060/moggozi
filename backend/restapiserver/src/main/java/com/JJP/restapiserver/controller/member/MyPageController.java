@@ -1,11 +1,15 @@
 package com.JJP.restapiserver.controller.member;
 
+import com.JJP.restapiserver.domain.dto.challenge.ChallengePageDto;
+import com.JJP.restapiserver.domain.dto.challenge.ChallengeSimpleResponseDto;
 import com.JJP.restapiserver.domain.dto.member.response.MyPageResponseDto;
 import com.JJP.restapiserver.security.JwtUtils;
 import com.JJP.restapiserver.service.challenge.ChallengeService;
 import com.JJP.restapiserver.service.post.PostService;
 import com.JJP.restapiserver.service.stage.StageJoinService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @CrossOrigin("*")
 @RestController
@@ -37,5 +42,13 @@ public class MyPageController {
                 .recentWrittenPost(postService.writtenPostList8(member_id))
                 .build();
         return null;
+    }
+    @GetMapping("/challenge")
+    public ResponseEntity myPageChallenge(HttpServletRequest request, Pageable pageable){
+        Long member_id = jwtUtils.getUserIdFromJwtToken(request.getHeader("Authorization"));
+
+        ChallengePageDto challengeSlice = challengeService.infiniteChallengeList(member_id, pageable);
+
+        return new ResponseEntity(challengeSlice, HttpStatus.OK);
     }
 }

@@ -10,7 +10,7 @@ import java.util.List;
 @Setter
 @Builder
 public class ChallengePageDto {
-    private List<ChallengeListResponseDto> content;
+    private List content;
     // 더보기만 할꺼면 없어도 됨.
     private int totalPages;
     // 총 갯수
@@ -19,4 +19,5 @@ public class ChallengePageDto {
     private int pageNum;
     // 페이지 하나당 데이터를 몇개씩 넣은건지
     private int size;
+    private boolean hasNext;
 }
