@@ -1,23 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { stageImgFetchAPI } from "../../lib/imgApi";
 import { postRead } from "../../lib/withTokenApi";
-import { PostData, postSet } from "../../store/post";
-import {
-  setPostFormButtonState,
-  setPostFormModalOpen,
-  setPostModalState,
-  setPostUpdateFormState,
-} from "../../store/postModal";
+import { PostData } from "../../store/post";
+import { setPostFormButtonState } from "../../store/postModal";
 import { imgState, StageState } from "../../store/stage";
-import { RootState } from "../../store/store";
-import PostDetailItem from "../post/PostDetailItem";
-import PostForm from "../post/PostForm";
 import PostList from "../post/PostList";
-import PostUpdateForm from "../post/PostUpdateForm";
-import Modal from "../ui/Modal";
 
 const StageItem: React.FC<{
   stage: StageState;
@@ -25,21 +14,7 @@ const StageItem: React.FC<{
   document.body.style.overflow = "auto"; //모달때문에 이상하게 스크롤이 안되서 강제로 스크롤 바 생성함
 
   const dispatch = useDispatch();
-  const [postStageListState, setPostStageListState] = useState<PostData[]>([])
-  const {
-    postModalOpen,
-    postFormModalOpen,
-    postUpdateFormOpen,
-    postFormButtonOpen,
-  } = useSelector((state: RootState) => state.postModal);
-
-  const closePostModal = () => {
-    dispatch(setPostModalState(false));
-    dispatch(setPostUpdateFormState(false));
-  };
-  const closePostFormModal = () => {
-    dispatch(setPostFormModalOpen());
-  };
+  const [postStageListState, setPostStageListState] = useState<PostData[]>([]);
 
   const [getStage, setStage] = useState<StageState>(stage);
   useEffect(() => {
@@ -54,16 +29,18 @@ const StageItem: React.FC<{
   useEffect(() => {
     postRead(Number(stage.id))
       .then((res) => {
-        console.log("포스팅 불러오기 성공", res)    
-        res.sort((a: PostData, b: PostData) => (a.likeNum! >= b.likeNum! ? 1 : -1))
-        const loadedPostStageList = res.slice(0,3)
-        setPostStageListState(loadedPostStageList)    
+        console.log("포스팅 불러오기 성공", res);
+        res.sort((a: PostData, b: PostData) =>
+          a.likeNum! >= b.likeNum! ? 1 : -1
+        );
+        const loadedPostStageList = res.slice(0, 3);
+        setPostStageListState(loadedPostStageList);
         dispatch(setPostFormButtonState(true));
       })
       .catch((err) => {
         console.log("ERR", err);
       });
-  }, []);
+  }, [dispatch,stage.id]);
 
   return (
     <div>
@@ -87,7 +64,6 @@ const StageItem: React.FC<{
           <PostList posts={postStageListState} />
         </>
       )}
-
     </div>
   );
 };

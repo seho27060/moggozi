@@ -1,7 +1,7 @@
 import { MouseEvent } from "react";
 import { useDispatch } from "react-redux";
 import PostItem from "./PostItem";
-import { setModalPostState, setPostModalState } from "../../store/postModal";
+import { setModalPostState, setPostModalStageId, setPostModalState } from "../../store/postModal";
 import { PostData } from "../../store/post";
 
 const PostList: React.FC<{
@@ -24,6 +24,7 @@ const PostList: React.FC<{
               event.preventDefault();
               dispatch(setModalPostState(post));
               dispatch(setPostModalState(true))
+              dispatch(setPostModalStageId)
             }}
           >
             해당 포스팅 열기
