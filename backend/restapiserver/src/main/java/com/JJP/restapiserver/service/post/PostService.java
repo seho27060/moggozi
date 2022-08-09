@@ -1,10 +1,9 @@
 package com.JJP.restapiserver.service.post;
 
-import com.JJP.restapiserver.domain.dto.challenge.ChallengeListResponseDto;
+import com.JJP.restapiserver.domain.dto.member.response.MyPagePostDto;
 import com.JJP.restapiserver.domain.dto.post.PostResponseDto;
 import com.JJP.restapiserver.domain.dto.post.PostSaveRequestDto;
 import com.JJP.restapiserver.domain.dto.post.PostUpdateRequestDto;
-import com.JJP.restapiserver.domain.entity.stage.Post;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
@@ -31,4 +30,6 @@ public interface PostService {
     List<PostResponseDto> writtenPostList8(Long member_id);
 
     List<PostResponseDto> getRandomPostList(int size);
+
+    MyPagePostDto infinitePostList(Long member_id, Pageable pageable);
 }

@@ -1,8 +1,9 @@
 package com.JJP.restapiserver.controller.member;
 
 import com.JJP.restapiserver.domain.dto.challenge.ChallengePageDto;
-import com.JJP.restapiserver.domain.dto.challenge.ChallengeSimpleResponseDto;
+import com.JJP.restapiserver.domain.dto.member.response.MyPagePostDto;
 import com.JJP.restapiserver.domain.dto.member.response.MyPageResponseDto;
+import com.JJP.restapiserver.domain.dto.member.response.MyPageStageDto;
 import com.JJP.restapiserver.security.JwtUtils;
 import com.JJP.restapiserver.service.challenge.ChallengeService;
 import com.JJP.restapiserver.service.post.PostService;
@@ -49,5 +50,23 @@ public class MyPageController {
         ChallengePageDto challengeSlice = challengeService.infiniteChallengeList(member_id, pageable);
 
         return new ResponseEntity(challengeSlice, HttpStatus.OK);
+    }
+
+    @GetMapping("/stage")
+    public ResponseEntity myStage(HttpServletRequest request, Pageable pageable){
+        Long member_id = jwtUtils.getUserIdFromJwtToken(request.getHeader("Authorization"));
+
+        MyPageStageDto stageSlice = stageJoinService.infiniteStageList(member_id, pageable);
+
+        return new ResponseEntity(stageSlice, HttpStatus.OK);
+    }
+
+    @GetMapping("/post")
+    public ResponseEntity myPost(HttpServletRequest request, Pageable pageable) {
+        Long member_id = jwtUtils.getUserIdFromJwtToken(request.getHeader("Authorization"));
+
+        MyPagePostDto postSlice = postService.infinitePostList(member_id, pageable);
+
+        return new ResponseEntity(postSlice, HttpStatus.OK);
     }
 }

@@ -20,4 +20,6 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     @Query(value = "SELECT * FROM post order by RAND() LIMIT :size", nativeQuery = true)
     List<Post> findRandomPostList(@Param("size") int size);
+
+    Slice<Post> findByMember_IdOrderByCreatedDateDesc(Long member_id, Pageable pageable);
 }

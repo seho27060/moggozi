@@ -8,4 +8,6 @@ import java.util.List;
 public interface StageRepository extends JpaRepository<Stage, Long> {
 
     List<Stage> findAllByChallenge_id(Long challenge_id);
+
+    List<Stage> findByIdIn(List<Long> idx);
 }
