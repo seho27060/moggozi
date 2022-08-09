@@ -19,5 +19,11 @@ public interface JoinedChallengeRepository extends JpaRepository<JoinedChallenge
     // 내가 참여한 챌린지 개수 반환해주는 쿼리 메소드
     Long countByMember_id(Long member_id);
 
-    Slice<Challenge> findByMember_idOrderByStateDesc(Long member_id, Pageable pageable);
+
+    // 가장 최근에 생성된 시간순으로 해당 멤버가 "참여한 챌린지" 리스트를 반환해줌.
+    // 참여한 챌린지 -> 챌린지
+    // 가장 최근에 생성된 시간순으로 해당 멤버가 참여한 "챌린지" 리스트를 반환해줌.
+    Slice<JoinedChallenge> findByMember_idOrderByCreatedDateDesc(Long member_id, Pageable pageable);
+
+
 }

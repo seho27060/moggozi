@@ -83,6 +83,7 @@ public class ChallengeServiceImpl implements ChallengeService{
                 .totalPages(challengeList.getTotalPages())
                 .size(challengeList.getSize())
                 .totalElements(challengeList.getTotalElements())
+                .hasNext(challengeList.hasNext())
                 .build();
 
         return challengePageDto;
@@ -99,6 +100,7 @@ public class ChallengeServiceImpl implements ChallengeService{
                 .totalPages(challengeList.getTotalPages())
                 .size(challengeList.getSize())
                 .totalElements(challengeList.getTotalElements())
+                .hasNext(challengeList.hasNext())
                 .build();
 
         return challengePageDto;
@@ -238,19 +240,37 @@ public class ChallengeServiceImpl implements ChallengeService{
     }
 
     @Override
-    public List<ChallengeSimpleResponseDto> infiniteChallengeList(Long member_id, Pageable pageable) {
-        Slice<Challenge> challengeSlice = joinedChallengeRepository.findByMember_idOrderByStateDesc(member_id, pageable);
-        List<ChallengeSimpleResponseDto> challengeSimpleResponseDtoList =
-                challengeSlice.stream().map(o -> ChallengeSimpleResponseDto.builder()
-                        .id(o.getId())
-                        .img(o.getChallenge_img())
-                        .level(o.getLevel())
-                        .name(o.getName())
-                        .state(o.getState())
-                        .build())
-                        .collect(Collectors.toList());
-//        challengeSlice.
-        return null;
+    public ChallengePageDto infiniteChallengeList(Long member_id, Pageable pageable) {
+        Slice<JoinedChallenge> challengeSlice = joinedChallengeRepository.findByMember_idOrderByCreatedDateDesc(member_id, pageable);
+
+        // joinedchallenge -> challenge_index -> challenge
+        List<Long> challenge_ids = challengeSlice.stream().map(o -> o.getChallenge().getId()).collect(Collectors.toList());
+        // challenge_index -> challenge
+        List<Challenge> challengeList = challengeRepository.findByIdIn(challenge_ids);
+        List<ChallengeSimpleResponseDto> challengeSimpleResponseDtoList = new ArrayList<>();
+        for(Challenge challenge : challengeList){
+            int state = 0;
+            for(JoinedChallenge joinedChallenge : challengeSlice){
+                if(joinedChallenge.getChallenge().getId() == challenge.getId()){
+                    state = joinedChallenge.getState();
+                }
+            }
+            ChallengeSimpleResponseDto challengeSimpleResponseDto = ChallengeSimpleResponseDto.builder()
+                    .id(challenge.getId())
+                    .img(challenge.getChallenge_img())
+                    .name(challenge.getName())
+                    .level(challenge.getLevel())
+                    .state(state)
+                    .build();
+            challengeSimpleResponseDtoList.add(challengeSimpleResponseDto);
+        }
+        ChallengePageDto challengePageDto = ChallengePageDto.builder()
+                .pageNum(challengeSlice.getNumber())
+                .content(challengeSimpleResponseDtoList)
+                .size(challengeSlice.getSize())
+                .hasNext(challengeSlice.hasNext())
+                .build();
+        return challengePageDto;
     }
 
 
@@ -393,6 +413,7 @@ public class ChallengeServiceImpl implements ChallengeService{
                 .totalPages(challengeList.getTotalPages())
                 .size(challengeList.getSize())
                 .totalElements(challengeList.getTotalElements())
+                .hasNext(challengeList.hasNext())
                 .build();
 
         return challengePageDto;
@@ -412,6 +433,7 @@ public class ChallengeServiceImpl implements ChallengeService{
                 .totalPages(challengeList.getTotalPages())
                 .size(challengeList.getSize())
                 .totalElements(challengeList.getTotalElements())
+                .hasNext(challengeList.hasNext())
                 .build();
 
         return challengePageDto;
