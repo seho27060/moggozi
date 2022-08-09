@@ -47,8 +47,8 @@ public class ChallengeController {
     }
 
     // challenge/search/식물?page=1&size=2
-    @GetMapping("/search/{keyword}")
-    public ResponseEntity getChallengeListByKeyword(@PathVariable("keyword") String keyword, Pageable pageable,
+    @GetMapping("/search/")
+    public ResponseEntity getChallengeListByKeyword(@RequestParam("keyword") String keyword, Pageable pageable,
                                                     HttpServletRequest request)
     {
         if(request.getHeader("Authorization") != null){
@@ -134,8 +134,8 @@ public class ChallengeController {
         return new ResponseEntity<List>(joinedChallengeRepository.findTop8ByMember_idOrderByModifiedDateDesc(member_id), HttpStatus.OK);
     }
 
-    @GetMapping("/tag/search/{keyword}")
-    public ResponseEntity getChallengeContainingTag(@PathVariable String keyword, Pageable pageable,
+    @GetMapping("/tag/search/")
+    public ResponseEntity getChallengeContainingTag(@RequestParam("keyword") String keyword, Pageable pageable,
                                                     HttpServletRequest request){
         logger.debug("-----------컨트롤러 시작---------------");
         ChallengePageDto challengePageDto = null;
