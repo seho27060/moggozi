@@ -88,7 +88,7 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
                     .toString();
 
             isFirst = 1;
-            Role role = roleRepository.getById(1L);
+            Role role = roleRepository.findById(1L).get();
             Member newMember = Member.builder().username(username)
                     .fullname(fullname).nickname("User"+randomNo).password(password).is_social(1).role(role).build();
             memberRepository.save(newMember);
