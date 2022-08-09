@@ -38,42 +38,39 @@ const EditUserInfoForm: React.FC = () => {
     isPrivate: 0,
   });
 
-
-  const [ submitState, setSubmitState ] = useState(true)
-  const [ content, setContent ] = useState("")
-  const [ openModal, setOpenModal ] = useState(false)
+  const [submitState, setSubmitState] = useState(true);
+  const [content, setContent] = useState("");
+  const [openModal, setOpenModal] = useState(false);
 
   const closeModal = () => {
-    setOpenModal(false)
-  }
+    setOpenModal(false);
+  };
 
   function checkNicknameHandler(event: React.MouseEvent) {
     event.preventDefault();
     checkNickname(option.nickname)
       .then((res) => {
-        setOpenModal(true)
-        setContent("사용 가능한 닉네임입니다.")
-        setSubmitState(true)
-      }) .catch((err) => {
-        setOpenModal(true)
-        setContent("사용 불가능한 닉네임입니다.")
-        setSubmitState(false)
+        setOpenModal(true);
+        setContent("사용 가능한 닉네임입니다.");
+        setSubmitState(true);
       })
+      .catch((err) => {
+        setOpenModal(true);
+        setContent("사용 불가능한 닉네임입니다.");
+        setSubmitState(false);
+      });
   }
-
 
   function submitHandler(event: React.FormEvent) {
     event.preventDefault();
-    if(submitState) {
+    if (submitState) {
       updateUserApi(userId, option);
       navigate("/", { replace: true });
     } else {
-      setContent("닉네임 중복을 확인하세요.")
-      setOpenModal(true)
+      setContent("닉네임 중복을 확인하세요.");
+      setOpenModal(true);
     }
-
-    }
-
+  }
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -110,151 +107,158 @@ const EditUserInfoForm: React.FC = () => {
           </div>
           <form>
             <div>
-            <div className={styles.email}>
-              <div className={styles.emailLabel}>
-                <div className={styles.e1}>
-                  <label htmlFor="email">이메일</label>
+              <div className={styles.email}>
+                <div className={styles.emailLabel}>
+                  <div className={styles.e1}>
+                    <label htmlFor="email">이메일</label>
+                  </div>
+                  <div className={styles.e2}>
+                    <label htmlFor="email">필수항목*</label>
+                  </div>
                 </div>
-                <div className={styles.e2}>
-                  <label htmlFor="email">필수항목*</label>
+                <div>
+                  <input
+                    type="text"
+                    required
+                    id="email"
+                    value={option.username}
+                    readOnly
+                    onChange={(event) => {
+                      setOption({ ...option, username: event.target.value });
+                    }}
+                  />
+                  <div className={styles.changeEmail}>
+                    이메일을 변경하시려면 운영자에게 이메일을 보내주세요.
+                  </div>
                 </div>
               </div>
-              <div>
+              <div className={styles.password}>
+                <div>비밀번호</div>
+                <button
+                  onClick={() => {
+                    navigate("/account/updatePw");
+                  }}
+                >
+                  비밀번호 변경
+                </button>
+              </div>
+              <div className={styles.name}>
+                <div className={styles.nameLabel}>
+                  <div className={styles.e1}>
+                    <label htmlFor="username">이름</label>
+                  </div>
+                  <div className={styles.e2}>
+                    <label htmlFor="username">필수항목*</label>
+                  </div>
+                </div>
                 <input
                   type="text"
                   required
-                  id="email"
-                  value={option.username}
+                  id="username"
+                  value={option.fullname}
                   readOnly
                   onChange={(event) => {
-                    setOption({ ...option, username: event.target.value });
+                    setOption({ ...option, fullname: event.target.value });
                   }}
                 />
-                <div className={styles.changeEmail}>
-                  이메일을 변경하시려면 운영자에게 이메일을 보내주세요.
+              </div>
+              <div className={styles.nickname}>
+                <div className={styles.nicknameLabel}>
+                  <div className={styles.e1}>
+                    <label htmlFor="nickname">닉네임</label>
+                  </div>
+                  <div className={styles.e2}>
+                    <label htmlFor="nickname">필수항목*</label>
+                  </div>
+                </div>
+                <div>
+                  <div>
+                    <input
+                      type="text"
+                      required
+                      id="nickname"
+                      value={option.nickname}
+                      onChange={(event) => {
+                        setOption({ ...option, nickname: event.target.value });
+                      }}
+                    />
+                    <button onClick={checkNicknameHandler}>중복확인</button>
+                  </div>
+                  <div className={styles.explain}>
+                    다른 유저와 겹치지 않는 자신만의 별명을 입력하세요.
+                  </div>
+                </div>
+              </div>{" "}
+              <div className={styles.introduce}>
+                <div className={styles.introduceLabel}>
+                  <div className={styles.e1}>
+                    <label htmlFor="introduce">한줄 소개</label>
+                  </div>
+                </div>
+                <input
+                  id="introduce"
+                  value={option.introduce}
+                  placeholder="자신을 한줄로 표현해보세요."
+                  onChange={(event) => {
+                    setOption({ ...option, introduce: event.target.value });
+                  }}
+                />
+              </div>{" "}
+              <div className={styles.isPrivate}>
+                <div>프로필 공개 여부</div>
+                <label htmlFor="false">
+                  <input
+                    type="radio"
+                    required
+                    checked={!option.isPrivate}
+                    id="false"
+                    name="is_private"
+                    value={0}
+                    onClick={(event) => {
+                      let prevIsPrivate = option.isPrivate;
+                      prevIsPrivate = 0;
+                      setOption({ ...option, isPrivate: prevIsPrivate });
+                    }}
+                  />
+                  공개
+                </label>
+                <label htmlFor="true">
+                  <input
+                    type="radio"
+                    required
+                    checked={!!option.isPrivate}
+                    value={1}
+                    id="true"
+                    name="is_private"
+                    onClick={(event) => {
+                      let prevIsPrivate = option.isPrivate;
+                      prevIsPrivate = 1;
+                      setOption({ ...option, isPrivate: prevIsPrivate });
+                    }}
+                  />
+                  비공개
+                </label>
+              </div>{" "}
+              <div className={styles.profile}>
+                <div className={styles.title}>프로필 이미지</div>
+                <div>
+                  <UserImgForm />
                 </div>
               </div>
-            </div>
-            <div className={styles.password}>
-              <div>비밀번호</div>
               <button
-                onClick={() => {
-                  navigate("/account/updatePw");
-                }}
+                type="button"
+                onClick={submitHandler}
+                className={styles.submit}
               >
-                비밀번호 변경
+                회원 정보 수정
               </button>
-            </div>
-
-            <div className={styles.name}>
-              <div className={styles.nameLabel}>
-                <div className={styles.e1}>
-                  <label htmlFor="username">이름</label>
-                </div>
-                <div className={styles.e2}>
-                  <label htmlFor="username">필수항목*</label>
-                </div>
-              </div>
-              <input
-                type="text"
-                required
-                id="username"
-                value={option.fullname}
-                readOnly
-                onChange={(event) => {
-                  setOption({ ...option, fullname: event.target.value });
-                }}
-              />
-            </div>
-
-            <div className={styles.nickname}>
-              <div className={styles.nicknameLabel}>
-              <div className={styles.e1}><label htmlFor="nickname">닉네임</label></div>
-              <div className={styles.e2}><label htmlFor="nickname">필수항목*</label></div>
-              </div>
-              <div>
-              <div>
-              <input
-                type="text"
-                required
-                id="nickname"
-                value={option.nickname}
-                onChange={(event) => {
-                  setOption({ ...option, nickname: event.target.value });
-                }}
-              />
-              <button onClick={checkNicknameHandler}>중복확인</button>
-              </div>
-              <div className={styles.explain}>다른 유저와 겹치지 않는 자신만의 별명을 입력하세요.</div>
-              </div>
-            </div>{" "}
-
-            <div className={styles.introduce} >
-              <div className={styles.introduceLabel}>
-              <div className={styles.e1}><label htmlFor="introduce">한줄 소개</label></div>
-              </div>
-              <input
-                id="introduce"
-                value={option.introduce}
-                placeholder="자신을 한줄로 표현해보세요."
-                onChange={(event) => {
-                  setOption({ ...option, introduce: event.target.value });
-                }}
-              />
-            </div>
-            
-            {" "}
-            <div className={styles.isPrivate}>
-              <div>프로필 공개 여부</div>
-              <label htmlFor="false">
-              <input
-                type="radio"
-                required
-                checked={!option.isPrivate}
-                id="false"
-                name="is_private"
-                value={0}
-                onClick={(event) => {
-                  let prevIsPrivate = option.isPrivate;
-                    prevIsPrivate = 0;
-                  setOption({ ...option, isPrivate: prevIsPrivate });
-                }}
-              />공개
-              </label>
-              <label htmlFor="true">
-              <input
-              type="radio"
-              required
-              checked={!!option.isPrivate}
-              value={1}
-              id="true"
-              name="is_private"
-              onClick={(event) => {
-                let prevIsPrivate = option.isPrivate;
-                prevIsPrivate = 1;
-                setOption({ ...option, isPrivate: prevIsPrivate });
-              }}
-            />
-            비공개</label>
-            </div>{" "}
-            <div className={styles.profile}>
-              <div className={styles.title}>프로필 이미지</div>
-              <div>
-                <UserImgForm />
-              </div>
-            </div>
-            <button type="button" onClick={submitHandler} className={styles.submit}>
-              회원 정보 수정
-            </button>
             </div>
           </form>
         </div>
       </div>
 
       <Modal open={openModal} close={closeModal} header="안내">
-        <div>
-          {content}
-        </div>
+        <div>{content}</div>
       </Modal>
     </div>
   );
