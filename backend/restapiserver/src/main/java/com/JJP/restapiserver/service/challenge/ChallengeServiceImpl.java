@@ -413,6 +413,7 @@ public class ChallengeServiceImpl implements ChallengeService{
                 .totalPages(challengeList.getTotalPages())
                 .size(challengeList.getSize())
                 .totalElements(challengeList.getTotalElements())
+                .hasNext(challengeList.hasNext())
                 .build();
 
         return challengePageDto;
@@ -432,6 +433,7 @@ public class ChallengeServiceImpl implements ChallengeService{
                 .totalPages(challengeList.getTotalPages())
                 .size(challengeList.getSize())
                 .totalElements(challengeList.getTotalElements())
+                .hasNext(challengeList.hasNext())
                 .build();
 
         return challengePageDto;
