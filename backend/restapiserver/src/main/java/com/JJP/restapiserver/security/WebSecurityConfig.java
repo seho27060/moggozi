@@ -51,7 +51,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        /** 추후 권한 변경 시, ROLE_USER인지 확인한 뒤 권한을 줄 것 */
+        /** TODO: 권한에 따라 접근 가능 URI 설정 */
         http
                 .httpBasic().disable()
                 .cors()

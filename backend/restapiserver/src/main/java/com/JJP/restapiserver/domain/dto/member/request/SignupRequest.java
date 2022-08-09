@@ -37,6 +37,4 @@ public class SignupRequest {
     private int isPrivate; // 0: 공개 X, 1: 공개 O
 
 //    private Set<String> role;
-
-    private Long role = null;
 }

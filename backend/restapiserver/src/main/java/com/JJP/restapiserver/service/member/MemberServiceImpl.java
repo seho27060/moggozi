@@ -70,16 +70,13 @@ public class MemberServiceImpl implements MemberService {
         String user_img = signupRequest.getUserImg();
         int is_private = signupRequest.getIsPrivate();
         int is_social = 0;
-        Long role_no = signupRequest.getRole() == null ? 1 : signupRequest.getRole();
+        Long role_no = 1L;
 
         if (memberRepository.existsByUsername(username)) {
             return ResponseEntity.badRequest().body(new MessageResponse("Error: Username(email) is already taken."));
         }
         if (memberRepository.existsByNickname(nickname)) {
             return ResponseEntity.badRequest().body(new MessageResponse("Error: Nickname is already taken."));
-        }
-        if (role_no > 4 && role_no < 1) {
-            return ResponseEntity.badRequest().body(new MessageResponse("Error: The role number doesn't exist."));
         }
 
         Optional<Role> role = roleRepository.findById(role_no);

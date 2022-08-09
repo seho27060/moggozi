@@ -2,48 +2,44 @@ package com.JJP.restapiserver.controller.member;
 
 import com.JJP.restapiserver.domain.dto.MessageResponse;
 import com.JJP.restapiserver.domain.dto.member.request.*;
-import com.JJP.restapiserver.domain.dto.member.response.JwtResponse;
 import com.JJP.restapiserver.domain.dto.member.response.Following;
+import com.JJP.restapiserver.domain.dto.member.response.JwtResponse;
 import com.JJP.restapiserver.domain.dto.member.response.MemberPageDto;
 import com.JJP.restapiserver.domain.dto.member.response.TokenRefreshResponse;
 import com.JJP.restapiserver.domain.entity.member.RefreshToken;
 import com.JJP.restapiserver.exception.TokenRefreshException;
 import com.JJP.restapiserver.security.JwtUtils;
 import com.JJP.restapiserver.service.RefreshTokenService;
-import com.JJP.restapiserver.service.member.MemberServiceImpl;
+import com.JJP.restapiserver.service.member.MemberService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 @Tag(name = "MemberController", description = "사용자 API")
 //@CrossOrigin("*")
 @RestController
 @RequestMapping("/user")
+@RequiredArgsConstructor
 public class MemberController {
 
-    @Autowired
-    MemberServiceImpl memberService;
+    private final MemberService memberService;
 
     // RereshToken 생성을 위한 Service
-    @Autowired
-    RefreshTokenService refreshTokenService;
+    private final RefreshTokenService refreshTokenService;
 
     // jwt 토큰 생성을 위한 JWT Util
-    @Autowired
-    JwtUtils jwtUtils;
+    private final JwtUtils jwtUtils;
 
     @Operation(summary = "로그인", description = "username과 password를 이용하여 로그인 합니다.")
     @ApiResponses({

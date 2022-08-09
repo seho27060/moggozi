@@ -73,9 +73,16 @@ public class JwtUtils {
     }
 
     public Long getUserIdFromJwtToken(String token) {
+
         token = token.substring(7);
         String username = getUserNameFromJwtToken(token);
-        return memberRepository.findByUsername(username).get().getId();
-    }
 
+        try {
+            Long id = memberRepository.findByUsername(username).get().getId();
+            return id;
+        } catch (Exception e) {
+            return null;
+        }
+
+    }
 }
