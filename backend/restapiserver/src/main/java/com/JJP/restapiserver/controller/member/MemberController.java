@@ -4,6 +4,7 @@ import com.JJP.restapiserver.domain.dto.MessageResponse;
 import com.JJP.restapiserver.domain.dto.member.request.*;
 import com.JJP.restapiserver.domain.dto.member.response.JwtResponse;
 import com.JJP.restapiserver.domain.dto.member.response.Following;
+import com.JJP.restapiserver.domain.dto.member.response.MemberPageDto;
 import com.JJP.restapiserver.domain.dto.member.response.TokenRefreshResponse;
 import com.JJP.restapiserver.domain.entity.member.RefreshToken;
 import com.JJP.restapiserver.exception.TokenRefreshException;
@@ -17,7 +18,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -50,19 +53,9 @@ public class MemberController {
             @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR")
     })
     @PostMapping("/login")
-    public ResponseEntity<?> login(@Valid @RequestBody LoginRequest loginRequest, HttpServletRequest request) { // 아이디, 비밀번호를 body에 담아 전송
+    public ResponseEntity<?> login(@Valid @RequestBody LoginRequest loginRequest) { // 아이디, 비밀번호를 body에 담아 전송
 
-        HttpSession session = request.getSession();
-        System.out.println("----------------------------------");
-        System.out.println(session);
-        System.out.println(session.getClass());
-        System.out.println(session.getId());
         ResponseEntity responseEntity = memberService.login(loginRequest);
-        JwtResponse jwtResponse = (JwtResponse)(responseEntity.getBody());
-        Long memberId = jwtResponse.getId();
-        session.setAttribute("memberId", memberId);
-        System.out.println("내가 세션에 넣었다고요 " + (Long)session.getAttribute("memberId"));
-        System.out.println("----------------------------------");
         return responseEntity;
     }
 
@@ -231,6 +224,12 @@ public class MemberController {
     public ResponseEntity<?> getUserInfo(@PathVariable("userId") Long userId, @PathVariable("loginId") Long loginId) {
 
         return ResponseEntity.ok(memberService.getMemberProfile(userId, loginId));
+    }
+
+    @GetMapping("/search/pagination/{keyword}")
+    public ResponseEntity<?> searchMemberUsingPagination(@PathVariable String keyword, Pageable pageable){
+        MemberPageDto memberPageDto =memberService.getMemberListUsingPagination(keyword, pageable);
+        return new ResponseEntity<>(memberPageDto, HttpStatus.OK);
     }
 }
 
