@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
@@ -13,16 +13,23 @@ import StageList from "../../components/stage/StageList";
 import Modal from "../../components/ui/Modal";
 import { fetchChallenge } from "../../lib/generalApi";
 import { challengeImgFetchAPI } from "../../lib/imgApi";
+import { WebSocketContext } from "../../lib/WebSocketProvider";
 import { challengeLike, isLoginFetchChallenge } from "../../lib/withTokenApi";
+import { Alert } from "../../store/alert";
 import { ChallengeDetailState } from "../../store/challenge";
+import { setPostingStageId } from "../../store/post";
 import { setPostFormModalOpen, setPostModalState, setPostUpdateFormState } from "../../store/postModal";
 import { reviewFetch } from "../../store/review";
 import { RootState } from "../../store/store";
 
 const ChallengeDetail: React.FC = () => {
   const { id } = useParams();
+  const ws = useContext(WebSocketContext)
+  
   const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
-  const userId = useSelector((state: RootState) => state.auth.userInfo.id);
+  const userInfo = useSelector((state: RootState) => state.auth.userInfo);
+  const stageId = useSelector((state:RootState) => state.post.postingStageId)
+
   const [isLoading, setIsLoading] = useState(true);
   const [loadedChallenge, setLoadedChallenge] =
     useState<ChallengeDetailState>();
@@ -48,6 +55,23 @@ const ChallengeDetail: React.FC = () => {
     event.preventDefault();
     challengeLike({ challengeId: Number(id) })
       .then((res) => {
+        if (!loadedChallenge!.liked){
+          let jsonSend: Alert = {
+            check : "0",
+            createdTime : "0",
+            id : "0",
+            index: loadedChallenge!.id!.toString(),
+            message: "challenge",
+            receiverId: loadedChallenge!.writer!.id!.toString(),
+            receiverName: loadedChallenge!.writer!.nickname!.toString(),
+            senderId: userInfo.id!.toString(),
+            senderName: userInfo.nickname!.toString(),
+            type: "challenge",
+          };
+          if ( loadedChallenge!.writer!.id! !== userInfo.id!) {
+            ws.current.send(JSON.stringify(jsonSend))
+          }
+        }
         setLoadedChallenge({
           ...loadedChallenge!,
           liked: !loadedChallenge!.liked,
@@ -82,6 +106,12 @@ const ChallengeDetail: React.FC = () => {
                   img: res,
                 });
                 dispatch(reviewFetch(challenge.reviewList));
+                console.log("Challenge",challenge)
+                let postStageId = null
+                if (challenge.stageList.length !== 0){
+                  postStageId = challenge.stageList[0].id
+                }
+                dispatch(setPostingStageId(postStageId))
               })
               .catch((err) => {
                 setLoadedChallenge({
@@ -163,7 +193,7 @@ const ChallengeDetail: React.FC = () => {
           <HobbyList hobbies={loadedChallenge!.hobbyList} />
           <p>스테이지</p>
           <StageList stages={loadedChallenge!.stageList} />
-          {userId === loadedChallenge!.writer.id && (
+          {userInfo.id === loadedChallenge!.writer.id && (
             <div>
               <Link to={`/stage/${id}`}>
                 <button>스테이지 편집</button>
@@ -190,7 +220,7 @@ const ChallengeDetail: React.FC = () => {
             {postUpdateFormOpen && <PostUpdateForm />}
           </Modal>
         )}
-        {postModalOpen && (
+        {postFormModalOpen && (
           <Modal
             open={postFormModalOpen}
             close={closePostFormModal}
@@ -198,10 +228,10 @@ const ChallengeDetail: React.FC = () => {
           >
             "생성폼"
             {/* 스테이지 번호를 넘겨줄만한 트리거가 필요함 */}
-            {/* <PostForm
-              stageId={Number(stage.id)}
+            <PostForm
+              stageId={Number(stageId)}
               modalClose={closePostFormModal}
-            /> */}
+            />
           </Modal>
         )}
       </div>

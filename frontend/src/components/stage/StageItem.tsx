@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { stageImgFetchAPI } from "../../lib/imgApi";
 import { postRead } from "../../lib/withTokenApi";
 import { PostData } from "../../store/post";
-import { setPostFormButtonState } from "../../store/postModal";
+import { setPostFormButtonState, setPostFormModalOpen } from "../../store/postModal";
 import { imgState, StageState } from "../../store/stage";
+import { RootState } from "../../store/store";
 import PostList from "../post/PostList";
 
 const StageItem: React.FC<{
@@ -15,8 +16,13 @@ const StageItem: React.FC<{
 
   const dispatch = useDispatch();
   const [postStageListState, setPostStageListState] = useState<PostData[]>([]);
-
   const [getStage, setStage] = useState<StageState>(stage);
+  const isLoggedIn = useSelector((state:RootState)=> state.auth.isLoggedIn)
+  const postingStageId = useSelector((state:RootState)=> state.post.postingStageId)
+  const { postFormButtonOpen } = useSelector(
+    (state: RootState) => state.postModal
+  );
+
   useEffect(() => {
     stageImgFetchAPI(stage.id!)
       .then((res) => {
@@ -40,7 +46,7 @@ const StageItem: React.FC<{
       .catch((err) => {
         console.log("ERR", err);
       });
-  }, [dispatch,stage.id]);
+  }, [dispatch, stage.id]);
 
   return (
     <div>
@@ -58,6 +64,11 @@ const StageItem: React.FC<{
             );
           })}
       </ul>
+      {(postFormButtonOpen && isLoggedIn && postingStageId) && (
+        <button onClick={() => dispatch(setPostFormModalOpen())}>
+          포스팅 생성
+        </button>
+      )}
       {postStageListState && (
         <>
           {`${stage.id}의 PostList 3개만`}

@@ -1,6 +1,5 @@
 import axios from "axios";
 import { apiConfig } from "../config";
-import { AlertSend } from "../store/alert";
 import { ChallengeSaveState } from "../store/challenge";
 import { CommentSend } from "../store/comment";
 import { PostSend, PostUpdateSend } from "../store/postModal";
@@ -258,11 +257,6 @@ export const alertAll = async () => {
 // 모든 알림 통틀어서 최근 6개 가져오기 
 export const alertRecent = async () => {
   const { data } = await withTokenApi.get(`/notification/recent`);
-  return data;
-};
-// 새로운 알림 보내기
-export const alertSend = async (alert : AlertSend) => {
-  const { data } = await withTokenApi.post(`/notification/register`,alert);
   return data;
 };
 

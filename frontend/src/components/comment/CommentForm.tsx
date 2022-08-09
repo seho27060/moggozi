@@ -1,14 +1,22 @@
-import { FormEvent, useRef } from "react";
-import { commentAdd } from "../../lib/withTokenApi";
+import { FormEvent, useContext, useRef } from "react";
+import {  commentAdd } from "../../lib/withTokenApi";
 import { CommentSend,commentRegister } from "../../store/comment";
 import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store/store";
+import { Alert } from "../../store/alert";
+import { WebSocketContext } from "../../lib/WebSocketProvider";
+import { UserInfo } from "../../store/auth";
 
 const CommentForm: React.FC<{
   postId: number | null;
   parentId: number | null;
   order: number | null;
-}> = ({ postId, parentId, order }) => {
+  receiver : UserInfo|null
+}> = ({ postId, parentId, order,receiver }) => {
   const dispatch = useDispatch();
+  const userInfo = useSelector((state:RootState)=> state.auth.userInfo)
+  const ws = useContext(WebSocketContext)
 
   const enteredText = useRef<HTMLInputElement>(null);
 
@@ -30,6 +38,41 @@ const CommentForm: React.FC<{
         alert(`comment register err ${err}`);
       });
       enteredText.current!.value = ""
+      // 댓글, 대댓글 알림보내기
+    if (parentId === 0 && postId === 0) {
+      let jsonSend: Alert = {
+        check : "0",
+        createdTime : "0",
+        id : "0",
+        index: postId.toString(),
+        message: "comment",
+        receiverId: receiver!.id!.toString(),
+        receiverName: receiver!.nickname!.toString(),
+        senderId: userInfo.id!.toString(),
+        senderName: userInfo.nickname!.toString(),
+        type: "comment",
+      };
+      if ( receiver!.id! !== userInfo.id!) {
+        ws.current.send(JSON.stringify(jsonSend))
+      }
+      
+    } else {
+      let jsonSend: Alert = {
+        check : "0",
+        createdTime : "0",
+        id : "0",
+        index: postId!.toString(),
+        message: "reply",
+        receiverId: receiver!.id!.toString(),
+        receiverName: receiver!.nickname!.toString(),
+        senderId: userInfo.id!.toString(),
+        senderName: userInfo.nickname!.toString(),
+        type: "reply",
+      };
+      if ( receiver!.id! !== userInfo.id!) {
+        ws.current.send(JSON.stringify(jsonSend))
+      }
+    }
   };
 
   return (

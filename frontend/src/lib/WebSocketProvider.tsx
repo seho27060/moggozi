@@ -1,6 +1,7 @@
 import React, { useRef } from "react";
+import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import { Alert } from "../store/alert";
+import { Alert, setRealTimeAlert } from "../store/alert";
 import { RootState } from "../store/store";
 // import SockJS from 'sockjs-client';
 const WebSocketContext = React.createContext<any>(null);
@@ -9,6 +10,8 @@ export { WebSocketContext };
 export default ({ children }: { children: React.ReactNode }) => {
   const user = useSelector((state: RootState) => state.auth.userInfo);
   const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
+  const realTimeAlert = useSelector((state: RootState) => state.alert.realTimeAlert);
+  const dispatch = useDispatch();
 
   const webSocketUrl = `wss://i7c201.p.ssafy.io:443/api/ws/notification`;
   let ws = useRef<WebSocket | null>(null);
@@ -41,9 +44,9 @@ export default ({ children }: { children: React.ReactNode }) => {
           ws.current!.send(JSON.stringify(jsonSend));
           // console.log("persisting connection", isConnecting, connetSend);
         } else {
-          clearInterval()
+          clearInterval();
         }
-      }, 30000,);
+      }, 30000);
     };
     ws.current.onclose = (evt: any) => {
       console.log("disconnect from " + webSocketUrl);
@@ -55,7 +58,8 @@ export default ({ children }: { children: React.ReactNode }) => {
       console.log(error);
     };
     ws.current.onmessage = (evt: MessageEvent) => {
-      console.log(evt.data);
+      console.log(evt.data,`realtime${realTimeAlert}`);
+      dispatch(setRealTimeAlert(true));
       // console.log(JSON.parse(ev))
     };
   }

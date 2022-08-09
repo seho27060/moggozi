@@ -1,10 +1,10 @@
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { CloseEvent } from "sockjs-client";
-import { Alert, AlertSend, setRealTimeAlert } from "../store/alert";
+import { Alert,  setAlertList,  setRealTimeAlert } from "../store/alert";
 import { RootState } from "../store/store";
-import { setWsConnect } from "../store/alert";
 import { VscBell, VscBellDot } from "react-icons/vsc";
+import { alertRecent } from "../lib/withTokenApi";
 
 const WebsocketConnect = () => {
   console.log("rendering : WsSocket");
@@ -38,16 +38,20 @@ const WebsocketConnect = () => {
         jsonSend.senderName = auth.userInfo.nickname!.toString();
         console.log("open user", jsonSend, "open", evt);
         wsocket!.send(JSON.stringify(jsonSend));
-        dispatch(setWsConnect(jsonSend));
         setInterval(() => {
           // const time = new Date()
           // console.log(`30 sec,now: ${time}`, isConnecting);
-          const connetSend: AlertSend = {
+          let connetSend: Alert = {
+            check : "0",
+            createdTime : "0",
+            id : "0",
             index: "1",
-            receiverId: "1",
+            message: "message",
+            receiverId: "11",
+            receiverName: "start",
             senderId: auth.userInfo.id!.toString(),
-            type: "connection",
-            msg: "1"
+            senderName: "anonymous",
+            type: "comment",
           };
           wsocket!.send(JSON.stringify(connetSend));
           // console.log("persisting connection", isConnecting, connetSend);
@@ -75,6 +79,9 @@ const WebsocketConnect = () => {
       const message = JSON.stringify(evt.data.toString())
       console.log(`${auth.userInfo}, you have message ${message}`);
       dispatch(setRealTimeAlert(true))
+      alertRecent().then((res)=>{
+        dispatch(setAlertList(res))
+      })
     };
     // 에러
     wsocket.onerror = (evt: any) => {

@@ -4,8 +4,8 @@ import { RootState } from "../../store/store";
 import AlertList from "./AlertList";
 import { VscBell, VscBellDot } from "react-icons/vsc";
 import { useDispatch } from "react-redux";
-import { Alert, AlertSend, setAlertList, setRealTimeAlert } from "../../store/alert";
-import { alertRecent, alertSend } from "../../lib/withTokenApi";
+import { Alert,  setAlertList, setRealTimeAlert } from "../../store/alert";
+import { alertRecent} from "../../lib/withTokenApi";
 import { WebSocketContext } from "../../lib/WebSocketProvider";
 const AlertOnair: React.FC<{}> = () => {
   const dispatch = useDispatch();
@@ -18,60 +18,40 @@ const AlertOnair: React.FC<{}> = () => {
   return (
     <div style={{ border: "solid 10px" }}>
       <button onClick={()=> {
-        const testAlert: AlertSend = {
+        let jsonSend: Alert = {
+          check : "0",
+          createdTime : "0",
+          id : "0",
           index: "1",
-          senderId: user.id!.toString(),
+          message: "message",
           receiverId: "11",
+          receiverName: "start",
+          senderId: user.id!.toString(),
+          senderName: "anonymous",
           type: "comment",
-          msg: "?"
-        } 
-        alertSend(testAlert).then((res)=>{
-          console.log("success to 11",res)
-          let jsonSend: Alert = {
-            check : "0",
-            createdTime : "0",
-            id : "0",
-            index: "1",
-            message: "message",
-            receiverId: "11",
-            receiverName: "start",
-            senderId: user.id!.toString(),
-            senderName: "anonymous",
-            type: "comment",
-          };
-          ws.current.send(JSON.stringify(jsonSend))
-        }).catch((err)=> console.log(err))
-
+        };
+        ws.current.send(JSON.stringify(jsonSend))
       }}>to 11</button>
       <button onClick={()=> {
-        const testAlert: AlertSend = {
+ 
+        let jsonSend: Alert = {
+          check : "0",
+          createdTime : "0",
+          id : "0",
           index: "1",
-          senderId: user.id!.toString(),
+          message: "message",
           receiverId: "43",
-          type: "challenge",
-          msg: "?"
-        } 
-        alertSend(testAlert).then((res)=>{
-          console.log("success to 43",res)
-          let jsonSend: Alert = {
-            check : "0",
-            createdTime : "0",
-            id : "0",
-            index: "1",
-            message: "message",
-            receiverId: "43",
-            receiverName: "start",
-            senderId: user.id!.toString(),
-            senderName: "anonymous",
-            type: "reply",
-          };
-          ws.current.send(JSON.stringify(jsonSend))
-        }).catch((err)=> console.log(err))
+          receiverName: "start",
+          senderId: user.id!.toString(),
+          senderName: "anonymous",
+          type: "reply",
+        };
+        ws.current.send(JSON.stringify(jsonSend))        
       }}>to 43</button>
 
       <button
         onClick={() => {
-          console.log("alertclick");
+          console.log("alertclick",realTimeAlert);
           alertRecent()
             .then((res) => {
               console.log("recent alert read", res);

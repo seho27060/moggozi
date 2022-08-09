@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { CloseEvent } from "sockjs-client";
 import AlertOnair from "../components/alert/AlertOnair";
-import { Alert, AlertSend } from "../store/alert";
+import { Alert,  } from "../store/alert";
 import { RootState } from "../store/store";
 
 const WebsocketPage = () => {
@@ -54,14 +54,19 @@ const WebsocketPage = () => {
           setInterval(() => {
             // const time = new Date()
             // console.log(`30 sec,now: ${time}`, isConnecting);
-            const connetSend: AlertSend = {
+            jsonSend = {
+              check : "0",
+              createdTime : "0",
+              id : "0",
               index: "1",
+              message: "connection",
               receiverId: "1",
-              senderId: user.id!.toString(),
+              receiverName: "1",
+              senderId: "1",
+              senderName: "1",
               type: "connection",
-              msg: "1"
             };
-            wsocket!.send(JSON.stringify(connetSend));
+            wsocket!.send(JSON.stringify(jsonSend));
             // console.log("persisting connection", isConnecting, connetSend);
           }, 30000);
         }
