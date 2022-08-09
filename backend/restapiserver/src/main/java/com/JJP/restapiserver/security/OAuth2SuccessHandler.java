@@ -1,5 +1,6 @@
 package com.JJP.restapiserver.security;
 
+import com.JJP.restapiserver.domain.entity.member.ERole;
 import com.JJP.restapiserver.domain.entity.member.Member;
 import com.JJP.restapiserver.domain.entity.member.Role;
 import com.JJP.restapiserver.repository.member.MemberRepository;
@@ -53,7 +54,6 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
             , Authentication authentication) throws IOException, ServletException {
 
         OAuth2User oAuth2User = (OAuth2User) (DefaultOAuth2User) authentication.getPrincipal();
-        System.out.println("quthentication" + oAuth2User.getAttributes().toString());
 
         String username = null, fullname = null, nickname = null;
 
@@ -88,7 +88,7 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
                     .toString();
 
             isFirst = 1;
-            Role role = roleRepository.findById(1L).get();
+            Role role = roleRepository.findByName(ERole.ROLE_USER).get();
             Member newMember = Member.builder().username(username)
                     .fullname(fullname).nickname("User"+randomNo).password(password).is_social(1).role(role).build();
             memberRepository.save(newMember);
