@@ -4,12 +4,14 @@ import com.JJP.restapiserver.domain.dto.challenge.*;
 import com.JJP.restapiserver.domain.dto.tag.TagRequestDto;
 import com.JJP.restapiserver.domain.dto.tag.TagResponseDto;
 import com.JJP.restapiserver.domain.entity.Tag.ChallengeTag;
+import com.JJP.restapiserver.domain.entity.Tag.MemberTag;
 import com.JJP.restapiserver.domain.entity.Tag.Tag;
 import com.JJP.restapiserver.domain.entity.challenge.Challenge;
 import com.JJP.restapiserver.domain.entity.challenge.ChallengeLike;
 import com.JJP.restapiserver.domain.entity.challenge.JoinedChallenge;
 import com.JJP.restapiserver.domain.entity.member.Member;
 import com.JJP.restapiserver.repository.Tag.ChallengeTagRepository;
+import com.JJP.restapiserver.repository.Tag.MemberTagRepository;
 import com.JJP.restapiserver.repository.Tag.TagRepository;
 import com.JJP.restapiserver.repository.challenge.ChallengeLikeRepository;
 import com.JJP.restapiserver.repository.challenge.ChallengeRepository;
@@ -17,6 +19,7 @@ import com.JJP.restapiserver.repository.challenge.JoinedChallengeRepository;
 import com.JJP.restapiserver.repository.member.MemberRepository;
 import com.JJP.restapiserver.repository.stage.StageUserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
@@ -43,6 +46,8 @@ public class ChallengeServiceImpl implements ChallengeService{
 
     private final ChallengeLikeRepository challengeLikeRepository;
 
+    private final MemberTagRepository memberTagRepository;
+
     @Override
     public List<ChallengeListResponseDto> getChallengeListByHobby(String hobby, Long member_id) {
 
@@ -60,10 +65,20 @@ public class ChallengeServiceImpl implements ChallengeService{
 
     //테스트 완료
     @Override
-    public List<ChallengeListResponseDto> getChallengeListByKeyword(String keyword, Long member_id) {
-        List<Challenge> challengeList = challengeRepository.findByNameContaining(keyword);
-        List<ChallengeListResponseDto> responseDtoList = new ArrayList<>();
-        return challengeIntoListDto(challengeList, responseDtoList, member_id);
+    public ChallengePageDto getChallengeListByKeyword(String keyword,Pageable pageable,  Long member_id) {
+        Page<Challenge> challengeList = challengeRepository.findByNameContaining(keyword,pageable);
+        List<ChallengeListResponseDto> challengeListResponseDtoList = new ArrayList<>();
+        challengeListResponseDtoList = challengeIntoListDto(challengeList.toList(), challengeListResponseDtoList,
+                member_id);
+        ChallengePageDto challengePageDto = ChallengePageDto.builder()
+                .content(challengeListResponseDtoList)
+                .pageNum(challengeList.getNumber())
+                .totalPages(challengeList.getTotalPages())
+                .size(challengeList.getSize())
+                .totalElements(challengeList.getTotalElements())
+                .build();
+        System.out.println(challengePageDto.toString());
+        return challengePageDto;
     }
 
 
@@ -216,6 +231,46 @@ public class ChallengeServiceImpl implements ChallengeService{
                         .build())
                         .collect(Collectors.toList());
 //        challengeSlice.
+        return null;
+    }
+    // 우선은 challengerepository에서 슬라이스 객체를 꺼냄
+    // abcd = Slice<challenge> thing;
+    // abcd.toNext() == boolean
+    // 가정을 해보면
+    // 스크롤이 끝에 닿을 때마다 저한테 이제 "더보기 요청"
+    // 그럼 내가 해야할 일은 딱 2개
+    // 9개를 더 갖다줌과 동시에 더보기가 있다 없다만 판별해주자
+    // 9개의 챌린지 리스트
+    // Slice<Challenge> challengeList = challengeRepository.findanything(PageRequest.of(pageIndex, size);
+    // boolean hasNext = challengeList.hasNext();
+    // List<Challenge> response = challengeService.challengeIntoListDto(challengeList.toList(),
+    // List<ChallengeResponseListDto> array, member_id);
+
+    @Override
+    public List<ChallengeListResponseDto> getChallengeRecommendationList(Long member_id) {
+        List<MemberTag> myhobby = memberTagRepository.findByMember_id(member_id);
+        // 대전제
+        // 한번 추천으로 뽑힌 것은 다시 돌려주지 않는다. (유효 기간은 6시간, 쿠키 활용)
+        //
+        // 사용자가 막 회원가입해서 등록된 취미가 없다면?
+        // 1. 완전 랜덤인 것으로 5개 뽑아서 돌려준다.
+        // get 으로 challenge/search/?pages=1&size=16&keyword=soccer
+
+
+        // 챌린지 이름으로 검색 5개,
+        // 사용자 이름으로 5개,
+
+        // 스프링과 매핑되는 그 방식이 있음
+        // 유저 검색
+        // 챌린지 검색
+        // 특정 태그를 포함한 챌린지 검색
+        if(myhobby == null){
+
+        }
+        // 사용자가 취미가 있다면?
+        else{
+
+        }
         return null;
     }
 

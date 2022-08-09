@@ -1,7 +1,9 @@
 package com.JJP.restapiserver.service.member;
 
 import com.JJP.restapiserver.domain.dto.member.request.*;
+import com.JJP.restapiserver.domain.dto.member.response.MemberPageDto;
 import com.JJP.restapiserver.domain.dto.member.response.ProfileResponse;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 
 public interface MemberService {
@@ -22,5 +24,7 @@ public interface MemberService {
 
     ResponseEntity<?> searchMember(String keyword);
     ProfileResponse getMemberProfile(Long userId, Long loginId); // 사용자 프로필 정보
+
+    MemberPageDto getMemberListUsingPagination(String keyword, Pageable pageable);
 
 }

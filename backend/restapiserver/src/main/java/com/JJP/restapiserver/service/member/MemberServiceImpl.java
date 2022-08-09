@@ -1,6 +1,7 @@
 package com.JJP.restapiserver.service.member;
 
 import com.JJP.restapiserver.domain.dto.MessageResponse;
+import com.JJP.restapiserver.domain.dto.challenge.ChallengePageDto;
 import com.JJP.restapiserver.domain.dto.member.request.*;
 import com.JJP.restapiserver.domain.dto.member.response.*;
 import com.JJP.restapiserver.domain.entity.member.ERole;
@@ -15,6 +16,8 @@ import com.JJP.restapiserver.security.UserDetailsImpl;
 import com.JJP.restapiserver.service.RefreshTokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -31,6 +34,7 @@ import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -288,6 +292,23 @@ public class MemberServiceImpl implements MemberService {
                 .build();
     }
 
+    @Override
+    public MemberPageDto getMemberListUsingPagination(String nickname, Pageable pageable) {
+        Page<Member> pageResult = memberRepository.findByNicknameContaining(nickname, pageable);
+        List<Member> memberList = pageResult.toList();
+        List<MemberResponseDto> memberResponseDtoList = memberList.stream()
+                .map(o -> MemberToDto(o)).collect(Collectors.toList());
+        MemberPageDto memberPageDto = MemberPageDto.builder()
+                .content(memberResponseDtoList)
+                .pageNum(pageResult.getNumber())
+                .totalPages(pageResult.getTotalPages())
+                .size(pageResult.getSize())
+                .totalElements(pageResult.getTotalElements())
+                .build();
+
+        return memberPageDto;
+    }
+
     // 사용자 정보 저장 / 수정
     private void saveMember(Long user_id, String username, String fullname, String password, String nickname, String introduce, String user_img, int is_private, int is_social, Role role) {
         Member member = null;
@@ -334,8 +355,16 @@ public class MemberServiceImpl implements MemberService {
         javaMailSender.send(mimeMessage);
     }
 
-}
 
+    private MemberResponseDto MemberToDto(Member member){
+        MemberResponseDto memberResponseDto = MemberResponseDto.builder()
+                .img(member.getUser_img())
+                .id(member.getId())
+                .nickname(member.getNickname())
+                .build();
+        return memberResponseDto;
+    }
+}
 //    @Override
 //    public ResponseEntity<?> checkValidity(LoginRequest loginRequest) {
 //        Optional<Member> member = memberRepository.findByUsername(loginRequest.getUsername());

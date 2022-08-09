@@ -1,16 +1,15 @@
 package com.JJP.restapiserver.controller.challenge;
 
 
-import com.JJP.restapiserver.domain.dto.challenge.ChallengeCompleteRequestDto;
-import com.JJP.restapiserver.domain.dto.challenge.ChallengeListResponseDto;
-import com.JJP.restapiserver.domain.dto.challenge.ChallengeRequestDto;
-import com.JJP.restapiserver.domain.dto.challenge.ChallengeResponseDto;
+import com.JJP.restapiserver.domain.dto.challenge.*;
 import com.JJP.restapiserver.domain.entity.challenge.Challenge;
 import com.JJP.restapiserver.repository.challenge.JoinedChallengeRepository;
 import com.JJP.restapiserver.security.JwtUtils;
 import com.JJP.restapiserver.service.challenge.ChallengeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -39,11 +38,14 @@ public class ChallengeController {
     }
 
     @GetMapping("/search/{keyword}")
-    public ResponseEntity getChallengeListByKeyword(@PathVariable String keyword, HttpServletRequest request)
+    public ResponseEntity getChallengeListByKeyword(@PathVariable("keyword") String keyword, Pageable pageable,
+                                                    HttpServletRequest request)
     {
         Long member_id = jwtUtils.getUserIdFromJwtToken(request.getHeader("Authorization"));
-        List<ChallengeListResponseDto> challengeList = challengeService.getChallengeListByKeyword(keyword, member_id);
-        return new ResponseEntity<List<ChallengeListResponseDto>>(challengeList, HttpStatus.OK);
+
+        ChallengePageDto challengeList = challengeService.getChallengeListByKeyword(keyword,
+                pageable, member_id);
+        return new ResponseEntity(challengeList, HttpStatus.OK);
     }
 
     @GetMapping("/rank")
