@@ -8,16 +8,19 @@ import "./App.scss";
 import { useSelector } from "react-redux";
 import { RootState } from "./store/store";
 import { profileImgFetchAPI } from "./lib/imgApi";
+import WebsocketConnect from "./pages/WebsocketConnect";
+import WebSocketProvider from "./lib/WebSocketProvider";
 function App() {
   const dispatch = useDispatch();
-  const userId = useSelector((state: RootState) => state.auth.userInfo.id);
+
+  const user = useSelector((state: RootState) => state.auth.userInfo);
 
   useEffect(() => {
     if (sessionStorage.getItem("accessToken") != null) {
       persistAuth()
         .then((res) => {
           dispatch(authentication(res));
-          profileImgFetchAPI(userId!).then((res) =>
+          profileImgFetchAPI(user.id!).then((res) =>
             dispatch(userImgFetch(res))
           );
           // console.log(res)
@@ -26,11 +29,13 @@ function App() {
           console.log(err);
         });
     }
-  }, [dispatch, userId]);
+  }, [dispatch, user.id]);
 
   return (
     <div>
-      <Router />
+      <WebSocketProvider>
+        <Router />
+      </WebSocketProvider>
     </div>
   );
 }

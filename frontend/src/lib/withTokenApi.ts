@@ -239,20 +239,20 @@ export const commentUpdate = async (
   return data;
 };
 
-// 알림 관련
+//// 알림 관련
 // 알림 확인
 export const alertRead = async (alert_id: number) => {
   const { data } = await withTokenApi.put(`/notification/${alert_id}`);
   return data;
 };
-// 알림 전체 기록 가져오기
-export const alertAll = async () => {
-  const { data } = await withTokenApi.get(`/notification/all`);
-  return data;
-};
 // 알림 전체 확인
 export const alertReadall = async () => {
   const { data } = await withTokenApi.put(`/notification/readAll`);
+  return data;
+};
+// 알림 전체 기록 가져오기
+export const alertAll = async () => {
+  const { data } = await withTokenApi.get(`/notification/all`);
   return data;
 };
 // 모든 알림 통틀어서 최근 6개 가져오기 
