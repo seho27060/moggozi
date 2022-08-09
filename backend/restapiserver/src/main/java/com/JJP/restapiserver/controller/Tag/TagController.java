@@ -18,8 +18,8 @@ public class TagController {
 
     private final TagService tagService;
 
-    @GetMapping("/search/{keyword}")
-    public ResponseEntity<TagResponseDto> autoCompletion(@PathVariable String keyword){
+    @GetMapping("/search")
+    public ResponseEntity<TagResponseDto> autoCompletion(@RequestParam("keyword") String keyword){
         return tagService.autoCompletion(keyword);
     }
 
@@ -35,8 +35,8 @@ public class TagController {
         }
     }
 
-    @GetMapping("/exist/{keyword}")
-    public ResponseEntity checkTagExists(@PathVariable String keyword)
+    @GetMapping("/exist")
+    public ResponseEntity checkTagExists(@RequestParam("keyword") String keyword)
     {
         return new ResponseEntity(tagService.existsByTag(keyword), HttpStatus.OK);
     }
