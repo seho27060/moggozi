@@ -222,8 +222,8 @@ public class MemberController {
         return ResponseEntity.ok(memberService.getMemberProfile(userId, loginId));
     }
 
-    @GetMapping("/search/pagination/{keyword}")
-    public ResponseEntity<?> searchMemberUsingPagination(@PathVariable String keyword, Pageable pageable){
+    @GetMapping("/search/pagination/")
+    public ResponseEntity<?> searchMemberUsingPagination(@RequestParam String keyword, Pageable pageable){
         MemberPageDto memberPageDto =memberService.getMemberListUsingPagination(keyword, pageable);
         return new ResponseEntity<>(memberPageDto, HttpStatus.OK);
     }
