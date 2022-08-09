@@ -17,8 +17,10 @@ import com.JJP.restapiserver.repository.challenge.ChallengeLikeRepository;
 import com.JJP.restapiserver.repository.challenge.ChallengeRepository;
 import com.JJP.restapiserver.repository.challenge.JoinedChallengeRepository;
 import com.JJP.restapiserver.repository.member.MemberRepository;
-import com.JJP.restapiserver.repository.stage.StageUserRepository;
+import com.JJP.restapiserver.service.Tag.ChallengeTagService;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
@@ -38,6 +40,7 @@ import java.util.stream.Collectors;
 @Transactional
 public class ChallengeServiceImpl implements ChallengeService{
 
+    private final Logger logger = LoggerFactory.getLogger(ChallengeServiceImpl.class);
     private final JoinedChallengeRepository joinedChallengeRepository;
     private final ChallengeRepository challengeRepository;
     private final MemberRepository memberRepository;
@@ -47,6 +50,8 @@ public class ChallengeServiceImpl implements ChallengeService{
     private final ChallengeLikeRepository challengeLikeRepository;
 
     private final MemberTagRepository memberTagRepository;
+
+    private final ChallengeTagService challengeTagService;
 
     @Override
     public List<ChallengeListResponseDto> getChallengeListByHobby(String hobby, Long member_id) {
@@ -67,9 +72,11 @@ public class ChallengeServiceImpl implements ChallengeService{
     @Override
     public ChallengePageDto getChallengeListByKeyword(String keyword,Pageable pageable,  Long member_id) {
         Page<Challenge> challengeList = challengeRepository.findByNameContaining(keyword,pageable);
+
         List<ChallengeListResponseDto> challengeListResponseDtoList = new ArrayList<>();
         challengeListResponseDtoList = challengeIntoListDto(challengeList.toList(), challengeListResponseDtoList,
                 member_id);
+        // 전체 페이지 개수, 조회한 데이터, 현재 페이지 번호, 혀재 데이터의 사이즈, 전체 데이터 갯수
         ChallengePageDto challengePageDto = ChallengePageDto.builder()
                 .content(challengeListResponseDtoList)
                 .pageNum(challengeList.getNumber())
@@ -77,7 +84,23 @@ public class ChallengeServiceImpl implements ChallengeService{
                 .size(challengeList.getSize())
                 .totalElements(challengeList.getTotalElements())
                 .build();
-        System.out.println(challengePageDto.toString());
+
+        return challengePageDto;
+    }
+    public ChallengePageDto getChallengeListByKeyword(String keyword,Pageable pageable) {
+        Page<Challenge> challengeList = challengeRepository.findByNameContaining(keyword,pageable);
+
+        List<ChallengeListResponseDto> challengeListResponseDtoList = new ArrayList<>();
+        challengeListResponseDtoList = challengeIntoListDto(challengeList.toList(), challengeListResponseDtoList);
+        // 전체 페이지 개수, 조회한 데이터, 현재 페이지 번호, 혀재 데이터의 사이즈, 전체 데이터 갯수
+        ChallengePageDto challengePageDto = ChallengePageDto.builder()
+                .content(challengeListResponseDtoList)
+                .pageNum(challengeList.getNumber())
+                .totalPages(challengeList.getTotalPages())
+                .size(challengeList.getSize())
+                .totalElements(challengeList.getTotalElements())
+                .build();
+
         return challengePageDto;
     }
 
@@ -87,9 +110,8 @@ public class ChallengeServiceImpl implements ChallengeService{
     public List<ChallengeListResponseDto> getChallengeListByLike(Long member_id) {
         List<Object[]> list = challengeRepository.findByLike();
         List<Challenge> challengeList = new ArrayList<>();
-        for(int i = 0; i < list.size(); i++)
-        {
-            Challenge challenge = challengeRepository.findById(Long.parseLong(list.get(i)[0].toString())).get();
+        for (Object[] objects : list) {
+            Challenge challenge = challengeRepository.findById(Long.parseLong(objects[0].toString())).get();
             challengeList.add(challenge);
         }
         List<ChallengeListResponseDto> responseDtoList = new ArrayList<>();
@@ -102,9 +124,8 @@ public class ChallengeServiceImpl implements ChallengeService{
         if(list != null)
         {
 
-            for(int i = 0; i < list.size(); i++)
-            {
-                Challenge challenge = challengeRepository.findById(Long.parseLong(list.get(i)[0].toString())).get();
+            for (Object[] objects : list) {
+                Challenge challenge = challengeRepository.findById(Long.parseLong(objects[0].toString())).get();
                 challengeList.add(challenge);
             }
         }
@@ -171,8 +192,7 @@ public class ChallengeServiceImpl implements ChallengeService{
 //        challengeRepository.save(challenge);
 
         tagRegister(challenge_id, challengeData);
-        ChallengeResponseDto challengeResponseDto = new ChallengeResponseDto(challenge);
-        return challengeResponseDto;
+        return new ChallengeResponseDto(challenge);
     }
 
 
@@ -207,9 +227,8 @@ public class ChallengeServiceImpl implements ChallengeService{
         List<ChallengeListResponseDto> challengeListResponseDtoList = new ArrayList<>();
         if(joinedChallengeList != null)
         {
-            for(int i = 0; i < joinedChallengeList.size(); i++)
-            {
-                Challenge challenge = joinedChallengeList.get(i).getChallenge();
+            for (JoinedChallenge joinedChallenge : joinedChallengeList) {
+                Challenge challenge = joinedChallenge.getChallenge();
                 ChallengeListResponseDto challengeResponseDto = new ChallengeListResponseDto(challenge);
                 challengeListResponseDtoList.add(challengeResponseDto);
             }
@@ -233,18 +252,7 @@ public class ChallengeServiceImpl implements ChallengeService{
 //        challengeSlice.
         return null;
     }
-    // 우선은 challengerepository에서 슬라이스 객체를 꺼냄
-    // abcd = Slice<challenge> thing;
-    // abcd.toNext() == boolean
-    // 가정을 해보면
-    // 스크롤이 끝에 닿을 때마다 저한테 이제 "더보기 요청"
-    // 그럼 내가 해야할 일은 딱 2개
-    // 9개를 더 갖다줌과 동시에 더보기가 있다 없다만 판별해주자
-    // 9개의 챌린지 리스트
-    // Slice<Challenge> challengeList = challengeRepository.findanything(PageRequest.of(pageIndex, size);
-    // boolean hasNext = challengeList.hasNext();
-    // List<Challenge> response = challengeService.challengeIntoListDto(challengeList.toList(),
-    // List<ChallengeResponseListDto> array, member_id);
+
 
     @Override
     public List<ChallengeListResponseDto> getChallengeRecommendationList(Long member_id) {
@@ -277,40 +285,31 @@ public class ChallengeServiceImpl implements ChallengeService{
     public List<ChallengeResponseDto> challengeIntoDto(List<Challenge> challengeList, List<ChallengeResponseDto> responseDtoList
                                  , Long member_id)
     {
-        for(int i = 0; i < challengeList.size(); i++)
-        {
-            Challenge challenge = challengeList.get(i);
+        for (Challenge challenge : challengeList) {
             ChallengeResponseDto challengeResponseDto = new ChallengeResponseDto(challenge);
             Optional<ChallengeLike> challengeLike = challengeLikeRepository.findByMember_idAndChallenge_id(
                     member_id, challenge.getId()
             );
-            if(challengeLike.isPresent())
+            if (challengeLike.isPresent())
                 challengeResponseDto.setLiked(true);
             List<String> temp = new ArrayList<>();
-            for(int j = 0; j < challenge.getChallengeTagList().size(); j++)
-            {
+            for (int j = 0; j < challenge.getChallengeTagList().size(); j++) {
                 Tag tag = challenge.getChallengeTagList().get(j).getTag();
                 challengeResponseDto.getHobbyList().add(new TagResponseDto(tag.getId(), tag.getTag()));
             }
             Optional<JoinedChallenge> joinedChallenge = joinedChallengeRepository.findByChallenge_idAndMember_id(
                     challenge.getId(), member_id
             );
-            if(joinedChallenge.isPresent())
-            {
-                challengeResponseDto.setUserProgress(joinedChallenge.get().getState());
-            }
+            joinedChallenge.ifPresent(value -> challengeResponseDto.setUserProgress(value.getState()));
             responseDtoList.add(challengeResponseDto);
         }
         return responseDtoList;
     }
     public List<ChallengeResponseDto> challengeIntoDto(List<Challenge> challengeList, List<ChallengeResponseDto> responseDtoList)
     {
-        for(int i = 0; i < challengeList.size(); i++)
-        {
-            Challenge challenge = challengeList.get(i);
+        for (Challenge challenge : challengeList) {
             ChallengeResponseDto challengeResponseDto = new ChallengeResponseDto(challenge);
-            for(int j = 0; j < challenge.getChallengeTagList().size(); j++)
-            {
+            for (int j = 0; j < challenge.getChallengeTagList().size(); j++) {
                 Tag tag = challenge.getChallengeTagList().get(j).getTag();
                 challengeResponseDto.getHobbyList().add(new TagResponseDto(tag.getId(), tag.getTag()));
             }
@@ -321,35 +320,26 @@ public class ChallengeServiceImpl implements ChallengeService{
     public List<ChallengeListResponseDto> challengeIntoListDto(List<Challenge> challengeList, List<ChallengeListResponseDto> responseDtoList
             , Long member_id)
     {
-        for(int i = 0; i < challengeList.size(); i++)
-        {
-            Challenge challenge = challengeList.get(i);
+        for (Challenge challenge : challengeList) {
             ChallengeListResponseDto challengeListResponseDto = new ChallengeListResponseDto(challenge);
-            for(int j = 0; j < challenge.getChallengeTagList().size(); j++)
-            {
+            for (int j = 0; j < challenge.getChallengeTagList().size(); j++) {
                 Tag tag = challenge.getChallengeTagList().get(j).getTag();
                 challengeListResponseDto.getHobbyList().add(new TagResponseDto(tag.getId(), tag.getTag()));
             }
             Optional<JoinedChallenge> joinedChallenge = joinedChallengeRepository.findByChallenge_idAndMember_id(
                     challenge.getId(), member_id
             );
-            if(joinedChallenge.isPresent())
-            {
-                challengeListResponseDto.setUserProgress(joinedChallenge.get().getState());
-            }
+            joinedChallenge.ifPresent(value -> challengeListResponseDto.setUserProgress(value.getState()));
             responseDtoList.add(challengeListResponseDto);
         }
         return responseDtoList;
     }
     public List<ChallengeListResponseDto> challengeIntoListDto(List<Challenge> challengeList, List<ChallengeListResponseDto> responseDtoList)
     {
-        for(int i = 0; i < challengeList.size(); i++)
-        {
-            Challenge challenge = challengeList.get(i);
+        for (Challenge challenge : challengeList) {
             ChallengeListResponseDto challengeListResponseDto = new ChallengeListResponseDto(challenge);
             List<String> temp = new ArrayList<>();
-            for(int j = 0; j < challenge.getChallengeTagList().size(); j++)
-            {
+            for (int j = 0; j < challenge.getChallengeTagList().size(); j++) {
                 Tag tag = challenge.getChallengeTagList().get(j).getTag();
                 challengeListResponseDto.getHobbyList().add(new TagResponseDto(tag.getId(), tag.getTag()));
             }
@@ -364,28 +354,67 @@ public class ChallengeServiceImpl implements ChallengeService{
         System.out.println(challenge.getId());
         List<TagRequestDto> tagList = challengeData.getHobbyList();
         if(tagList != null)
-            for(int i = 0; i < tagList.size(); i++)
-            {
+            for (TagRequestDto tagRequestDto : tagList) {
 //            System.out.println("---------------------");
-                String tag = tagList.get(i).getName();
+                String tag = tagRequestDto.getName();
                 Tag tagEntity;
                 // 태그 리스트 중에서 이미 태그가 존재한다면
                 // 챌린지가 이미 취미로 집어넣은 태그인지 확인한다.
-                if(tagRepository.existsByTag(tag))
+                if (tagRepository.existsByTag(tag))
                     tagEntity = tagRepository.getByTag(tag);
                     // 아예 처음 생기는 태그라면, 태그 테이블에 집어넣고
                     // 사용자 취미 태그 테이블에도 집어넣어 준다.
-                else{
+                else {
                     tagEntity = tagRepository.save(Tag.builder()
                             .tag(tag)
                             .build());
                 }
 //                System.out.println(tagEntity.getId() + " " + tagEntity.getTag());
 //                challenge.getChallengeTagList().add
-                        challengeTagRepository.save(ChallengeTag.builder()
+                challengeTagRepository.save(ChallengeTag.builder()
                         .challenge(challenge)
                         .tag(tagEntity)
                         .build());
             }
     }
+
+    @Override
+    public ChallengePageDto getChallengeContainingTag(String keyword, Pageable pageable, Long member_id){
+        logger.debug("------------------서비스 로직 시작------------");
+        List<ChallengeTag> challengeTagList = challengeTagService.getChallengeTagContainingTag(keyword);
+        List<Long> ids = challengeTagList.stream().map(o -> o.getChallenge().getId()).collect(Collectors.toList());
+        Page<Challenge> challengeList = challengeRepository.findByIdIn(ids, pageable);
+        List<ChallengeListResponseDto> challengeListResponseDtoList = new ArrayList<>();
+        challengeListResponseDtoList = challengeIntoListDto(challengeList.toList(), challengeListResponseDtoList, member_id);
+        logger.debug("-------------------서비스 로직 종료-----------");
+        ChallengePageDto challengePageDto = ChallengePageDto.builder()
+                .content(challengeListResponseDtoList)
+                .pageNum(challengeList.getNumber())
+                .totalPages(challengeList.getTotalPages())
+                .size(challengeList.getSize())
+                .totalElements(challengeList.getTotalElements())
+                .build();
+
+        return challengePageDto;
+    }
+    @Override
+    public ChallengePageDto getChallengeContainingTag(String keyword, Pageable pageable){
+        logger.debug("------------------서비스 로직 시작------------");
+        List<ChallengeTag> challengeTagList = challengeTagService.getChallengeTagContainingTag(keyword);
+        List<Long> ids = challengeTagList.stream().map(o -> o.getChallenge().getId()).collect(Collectors.toList());
+        Page<Challenge> challengeList = challengeRepository.findByIdIn(ids, pageable);
+        List<ChallengeListResponseDto> challengeListResponseDtoList = new ArrayList<>();
+        challengeListResponseDtoList = challengeIntoListDto(challengeList.toList(), challengeListResponseDtoList);
+        logger.debug("-------------------서비스 로직 종료-----------");
+        ChallengePageDto challengePageDto = ChallengePageDto.builder()
+                .content(challengeListResponseDtoList)
+                .pageNum(challengeList.getNumber())
+                .totalPages(challengeList.getTotalPages())
+                .size(challengeList.getSize())
+                .totalElements(challengeList.getTotalElements())
+                .build();
+
+        return challengePageDto;
+    }
+
 }

@@ -13,6 +13,7 @@ public interface ChallengeService {
     List<ChallengeListResponseDto> getChallengeListByRecommendation();
     // 검색어에 따른 리스트 반환해주는 api
     ChallengePageDto getChallengeListByKeyword(String keyword, Pageable pageable, Long member_id);
+    ChallengePageDto getChallengeListByKeyword(String keyword, Pageable pageable);
     // 좋아요 순으로 챌린지 리스트 반환하는 api
     List<ChallengeListResponseDto> getChallengeListByLike(Long member_id);
     List<ChallengeListResponseDto> getChallengeListByLikeWithoutLogin();
@@ -38,5 +39,7 @@ public interface ChallengeService {
 
     List<ChallengeListResponseDto> getChallengeRecommendationList(Long member_id);
 
+    ChallengePageDto getChallengeContainingTag(String keyword, Pageable pageable, Long member_id);
+    ChallengePageDto getChallengeContainingTag(String keyword, Pageable pageable);
 
 }

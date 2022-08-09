@@ -18,6 +18,8 @@ public interface ChallengeRepository extends JpaRepository<Challenge, Long> {
             "where a.tag = :hobby")
     List<Challenge> findByHobby(@Param("hobby") String hobby);
 
+//    List<Challenge>
+
     // 테스트 작성 완료
     // 챌린지 이름이 키워드를 포함하고 있는지 검색하여 해당 리스트를 반환함
     Page<Challenge> findByNameContaining(String keyword, Pageable pageable);
@@ -33,6 +35,7 @@ public interface ChallengeRepository extends JpaRepository<Challenge, Long> {
 //    Page<Challenge> findByMember_id
     // save, update, delete 메소드는 이미 있음
 
+    Page<Challenge> findByIdIn(List<Long> ids, Pageable pageable);
 
 
 }
