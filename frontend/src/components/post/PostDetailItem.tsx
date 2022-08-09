@@ -13,6 +13,7 @@ import { Link } from "react-router-dom";
 
 const PostDetailItem: React.FC<{}> = () => {
   const dispatch = useDispatch();
+  const user = useSelector((state:RootState)=>state.auth.userInfo)
   const post = useSelector((state: RootState) => state.postModal);
   const commentState = useSelector(
     (state: RootState) => state.comment.comments
@@ -27,7 +28,7 @@ const PostDetailItem: React.FC<{}> = () => {
       .catch((err) => {
         console.log("ERR", err);
       });
-  }, [post, dispatch]);
+  }, []);
 
   return (
     <div style={{ height: "25rem", overflow: "scroll" }}>

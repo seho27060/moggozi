@@ -28,9 +28,9 @@ const PostRandomList: React.FC<{}> = () => {
     postRandomRead(16)
       .then((res:PostData[]) => {
         console.log("infinite call ver2");
-        const filteredPostStageList = res!.filter((post)=>{
+        const filteredPostStageList = res!.filter((post)=>(
           post.writer!.id !== user.id
-        })
+        ))
         dispatch(setPostStageList(filteredPostStageList));
       })
       .catch((err) => {
