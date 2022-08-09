@@ -379,26 +379,42 @@ public class ChallengeServiceImpl implements ChallengeService{
     }
 
     @Override
-    public List<ChallengeListResponseDto> getChallengeContainingTag(String keyword, Pageable pageable, Long member_id){
+    public ChallengePageDto getChallengeContainingTag(String keyword, Pageable pageable, Long member_id){
         logger.debug("------------------서비스 로직 시작------------");
         List<ChallengeTag> challengeTagList = challengeTagService.getChallengeTagContainingTag(keyword);
         List<Long> ids = challengeTagList.stream().map(o -> o.getChallenge().getId()).collect(Collectors.toList());
-        List<Challenge> challengeList = challengeRepository.findByIdIn(ids, pageable);
+        Page<Challenge> challengeList = challengeRepository.findByIdIn(ids, pageable);
         List<ChallengeListResponseDto> challengeListResponseDtoList = new ArrayList<>();
-        challengeListResponseDtoList = challengeIntoListDto(challengeList, challengeListResponseDtoList, member_id);
+        challengeListResponseDtoList = challengeIntoListDto(challengeList.toList(), challengeListResponseDtoList, member_id);
         logger.debug("-------------------서비스 로직 종료-----------");
-        return challengeListResponseDtoList;
+        ChallengePageDto challengePageDto = ChallengePageDto.builder()
+                .content(challengeListResponseDtoList)
+                .pageNum(challengeList.getNumber())
+                .totalPages(challengeList.getTotalPages())
+                .size(challengeList.getSize())
+                .totalElements(challengeList.getTotalElements())
+                .build();
+
+        return challengePageDto;
     }
     @Override
-    public List<ChallengeListResponseDto> getChallengeContainingTag(String keyword, Pageable pageable){
+    public ChallengePageDto getChallengeContainingTag(String keyword, Pageable pageable){
         logger.debug("------------------서비스 로직 시작------------");
         List<ChallengeTag> challengeTagList = challengeTagService.getChallengeTagContainingTag(keyword);
         List<Long> ids = challengeTagList.stream().map(o -> o.getChallenge().getId()).collect(Collectors.toList());
-        List<Challenge> challengeList = challengeRepository.findByIdIn(ids, pageable);
+        Page<Challenge> challengeList = challengeRepository.findByIdIn(ids, pageable);
         List<ChallengeListResponseDto> challengeListResponseDtoList = new ArrayList<>();
-        challengeListResponseDtoList = challengeIntoListDto(challengeList, challengeListResponseDtoList);
+        challengeListResponseDtoList = challengeIntoListDto(challengeList.toList(), challengeListResponseDtoList);
         logger.debug("-------------------서비스 로직 종료-----------");
-        return challengeListResponseDtoList;
+        ChallengePageDto challengePageDto = ChallengePageDto.builder()
+                .content(challengeListResponseDtoList)
+                .pageNum(challengeList.getNumber())
+                .totalPages(challengeList.getTotalPages())
+                .size(challengeList.getSize())
+                .totalElements(challengeList.getTotalElements())
+                .build();
+
+        return challengePageDto;
     }
 
 }

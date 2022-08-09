@@ -138,19 +138,19 @@ public class ChallengeController {
     public ResponseEntity getChallengeContainingTag(@PathVariable String keyword, Pageable pageable,
                                                     HttpServletRequest request){
         logger.debug("-----------컨트롤러 시작---------------");
-        List<ChallengeListResponseDto> challengeListResponseDtoList = null;
+        ChallengePageDto challengePageDto = null;
         if(request.getHeader("Authorization") != null){
-            challengeListResponseDtoList = challengeService.getChallengeContainingTag(keyword,
+             challengePageDto = challengeService.getChallengeContainingTag(keyword,
                     pageable);
         }
         else{
         Long member_id = jwtUtils.getUserIdFromJwtToken(request.getHeader("Authorization"));
 
-        challengeListResponseDtoList = challengeService.getChallengeContainingTag(keyword,
+            challengePageDto = challengeService.getChallengeContainingTag(keyword,
                 pageable, member_id);
         }
         logger.debug("------------컨트롤러 종료---------------");
-        return new ResponseEntity(challengeListResponseDtoList, HttpStatus.OK);
+        return new ResponseEntity(challengePageDto, HttpStatus.OK);
     }
 
 }
