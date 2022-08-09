@@ -94,7 +94,7 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
             Member newMember = Member.builder().username(username)
                     .fullname(fullname).nickname("User"+randomNo).password(password).is_social(1).role(role.get()).build();
 
-            memberRepository.saveAndFlush(new Member);
+            memberRepository.saveAndFlush(newMember);
 
         } else {
             nickname = member.get().getNickname(); /** TODO: 추후 리팩토링 시 삭제 필요 */
