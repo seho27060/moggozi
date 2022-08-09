@@ -1,5 +1,6 @@
 package com.JJP.restapiserver.security;
 
+import com.JJP.restapiserver.domain.entity.member.ERole;
 import com.JJP.restapiserver.domain.entity.member.Member;
 import com.JJP.restapiserver.domain.entity.member.Role;
 import com.JJP.restapiserver.repository.member.MemberRepository;
@@ -89,10 +90,10 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
 
             isFirst = 1;
 
-            Optional<Role> role = roleRepository.findById(1L);
+            Role role = new Role(ERole.valueOf("ROLE_USER"));
 
             Member newMember = Member.builder().username(username)
-                    .fullname(fullname).nickname("User"+randomNo).password(password).is_social(1).role(role.get()).build();
+                    .fullname(fullname).nickname("User"+randomNo).password(password).is_social(1).role(role).build();
 
             memberRepository.saveAndFlush(newMember);
 
