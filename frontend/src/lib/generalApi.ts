@@ -23,7 +23,7 @@ export const checkId = async (email: string) => {
   return data;
 };
 
-export const checkNickname = async (nickname: string) => {
+export const checkNickname = async (nickname: string | undefined) => {
   const { data } = await generalApi.post(`/user/nickcheck/${nickname}`);
   return data;
 };

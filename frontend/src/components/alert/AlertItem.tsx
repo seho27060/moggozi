@@ -1,5 +1,8 @@
-function ChallengeItem () {
-  return
+const AlertItem:React.FC<{}> = () => {
+  return(<div>
+
+  </div>)
 }
 
-export default ChallengeItem;
+
+export default AlertItem

@@ -3,7 +3,6 @@ import { useSelector } from "react-redux";
 import { alertRecent } from "../../lib/withTokenApi";
 import { setAlertList } from "../../store/alert";
 import { RootState } from "../../store/store";
-
 function AlertList() {
   const dispatch = useDispatch()
   const loadedAlertList = useSelector((state:RootState)=> state.alert.alertList)
@@ -14,8 +13,10 @@ function AlertList() {
   }).catch((err) =>{
     console.log("err",err)
   })
-  return(<div>
-
+  return(
+  <div>
+    AlertList
+    {}
   </div>)
 }
 

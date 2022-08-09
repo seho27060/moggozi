@@ -20,6 +20,7 @@ interface PostModal {
   postUpdateFormOpen: boolean;
   postFormButtonOpen: boolean;
   postModalOpen :boolean
+  postModalStageId : number|null
 }
 const initialPostModalState: PostModal = {
   postModalState: {
@@ -36,7 +37,8 @@ const initialPostModalState: PostModal = {
   postFormModalOpen: false,
   postUpdateFormOpen: false,
   postFormButtonOpen: false,
-  postModalOpen : false
+  postModalOpen : false,
+  postModalStageId : null
 };
 export const postModalSlice = createSlice({
   name: "postModal",
@@ -57,6 +59,9 @@ export const postModalSlice = createSlice({
     setPostModalState:(state: PostModal,action) => {
       state.postModalOpen = action.payload
     },
+    setPostModalStageId : (state:PostModal,action) => {
+      state.postModalStageId = action.payload
+    }
   },
 });
 
@@ -65,7 +70,8 @@ export const {
   setPostFormModalOpen,
   setPostFormButtonState,
   setPostUpdateFormState,
-  setPostModalState
+  setPostModalState,
+  setPostModalStageId
 } = postModalSlice.actions;
 
 export default postModalSlice.reducer;
