@@ -89,8 +89,8 @@ public class NoticeServiceImpl implements NoticeService {
             return ResponseEntity.ok(NoticeResponse.builder().noticeId(notice.get().getId())
                     .title(notice.get().getTitle())
                     .content(notice.get().getContent()).
-                    createdTime(notice.get().createdDate.toString()).
-                    updatedTime(notice.get().modifiedDate.toString()).build());
+                    createdDate(notice.get().createdDate.toString()).
+                    updatedDate(notice.get().modifiedDate.toString()).build());
         } else {
             return ResponseEntity.badRequest().body(new MessageResponse("Error: failed to load."));
         }
