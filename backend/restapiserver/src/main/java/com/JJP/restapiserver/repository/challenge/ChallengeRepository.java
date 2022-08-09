@@ -35,7 +35,7 @@ public interface ChallengeRepository extends JpaRepository<Challenge, Long> {
 //    Page<Challenge> findByMember_id
     // save, update, delete 메소드는 이미 있음
 
-    List<Challenge> findByIdIn(List<Long> ids, Pageable pageable);
+    Page<Challenge> findByIdIn(List<Long> ids, Pageable pageable);
 
 
 }
