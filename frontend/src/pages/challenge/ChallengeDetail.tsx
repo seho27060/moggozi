@@ -15,7 +15,11 @@ import { fetchChallenge } from "../../lib/generalApi";
 import { challengeImgFetchAPI } from "../../lib/imgApi";
 import { challengeLike, isLoginFetchChallenge } from "../../lib/withTokenApi";
 import { ChallengeDetailState } from "../../store/challenge";
-import { setPostFormModalOpen, setPostModalState, setPostUpdateFormState } from "../../store/postModal";
+import {
+  setPostFormModalOpen,
+  setPostModalState,
+  setPostUpdateFormState,
+} from "../../store/postModal";
 import { reviewFetch } from "../../store/review";
 import { RootState } from "../../store/store";
 
@@ -162,7 +166,9 @@ const ChallengeDetail: React.FC = () => {
           <p>챌린지 취미</p>
           <HobbyList hobbies={loadedChallenge!.hobbyList} />
           <p>스테이지</p>
-          <StageList stages={loadedChallenge!.stageList} />
+          {!!loadedChallenge!.stageList.length && (
+            <StageList stages={loadedChallenge!.stageList} />
+          )}
           {userId === loadedChallenge!.writer.id && (
             <div>
               <Link to={`/stage/${id}`}>
