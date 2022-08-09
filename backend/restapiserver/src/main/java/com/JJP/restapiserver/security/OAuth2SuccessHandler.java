@@ -72,7 +72,6 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
         }
 
         Optional<Member> member = memberRepository.findByUsername(username);
-
         int isFirst = 0;  // 처음 회원가입하는 유저인지를 표시하는 변수
 
         String password = encoder.encode(username.split("@")[0] + "1234");
@@ -92,24 +91,13 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
 
             Optional<Role> role = roleRepository.findById(1L);
 
-            Member newMember = Member.builder().
-                    username(username).fullname(fullname)
-                    .password(password).nickname(nickname)
-                    .introduce("").user_img(null)
-                    .is_private(0).role(role.get()).is_social(1).build();
+            Member newMember = Member.builder().username(username)
+                    .fullname(fullname).nickname("User"+randomNo).password(password).is_social(1).role(role.get()).build();
 
-            memberRepository.save(newMember);
-            member = memberRepository.findByUsername(username);
+            memberRepository.saveAndFlush(newMember);
 
-            /** 추후 사용자 페이지로 리다이렉트 필요 **/
-            // 사용자 수정 페이지로 리다이렉트 URL
-//            url = "http://localhost:8080/user/update";
-//            url = "http://i7c201.p.ssafy.io:8080/user/register";
         } else {
-            // 메인페이지로 redirect URL
-            nickname = member.get().getNickname();
-//            url = "http://localhost:8080";
-//            url = "http://i7c201.p.ssafy.io:8081;
+            nickname = member.get().getNickname(); /** TODO: 추후 리팩토링 시 삭제 필요 */
         }
 
         String jwtToken = jwtUtils.generateTokenFromUsername(username);
