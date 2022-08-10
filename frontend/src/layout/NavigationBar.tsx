@@ -6,6 +6,7 @@ import { RootState } from "../store/store";
 
 import style from "./NavigationBar.module.scss";
 import logo from "../asset/moggo.png";
+import AlertOnair from "../components/alert/AlertOnair";
 
 const NavigationBar: React.FC = () => {
   const userState = useSelector((state: RootState) => state.auth);
@@ -49,6 +50,9 @@ const NavigationBar: React.FC = () => {
           )}
           {userState.isLoggedIn && (
             <Fragment>
+              <li>
+                <AlertOnair/>
+              </li>
               <li className={style.logout}>
                 <LogoutBtn />
               </li>

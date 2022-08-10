@@ -2,7 +2,7 @@ import type { RootState } from "../../store/store";
 import { useSelector } from "react-redux";
 
 import { Link, useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import { otherUserDetail } from "../../lib/generalApi";
 import { followApi } from "../../lib/withTokenApi";
@@ -11,10 +11,13 @@ import MypageFollow from "../../components/accounts/MypageFollow";
 
 import styles from "./UserPage.module.scss";
 import { profileImgFetchAPI } from "../../lib/imgApi";
+import { WebSocketContext } from "../../lib/WebSocketProvider";
+import { Alert } from "../../store/alert";
 
 function UserPage() {
   const userId = Number(useParams().id);
   // console.log(userId)
+  const ws = useContext(WebSocketContext)
 
   const loginData = useSelector((state: RootState) => state.auth);
   const loginId = loginData.userInfo.id;
@@ -53,6 +56,23 @@ function UserPage() {
     followApi(userId)
       .then((res) => {
         console.log(res);
+        if (res.message === 'Successfully followed.'){
+          let jsonSend: Alert = {
+            check : 0,
+            createdTime : "0",
+            id : "0",
+            index: userId.toString(),
+            message: "follow",
+            receiverId: userId.toString(),
+            receiverName: nickname!.toString(),
+            senderId: loginData.userInfo.id!.toString(),
+            senderName: loginData.userInfo.nickname!.toString(),
+            type: "follow",
+          };
+          if ( loginData.userInfo.id! !== userId!) {
+            ws.current.send(JSON.stringify(jsonSend))
+          }
+        }
       })
       .catch((err) => {
         console.log(err);
