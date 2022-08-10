@@ -16,7 +16,8 @@ public interface FollowRepository extends JpaRepository<Follow, Long> {
     // 대상을 팔로우 하는 사람들에 관한 리스트 (리스트 유저를 로그인한 유저가 팔로우하는지 상태 표시)
     @Query(value = "SELECT m.member_id as id, m.nickname as nickname, m.user_img as UserImg, " +
             "CASE WHEN m.member_id IN " +
-            "(SELECT to_member_id from follow where to_member_id = :loginId) THEN 1 ELSE 0 " +
+            "(SELECT to_member_id from follow where to_member_id = :loginId) THEN 1 " +
+            "CASE WHEN :toMemberId = :loginId THEN 1 ELSE 0 " +
             "END AS loginFollowState FROM member m INNER JOIN " +
             "(SELECT * FROM follow WHERE follow.to_member_id = :toMemberId) f ON m.member_id = f.from_member_id", nativeQuery = true)
     List<Followed> findAllByTo_member(@Param("toMemberId") Long toMemberId, @Param("loginId") Long loginId);
