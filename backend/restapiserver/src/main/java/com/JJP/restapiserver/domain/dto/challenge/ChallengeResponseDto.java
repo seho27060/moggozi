@@ -29,6 +29,8 @@ public class ChallengeResponseDto {
     private List<TagResponseDto> hobbyList;
     private int userProgress;
 
+    private int state;
+
     private LocalDateTime createdTime;
 
     private LocalDateTime modifiedTime;
@@ -45,6 +47,7 @@ public class ChallengeResponseDto {
         this.content = challenge.getContent();
         this.level = challenge.getLevel();
         this.stageList = new ArrayList<>();
+        this.state = challenge.getState();
         if(challenge.getStageList() != null)
             for(int i = 0; i < challenge.getStageList().size(); i++){
                 Stage stage = challenge.getStageList().get(i);

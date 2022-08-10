@@ -38,13 +38,13 @@ public class ChallengeController {
     private final ChallengeTagService challengeTagService;
 
 
-    @GetMapping("/hobby/{hobby}")
-    public ResponseEntity getChallengeListByHobby(@PathVariable("hobby") String hobby,
-                                                  HttpServletRequest request){
-        Long user_id = jwtUtils.getUserIdFromJwtToken(request.getHeader("Authorization"));
-        List<ChallengeListResponseDto> challengeList = challengeService.getChallengeListByHobby(hobby, user_id);
-        return new ResponseEntity<>(challengeList,HttpStatus.OK);
-    }
+//    @GetMapping("/hobby/{hobby}")
+//    public ResponseEntity getChallengeListByHobby(@PathVariable("hobby") String hobby,
+//                                                  HttpServletRequest request){
+//        Long user_id = jwtUtils.getUserIdFromJwtToken(request.getHeader("Authorization"));
+//        List<ChallengeListResponseDto> challengeList = challengeService.getChallengeListByHobby(hobby, user_id);
+//        return new ResponseEntity<>(challengeList,HttpStatus.OK);
+//    }
 
     // challenge/search/식물?page=1&size=2
     @GetMapping("/search")
@@ -101,6 +101,13 @@ public class ChallengeController {
         challengeRequestDto.setMemberId(member_id);
         ChallengeResponseDto challengeResponseDto = challengeService.saveChallenge(challengeRequestDto);
         return new ResponseEntity(challengeResponseDto, HttpStatus.OK);
+    }
+
+    @PutMapping("/register/{challengeId}")
+    public ResponseEntity registerChallenge(@PathVariable Long challengeId)
+    {
+        challengeService.registerChallenge(challengeId);
+        return new ResponseEntity(HttpStatus.OK);
     }
 
     @PutMapping("/{challenge_id}")

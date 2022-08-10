@@ -22,9 +22,9 @@ public interface ChallengeRepository extends JpaRepository<Challenge, Long> {
 
     // 테스트 작성 완료
     // 챌린지 이름이 키워드를 포함하고 있는지 검색하여 해당 리스트를 반환함
-    Page<Challenge> findByNameContaining(String keyword, Pageable pageable);
+    Page<Challenge> findByStateAndNameContaining(int state, String keyword, Pageable pageable);
 
-    @Query(value = "select a.id, count(*) from challenge as a inner join challenge_like b on a.id = b.challenge_id group by a.ID order by count(*) desc limit 5"
+    @Query(value = "select a.id, count(*) from challenge as a inner join challenge_like b on a.id = b.challenge_id where a.state = 1 group by a.ID order by count(*) desc limit 5"
     ,nativeQuery = true)
     List<Object[]> findByLike();
 
