@@ -45,7 +45,6 @@ import UnknownPage from "./pages/UnknownPage";
 import WebsocketPage from "./pages/WebsocketTest";
 import StageEdit from "./pages/stage/StageEdit";
 
-
 export default function Router() {
   return useRoutes([
     {
@@ -138,11 +137,11 @@ export default function Router() {
       children: [
         {
           path: ":stageId",
-          element: <PostStage/>,
+          element: <PostStage />,
         },
         {
           path: "all/",
-          element: <PostAll/>,
+          element: <PostAll />,
         },
       ],
     },

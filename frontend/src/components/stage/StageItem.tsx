@@ -40,7 +40,7 @@ const StageItem: React.FC<{
       .catch((err) => {
         console.log("ERR", err);
       });
-  }, [dispatch,stage.id]);
+  }, [dispatch, stage.id]);
 
   return (
     <div>

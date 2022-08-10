@@ -48,20 +48,22 @@ export const withdrawal = async (option: object) => {
   return data;
 };
 
-export const followApi = async(toId: number | null) => {
+export const followApi = async (toId: number | null) => {
   const { data } = await withTokenApi.post(`/user/follow/${toId}`);
-  return data
-}
-
-export const followedApi = async(toMember: number, loginID: number) => {
-  const { data } = await withTokenApi.get(`user/followed/${toMember}/${loginID}`)
   return data;
-}
+};
 
-export const followingApi = async(fromMemberId: number) => {
-  const { data } = await withTokenApi.get(`user/following/${fromMemberId}`) 
+export const followedApi = async (toMember: number, loginID: number) => {
+  const { data } = await withTokenApi.get(
+    `user/followed/${toMember}/${loginID}`
+  );
   return data;
-}
+};
+
+export const followingApi = async (fromMemberId: number) => {
+  const { data } = await withTokenApi.get(`user/following/${fromMemberId}`);
+  return data;
+};
 
 // 챌린지 관련
 export const isLoginFetchChallenge = async (id: number) => {
@@ -106,12 +108,12 @@ export const challengeLike = async (challengeIdData: {
 };
 
 export const hobbySearch = async (query: string) => {
-  const { data } = await withTokenApi.get(`/hobby/search/${query}`);
+  const { data } = await withTokenApi.get(`/hobby/search?keyword=${query}`);
   return data;
 };
 
 export const hobbyExist = async (name: string) => {
-  const { data } = await withTokenApi.get(`/hobby/exist/${name}`);
+  const { data } = await withTokenApi.get(`/hobby/exist?keyword=${name}`);
   return data;
 };
 
@@ -204,7 +206,7 @@ export const postRead = async (stageId: number) => {
   return data;
 };
 
-export const postRandomRead = async (size : number) => {
+export const postRandomRead = async (size: number) => {
   const { data } = await withTokenApi.get(`/stage/post/random/${size}`);
   return data;
 };
@@ -255,14 +257,37 @@ export const alertReadall = async () => {
   const { data } = await withTokenApi.put(`/notification/readAll`);
   return data;
 };
-// 모든 알림 통틀어서 최근 6개 가져오기 
+// 모든 알림 통틀어서 최근 6개 가져오기
 export const alertRecent = async () => {
   const { data } = await withTokenApi.get(`/notification/recent`);
   return data;
 };
 // 새로운 알림 보내기
-export const alertSend = async (alert : AlertSend) => {
-  const { data } = await withTokenApi.post(`/notification/register`,alert);
+export const alertSend = async (alert: AlertSend) => {
+  const { data } = await withTokenApi.post(`/notification/register`, alert);
+  return data;
+};
+
+// 검색 관련
+export const isLoginSearchChallengeApi = async (
+  q: string,
+  page: number,
+  size: number
+) => {
+  const { data } = await withTokenApi.get(
+    `/challenge/search/?keyword=${q}&page=${page}&size=${size}`
+  );
+  return data;
+};
+
+export const isLoginSearchChallengeHobbyApi = async (
+  q: string,
+  page: number,
+  size: number
+) => {
+  const { data } = await withTokenApi.get(
+    `/challenge/tag/search/?keyword=${q}&page=${page}&size=${size}`
+  );
   return data;
 };
 

@@ -78,7 +78,7 @@ const HobbyForm: React.FC = () => {
           onChange={changeInputHandler}
         />
         <button type="button" onClick={submitHandler}>
-          add
+          search
         </button>
       </form>
       {dropDownList.length === 0 && <p>해당하는 단어가 없습니다.</p>}
