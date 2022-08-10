@@ -10,9 +10,12 @@ import com.JJP.restapiserver.service.post.PostService;
 import com.JJP.restapiserver.service.stage.StageJoinService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -41,30 +44,24 @@ public class MyPageController {
                 .recentJoinedStage(stageJoinService.joinedStageList8(member_id))
                 .recentWrittenPost(postService.writtenPostList8(member_id))
                 .build();
-        return null;
+        return new ResponseEntity(myPageResponseDto, HttpStatus.OK);
     }
-    @GetMapping("/challenge")
-    public ResponseEntity myPageChallenge(HttpServletRequest request, Pageable pageable){
-        Long member_id = jwtUtils.getUserIdFromJwtToken(request.getHeader("Authorization"));
-
+    @GetMapping("/challenge/{member_id}")
+    public ResponseEntity myPageChallenge(@PathVariable Long member_id, Pageable pageable){
         ChallengePageDto challengeSlice = challengeService.infiniteChallengeList(member_id, pageable);
 
         return new ResponseEntity(challengeSlice, HttpStatus.OK);
     }
 
-    @GetMapping("/stage")
-    public ResponseEntity myStage(HttpServletRequest request, Pageable pageable){
-        Long member_id = jwtUtils.getUserIdFromJwtToken(request.getHeader("Authorization"));
-
+    @GetMapping("/stage/{member_id}")
+    public ResponseEntity myStage(@PathVariable Long member_id, @PageableDefault(size = 2, sort = "joinTime", direction = Sort.Direction.DESC) Pageable pageable){
         MyPageStageDto stageSlice = stageJoinService.infiniteStageList(member_id, pageable);
 
         return new ResponseEntity(stageSlice, HttpStatus.OK);
     }
 
-    @GetMapping("/post")
-    public ResponseEntity myPost(HttpServletRequest request, Pageable pageable) {
-        Long member_id = jwtUtils.getUserIdFromJwtToken(request.getHeader("Authorization"));
-
+    @GetMapping("/post/{member_id}")
+    public ResponseEntity myPost(@PathVariable Long member_id, Pageable pageable) {
         MyPagePostDto postSlice = postService.infinitePostList(member_id, pageable);
 
         return new ResponseEntity(postSlice, HttpStatus.OK);
