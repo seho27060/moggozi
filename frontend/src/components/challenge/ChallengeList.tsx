@@ -4,7 +4,6 @@ import ChallengeItem from "./ChallengeItem";
 const ChallengeList: React.FC<{ challenges: ChallengeItemState[] }> = ({
   challenges,
 }) => {
-  console.log(challenges);
   return (
     <ul>
       {challenges.map((challenge) => (
