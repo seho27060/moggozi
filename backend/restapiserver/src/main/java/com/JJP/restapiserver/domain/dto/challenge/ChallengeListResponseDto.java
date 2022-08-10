@@ -8,6 +8,7 @@ import com.JJP.restapiserver.domain.entity.stage.Stage;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +30,10 @@ public class ChallengeListResponseDto {
 
     private int state;
 
+    private LocalDateTime modifiedDate;
+
+    private LocalDateTime createdDate;
+
     public ChallengeListResponseDto(Challenge challenge){
         this.id = challenge.getId();
         this.writer = new Writer(challenge.getMember().getId(), challenge.getMember().getNickname());
@@ -41,5 +46,7 @@ public class ChallengeListResponseDto {
         this.userProgress = 0;
         this.state = challenge.getState();
         this.description = challenge.getDescription();
+        this.modifiedDate = challenge.getModifiedDate();
+        this.createdDate = challenge.getCreatedDate();
     }
 }

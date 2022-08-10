@@ -45,8 +45,9 @@ public interface ChallengeRepository extends JpaRepository<Challenge, Long> {
     @Query(value = "SELECT * FROM challenge order by RAND() LIMIT :size", nativeQuery = true)
     List<Challenge> findRandomChallengeList(@Param("size") int size);
 
-//    @Query(value = "select a.id from challenge as a inner join challenge_like b on a.id = b.challenge_id where a.state = 1 group by a.ID order by count(*) desc limit 1"
-//            ,nativeQuery = true)
-//    List<Object[]> findByLike();
+    // 참여하지 않은 챌린지 중에 좋아요가 가장 많은 api
+    @Query(value = "select a.id from challenge as a inner join challenge_like b on a.id = b.challenge_id inner join challenge_tag as t where a.state = 1 and a.id not in :joined_ids and t.tag_id in :tag_ids and a.id = t.challenge_id group by a.ID order by count(*) desc limit 1"
+            ,nativeQuery = true)
+    List<Object[]> findUnjoinedChallenge(@Param("joined_ids") List<Long> joined_ids, @Param("tag_ids") List<Long> tag_ides);
 
 }
