@@ -6,7 +6,7 @@ const UserList: React.FC<{ users: UserInfo[] }> = ({ users }) => {
     <div>
       <ul>
         {users.map((user) => (
-          <UserItem user={user}></UserItem>
+          <UserItem key={user.id} user={user}></UserItem>
         ))}
       </ul>
     </div>

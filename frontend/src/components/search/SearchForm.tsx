@@ -25,7 +25,7 @@ const SearchForm: React.FC = () => {
   const submitHandler = (event: React.FormEvent) => {
     event.preventDefault();
     const enteredSearch = searchInputRef.current!.value;
-    navigate(`/search/?q=${enteredSearch}`);
+    navigate(`/search/?keyword=${enteredSearch}&page=0&size=4&choice=0`);
   };
 
   const changeInputHandler = (event: React.ChangeEvent) => {
@@ -84,7 +84,7 @@ const SearchForm: React.FC = () => {
           onChange={changeInputHandler}
         ></input>
         <button type="button" onClick={submitHandler}>
-          add
+          search
         </button>
       </form>
       <p>챌린지</p>
