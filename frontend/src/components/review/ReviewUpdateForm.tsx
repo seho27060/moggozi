@@ -5,6 +5,8 @@ import { fetchReview, reviewUpdate } from "../../lib/withTokenApi";
 import { ReviewState, reviewFetch } from "../../store/review";
 import StarRating from "./StarRating";
 
+import styles from "./ReviewUpdateForm.module.scss"
+
 const ReviewUpdateForm: React.FC<{
   review: ReviewState;
   closeHandler: () => void;
@@ -56,14 +58,15 @@ const ReviewUpdateForm: React.FC<{
   };
 
   return (
-    <div>
-      <h3>리뷰 수정 Form</h3>
+    <div className={styles.reviewForm}>
+      <img src="https://i1.daumcdn.net/thumb/C230x300/?fname=https://blog.kakaocdn.net/dn/CUI4O/btqIarIJfHs/LxRhxkC8CcQ19Dyy8Wf6bK/img.jpg" alt="" />
+      <div>{review.writer.img}</div>
       <form>
-        <div>
-          <label htmlFor="content">content :</label>
+          <StarRating rate={rate!} rateChangeHandler={rateChangeHandler} />
+        <div className={styles.input}>
           <input
             name="content"
-            placeholder="내용"
+            placeholder="수정할 내용"
             type="text"
             required
             id="content"
@@ -71,11 +74,10 @@ const ReviewUpdateForm: React.FC<{
             value={content}
             ref={contentInputRef}
           />
+        <div className={styles.reviewSubmit} onClick={reviewSubmitHandler}>
+          수정
         </div>
-        <StarRating rate={rate!} rateChangeHandler={rateChangeHandler} />
-        <button type="button" onClick={reviewSubmitHandler}>
-          submit
-        </button>
+        </div>
       </form>
     </div>
   );

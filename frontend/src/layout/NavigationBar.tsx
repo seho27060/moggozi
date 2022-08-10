@@ -62,7 +62,7 @@ const NavigationBar: React.FC = () => {
                     <img
                       className={style.profileImg}
                       src={userState.userInfo.img}
-                      alt="user_profile_image"
+                      alt=""
                     />
                     <div>{userState.userInfo.nickname}</div>
                   </NavLink>
