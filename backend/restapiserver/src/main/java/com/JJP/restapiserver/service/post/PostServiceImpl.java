@@ -1,5 +1,6 @@
 package com.JJP.restapiserver.service.post;
 
+import com.JJP.restapiserver.domain.dto.challenge.Writer;
 import com.JJP.restapiserver.domain.dto.member.response.MyPagePostDto;
 import com.JJP.restapiserver.domain.dto.post.PostDetailDto;
 import com.JJP.restapiserver.domain.dto.post.PostResponseDto;
@@ -147,7 +148,7 @@ public class PostServiceImpl implements PostService {
 
         System.out.println("=======================================================");
         System.out.println(post.getId());
-
+        Writer writer = new Writer(post.getMember().getId(), post.getMember().getNickname());
         PostDetailDto postDetailDto = PostDetailDto.builder()
                 .id(post_id)
                 .title(post.getTitle())
@@ -157,7 +158,7 @@ public class PostServiceImpl implements PostService {
                 .modifiedTime(post.getModifiedDate())
                 .postImg(post.getPostImg())
                 .likeNum(post.getPostLikeList().size())
-                .writer(post.getMember().getId())
+                .writer(writer)
                 .build();
 
         return postDetailDto;

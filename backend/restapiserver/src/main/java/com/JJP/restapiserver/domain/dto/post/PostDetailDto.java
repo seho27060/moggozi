@@ -1,14 +1,15 @@
 package com.JJP.restapiserver.domain.dto.post;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import com.JJP.restapiserver.domain.dto.challenge.Writer;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class PostDetailDto {
     private Long id;
 
@@ -18,7 +19,7 @@ public class PostDetailDto {
 
     private String postImg;
 
-    private Long writer;
+    private Writer writer;
 
     private boolean isLiked;
 
