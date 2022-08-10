@@ -1,14 +1,17 @@
 package com.JJP.restapiserver.controller.stage;
 
+import com.JJP.restapiserver.domain.dto.post.PostDetailDto;
 import com.JJP.restapiserver.domain.dto.post.PostResponseDto;
 import com.JJP.restapiserver.domain.dto.post.PostSaveRequestDto;
 import com.JJP.restapiserver.domain.dto.post.PostUpdateRequestDto;
+import com.JJP.restapiserver.security.JwtUtils;
 import com.JJP.restapiserver.service.post.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 //@CrossOrigin("*")
 @RequiredArgsConstructor
@@ -17,10 +20,19 @@ import java.util.List;
 public class PostController {
 
     private final PostService postService;
+    private final JwtUtils jwtUtils;
 
     @PostMapping
     private PostResponseDto save(@RequestBody PostSaveRequestDto postSaveRequestDto){
         return postService.savePost(postSaveRequestDto);
+    }
+
+    // post detail 받기
+    @GetMapping("/detail/{post_id}")
+    private PostDetailDto list(@PathVariable Long post_id, HttpServletRequest request){
+        Long member_id = jwtUtils.getUserIdFromJwtToken(request.getHeader("Authorization"));
+
+        return postService.detailPost(post_id, member_id);
     }
 
     @PutMapping
@@ -34,11 +46,13 @@ public class PostController {
         return post_id;
     }
 
+    // member에 따른 post리스트
     @GetMapping("/member/{member_id}")
     private List<PostResponseDto> memberPostList(@PathVariable Long member_id){
         return postService.getMemberPost(member_id);
     }
 
+    // stage에 따른 post리스트
     @GetMapping("/{stage_id}")
     private List<PostResponseDto> stagePostList(@PathVariable Long stage_id){
         return postService.getStagePost(stage_id);
@@ -50,5 +64,4 @@ public class PostController {
         List<PostResponseDto> postResponseDtoList = postService.getRandomPostList(size);
         return new ResponseEntity(postResponseDtoList, HttpStatus.OK);
     }
-
 }

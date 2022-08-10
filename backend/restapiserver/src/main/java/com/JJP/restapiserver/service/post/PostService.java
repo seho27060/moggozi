@@ -1,6 +1,7 @@
 package com.JJP.restapiserver.service.post;
 
 import com.JJP.restapiserver.domain.dto.member.response.MyPagePostDto;
+import com.JJP.restapiserver.domain.dto.post.PostDetailDto;
 import com.JJP.restapiserver.domain.dto.post.PostResponseDto;
 import com.JJP.restapiserver.domain.dto.post.PostSaveRequestDto;
 import com.JJP.restapiserver.domain.dto.post.PostUpdateRequestDto;
@@ -32,4 +33,7 @@ public interface PostService {
     List<PostResponseDto> getRandomPostList(int size);
 
     MyPagePostDto infinitePostList(Long member_id, Pageable pageable);
+
+    // 포스트 디테일 받아오기
+    PostDetailDto detailPost(Long post_id, Long member_id);
 }

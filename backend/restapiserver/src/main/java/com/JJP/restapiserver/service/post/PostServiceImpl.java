@@ -1,6 +1,7 @@
 package com.JJP.restapiserver.service.post;
 
 import com.JJP.restapiserver.domain.dto.member.response.MyPagePostDto;
+import com.JJP.restapiserver.domain.dto.post.PostDetailDto;
 import com.JJP.restapiserver.domain.dto.post.PostResponseDto;
 import com.JJP.restapiserver.domain.dto.post.PostSaveRequestDto;
 import com.JJP.restapiserver.domain.dto.post.PostUpdateRequestDto;
@@ -26,9 +27,7 @@ public class PostServiceImpl implements PostService {
     private final PostRepository postRepository;
     private final MemberRepository memberRepository;
     private final StageRepository stageRepository;
-
     private final PostLikeRepository postLikeRepository;
-
 
     @Transactional
     @Override
@@ -140,5 +139,27 @@ public class PostServiceImpl implements PostService {
                 .hasNext(challengeSlice.hasNext())
                 .build();
         return myPagePostDto;
+    }
+
+    @Override
+    public PostDetailDto detailPost(Long post_id, Long member_id){
+        Post post = postRepository.getById(post_id);
+
+        System.out.println("=======================================================");
+        System.out.println(post.getId());
+
+        PostDetailDto postDetailDto = PostDetailDto.builder()
+                .id(post_id)
+                .title(post.getTitle())
+                .content(post.getContent())
+                .createdTime(post.getCreatedDate())
+                .isLiked(postLikeRepository.findByPost_idAndMember_id(post_id, member_id).isPresent() ? true : false)
+                .modifiedTime(post.getModifiedDate())
+                .postImg(post.getPostImg())
+                .likeNum(post.getPostLikeList().size())
+                .writer(post.getMember().getId())
+                .build();
+
+        return postDetailDto;
     }
 }

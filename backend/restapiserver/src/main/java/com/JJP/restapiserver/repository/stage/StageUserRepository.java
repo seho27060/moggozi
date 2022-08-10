@@ -15,5 +15,5 @@ public interface StageUserRepository extends JpaRepository<StageUser, Long> {
 
     List<StageUser> findTop8ByMember_idOrderByJoinTimeDesc(Long member_id);
 
-    Slice<StageUser> findByMember_IdOrderByJoinTimeDesc(Long member_id, Pageable pageable);
+    Slice<StageUser> findByMember_Id(Long member_id, Pageable pageable);
 }
