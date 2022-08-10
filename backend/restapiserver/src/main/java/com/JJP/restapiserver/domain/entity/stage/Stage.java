@@ -20,7 +20,7 @@ public class Stage extends BaseTimeEntity {
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
 
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @Column(columnDefinition = "BIGINT(20) NOT NULL UNIQUE KEY auto_increment")
     private Long stage_order;
 
     // 챌린지와 다대일 양방향 관계
@@ -60,5 +60,9 @@ public class Stage extends BaseTimeEntity {
         this.name = name;
         this.content = content;
         this.img = img;
+    }
+
+    public void update(Long stage_order){
+        this.stage_order = stage_order;
     }
 }
