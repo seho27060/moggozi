@@ -38,7 +38,7 @@ public interface ChallengeService {
 
     ChallengePageDto infiniteChallengeList(Long member_id, Pageable pageable);
 
-    List<ChallengeListResponseDto> getChallengeRecommendationList(Long member_id);
+    List<ChallengeListResponseDto> getChallengeRecommendationList(Long member_id, int size);
 
     ChallengePageDto getChallengeContainingTag(String keyword, Pageable pageable, Long member_id);
     ChallengePageDto getChallengeContainingTag(String keyword, Pageable pageable);

@@ -25,5 +25,7 @@ public interface JoinedChallengeRepository extends JpaRepository<JoinedChallenge
     // 가장 최근에 생성된 시간순으로 해당 멤버가 참여한 "챌린지" 리스트를 반환해줌.
     Slice<JoinedChallenge> findByMember_idOrderByCreatedDateDesc(Long member_id, Pageable pageable);
 
+    List<JoinedChallenge> findByMember_id(Long member_id);
+
 
 }

@@ -96,7 +96,6 @@ public class EchoHandler extends TextWebSocketHandler {
             String msg = "";
             if (receiver != null) {
                 if (type.equals("challenge")) {
-
                     msg = senderName + "님이 등록하신 챌린지에 좋아요를 눌렀습니다.";
                 }
                 else if(type.equals("post")){
@@ -131,7 +130,6 @@ public class EchoHandler extends TextWebSocketHandler {
         userSessionsMap.remove(session);
         logger.debug("------------연결 종료 -----------");
     }
-
     private void saveAndSend(Long senderId, Long receiverId, String type, Long index,
                              String msg, WebSocketSession receiver) throws IOException {
         AlertResponseDto alertResponseDto = saveAlarm(senderId, receiverId, type, index, msg);
