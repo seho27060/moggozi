@@ -1,6 +1,7 @@
 package com.JJP.restapiserver.repository.challenge;
 
 import com.JJP.restapiserver.domain.entity.challenge.Challenge;
+import com.JJP.restapiserver.domain.entity.stage.Post;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -40,5 +41,12 @@ public interface ChallengeRepository extends JpaRepository<Challenge, Long> {
     List<Challenge> findByIdIn(List<Long> ids);
 
     List<Challenge> findByMember_id(Long member_id);
+
+    @Query(value = "SELECT * FROM challenge order by RAND() LIMIT :size", nativeQuery = true)
+    List<Challenge> findRandomChallengeList(@Param("size") int size);
+
+//    @Query(value = "select a.id from challenge as a inner join challenge_like b on a.id = b.challenge_id where a.state = 1 group by a.ID order by count(*) desc limit 1"
+//            ,nativeQuery = true)
+//    List<Object[]> findByLike();
 
 }

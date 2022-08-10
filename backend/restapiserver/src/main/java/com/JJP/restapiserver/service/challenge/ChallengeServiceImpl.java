@@ -282,15 +282,13 @@ public class ChallengeServiceImpl implements ChallengeService{
 
 
     @Override
-    public List<ChallengeListResponseDto> getChallengeRecommendationList(Long member_id) {
-        List<MemberTag> myhobby = memberTagRepository.findByMember_id(member_id);
+    public List<ChallengeListResponseDto> getChallengeRecommendationList(Long member_id, int size) {
+        List<MemberTag> myhobby = memberTagRepository.findTop5ByMember_idOrderByCreatedDateDesc(member_id);
         // 대전제
         // 한번 추천으로 뽑힌 것은 다시 돌려주지 않는다. (유효 기간은 6시간, 쿠키 활용)
-        //
         // 사용자가 막 회원가입해서 등록된 취미가 없다면?
         // 1. 완전 랜덤인 것으로 5개 뽑아서 돌려준다.
-        // get 으로 challenge/search/?pages=1&size=16&keyword=soccer
-
+        // get 으로 challenge/sear8ch/?pages=1&size=16&keyword=soccer
 
         // 챌린지 이름으로 검색 5개,
         // 사용자 이름으로 5개,
@@ -300,10 +298,19 @@ public class ChallengeServiceImpl implements ChallengeService{
         // 챌린지 검색
         // 특정 태그를 포함한 챌린지 검색
         if(myhobby == null){
-
+            List<Challenge> challengeList = challengeRepository.findRandomChallengeList(5);
+            return challengeIntoListDto(challengeList, new ArrayList<ChallengeListResponseDto>(), member_id);
         }
         // 사용자가 취미가 있다면?
         else{
+            // 내가 최근에 고른 5개의 취미의 인덱스
+            List<Long> tag_ids = myhobby.stream().map(o -> o.getTag().getId()).collect(Collectors.toList());
+            //
+            List<Tag> myTag = tagRepository.findByIdIn(tag_ids);
+
+            List<JoinedChallenge> joinedChallengeList = joinedChallengeRepository.findByMember_id(member_id);
+            List<Long> joined_ids = joinedChallengeList.stream().map(o -> o.getChallenge().getId()).collect(Collectors.toList());
+
 
         }
         return null;
@@ -452,6 +459,4 @@ public class ChallengeServiceImpl implements ChallengeService{
         List<ChallengeListResponseDto> challengeListResponseDtoList = new ArrayList<>();
         return challengeIntoListDto(challengeList, challengeListResponseDtoList, member_id);
     }
-
-
 }
