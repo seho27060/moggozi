@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { stageImgFetchAPI } from "../../lib/imgApi";
-import { postRead } from "../../lib/withTokenApi";
+import { postListRead } from "../../lib/withTokenApi";
 import { PostData } from "../../store/post";
 import { setPostFormButtonState, setPostFormModalOpen } from "../../store/postModal";
 import { imgState, StageState } from "../../store/stage";
@@ -33,7 +33,7 @@ const StageItem: React.FC<{
       });
   }, [stage, getStage]);
   useEffect(() => {
-    postRead(Number(stage.id))
+    postListRead(Number(stage.id))
       .then((res) => {
         console.log("포스팅 불러오기 성공", res);
         res.sort((a: PostData, b: PostData) =>

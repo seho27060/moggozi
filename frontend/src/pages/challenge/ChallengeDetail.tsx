@@ -11,7 +11,7 @@ import { ChallengeDetailState } from "../../store/challenge";
 import { setPostingStageId } from "../../store/post";
 import {
   setPostFormModalOpen,
-  setPostModalState,
+  setPostModalOpen,
   setPostUpdateFormState,
 } from "../../store/postModal";
 import { reviewFetch } from "../../store/review";
@@ -55,7 +55,7 @@ const ChallengeDetail: React.FC = () => {
   } = useSelector((state: RootState) => state.postModal);
 
   const closePostModal = () => {
-    dispatch(setPostModalState(false));
+    dispatch(setPostModalOpen(false));
     dispatch(setPostUpdateFormState(false));
   };
 

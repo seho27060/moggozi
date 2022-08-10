@@ -1,7 +1,7 @@
 import { MouseEvent } from "react";
 import { useDispatch } from "react-redux";
 import PostItem from "./PostItem";
-import { setModalPostState, setPostModalStageId, setPostModalState } from "../../store/postModal";
+import { setModalPostState, setPostModalStageId, setPostModalOpen } from "../../store/postModal";
 import { PostData } from "../../store/post";
 
 const PostList: React.FC<{
@@ -23,7 +23,7 @@ const PostList: React.FC<{
             onClick={(event: MouseEvent) => {
               event.preventDefault();
               dispatch(setModalPostState(post));
-              dispatch(setPostModalState(true))
+              dispatch(setPostModalOpen(true))
               dispatch(setPostModalStageId)
             }}
           >

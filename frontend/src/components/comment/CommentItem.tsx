@@ -12,7 +12,9 @@ import CommentChild from "./CommentChild";
 const CommentItem: React.FC<{
   comment: Comment;
 }> = ({ comment }) => {
-  const postModalState = useSelector((state: RootState) => state.postModal.postModalState);
+  const postModalState = useSelector(
+    (state: RootState) => state.postModal.postModalState
+  );
   const comments = useSelector((state: RootState) => state.comment.comments);
   const parentId = comment.id;
 
@@ -27,7 +29,7 @@ const CommentItem: React.FC<{
       {/* 사용자이미지, img태그에 null값이 못들어감 수정필요 */}
       <div>
         작성자 : {comment.writer?.nickname}
-        <CommentModifyBtn comment={comment} postId={postModalState.id}/>
+        <CommentModifyBtn comment={comment} postId={postModalState.id} />
       </div>
       <div>
         <div>{comment.text}</div>
@@ -35,7 +37,12 @@ const CommentItem: React.FC<{
       </div>
       <div>
         {/* 대댓글 */}
-        <CommentForm order={order} parentId={parentId} postId={postModalState.id} receiver={postModalState.writer} />
+        <CommentForm
+          order={order}
+          parentId={parentId}
+          postId={postModalState.id}
+          receiver={postModalState.writer}
+        />
       </div>
       <div style={{ border: "solid", margin: "1rem", padding: "1rem" }}>
         {childs?.map((child) => (

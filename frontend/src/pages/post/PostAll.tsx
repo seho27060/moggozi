@@ -7,7 +7,7 @@ import { postRandomRead } from "../../lib/withTokenApi";
 import { PostData } from "../../store/post";
 import {
   // setPostFormModalOpen,
-  setPostModalState,
+  setPostModalOpen,
   // setPostUpdateFormState,
 } from "../../store/postModal";
 import { setPostStageList } from "../../store/postStage";
@@ -23,7 +23,7 @@ const PostAll: React.FC<{}> = () => {
     // postFormButtonOpen,
   } = useSelector((state: RootState) => state.postModal);
   const closePostModal = () => {
-    dispatch(setPostModalState(false));
+    dispatch(setPostModalOpen(false));
   };
   if (postModalOpen) {
     document.body.style.overflow = "auto"; //모달때문에 이상하게 스크롤이 안되서 강제로 스크롤 바 생성함

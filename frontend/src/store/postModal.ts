@@ -56,7 +56,7 @@ export const postModalSlice = createSlice({
     setPostUpdateFormState: (state: PostModal,action) => {
       state.postUpdateFormOpen = action.payload
     },
-    setPostModalState:(state: PostModal,action) => {
+    setPostModalOpen:(state: PostModal,action) => {
       state.postModalOpen = action.payload
     },
     setPostModalStageId : (state:PostModal,action) => {
@@ -70,7 +70,7 @@ export const {
   setPostFormModalOpen,
   setPostFormButtonState,
   setPostUpdateFormState,
-  setPostModalState,
+  setPostModalOpen,
   setPostModalStageId
 } = postModalSlice.actions;
 
