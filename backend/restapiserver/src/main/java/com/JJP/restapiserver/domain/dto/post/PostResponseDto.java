@@ -2,10 +2,7 @@ package com.JJP.restapiserver.domain.dto.post;
 
 import com.JJP.restapiserver.domain.dto.challenge.Writer;
 import com.JJP.restapiserver.domain.entity.stage.Post;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

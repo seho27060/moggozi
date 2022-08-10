@@ -99,7 +99,7 @@ public class StageJoinServiceImpl implements StageJoinService{
 
     @Override
     public MyPageStageDto infiniteStageList(Long member_id, Pageable pageable) {
-        Slice<StageUser> stageUserSlice = stageUserRepository.findByMember_IdOrderByJoinTimeDesc(member_id, pageable);
+        Slice<StageUser> stageUserSlice = stageUserRepository.findByMember_Id(member_id, pageable);
 
         // stageUser -> stage_id -> stage
         List<Long> stage_idx = stageUserSlice.stream().map(o -> o.getStage().getId()).collect(Collectors.toList());
