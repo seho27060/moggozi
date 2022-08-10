@@ -39,7 +39,12 @@ function UserPage() {
         setFollowState(res.isFollowing);
         setFollowedCnt(res.followedCnt);
         setFollowingCnt(res.followingCnt);
-        setImg(res.img);
+        if (res.img === "") {
+          // 기본 프로필 이미지
+          setImg("https://i.pinimg.com/236x/f2/a1/d6/f2a1d6d87b1231ce39710e6ba1c1e129.jpg")
+        } else {
+          setImg(res.img)
+        }
       })
       .catch((err) => {
         // alert("오류가 발생했습니다.")
@@ -97,7 +102,16 @@ function UserPage() {
           </Link>
         ) : (
           <div>
-            {img ? (
+              <div
+                className={styles.editImg}
+                style={{
+                  backgroundImage: `url(${img})`,
+                  backgroundPosition: "center",
+                  backgroundSize: "cover",
+                  backgroundRepeat: "no-repeat",
+                }}
+              ></div>
+            {/* {img ? (
               <div
                 className={styles.editImg}
                 style={{
@@ -111,13 +125,13 @@ function UserPage() {
               <div
                 className={styles.editImg}
                 style={{
-                  backgroundImage: `url(https://i.pinimg.com/236x/f2/a1/d6/f2a1d6d87b1231ce39710e6ba1c1e129.jpg)`,
+                  backgroundImage: `url("https://i.pinimg.com/236x/f2/a1/d6/f2a1d6d87b1231ce39710e6ba1c1e129.jpg")`,
                   backgroundPosition: "center",
                   backgroundSize: "cover",
                   backgroundRepeat: "no-repeat",
                 }}
               ></div>
-            )}
+            )} */}
           </div>
         )}
 

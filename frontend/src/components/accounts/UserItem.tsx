@@ -8,7 +8,7 @@ const UserItem: React.FC<{ user: UserInfo }> = ({ user }) => {
   return (
     <div className={styles.items}>
       ㅁ <Link to={`/user/${user.id}`}>{user.nickname}</Link>
-      {!!user.img && <img src={user.img} alt="user Img"></img>}
+      {/* {!!user.img && <img src={user.img} alt="user Img"></img>} */}
     </div>
   );
 };

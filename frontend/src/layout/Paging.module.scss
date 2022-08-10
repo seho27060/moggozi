@@ -1,0 +1,49 @@
+@use "../styles/mixin.scss" as mixin;
+
+@include mixin.desktop {
+  .pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+  }
+
+  .button {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    color: black;
+    background-color: #fff;
+    font-weight: 700;
+    border: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1rem;
+
+    &:hover {
+      color: #fff;
+      background: mixin.$mainColor;
+      border-radius: 100%;
+      font-weight: 700;
+      border: 0;
+
+
+    }
+  }
+
+  .button .active {
+    color: blue;
+  }
+
+  // .button:hover {
+  //   color: white;
+  //   background-color: #337ab7;
+  // }
+
+  .pageSelection {
+    color: #fff;
+    background: mixin.$mainColor;
+    width: 30px;
+    height: 30px;
+  }
+}

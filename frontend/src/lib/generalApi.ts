@@ -36,7 +36,7 @@ export const passwordReissue = async (option: object) => {
 };
 
 export const otherUserDetail = async (
-  userId: number,
+  userId: number | null,
   loginId: number | null
 ) => {
   const { data } = await generalApi.get(`/user/profile/${userId}/${loginId}`);
