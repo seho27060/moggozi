@@ -5,7 +5,6 @@ import { loginApi } from "../../lib/generalApi";
 import Cookie from "js-cookie";
 import moment from "moment";
 import { login } from "../../store/auth";
-
 import Modal from "../ui/Modal";
 
 import logo from "../../asset/moggo.png";

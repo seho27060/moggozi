@@ -9,6 +9,7 @@ import SearchModal from "../components/ui/SearchModal";
 
 import style from "./NavigationBar.module.scss";
 import logo from "../asset/moggo.png";
+import AlertOnair from "../components/alert/AlertOnair";
 
 const NavigationBar: React.FC = () => {
   const userState = useSelector((state: RootState) => state.auth);
@@ -60,6 +61,9 @@ const NavigationBar: React.FC = () => {
           )}
           {userState.isLoggedIn && (
             <Fragment>
+              <li>
+                <AlertOnair/>
+              </li>
               <li className={style.logout}>
                 <LogoutBtn />
               </li>
@@ -69,7 +73,7 @@ const NavigationBar: React.FC = () => {
                     <img
                       className={style.profileImg}
                       src={userState.userInfo.img}
-                      alt="user_profile_image"
+                      alt=""
                     />
                     <div>{userState.userInfo.nickname}</div>
                   </NavLink>

@@ -1,6 +1,5 @@
 import axios from "axios";
 import { apiConfig } from "../config";
-import { AlertSend } from "../store/alert";
 import { ChallengeSaveState } from "../store/challenge";
 import { CommentSend } from "../store/comment";
 import { PostSend, PostUpdateSend } from "../store/postModal";
@@ -241,7 +240,7 @@ export const commentUpdate = async (
   return data;
 };
 
-// 알림 관련
+//// 알림 관련
 // 알림 확인
 export const alertRead = async (alert_id: number) => {
   const { data } = await withTokenApi.put(`/notification/${alert_id}`);
@@ -262,12 +261,6 @@ export const alertRecent = async () => {
   const { data } = await withTokenApi.get(`/notification/recent`);
   return data;
 };
-// 새로운 알림 보내기
-export const alertSend = async (alert: AlertSend) => {
-  const { data } = await withTokenApi.post(`/notification/register`, alert);
-  return data;
-};
-
 // 검색 관련
 export const isLoginSearchChallengeApi = async (
   q: string,

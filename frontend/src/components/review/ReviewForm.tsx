@@ -5,9 +5,18 @@ import { useParams } from "react-router-dom";
 import { fetchReview, reviewAdd } from "../../lib/withTokenApi";
 import { reviewFetch } from "../../store/review";
 import { RootState } from "../../store/store";
+
 import StarRating from "./StarRating";
 
-const ReviewForm: React.FC = () => {
+import styles from "./ReviewForm.module.scss";
+
+interface Props {
+  image: string | undefined;
+}
+
+const ReviewForm = (props: Props) => {
+  const { image } = props;
+
   const dispatch = useDispatch();
   const contentInputRef = useRef<HTMLInputElement>(null);
   const { id } = useParams();
@@ -61,26 +70,25 @@ const ReviewForm: React.FC = () => {
   };
 
   return (
-    <div>
-      <h3>리뷰 생성 Form</h3>
+    <div className={styles.reviewForm}>
+        <img src="https://i.pinimg.com/550x/2c/b2/aa/2cb2aa6c4b8aac0be04d52ce2b1cc21a.jpg" alt="" />
       <form>
-        <div>
-          <label htmlFor="content">content :</label>
-          <input
-            name="content"
-            placeholder="내용"
-            type="text"
-            required
-            id="content"
-            onChange={onChangeHandler}
-            value={content}
-            ref={contentInputRef}
-          />
-        </div>
-        <StarRating rate={rate} rateChangeHandler={rateChangeHandler} />
-        <button type="button" onClick={reviewSubmitHandler}>
-          Register
-        </button>
+            <StarRating rate={rate} rateChangeHandler={rateChangeHandler} />
+            <div className={styles.input}>
+              <input
+                name="content"
+                placeholder="챌린지 한줄평"
+                type="text"
+                required
+                id="content"
+                onChange={onChangeHandler}
+                value={content}
+                ref={contentInputRef}
+              />
+              <div className={styles.reviewSubmit} onClick={reviewSubmitHandler}>
+                등록
+              </div>
+            </div>
       </form>
     </div>
   );

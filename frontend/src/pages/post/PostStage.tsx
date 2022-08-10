@@ -1,4 +1,4 @@
-import {  useCallback, useEffect, useState } from "react";
+import {  useCallback, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { postSet } from "../../store/post";
@@ -31,7 +31,7 @@ const PostStage = () => {
     postFormButtonOpen,
   } = useSelector((state: RootState) => state.postModal);
 
-  const [isLogging, setIsLogging] = useState(false)
+  // const [isLogging, setIsLogging] = useState(false)
 
   const handleScroll = useCallback((): void => {
     const { innerHeight } = window;
@@ -39,12 +39,12 @@ const PostStage = () => {
     const { scrollTop } = document.documentElement;
 
     if (Math.round(scrollTop + innerHeight) > scrollHeight) {
- 
+      
     }
   }, []);
   useEffect(() => {
     window.addEventListener("scroll", handleScroll, true);
-
+    console.log("infinite call ver1");
     return () => {
       window.removeEventListener("scroll", handleScroll, true);
     };
