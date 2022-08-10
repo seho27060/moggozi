@@ -27,6 +27,8 @@ public class ChallengeListResponseDto {
 
     private String description;
 
+    private int state;
+
     public ChallengeListResponseDto(Challenge challenge){
         this.id = challenge.getId();
         this.writer = new Writer(challenge.getMember().getId(), challenge.getMember().getNickname());
@@ -37,6 +39,7 @@ public class ChallengeListResponseDto {
         this.likeNum = challenge.getChallengeLikeList().size();
         this.hobbyList = new ArrayList<>();
         this.userProgress = 0;
+        this.state = challenge.getState();
         this.description = challenge.getDescription();
     }
 }

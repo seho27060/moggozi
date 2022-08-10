@@ -43,4 +43,6 @@ public interface ChallengeService {
     ChallengePageDto getChallengeContainingTag(String keyword, Pageable pageable, Long member_id);
     ChallengePageDto getChallengeContainingTag(String keyword, Pageable pageable);
 
+    List<ChallengeListResponseDto> getMyChallenge(Long member_id);
+
 }
