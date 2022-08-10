@@ -31,7 +31,7 @@ public class FollowServiceImpl implements FollowService {
         try {
             if (fromMemberId == toMemberId) throw new Exception();
 
-            System.out.println("Follow 하고 있는지의 여부" + followRepository.existsByFrom_memberAndTo_member(fromMemberId, toMemberId));
+//            System.out.println("Follow 하고 있는지의 여부" + followRepository.existsByFrom_memberAndTo_member(fromMemberId, toMemberId));
             if(followRepository.existsByFrom_memberAndTo_member(fromMemberId, toMemberId) >= 1) {
                 followRepository.deleteByFrom_memberAndTo_member(fromMemberId, toMemberId);
                 return ResponseEntity.ok().body(new MessageResponse("Successfully unfollowed."));
