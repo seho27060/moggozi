@@ -11,8 +11,8 @@ spring:
       client:
         registration:
           google:
-            client-id: 948844328868-ot3hj94mukrbc8358p3dqvmbt1e9djdm.apps.googleusercontent.com
-            client-secret: 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
+            client-id: 332699865947-m8a2r0nh2gleol3c13ra6vahu78ael67.apps.googleusercontent.com
+            client-secret: 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
 #            redirect-uri: "https://i7c201.p.ssafy.io/api/login/oauth2/code/google"
             scope: profile, email
 
