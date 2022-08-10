@@ -91,9 +91,8 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
             isFirst = 1;
 
             Role role = new Role(ERole.valueOf("ROLE_USER"));
-            role = roleRepository.getById(1L);
-            System.out.println("ROLE+++++++++++++++++++++++++++++++" + role.getName());
 
+            /** TODO: Role의 값이 1로 매칭되지 않는 문제 - 권한 부여 시 잘 체크되는지 필요) */
             Member newMember = Member.builder().username(username)
                     .fullname(fullname).nickname("User"+randomNo).password(password).is_social(1).role(role).build();
 
