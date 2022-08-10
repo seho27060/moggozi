@@ -1,0 +1,13 @@
+@use "../../styles/mixin.scss" as mixin;
+
+@include mixin.desktop {
+  .items {
+    a {
+      margin: 0 10px 0 10px
+    }
+  }
+}
+
+@include mixin.mobile {
+
+}

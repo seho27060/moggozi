@@ -1,0 +1,37 @@
+@use "../../styles/mixin.scss" as mixin;
+
+@include mixin.desktop {
+
+
+  main {
+    padding: 20px 15px 10px 15px;
+    border-bottom: 1px solid #dee2e6;
+    border-top: 1px solid #dee2e6;
+
+    h1 {
+      font-weight: 600;
+      font-size: 16px;
+      line-height: 17px;
+      color: mixin.$cloudGray
+    }
+
+    h2 {
+      // display: inline-block;
+      font-size: 16px;
+      margin: 10px 15px 10px 10px;
+    }
+
+    div ul {
+      margin: 0;
+    }
+
+    .tag {
+      margin: 10px 10px 10px 10px !important;
+
+    }
+  }
+}
+
+@include mixin.mobile {
+
+}
