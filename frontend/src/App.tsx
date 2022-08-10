@@ -8,7 +8,6 @@ import "./App.scss";
 import { useSelector } from "react-redux";
 import { RootState } from "./store/store";
 import { profileImgFetchAPI } from "./lib/imgApi";
-import WebsocketConnect from "./pages/WebsocketConnect";
 import WebSocketProvider from "./lib/WebSocketProvider";
 function App() {
   const dispatch = useDispatch();

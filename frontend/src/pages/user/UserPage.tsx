@@ -58,7 +58,7 @@ function UserPage() {
         console.log(res);
         if (res.message === 'Successfully followed.'){
           let jsonSend: Alert = {
-            check : "0",
+            check : 0,
             createdTime : "0",
             id : "0",
             index: userId.toString(),

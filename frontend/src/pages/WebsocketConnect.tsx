@@ -1,7 +1,7 @@
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { CloseEvent } from "sockjs-client";
-import { Alert,  setAlertList,  setRealTimeAlert } from "../store/alert";
+import { Alert, setAlertList, setRealTimeAlert } from "../store/alert";
 import { RootState } from "../store/store";
 import { VscBell, VscBellDot } from "react-icons/vsc";
 import { alertRecent } from "../lib/withTokenApi";
@@ -16,9 +16,9 @@ const WebsocketConnect = () => {
   var wsocket: WebSocket | null = null;
 
   let jsonSend: Alert = {
-    check : "0",
-    createdTime : "0",
-    id : "0",
+    check: 0,
+    createdTime: "0",
+    id: "0",
     index: "1",
     message: "message",
     receiverId: "0",
@@ -36,15 +36,30 @@ const WebsocketConnect = () => {
       if (auth.userInfo.id && wsocket) {
         jsonSend.senderId = auth.userInfo.id!.toString();
         jsonSend.senderName = auth.userInfo.nickname!.toString();
-        console.log("open user", jsonSend, "open", evt);
+        let checkList: Alert[] = [];
+        console.log("!", checkList);
+
+        console.log("open user?", jsonSend, "open", evt);
         wsocket!.send(JSON.stringify(jsonSend));
+        alertRecent()
+          .then((res) => {
+            console.log("web connect alert list", res);
+            dispatch(setAlertList(res));
+            checkList = [...res];
+          })
+          .catch((err) => console.log("web connect alert list err", err));
+        checkList!.map((check) => {
+          if (check.check === 0 || "0") {
+            dispatch(setRealTimeAlert(true));
+          }
+        });
         setInterval(() => {
           // const time = new Date()
           // console.log(`30 sec,now: ${time}`, isConnecting);
           let connetSend: Alert = {
-            check : "0",
-            createdTime : "0",
-            id : "0",
+            check: 0,
+            createdTime: "0",
+            id: "0",
             index: "1",
             message: "message",
             receiverId: "11",
@@ -73,15 +88,15 @@ const WebsocketConnect = () => {
       } else {
         console.log("Unconnected,", evt);
       }
-    };  
+    };
     // 메세지 수령
     wsocket.onmessage = (evt: any) => {
-      const message = JSON.stringify(evt.data.toString())
+      const message = JSON.stringify(evt.data.toString());
       console.log(`${auth.userInfo}, you have message ${message}`);
-      dispatch(setRealTimeAlert(true))
-      alertRecent().then((res)=>{
-        dispatch(setAlertList(res))
-      })
+      dispatch(setRealTimeAlert(true));
+      alertRecent().then((res) => {
+        dispatch(setAlertList(res));
+      });
     };
     // 에러
     wsocket.onerror = (evt: any) => {
@@ -97,9 +112,9 @@ const WebsocketConnect = () => {
         onClick={() => {
           console.log("!");
           const connetSend: Alert = {
-            check : "0",
-            createdTime : "0",
-            id : "0",
+            check: 0,
+            createdTime: "0",
+            id: "0",
             index: "1",
             message: "connect",
             receiverId: "43",

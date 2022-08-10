@@ -1,7 +1,7 @@
-import { useEffect } from "react";
+import { MouseEvent } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import { alertReadall, alertRecent } from "../../lib/withTokenApi";
+import { alertAll } from "../../lib/withTokenApi";
 import { Alert, setAlertList } from "../../store/alert";
 import { RootState } from "../../store/store";
 import AlertItem from "./AlertItem";
@@ -10,6 +10,13 @@ const AlertList: React.FC<{}> = () => {
   const loadedAlertList = useSelector(
     (state: RootState) => state.alert.alertList
   );
+
+  const alertAllHandler = (event: MouseEvent) => {
+    event.preventDefault();
+    alertAll().then((res) => {
+      dispatch(setAlertList(res));
+    });
+  };
   console.log("loadAlertlist", loadedAlertList);
 
   return (
@@ -24,15 +31,20 @@ const AlertList: React.FC<{}> = () => {
           ))}
         {}
       </>
-      <button onClick={() => {
+      {/* <button onClick={() => {
         alertReadall().then((res)=>{
           console.log("readall",res)
           alertRecent().then((res) => {
-            setAlertList([...res])
+            console.log("ll",res)
+            dispatch(checkAlertList())
           })
         })
-      }}>알림 전체 확인</button>
-      <button>알림 기록 확인</button>
+      }}>알림 전체 확인</button> */}
+      <button onClick={alertAllHandler}>알림 기록 확인</button>
+      {/* <div>
+        dropDiwn
+        <Dropdown dropdownItems = {loadedAlertList}/>
+      </div> */}
     </div>
   );
 };

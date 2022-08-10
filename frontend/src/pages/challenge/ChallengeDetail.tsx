@@ -18,7 +18,11 @@ import { challengeLike, isLoginFetchChallenge } from "../../lib/withTokenApi";
 import { Alert } from "../../store/alert";
 import { ChallengeDetailState } from "../../store/challenge";
 import { setPostingStageId } from "../../store/post";
-import { setPostFormModalOpen, setPostModalState, setPostUpdateFormState } from "../../store/postModal";
+import {
+  setPostFormModalOpen,
+  setPostModalState,
+  setPostUpdateFormState,
+} from "../../store/postModal";
 import { reviewFetch } from "../../store/review";
 import { RootState } from "../../store/store";
 
@@ -57,7 +61,7 @@ const ChallengeDetail: React.FC = () => {
       .then((res) => {
         if (!loadedChallenge!.liked){
           let jsonSend: Alert = {
-            check : "0",
+            check : 0,
             createdTime : "0",
             id : "0",
             index: loadedChallenge!.id!.toString(),
@@ -192,7 +196,9 @@ const ChallengeDetail: React.FC = () => {
           <p>챌린지 취미</p>
           <HobbyList hobbies={loadedChallenge!.hobbyList} />
           <p>스테이지</p>
-          <StageList stages={loadedChallenge!.stageList} />
+          {!!loadedChallenge!.stageList.length && (
+            <StageList stages={loadedChallenge!.stageList} />
+          )}
           {userInfo.id === loadedChallenge!.writer.id && (
             <div>
               <Link to={`/stage/${id}`}>

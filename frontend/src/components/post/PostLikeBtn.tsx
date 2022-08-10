@@ -42,7 +42,7 @@ const PostLikeBtn: React.FC<{}> = () => {
         dispatch(setModalPostState(modifiedModalPost));
         // 포스트 좋아요 알림보내기
         let jsonSend: Alert = {
-          check : "0",
+          check : 0,
           createdTime : "0",
           id : "0",
           index: postModal.postModalState!.id.toString(),

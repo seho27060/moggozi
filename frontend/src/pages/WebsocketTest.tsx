@@ -26,7 +26,7 @@ const WebsocketPage = () => {
   var wsocket: WebSocket | null = null;
 
   let jsonSend: Alert = {
-    check : "0",
+    check : 1,
     createdTime : "0",
     id : "0",
     index: "1",
@@ -55,7 +55,7 @@ const WebsocketPage = () => {
             // const time = new Date()
             // console.log(`30 sec,now: ${time}`, isConnecting);
             jsonSend = {
-              check : "0",
+              check : 1,
               createdTime : "0",
               id : "0",
               index: "1",

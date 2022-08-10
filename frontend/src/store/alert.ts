@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 // import { RootState } from "./store";
 
 export interface Alert {
-  check: string | null;
+  check: number | null;
   createdTime: string | null;
   id: string | null;
   index: string | null;
@@ -36,7 +36,12 @@ export const alertSlice = createSlice({
   reducers: {
     setAlertList: (state, action) => {
       const loadedAlertList: Alert[] | null = [...action.payload];
-      state.alertList = loadedAlertList;
+      state.alertList = [...loadedAlertList];
+    },
+    checkAlertList: (state) => {
+      const checkedAlertList = state.alertList.map((alert)=>({...alert,check : 1}))
+      console.log(checkedAlertList)
+      state.alertList = [...checkedAlertList];
     },
     setRealTimeAlert: (state, action) => {
       console.log("realtimealert set",action.payload);
@@ -44,12 +49,12 @@ export const alertSlice = createSlice({
     },
     setAllAlertList: (state, action) => {
       const loadedAlertList: Alert[] | null = [...action.payload];
-      state.alertAllList = loadedAlertList;
+      state.alertAllList = [...loadedAlertList];
     },
   },
 });
 
-export const {setAlertList, setRealTimeAlert,setAllAlertList } =
+export const {setAlertList, setRealTimeAlert,setAllAlertList,checkAlertList } =
   alertSlice.actions;
 
 export default alertSlice.reducer;

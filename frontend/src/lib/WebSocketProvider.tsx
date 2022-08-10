@@ -1,8 +1,9 @@
 import React, { useRef } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import { Alert, setRealTimeAlert } from "../store/alert";
+import { Alert, setAlertList, setRealTimeAlert } from "../store/alert";
 import { RootState } from "../store/store";
+import { alertRecent } from "./withTokenApi";
 // import SockJS from 'sockjs-client';
 const WebSocketContext = React.createContext<any>(null);
 export { WebSocketContext };
@@ -10,13 +11,15 @@ export { WebSocketContext };
 export default ({ children }: { children: React.ReactNode }) => {
   const user = useSelector((state: RootState) => state.auth.userInfo);
   const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
-  const realTimeAlert = useSelector((state: RootState) => state.alert.realTimeAlert);
+  const realTimeAlert = useSelector(
+    (state: RootState) => state.alert.realTimeAlert
+  );
   const dispatch = useDispatch();
 
   const webSocketUrl = `wss://i7c201.p.ssafy.io:443/api/ws/notification`;
   let ws = useRef<WebSocket | null>(null);
   let jsonSend: Alert = {
-    check: "0",
+    check: 0,
     createdTime: "0",
     id: "0",
     index: "1",
@@ -36,7 +39,22 @@ export default ({ children }: { children: React.ReactNode }) => {
       jsonSend.senderName = user.nickname!.toString();
       console.log("open user", jsonSend, "open", evt);
       ws.current!.send(JSON.stringify(jsonSend));
-
+      let checkList: Alert[] = [];
+      alertRecent()
+        .then((res) => {
+          console.log("web connect alert list", res);
+          dispatch(setAlertList(res));
+          checkList = [...res];
+          for (let index = 0; index < checkList.length; index++) {
+            const element = checkList[index].check
+            if (element === 0) {
+              dispatch(setRealTimeAlert(true))
+              break
+            }
+          }
+        })
+        .catch((err) => console.log("web connect alert list err", err));
+      
       setInterval(() => {
         if (ws.current?.OPEN) {
           const time = new Date();
@@ -58,7 +76,7 @@ export default ({ children }: { children: React.ReactNode }) => {
       console.log(error);
     };
     ws.current.onmessage = (evt: MessageEvent) => {
-      console.log(evt.data,`realtime${realTimeAlert}`);
+      console.log(evt.data, `realtime${realTimeAlert}`);
       dispatch(setRealTimeAlert(true));
       // console.log(JSON.parse(ev))
     };

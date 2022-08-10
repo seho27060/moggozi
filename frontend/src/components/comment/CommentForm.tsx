@@ -41,7 +41,7 @@ const CommentForm: React.FC<{
       // 댓글, 대댓글 알림보내기
     if (parentId === 0 && postId === 0) {
       let jsonSend: Alert = {
-        check : "0",
+        check :0,
         createdTime : "0",
         id : "0",
         index: postId.toString(),
@@ -58,7 +58,7 @@ const CommentForm: React.FC<{
       
     } else {
       let jsonSend: Alert = {
-        check : "0",
+        check : 0,
         createdTime : "0",
         id : "0",
         index: postId!.toString(),
