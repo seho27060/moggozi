@@ -47,7 +47,7 @@ public class ChallengeController {
     }
 
     // challenge/search/식물?page=1&size=2
-    @GetMapping("/search/")
+    @GetMapping("/search")
     public ResponseEntity getChallengeListByKeyword(@RequestParam("keyword") String keyword, Pageable pageable,
                                                     HttpServletRequest request)
     {
@@ -139,7 +139,7 @@ public class ChallengeController {
                                                     HttpServletRequest request){
         logger.debug("-----------컨트롤러 시작---------------");
         ChallengePageDto challengePageDto = null;
-        if(request.getHeader("Authorization") != null){
+        if(request.getHeader("Authorization") == null){
              challengePageDto = challengeService.getChallengeContainingTag(keyword,
                     pageable);
         }
