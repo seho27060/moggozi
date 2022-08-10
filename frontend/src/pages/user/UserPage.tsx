@@ -17,14 +17,14 @@ import { Alert } from "../../store/alert";
 function UserPage() {
   const userId = Number(useParams().id);
   // console.log(userId)
-  const ws = useContext(WebSocketContext)
+  const ws = useContext(WebSocketContext);
 
   const loginData = useSelector((state: RootState) => state.auth);
   const loginId = loginData.userInfo.id;
 
   const [nickname, setNickname] = useState("");
   const [introduce, setIntroduce] = useState("");
-  const [userImg, setUserImg] = useState("");
+  const [img, setImg] = useState("");
   const [isPrivate, setIsPrivate] = useState(false);
   const [followedCnt, setFollowedCnt] = useState(0);
   const [followingCnt, setFollowingCnt] = useState(0);
@@ -33,21 +33,18 @@ function UserPage() {
   useEffect(() => {
     otherUserDetail(userId, loginData.userInfo.id)
       .then((res) => {
-        // console.log(res)
         setNickname(res.nickname);
         setIntroduce(res.introduce);
         setIsPrivate(res.isPrivate);
         setFollowState(res.isFollowing);
         setFollowedCnt(res.followedCnt);
         setFollowingCnt(res.followingCnt);
+        setImg(res.img);
       })
       .catch((err) => {
         // alert("오류가 발생했습니다.")
         console.log(err);
       });
-    profileImgFetchAPI(userId).then((res) => {
-      setUserImg(res);
-    });
   }, [userId, loginData]);
 
   function followHandler(event: React.MouseEvent) {
@@ -56,11 +53,11 @@ function UserPage() {
     followApi(userId)
       .then((res) => {
         console.log(res);
-        if (res.message === 'Successfully followed.'){
+        if (res.message === "Successfully followed.") {
           let jsonSend: Alert = {
-            check : 0,
-            createdTime : "0",
-            id : "0",
+            check: 0,
+            createdTime: "0",
+            id: "0",
             index: userId.toString(),
             message: "follow",
             receiverId: userId.toString(),
@@ -69,8 +66,8 @@ function UserPage() {
             senderName: loginData.userInfo.nickname!.toString(),
             type: "follow",
           };
-          if ( loginData.userInfo.id! !== userId!) {
-            ws.current.send(JSON.stringify(jsonSend))
+          if (loginData.userInfo.id! !== userId!) {
+            ws.current.send(JSON.stringify(jsonSend));
           }
         }
       })
@@ -90,7 +87,7 @@ function UserPage() {
             to={"/account/userUpdate"}
             className={styles.editImg}
             style={{
-              backgroundImage: `url(${userImg})`,
+              backgroundImage: `url(${img})`,
               backgroundPosition: "center",
               backgroundSize: "cover",
               backgroundRepeat: "no-repeat",
@@ -100,11 +97,11 @@ function UserPage() {
           </Link>
         ) : (
           <div>
-            {userImg ? (
+            {img ? (
               <div
                 className={styles.editImg}
                 style={{
-                  backgroundImage: `url(${userImg})`,
+                  backgroundImage: `url(${img})`,
                   backgroundPosition: "center",
                   backgroundSize: "cover",
                   backgroundRepeat: "no-repeat",

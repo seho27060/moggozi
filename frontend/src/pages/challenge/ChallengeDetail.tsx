@@ -32,11 +32,11 @@ import styles from "./ChallengeDetail.module.scss";
 
 const ChallengeDetail: React.FC = () => {
   const { id } = useParams();
-  const ws = useContext(WebSocketContext)
-  
+  const ws = useContext(WebSocketContext);
+
   const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
   const userInfo = useSelector((state: RootState) => state.auth.userInfo);
-  const stageId = useSelector((state:RootState) => state.post.postingStageId)
+  const stageId = useSelector((state: RootState) => state.post.postingStageId);
 
   const userImg = useSelector((state: RootState) => state.auth.userInfo.img);
 
@@ -67,11 +67,11 @@ const ChallengeDetail: React.FC = () => {
     event.preventDefault();
     challengeLike({ challengeId: Number(id) })
       .then((res) => {
-        if (!loadedChallenge!.liked){
+        if (!loadedChallenge!.liked) {
           let jsonSend: Alert = {
-            check : 0,
-            createdTime : "0",
-            id : "0",
+            check: 0,
+            createdTime: "0",
+            id: "0",
             index: loadedChallenge!.id!.toString(),
             message: "challenge",
             receiverId: loadedChallenge!.writer!.id!.toString(),
@@ -80,8 +80,8 @@ const ChallengeDetail: React.FC = () => {
             senderName: userInfo.nickname!.toString(),
             type: "challenge",
           };
-          if ( loadedChallenge!.writer!.id! !== userInfo.id!) {
-            ws.current.send(JSON.stringify(jsonSend))
+          if (loadedChallenge!.writer!.id! !== userInfo.id!) {
+            ws.current.send(JSON.stringify(jsonSend));
           }
         }
         setLoadedChallenge({
@@ -118,12 +118,12 @@ const ChallengeDetail: React.FC = () => {
                   img: res,
                 });
                 dispatch(reviewFetch(challenge.reviewList));
-                console.log("Challenge",challenge)
-                let postStageId = null
-                if (challenge.stageList.length !== 0){
-                  postStageId = challenge.stageList[0].id
+                console.log("Challenge", challenge);
+                let postStageId = null;
+                if (challenge.stageList.length !== 0) {
+                  postStageId = challenge.stageList[0].id;
                 }
-                dispatch(setPostingStageId(postStageId))
+                dispatch(setPostingStageId(postStageId));
               })
               .catch((err) => {
                 setLoadedChallenge({
@@ -212,7 +212,7 @@ const ChallengeDetail: React.FC = () => {
               <div>
                 {loadedChallenge?.writer.id === userInfo.id ? (
                   <div>
-                    {userInfo.id  === loadedChallenge!.writer.id && (
+                    {userInfo.id === loadedChallenge!.writer.id && (
                       <div>
                         <Link to={`/stage/${id}`}>
                           <button>스테이지 편집</button>
@@ -256,45 +256,54 @@ const ChallengeDetail: React.FC = () => {
             </div>
 
             {loadedChallenge!.img && (
-              <img className={styles.challengeImg} src={loadedChallenge!.img} alt="challenge Img"></img>
+              <img
+                className={styles.challengeImg}
+                src={loadedChallenge!.img}
+                alt="challenge Img"
+              ></img>
             )}
             <div>
               <HobbyList hobbies={loadedChallenge!.hobbyList} />
             </div>
-            
+
             <div className={styles.writer}>
               <img src={loadedChallenge!.writer.img} alt="" />
-              <div className={styles.user}>{loadedChallenge!.writer.nickname}</div>
+              <div className={styles.user}>
+                {loadedChallenge!.writer.nickname}
+              </div>
             </div>
 
             <div className={styles.C_content}>{loadedChallenge!.content}</div>
             <div className={styles.like}>
-              <div>{isLoggedIn === true && loadedChallenge!.liked === false && (
-                <button onClick={likeHandler}>♥</button>
-                // 챌린지 좋아요
-              )}
-              {isLoggedIn === true && loadedChallenge!.liked === true && (
-                <button onClick={likeHandler}>♡</button>
-                // 챌린지좋아요 취소
-              )} 좋아요 <span>{loadedChallenge!.likeNum}</span></div>
-              <div>ㅁ 댓글 <span>{reviews.length}</span></div>
+              <div>
+                {isLoggedIn === true && loadedChallenge!.liked === false && (
+                  <button onClick={likeHandler}>♥</button>
+                  // 챌린지 좋아요
+                )}
+                {isLoggedIn === true && loadedChallenge!.liked === true && (
+                  <button onClick={likeHandler}>♡</button>
+                  // 챌린지좋아요 취소
+                )}{" "}
+                좋아요 <span>{loadedChallenge!.likeNum}</span>
+              </div>
+              <div>
+                ㅁ 댓글 <span>{reviews.length}</span>
+              </div>
             </div>
-            <div>
-            </div>
+            <div></div>
           </div>
           <div className={styles.horizon}></div>
-          
+
           <div>{isLoggedIn && <ReviewForm image={userImg} />}</div>
           <ReviewList reviews={reviews} />
 
           {isLoggedIn === true && (
-                <p>챌린지 유저 진행도: {loadedChallenge!.userProgress}</p>
-              )}
+            <p>챌린지 유저 진행도: {loadedChallenge!.userProgress}</p>
+          )}
           <div>
             <p>스테이지</p>
             <StageList stages={loadedChallenge!.stageList} />
           </div>
-
         </div>
       )}
 

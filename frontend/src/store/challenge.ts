@@ -14,6 +14,7 @@ export interface ChallengeItemState {
   level: number | null;
   userProgress: number | 0;
   likeNum: number | null;
+  state: number | 1;
 }
 
 // 챌린지 디테일 정보

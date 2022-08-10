@@ -18,14 +18,14 @@ export interface followed {
   id: number | null;
   loginFollowState: number | null;
   nickname: string | null;
-  userImg: string | null;
+  img: string | null;
   username: string | null;
 }
 
 export interface following {
   id: number | null;
   nickname: string | null;
-  userImg: string | null;
+  img: string | null;
   username: string | null;
 }
 
@@ -68,7 +68,7 @@ export const authSlice = createSlice({
       state.userInfo = {
         id: action.payload.id,
         nickname: action.payload.nickname,
-        img: "",
+        img: action.payload.userImg,
       };
       state.isLoggedIn = true;
     },

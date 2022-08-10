@@ -7,6 +7,7 @@ import styles from "./ChallengeItem.module.scss"
 const ChallengeItem: React.FC<{ challenge: ChallengeItemState }> = ({
   challenge,
 }) => {
+  // 작성 중일 때 겉에서 보이게 끔 스타일링!!(등록 전인 상태 표시)
   return (
     <div className={styles.challengeItem}>
       <Link to={`/challenge/${challenge.id}`}>
@@ -20,6 +21,7 @@ const ChallengeItem: React.FC<{ challenge: ChallengeItemState }> = ({
       <p>진행도 : {challenge.userProgress}</p>
       <p>작성자 : {challenge.writer.nickname}</p>
       <p>좋아요 수 : {challenge.likeNum}</p>
+      {!challenge.state && <p>현재 작성 중!!</p>}
     </div>
   );
 };

@@ -4,6 +4,7 @@ import { UserInfo } from "../../store/auth";
 import styles from "./UserItem.module.scss"
 
 const UserItem: React.FC<{ user: UserInfo }> = ({ user }) => {
+  console.log(user);
   return (
     <div className={styles.items}>
       ㅁ <Link to={`/user/${user.id}`}>{user.nickname}</Link>

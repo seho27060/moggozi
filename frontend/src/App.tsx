@@ -7,7 +7,6 @@ import { persistAuth } from "./lib/withTokenApi";
 import "./App.scss";
 import { useSelector } from "react-redux";
 import { RootState } from "./store/store";
-import { profileImgFetchAPI } from "./lib/imgApi";
 import WebSocketProvider from "./lib/WebSocketProvider";
 function App() {
   const dispatch = useDispatch();
@@ -19,10 +18,6 @@ function App() {
       persistAuth()
         .then((res) => {
           dispatch(authentication(res));
-          profileImgFetchAPI(user.id!).then((res) =>
-            dispatch(userImgFetch(res))
-          );
-          // console.log(res)
         })
         .catch((err) => {
           console.log(err);

@@ -19,7 +19,7 @@ const StageEdit: React.FC = () => {
   const dispatch = useDispatch();
 
   async function fetchStagesImg(stages: StageState[]) {
-    await stages.reduce(async (acc, stage, idx) => {
+    await stages.reduce(async (acc, stage) => {
       await acc.then();
       await stageImgFetchAPI(stage.id!)
         .then((res) => {

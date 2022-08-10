@@ -26,6 +26,7 @@ const Paging: React.FC<{
           item > 0 &&
           item <= totalPages && (
             <button
+              key={item}
               className={item === page ? "page-selection button" : "button"}
               onClick={(e) => clickPageHandler(e, item)}
             >
