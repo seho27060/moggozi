@@ -7,6 +7,8 @@ import { useSelector } from "react-redux";
 import { RootState } from "../store/store";
 import { fetchChallengeRankList } from "../lib/generalApi";
 
+import styles from "./MainPage.module.scss"
+
 const MainPage: React.FC = () => {
   const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
   const [isLoading, setIsLoading] = useState(true);
@@ -44,11 +46,12 @@ const MainPage: React.FC = () => {
   }, [isLoggedIn]);
 
   return (
-    <div>
+    <div className={styles.mainPage}>
       MainPage
       <Link to={`/challenge/new`}>
         <button>챌린지 생성</button>
       </Link>
+      
       {isLoading === true && (
         <section>
           <p>Loading...</p>
