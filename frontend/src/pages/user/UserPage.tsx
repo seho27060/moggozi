@@ -49,10 +49,10 @@ function UserPage() {
 
   function followHandler(event: React.MouseEvent) {
     event.preventDefault();
-    setFollowState(!followState);
     followApi(userId)
       .then((res) => {
-        console.log(res);
+        setFollowedCnt(followState ? followedCnt - 1 : followedCnt + 1);
+        setFollowState(!followState);
         if (res.message === "Successfully followed.") {
           let jsonSend: Alert = {
             check: 0,
