@@ -21,13 +21,14 @@ public class StageSaveRequestDto {
         this.img = img;
     }
 
-    public Stage toEntity(Long challenge_id, ChallengeRepository challengeRepository){
+    public Stage toEntity(Long challenge_id, ChallengeRepository challengeRepository, Long size){
         Challenge challenge = challengeRepository.getById(challenge_id);
         return Stage.builder()
                 .name(name)
                 .content(content)
                 .img(img)
                 .challenge(challenge)
+                .order(size + 1)
                 .build();
     }
 }
