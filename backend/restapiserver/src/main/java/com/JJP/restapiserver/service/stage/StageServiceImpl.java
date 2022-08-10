@@ -1,5 +1,6 @@
 package com.JJP.restapiserver.service.stage;
 
+import com.JJP.restapiserver.domain.dto.stage.StageOrderDto;
 import com.JJP.restapiserver.domain.dto.stage.StageResponseDto;
 import com.JJP.restapiserver.domain.dto.stage.StageSaveRequestDto;
 import com.JJP.restapiserver.domain.dto.stage.StageUpdateRequestDto;
@@ -66,5 +67,17 @@ public class StageServiceImpl implements StageService {
         Stage entity = stageRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + id));
 
         stageRepository.delete(entity);
+    }
+
+    @Transactional
+    @Override
+    public Long setOrder(StageOrderDto stageOrderDto){
+        Long id = stageOrderDto.getId();
+
+        Stage entity = stageRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + id));
+
+        entity.update(stageOrderDto.getOrder());
+
+        return id;
     }
 }

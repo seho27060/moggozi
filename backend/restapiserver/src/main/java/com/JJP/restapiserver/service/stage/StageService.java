@@ -1,9 +1,9 @@
 package com.JJP.restapiserver.service.stage;
 
+import com.JJP.restapiserver.domain.dto.stage.StageOrderDto;
 import com.JJP.restapiserver.domain.dto.stage.StageResponseDto;
 import com.JJP.restapiserver.domain.dto.stage.StageSaveRequestDto;
 import com.JJP.restapiserver.domain.dto.stage.StageUpdateRequestDto;
-import com.JJP.restapiserver.domain.entity.stage.Stage;
 
 import java.util.List;
 
@@ -23,4 +23,7 @@ public interface StageService {
 
     // 스테이지 삭제
     void deleteStage(Long stage_id);
+
+    // 스테이지 order 수정
+    Long setOrder(StageOrderDto stageOrderDto);
 }
