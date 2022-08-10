@@ -1,5 +1,6 @@
 package com.JJP.restapiserver.repository.member;
 
+import com.JJP.restapiserver.domain.dto.admin.MemberInfo;
 import com.JJP.restapiserver.domain.dto.member.response.SearchMemberResponse;
 import com.JJP.restapiserver.domain.entity.member.Member;
 import org.springframework.data.domain.Page;
@@ -34,8 +35,14 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 //    int saveRoleById(@Param("role") Role role, @Param("id") Long id);
 
 
-    @Query(value = "SELECT m.id as id, m.nickname as nickname, m.user_img as userImg FROM Member m WHERE m.nickname LIKE :nickname")
+    @Query(value = "SELECT m.id AS id, m.nickname AS nickname, m.user_img AS userImg FROM Member m WHERE m.nickname LIKE :nickname")
     List<SearchMemberResponse> findByKeyword(@Param("nickname") String nickname);
 
     Page<Member> findByNicknameContaining(String nickname, Pageable pageable);
+
+    @Query("SELECT m.id AS memberId, m.username AS username, m.fullname AS fullname " +
+            ", m.nickname AS nickname, m.introduce AS introduce, m.role.name as role FROM Member m " +
+            "WHERE m.username LIKE :username")
+    Page<MemberInfo> findByUsernameContaining(@Param("username") String username, Pageable pageable);
+
 }

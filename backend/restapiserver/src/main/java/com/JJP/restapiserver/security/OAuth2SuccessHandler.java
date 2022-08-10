@@ -1,6 +1,5 @@
 package com.JJP.restapiserver.security;
 
-import com.JJP.restapiserver.domain.entity.member.ERole;
 import com.JJP.restapiserver.domain.entity.member.Member;
 import com.JJP.restapiserver.domain.entity.member.Role;
 import com.JJP.restapiserver.repository.member.MemberRepository;
@@ -47,7 +46,7 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
 
     PasswordEncoder encoder = new BCryptPasswordEncoder();
 
-    private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
+    private final RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response
@@ -90,7 +89,7 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
 
             isFirst = 1;
 
-            Role role = new Role(ERole.valueOf("ROLE_USER"));
+            Role role = roleRepository.findById(1L).get();
 
             /** TODO: Role의 값이 1로 매칭되지 않는 문제 - 권한 부여 시 잘 체크되는지 필요) */
             Member newMember = Member.builder().username(username)
