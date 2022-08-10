@@ -1,0 +1,11 @@
+@use "../styles/mixin.scss" as mixin;
+
+@include mixin.desktop {
+  .mainPage {
+    display: block;
+  }
+}
+
+@include mixin.mobile {
+  
+}

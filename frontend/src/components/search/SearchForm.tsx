@@ -1,14 +1,16 @@
 import React, { useRef, useState } from "react";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { searchChallengeApi, searchUserApi } from "../../lib/generalApi";
 import { hobbySearch, isLoginSearchChallengeApi } from "../../lib/withTokenApi";
 import { UserInfo } from "../../store/auth";
 import { ChallengeItemState, Hobby } from "../../store/challenge";
 import { RootState } from "../../store/store";
+
 import UserList from "../accounts/UserList";
-import ChallengeList from "../challenge/ChallengeList";
+import SearchChallengeList from "../challenge/SearchChallengeList";
+
+import styles from "./SearchForm.module.scss";
 
 const SearchForm: React.FC = () => {
   const searchInputRef = useRef<HTMLInputElement>(null);
@@ -73,38 +75,50 @@ const SearchForm: React.FC = () => {
 
   return (
     <div>
-      <h3>자동 완성 컴포넌트</h3>
-      <form>
-        <label htmlFor="search">search: </label>
+      <header>
         <input
           type="text"
           required
           id="search"
           ref={searchInputRef}
+          placeholder="무엇이든 검색하세요."
           onChange={changeInputHandler}
         ></input>
         <button type="button" onClick={submitHandler}>
-          search
+          돋보기
         </button>
-      </form>
-      <p>챌린지</p>
-      {dropDownChallengeList.length === 0 && <p>해당하는 단어가 없습니다.</p>}
-      <ChallengeList challenges={dropDownChallengeList} />
-      <p>유저</p>
-      {dropDownUserList.length === 0 && <p>해당하는 단어가 없습니다.</p>}
-      <UserList users={dropDownUserList} />
-      <p>취미 태그</p>
-      {dropDownHobbyList.length === 0 && <p>해당하는 단어가 없습니다.</p>}
-      {dropDownHobbyList.map((dropDownItem) => {
-        return (
-          <Link
-            to={`/search?keyword=${dropDownItem.name}&page=0&size=4&choice=2`}
-            key={dropDownItem.id}
-          >
-            {dropDownItem.name}
-          </Link>
-        );
-      })}
+      </header>
+
+      {/* <main> */}
+      <main className={styles.tag}>
+        <h1>유저</h1>
+        {dropDownUserList.length === 0 && <h2>해당하는 유저가 없습니다.</h2>}
+        <UserList users={dropDownUserList} />
+      </main>
+      <main>
+        <h1>챌린지</h1>
+        {dropDownChallengeList.length === 0 && (
+          <h2>해당하는 챌린지가 없습니다.</h2>
+        )}
+        <SearchChallengeList challenges={dropDownChallengeList} />
+      </main>
+      <main>
+        <h1>태그</h1>
+        {dropDownHobbyList.length === 0 && <h2>해당하는 태그가 없습니다.</h2>}
+        {dropDownHobbyList.map((dropDownItem) => {
+          return (
+            <div className={styles.tag}>
+            <Link 
+              to={`/search?keyword=${dropDownItem.name}&page=0&size=4&choice=2`}
+              key={dropDownItem.id}
+            >
+              # {dropDownItem.name}
+            </Link>
+            </div>
+          );
+        })}
+      </main>
+      {/* </main> */}
     </div>
   );
 };
