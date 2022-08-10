@@ -47,7 +47,7 @@ public class StageServiceImpl implements StageService {
     @Transactional
     @Override
     public Long saveStage(Long challenge_id, StageSaveRequestDto stageRequestDto) {
-        return stageRepository.save(stageRequestDto.toEntity(challenge_id, challengeRepository)).getId();
+        return stageRepository.save(stageRequestDto.toEntity(challenge_id, challengeRepository, stageRepository.count())).getId();
     }
 
     @Transactional

@@ -20,7 +20,6 @@ public class Stage extends BaseTimeEntity {
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
 
-    @Column(columnDefinition = "BIGINT(20) NOT NULL UNIQUE KEY auto_increment")
     private Long stage_order;
 
     // 챌린지와 다대일 양방향 관계
