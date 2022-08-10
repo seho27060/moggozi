@@ -106,7 +106,7 @@ public class MemberServiceImpl implements MemberService {
             return ResponseEntity.badRequest().body(new MessageResponse("Error: The user doesn't exist"));
 
         if (encoder.matches(password, member.get().getPassword())) {
-            member.get().updateRole(ERole.ROLE_INVALIDATED_USER);
+            member.get().updateRole(roleRepository.findById(2L).get());
             memberRepository.save(member.get());
             return ResponseEntity.ok(new MessageResponse("Deleted a user successfully!"));
         } else {
@@ -324,7 +324,7 @@ public class MemberServiceImpl implements MemberService {
 
     // 사용자 정보 저장 / 수정
     private void saveMember(Long user_id, String username, String fullname, String password, String nickname, String introduce, String user_img, int is_private, int is_social, Role role) {
-        Member member = null;
+        Member member;
         if (user_id == -1L) {
             member = Member.builder().
                     username(username).fullname(fullname)
