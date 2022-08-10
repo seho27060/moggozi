@@ -1,5 +1,6 @@
 package com.JJP.restapiserver.service.stage;
 
+import com.JJP.restapiserver.domain.dto.challenge.Writer;
 import com.JJP.restapiserver.domain.dto.stage.CommentRequestDto;
 import com.JJP.restapiserver.domain.dto.stage.CommentResponseDto;
 import com.JJP.restapiserver.domain.entity.member.Member;
@@ -82,5 +83,12 @@ public class CommentServiceImpl implements CommentService{
     public ResponseEntity deleteComment(Long comment_id) {
         commentRepository.deleteById(comment_id);
         return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @Override
+    public Writer getCommentWriter(Long comment_id) {
+        Comment comment = commentRepository.getById(comment_id);
+        Writer writer = new Writer(comment.getMember().getId(), comment.getMember().getNickname());
+        return writer;
     }
 }

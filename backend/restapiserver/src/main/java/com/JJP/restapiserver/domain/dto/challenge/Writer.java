@@ -6,8 +6,13 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@AllArgsConstructor
 public class Writer {
     public Long id;
     public String nickname;
+
+    public Writer(Long id, String nickname){
+        this.id =id;
+        this.nickname = nickname;
+    }
+
 }
