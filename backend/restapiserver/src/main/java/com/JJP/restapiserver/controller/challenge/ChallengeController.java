@@ -159,5 +159,11 @@ public class ChallengeController {
         logger.debug("------------컨트롤러 종료---------------");
         return new ResponseEntity(challengePageDto, HttpStatus.OK);
     }
+    @GetMapping("/myChallenge")
+    public ResponseEntity getMyChallenge(HttpServletRequest request){
+        Long member_id = jwtUtils.getUserIdFromJwtToken(request.getHeader("Authorization"));
+        List<ChallengeListResponseDto> challengeListResponseDtoList = challengeService.getMyChallenge(member_id);
+        return new ResponseEntity(challengeListResponseDtoList, HttpStatus.OK);
+    }
 
 }

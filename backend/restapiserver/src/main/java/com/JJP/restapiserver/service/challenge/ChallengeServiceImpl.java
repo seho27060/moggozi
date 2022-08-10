@@ -446,4 +446,12 @@ public class ChallengeServiceImpl implements ChallengeService{
         return challengePageDto;
     }
 
+    @Override
+    public List<ChallengeListResponseDto> getMyChallenge(Long member_id) {
+        List<Challenge> challengeList = challengeRepository.findByMember_id(member_id);
+        List<ChallengeListResponseDto> challengeListResponseDtoList = new ArrayList<>();
+        return challengeIntoListDto(challengeList, challengeListResponseDtoList, member_id);
+    }
+
+
 }

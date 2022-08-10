@@ -39,4 +39,6 @@ public interface ChallengeRepository extends JpaRepository<Challenge, Long> {
 
     List<Challenge> findByIdIn(List<Long> ids);
 
+    List<Challenge> findByMember_id(Long member_id);
+
 }
