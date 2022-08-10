@@ -1,5 +1,6 @@
 package com.JJP.restapiserver.service.post;
 
+import com.JJP.restapiserver.domain.dto.member.response.MyPagePostDto;
 import com.JJP.restapiserver.domain.dto.post.PostResponseDto;
 import com.JJP.restapiserver.domain.dto.post.PostSaveRequestDto;
 import com.JJP.restapiserver.domain.dto.post.PostUpdateRequestDto;
@@ -9,10 +10,8 @@ import com.JJP.restapiserver.repository.stage.PostLikeRepository;
 import com.JJP.restapiserver.repository.stage.PostRepository;
 import com.JJP.restapiserver.repository.stage.StageRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -128,5 +127,18 @@ public class PostServiceImpl implements PostService {
             postResponseDtoList.add(postResponseDto);
         }
         return postResponseDtoList;
+    }
+
+    @Override
+    public MyPagePostDto infinitePostList(Long member_id, Pageable pageable){
+        Slice<Post> challengeSlice = postRepository.findByMember_IdOrderByCreatedDateDesc(member_id, pageable);
+
+        MyPagePostDto myPagePostDto = MyPagePostDto.builder()
+                .pageNum(challengeSlice.getNumber())
+                .content(challengeSlice.getContent())
+                .size(challengeSlice.getSize())
+                .hasNext(challengeSlice.hasNext())
+                .build();
+        return myPagePostDto;
     }
 }

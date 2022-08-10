@@ -1,6 +1,8 @@
 package com.JJP.restapiserver.service.stage;
 
 import com.JJP.restapiserver.domain.dto.MessageResponse;
+import com.JJP.restapiserver.domain.dto.member.response.MyPageStageDto;
+import com.JJP.restapiserver.domain.dto.stage.MyStageDto;
 import com.JJP.restapiserver.domain.dto.stage.StageCompleteDto;
 import com.JJP.restapiserver.domain.dto.stage.StageJoinRequestDto;
 import com.JJP.restapiserver.domain.dto.stage.StageResponseDto;
@@ -11,12 +13,15 @@ import com.JJP.restapiserver.repository.member.MemberRepository;
 import com.JJP.restapiserver.repository.stage.StageRepository;
 import com.JJP.restapiserver.repository.stage.StageUserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -90,5 +95,39 @@ public class StageJoinServiceImpl implements StageJoinService{
         }
 
         return entity.get().getState();
+    }
+
+    @Override
+    public MyPageStageDto infiniteStageList(Long member_id, Pageable pageable) {
+        Slice<StageUser> stageUserSlice = stageUserRepository.findByMember_IdOrderByJoinTimeDesc(member_id, pageable);
+
+        // stageUser -> stage_id -> stage
+        List<Long> stage_idx = stageUserSlice.stream().map(o -> o.getStage().getId()).collect(Collectors.toList());
+        // stage_id -> stage
+        List<Stage> stageList = stageRepository.findByIdIn(stage_idx);
+        List<MyStageDto> myStageDtoList = new ArrayList<>();
+        for(Stage stage : stageList){
+            int state = -1;
+            for(StageUser stageUser : stageUserSlice){
+                if(stageUser.getStage().getId() == stage.getId()){
+                    state = stageUser.getState();
+                }
+            }
+            MyStageDto myStageDto = MyStageDto.builder()
+                    .id(stage.getId())
+                    .img(stage.getImg())
+                    .name(stage.getName())
+                    .state(state)
+                    .build();
+            myStageDtoList.add(myStageDto);
+        }
+
+        MyPageStageDto myPageStageDto = MyPageStageDto.builder()
+                .pageNum(stageUserSlice.getNumber())
+                .content(myStageDtoList)
+                .size(stageUserSlice.getSize())
+                .hasNext(stageUserSlice.hasNext())
+                .build();
+        return myPageStageDto;
     }
 }
