@@ -93,8 +93,8 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
 
             /** TODO: Role의 값이 1로 매칭되지 않는 문제 - 권한 부여 시 잘 체크되는지 필요) */
             Member newMember = Member.builder().username(username)
-                    .fullname(fullname).nickname("User"+randomNo).password(password).is_social(1).build();
-            newMember.updateRole(role);
+                    .fullname(fullname).nickname("User"+randomNo).password(password).is_social(1).role(role).build();
+
             memberRepository.saveAndFlush(newMember);
 
         } else {
