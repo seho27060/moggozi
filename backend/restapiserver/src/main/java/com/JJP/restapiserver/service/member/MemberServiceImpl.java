@@ -1,7 +1,6 @@
 package com.JJP.restapiserver.service.member;
 
 import com.JJP.restapiserver.domain.dto.MessageResponse;
-import com.JJP.restapiserver.domain.dto.challenge.ChallengePageDto;
 import com.JJP.restapiserver.domain.dto.member.request.*;
 import com.JJP.restapiserver.domain.dto.member.response.*;
 import com.JJP.restapiserver.domain.entity.member.ERole;
@@ -34,6 +33,8 @@ import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -71,6 +72,13 @@ public class MemberServiceImpl implements MemberService {
         int is_private = signupRequest.getIsPrivate();
         int is_social = 0;
         Long role_no = 1L;
+
+        // 이메일 유효성 검사
+        String regx = "^(.+)@(.+)$";
+        Pattern pattern = Pattern.compile(regx);
+        Matcher m = pattern.matcher(username);
+        if(!m.matches())
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: Wrong format"));
 
         if (memberRepository.existsByUsername(username)) {
             return ResponseEntity.badRequest().body(new MessageResponse("Error: Username(email) is already taken."));
@@ -183,7 +191,15 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public ResponseEntity<?> usernameCheck(String username) {
         if(!memberRepository.existsByUsername(username)) {
-            return ResponseEntity.ok(new MessageResponse("Username is available"));
+            // 이메일 유효성 검사
+            String regx = "^(.+)@(.+)$";
+            Pattern pattern = Pattern.compile(regx);
+            Matcher m = pattern.matcher(username);
+            if(m.matches())
+                return ResponseEntity.ok(new MessageResponse("Username is available"));
+            else
+                return ResponseEntity.badRequest().body(new MessageResponse("Error: Wrong format"));
+
         } else {
             return ResponseEntity.badRequest().body(new MessageResponse("Error: Username(email) is already taken."));
         }
