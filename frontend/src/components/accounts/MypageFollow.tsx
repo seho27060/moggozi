@@ -68,10 +68,17 @@ const MypageFollow = (props: Props) => {
         <span onClick={followedModalHandler} className={styles.follow}>
           팔로워{" "}
         </span>
-        <span className={styles.cnt} style={{ marginRight: "10px"}}>{followedCnt}</span>{" "}
+        <span className={styles.cnt} style={{ marginRight: "10px" }}>
+          {followedCnt}
+        </span>{" "}
         <span className={styles.line}></span>
-        <span onClick={followingModalHandler} className={styles.follow} style={{ marginLeft: "10px"}}>
-        {" "}팔로잉{" "}
+        <span
+          onClick={followingModalHandler}
+          className={styles.follow}
+          style={{ marginLeft: "10px" }}
+        >
+          {" "}
+          팔로잉{" "}
         </span>
         <span className={styles.cnt}> {followingCnt}</span>
       </div>
@@ -82,7 +89,7 @@ const MypageFollow = (props: Props) => {
               <FollowerList
                 key={object.id}
                 id={object.id}
-                userImg={object.userImg}
+                img={object.img}
                 loginFollowState={object.loginFollowState}
                 nickname={object.nickname}
                 close={CloseModalHandler}
@@ -104,7 +111,7 @@ const MypageFollow = (props: Props) => {
               <FollowingList
                 key={object.id}
                 id={object.id}
-                userImg={object.userImg}
+                img={object.img}
                 nickname={object.nickname}
                 close={CloseModalHandler}
               />

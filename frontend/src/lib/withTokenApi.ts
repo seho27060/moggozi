@@ -1,9 +1,10 @@
 import axios from "axios";
 import { apiConfig } from "../config";
-import { ChallengeSaveState } from "../store/challenge";
+import { ChallengeItemState, ChallengeSaveState } from "../store/challenge";
 import { CommentSend } from "../store/comment";
 import { PostSend, PostUpdateSend } from "../store/postModal";
 import { StageSaveState } from "../store/stage";
+import { addChallengeImg, profileImgFetchAPI } from "./imgApi";
 import { refresh, refreshErrorHandle } from "./refresh";
 
 const withTokenApi = axios.create({
@@ -19,7 +20,9 @@ export default withTokenApi;
 // 계정 관련
 export const persistAuth = async () => {
   const { data } = await withTokenApi.get(`/user/myinfo`);
-  return data;
+  return profileImgFetchAPI(data.id).then((res) => {
+    return { ...data, userImg: res };
+  });
 };
 
 export const userDetail = async () => {
@@ -72,7 +75,10 @@ export const isLoginFetchChallenge = async (id: number) => {
 
 export const isLoginFetchChallengeRankList = async () => {
   const { data } = await withTokenApi.get("/challenge/rank");
-  return data;
+  const newData: ChallengeItemState[] = [];
+  return addChallengeImg(data, newData).then(() => {
+    return newData;
+  });
 };
 
 export const challengeAdd = async (challengeAddData: ChallengeSaveState) => {
@@ -270,7 +276,10 @@ export const isLoginSearchChallengeApi = async (
   const { data } = await withTokenApi.get(
     `/challenge/search/?keyword=${q}&page=${page}&size=${size}`
   );
-  return data;
+  const newData: ChallengeItemState[] = [];
+  return addChallengeImg(data.content, newData).then(() => {
+    return { ...data, content: newData };
+  });
 };
 
 export const isLoginSearchChallengeHobbyApi = async (
@@ -281,7 +290,10 @@ export const isLoginSearchChallengeHobbyApi = async (
   const { data } = await withTokenApi.get(
     `/challenge/tag/search/?keyword=${q}&page=${page}&size=${size}`
   );
-  return data;
+  const newData: ChallengeItemState[] = [];
+  return addChallengeImg(data.content, newData).then(() => {
+    return { ...data, content: newData };
+  });
 };
 
 // 사용법 - 해당 axios는 기본적으로 토큰이 만료되었을 경우 refresh를 겸함.

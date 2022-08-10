@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { UserInfo } from "../../store/auth";
 
 const UserItem: React.FC<{ user: UserInfo }> = ({ user }) => {
+  console.log(user);
   return (
     <div>
       <Link to={`/user/${user.id}`}>{user.nickname}</Link>

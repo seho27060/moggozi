@@ -1,7 +1,43 @@
 import { getDownloadURL, listAll, ref } from "firebase/storage";
 import { storageService } from "../fbase/fbase";
+import { UserInfo } from "../store/auth";
+import { ChallengeItemState } from "../store/challenge";
 import { imgState } from "../store/stage";
 
+// 챌린지 이미지 리스트 받을 함수: 여러 컴포넌트에서 쓰이니 함수화 시킨다.
+export async function addChallengeImg(
+  challenges: ChallengeItemState[],
+  newChallenges: ChallengeItemState[]
+) {
+  await challenges.reduce(async (acc, challenge) => {
+    await acc.then();
+    await challengeImgFetchAPI(challenge.id!)
+      .then((res) => {
+        challenge.img = res;
+        newChallenges.push(challenge);
+      })
+      .catch((err) => {
+        challenge.img = "";
+        newChallenges.push(challenge);
+      });
+    return acc;
+  }, Promise.resolve());
+}
+
+export async function addUserImg(users: UserInfo[]) {
+  await users.reduce(async (acc, user) => {
+    await acc.then();
+    await profileImgFetchAPI(user.id!)
+      .then((res) => {
+        user.img = res;
+      })
+      .catch((err) => {
+        user.img = "";
+      });
+    return acc;
+  }, Promise.resolve());
+  return users;
+}
 // 반환 값은 이미지 경로 path이다.
 
 // 프로필 사진 읽어오기
