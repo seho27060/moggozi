@@ -7,8 +7,8 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 public interface ChallengeService {
-    // 취미에 따른 챌린지 리스트 반환해주는 api
-    List<ChallengeListResponseDto> getChallengeListByHobby(String hobby, Long member_id);
+    // 취미에 따른 챌린지 리스트 반환해주는 api -삭제 예정
+//    List<ChallengeListResponseDto> getChallengeListByHobby(String hobby, Long member_id);
     // 사용자에 맞춰 추천하는 챌린지 리스트를 반환해주는 api
     List<ChallengeListResponseDto> getChallengeListByRecommendation();
     // 검색어에 따른 리스트 반환해주는 api
@@ -23,6 +23,7 @@ public interface ChallengeService {
     // 챌린지 등록하는 api
     ChallengeResponseDto saveChallenge(ChallengeRequestDto challengeData);
 
+    ChallengeResponseDto registerChallenge(Long challenge_ide);
     ChallengeResponseDto updateChallenge(Long id, ChallengeRequestDto challengeData);
     // 챌린지 만든 유저가 챌린지를 삭제하게 하는 api
     int deleteChallenge(Long challenge_id);

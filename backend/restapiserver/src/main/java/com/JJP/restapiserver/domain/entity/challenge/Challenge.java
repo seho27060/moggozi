@@ -78,8 +78,11 @@ public class Challenge extends BaseTimeEntity {
         this.content = challengeRequestDto.getContent();
         this.level = challengeRequestDto.getLevel();
 //        this.hobby = challengeRequestDto.getHobby();
-        this.state = challengeRequestDto.getState();
         this.description = challengeRequestDto.getDescription();
+    }
+
+    public void register(){
+        this.state = 1;
     }
 //    @Builder
 //    public Challenge(Long id, Member member, String name, String challenge_img, String content, int level, String hobby, int state) {

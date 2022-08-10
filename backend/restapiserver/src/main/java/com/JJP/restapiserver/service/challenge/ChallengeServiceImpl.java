@@ -53,13 +53,13 @@ public class ChallengeServiceImpl implements ChallengeService{
 
     private final ChallengeTagService challengeTagService;
 
-    @Override
-    public List<ChallengeListResponseDto> getChallengeListByHobby(String hobby, Long member_id) {
-
-        List<Challenge> challengeList = challengeRepository.findByHobby(hobby);
-        List<ChallengeListResponseDto> responseDtoList = new ArrayList<>();
-        return challengeIntoListDto(challengeList, responseDtoList, member_id);
-    }
+//    @Override
+//    public List<ChallengeListResponseDto> getChallengeListByHobby(String hobby, Long member_id) {
+//
+//        List<Challenge> challengeList = challengeRepository.findByHobby(hobby);
+//        List<ChallengeListResponseDto> responseDtoList = new ArrayList<>();
+//        return challengeIntoListDto(challengeList, responseDtoList, member_id);
+//    }
 
     // 미구현
     @Override
@@ -71,7 +71,7 @@ public class ChallengeServiceImpl implements ChallengeService{
     //테스트 완료
     @Override
     public ChallengePageDto getChallengeListByKeyword(String keyword,Pageable pageable,  Long member_id) {
-        Page<Challenge> challengeList = challengeRepository.findByNameContaining(keyword,pageable);
+        Page<Challenge> challengeList = challengeRepository.findByStateAndNameContaining(1, keyword,pageable);
 
         List<ChallengeListResponseDto> challengeListResponseDtoList = new ArrayList<>();
         challengeListResponseDtoList = challengeIntoListDto(challengeList.toList(), challengeListResponseDtoList,
@@ -89,7 +89,7 @@ public class ChallengeServiceImpl implements ChallengeService{
         return challengePageDto;
     }
     public ChallengePageDto getChallengeListByKeyword(String keyword,Pageable pageable) {
-        Page<Challenge> challengeList = challengeRepository.findByNameContaining(keyword,pageable);
+        Page<Challenge> challengeList = challengeRepository.findByStateAndNameContaining(1,keyword,pageable);
 
         List<ChallengeListResponseDto> challengeListResponseDtoList = new ArrayList<>();
         challengeListResponseDtoList = challengeIntoListDto(challengeList.toList(), challengeListResponseDtoList);
@@ -163,7 +163,8 @@ public class ChallengeServiceImpl implements ChallengeService{
                 .challenge_img(challengeData.getImg())
                 .content(challengeData.getContent())
                 .level(challengeData.getLevel())
-                .state(challengeData.getState())
+                // 임시저장이기 때문에 작성 중이라는 뜻으로 state 값을 0으로 넣어줌.
+                .state(0)
                 .description(challengeData.getDescription())
                 .build();
         challenge =  challengeRepository.save(challenge);
@@ -171,6 +172,12 @@ public class ChallengeServiceImpl implements ChallengeService{
         tagRegister(challenge.getId(), challengeData);
         ChallengeResponseDto challengeResponseDto = new ChallengeResponseDto(challenge);
         return challengeResponseDto;
+    }
+    @Override
+    public ChallengeResponseDto registerChallenge(Long challenge_id){
+        Challenge challenge = challengeRepository.getById(challenge_id);
+        challenge.register();
+        return new ChallengeResponseDto(challenge);
     }
 
     @Override

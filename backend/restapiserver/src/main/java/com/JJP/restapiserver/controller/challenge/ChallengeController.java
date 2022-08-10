@@ -38,16 +38,16 @@ public class ChallengeController {
     private final ChallengeTagService challengeTagService;
 
 
-    @GetMapping("/hobby/{hobby}")
-    public ResponseEntity getChallengeListByHobby(@PathVariable("hobby") String hobby,
-                                                  HttpServletRequest request){
-        Long user_id = jwtUtils.getUserIdFromJwtToken(request.getHeader("Authorization"));
-        List<ChallengeListResponseDto> challengeList = challengeService.getChallengeListByHobby(hobby, user_id);
-        return new ResponseEntity<>(challengeList,HttpStatus.OK);
-    }
+//    @GetMapping("/hobby/{hobby}")
+//    public ResponseEntity getChallengeListByHobby(@PathVariable("hobby") String hobby,
+//                                                  HttpServletRequest request){
+//        Long user_id = jwtUtils.getUserIdFromJwtToken(request.getHeader("Authorization"));
+//        List<ChallengeListResponseDto> challengeList = challengeService.getChallengeListByHobby(hobby, user_id);
+//        return new ResponseEntity<>(challengeList,HttpStatus.OK);
+//    }
 
     // challenge/search/식물?page=1&size=2
-    @GetMapping("/search/")
+    @GetMapping("/search")
     public ResponseEntity getChallengeListByKeyword(@RequestParam("keyword") String keyword, Pageable pageable,
                                                     HttpServletRequest request)
     {
@@ -103,6 +103,13 @@ public class ChallengeController {
         return new ResponseEntity(challengeResponseDto, HttpStatus.OK);
     }
 
+    @PutMapping("/register/{challengeId}")
+    public ResponseEntity registerChallenge(@PathVariable Long challengeId)
+    {
+        challengeService.registerChallenge(challengeId);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
     @PutMapping("/{challenge_id}")
     public ResponseEntity updateChallenge(@PathVariable Long challenge_id, @RequestBody ChallengeRequestDto challengeRequestDto
                 ,HttpServletRequest request)
@@ -139,7 +146,7 @@ public class ChallengeController {
                                                     HttpServletRequest request){
         logger.debug("-----------컨트롤러 시작---------------");
         ChallengePageDto challengePageDto = null;
-        if(request.getHeader("Authorization") != null){
+        if(request.getHeader("Authorization") == null){
              challengePageDto = challengeService.getChallengeContainingTag(keyword,
                     pageable);
         }
