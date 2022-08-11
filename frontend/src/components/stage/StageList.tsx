@@ -1,16 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { setPostingStageId } from "../../store/post";
 import { StageState } from "../../store/stage";
 import StageItem from "./StageItem";
 const StageList: React.FC<{ stages: StageState[] }> = ({ stages }) => {
-  const dispatch = useDispatch()
-  const [showStageId, setShowStageId] = useState(stages[0].id);
-
+  const dispatch = useDispatch();
+  const [showStageId, setShowStageId] = useState(
+    stages.length !== 0 ? stages[0].id : null
+  );
+  console.log(stages);
   const stageSelectHandler = (event: React.MouseEvent, id: number) => {
     event.preventDefault();
     setShowStageId(id);
-    dispatch(setPostingStageId(id))
+    dispatch(setPostingStageId(id));
   };
   return (
     <div>
