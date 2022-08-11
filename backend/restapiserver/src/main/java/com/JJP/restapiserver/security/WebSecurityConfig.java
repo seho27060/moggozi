@@ -62,7 +62,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests()
                 .requestMatchers(request -> CorsUtils.isPreFlightRequest(request)).permitAll()
-                .antMatchers("/ws/notification/**").hasRole("USER")
+                .antMatchers("/ws/notification/**").permitAll()
                 .anyRequest().permitAll()
                 .and()
                 .oauth2Login()
