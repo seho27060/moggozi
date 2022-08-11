@@ -2,9 +2,9 @@ import { Hobby } from "../../store/challenge";
 
 const HobbyItem: React.FC<{ hobby: Hobby }> = ({ hobby }) => {
   return (
-    <li>  
+    <div>  
       # { hobby.name }
-    </li>
+    </div>
   )
 };
 

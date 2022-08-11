@@ -1,21 +1,26 @@
-import "./Paging.scss";
+
+import styles from "./Paging.module.scss";
+
 const Paging: React.FC<{
   page: number;
   totalPages: number;
   clickPageHandler: (event: React.MouseEvent, page: number) => void;
 }> = ({ page, totalPages, clickPageHandler }) => {
+
   const pageArr = [page - 2, page - 1, page, page + 1, page + 2];
+  console.log(page)
+
   return (
-    <div className="pagination">
+    <div className={styles.pagination}>
       <button
-        className="button"
+        className={`${styles.edgeButton} ${styles.edge}`}
         onClick={(e) => clickPageHandler(e, 1)}
         disabled={page === 1}
       >
         &laquo;
       </button>
       <button
-        className="button"
+        className={styles.button}
         onClick={(e) => clickPageHandler(e, page - 1)}
         disabled={page === 1}
       >
@@ -27,7 +32,7 @@ const Paging: React.FC<{
           item <= totalPages && (
             <button
               key={item}
-              className={item === page ? "page-selection button" : "button"}
+              className={(item === page ? `${styles.pageSelection} ${styles.button}` : (styles.button))}
               onClick={(e) => clickPageHandler(e, item)}
             >
               {item}
@@ -36,14 +41,14 @@ const Paging: React.FC<{
         );
       })}
       <button
-        className="pagination-button button"
+        className={(styles.paginationButton, styles.button)}
         onClick={(e) => clickPageHandler(e, page + 1)}
         disabled={page === totalPages}
       >
         &rsaquo;
       </button>
       <button
-        className="pagination-button button"
+        className={`${styles.edgeButton} ${styles.edge}`}
         onClick={(e) => clickPageHandler(e, totalPages)}
         disabled={page === totalPages}
       >

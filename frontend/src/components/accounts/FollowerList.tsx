@@ -15,7 +15,6 @@ interface Props {
 
 const FollowerList = (props: Props): ReactElement => {
   const navigate = useNavigate();
-
   const userId = Number(
     useSelector((state: RootState) => state.auth.userInfo.id)
   );

@@ -1,6 +1,4 @@
-import { RootState } from "../../store/store";
 import { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 
 import { followedApi, followingApi } from "../../lib/withTokenApi";
@@ -19,10 +17,6 @@ interface Props {
 
 const MypageFollow = (props: Props) => {
   const { followedCnt, followingCnt } = props;
-
-  const userId = Number(
-    useSelector((state: RootState) => state.auth.userInfo.id)
-  );
   const toId = Number(useParams().id);
 
   const [followedOpenModal, setFollowedOpenModal] = useState(false);
@@ -45,8 +39,8 @@ const MypageFollow = (props: Props) => {
   };
 
   useEffect(() => {
-    followedApi(toId, userId)
-      .then((res) => {
+    followedApi(toId)
+      .then((res: { totalCount: number; memberInfoList: followed[] }) => {
         setFollowedInfo(res.memberInfoList);
       })
       .catch((err) => {
@@ -54,13 +48,13 @@ const MypageFollow = (props: Props) => {
       });
 
     followingApi(toId)
-      .then((res) => {
+      .then((res: { totalCount: number; memberInfoList: followed[] }) => {
         setFollowingInfo(res.memberInfoList);
       })
       .catch((err) => {
         console.log(err);
       });
-  }, [toId, userId]);
+  }, [toId]);
 
   return (
     <div>

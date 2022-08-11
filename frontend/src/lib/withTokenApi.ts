@@ -4,7 +4,7 @@ import { ChallengeItemState, ChallengeSaveState } from "../store/challenge";
 import { CommentSend } from "../store/comment";
 import { PostSend, PostUpdateSend } from "../store/postModal";
 import { StageSaveState } from "../store/stage";
-import { addChallengeImg, profileImgFetchAPI } from "./imgApi";
+import { addChallengeImg, addUserImg, profileImgFetchAPI } from "./imgApi";
 import { refresh, refreshErrorHandle } from "./refresh";
 
 const withTokenApi = axios.create({
@@ -55,16 +55,18 @@ export const followApi = async (toId: number | null) => {
   return data;
 };
 
-export const followedApi = async (toMember: number, loginID: number) => {
-  const { data } = await withTokenApi.get(
-    `user/followed/${toMember}/${loginID}`
-  );
-  return data;
+export const followedApi = async (toMember: number) => {
+  const { data } = await withTokenApi.get(`/user/followed/${toMember}`);
+  return addUserImg(data.memberInfoList).then((res) => {
+    return { ...data, memberInfoList: res };
+  });
 };
 
 export const followingApi = async (fromMemberId: number) => {
-  const { data } = await withTokenApi.get(`user/following/${fromMemberId}`);
-  return data;
+  const { data } = await withTokenApi.get(`/user/following/${fromMemberId}`);
+  return addUserImg(data.memberInfoList).then((res) => {
+    return { ...data, memberInfoList: res };
+  });
 };
 
 // 챌린지 관련
