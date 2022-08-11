@@ -10,7 +10,6 @@ import { followApi } from "../../lib/withTokenApi";
 import MypageFollow from "../../components/accounts/MypageFollow";
 
 import styles from "./UserPage.module.scss";
-import { profileImgFetchAPI } from "../../lib/imgApi";
 import { WebSocketContext } from "../../lib/WebSocketProvider";
 import { Alert } from "../../store/alert";
 
