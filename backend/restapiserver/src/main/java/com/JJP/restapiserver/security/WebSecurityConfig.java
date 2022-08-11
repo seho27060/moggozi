@@ -13,6 +13,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.CorsUtils;
@@ -61,8 +62,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests()
                 .requestMatchers(request -> CorsUtils.isPreFlightRequest(request)).permitAll()
-                .antMatchers("/**").permitAll()
-//                .anyRequest().permitAll()
+                .antMatchers("/ws/notification/**").hasRole("ADMIN")
+                .anyRequest().permitAll()
                 .and()
                 .oauth2Login()
                 .successHandler(oAuth2SuccessHandler)
@@ -70,7 +71,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .userService(customOAuth2UserService);
 
         // 접근하기 전 인증된 사용자인지, 유저이름과 비밀번호가 맞게 입력되었는지를 확인하는 필터
-//        http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 
     @Bean
