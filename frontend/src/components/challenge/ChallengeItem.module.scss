@@ -12,6 +12,11 @@
     border-bottom: 1px solid mixin.$cloudLine;
     // align-items: ;
 
+    &:hover {
+      background: rgba(197, 197, 197, 0.359);
+      transition: all 0.5s;
+    }
+
     img {
       width: 280px;
       height: 170px;

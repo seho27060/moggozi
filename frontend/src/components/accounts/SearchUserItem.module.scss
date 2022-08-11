@@ -11,6 +11,7 @@
     padding: 40px 0 40px 0;
     display: flex;
     max-width: 992px;
+    border-bottom: 1px solid mixin.$cloudLine;
 
     &:hover {
       background: rgba(197, 197, 197, 0.359);
@@ -27,12 +28,12 @@
     .info {
       display: flex;
       flex-direction: column;
-      justify-content:center;
+      justify-content: center;
       margin: 0 20px 0 20px;
 
       .title {
         display: flex;
-        align-items: end;
+        align-items: flex-end;
         margin-bottom: 15px;
 
         div:nth-child(1) {

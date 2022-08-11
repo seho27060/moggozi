@@ -4,6 +4,7 @@
   .pagination {
     display: flex;
     justify-content: center;
+    align-items: center;
     margin-top: 15px;
   }
 
@@ -19,6 +20,7 @@
     justify-content: center;
     align-items: center;
     font-size: 1rem;
+    margin: 0 10px 0 10px;
 
     &:hover {
       color: #fff;
@@ -26,7 +28,7 @@
       border-radius: 100%;
       font-weight: 700;
       border: 0;
-
+      transition: all 0.5s;
 
     }
   }
@@ -35,15 +37,54 @@
     color: blue;
   }
 
-  // .button:hover {
-  //   color: white;
-  //   background-color: #337ab7;
-  // }
+  .button:hover {
+    color: #fff;
+    background: mixin.$mainColor;
+    width: 30px;
+    height: 30px;
+    border-radius: 100%;
+    transition: all 0.5s;
+  }
 
   .pageSelection {
     color: #fff;
     background: mixin.$mainColor;
     width: 30px;
     height: 30px;
+    border-radius: 100%;
   }
+  
+
+  .edgeButton {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    color: black;
+    background-color: #fff;
+    font-weight: 700;
+    border: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1rem;
+    margin: 0 10px 0 10px;
+
+    &:hover {
+      color: #fff;
+      background: mixin.$mainColor;
+      border-radius: 100%;
+      font-weight: 700;
+      border: 0;
+      transition: all 0.5s;
+    }
+  }
+
+  .edge {
+    width: 50px;
+    height: 50px;
+    border-radius: 100%;
+    border: 1px solid mixin.$cloudLine;
+  }
+
+
 }

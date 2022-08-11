@@ -9,11 +9,11 @@ const Paging: React.FC<{
 
   const pageArr = [page - 2, page - 1, page, page + 1, page + 2];
   console.log(page)
-  
+
   return (
     <div className={styles.pagination}>
       <button
-        className={styles.button}
+        className={`${styles.edgeButton} ${styles.edge}`}
         onClick={(e) => clickPageHandler(e, 1)}
         disabled={page === 1}
       >
@@ -32,7 +32,7 @@ const Paging: React.FC<{
           item <= totalPages && (
             <button
               key={item}
-              className={(item === page ? (styles.pageSelection, styles.button) : (styles.button))}
+              className={(item === page ? `${styles.pageSelection} ${styles.button}` : (styles.button))}
               onClick={(e) => clickPageHandler(e, item)}
             >
               {item}
@@ -48,7 +48,7 @@ const Paging: React.FC<{
         &rsaquo;
       </button>
       <button
-        className={(styles.paginationButton, styles.button)}
+        className={`${styles.edgeButton} ${styles.edge}`}
         onClick={(e) => clickPageHandler(e, totalPages)}
         disabled={page === totalPages}
       >

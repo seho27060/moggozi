@@ -12,7 +12,12 @@ import SearchChallengeList from "../challenge/SearchChallengeList";
 
 import styles from "./SearchForm.module.scss";
 
-const SearchForm: React.FC = () => {
+interface Props {
+  close: () => void;
+}
+
+const SearchForm = (props: Props) => {
+  const { close } = props 
   const searchInputRef = useRef<HTMLInputElement>(null);
   // 자동완성 기능을 위한 dropDownList
   const [dropDownChallengeList, setDropDownChallengeList] = useState<
@@ -27,8 +32,17 @@ const SearchForm: React.FC = () => {
   const submitHandler = (event: React.FormEvent) => {
     event.preventDefault();
     const enteredSearch = searchInputRef.current!.value;
+    close();
     navigate(`/search/?keyword=${enteredSearch}&page=0&size=4&choice=0`);
   };
+
+  const onKeyPressHandler = (event: React.KeyboardEvent) => {
+    if (event.key === "Enter") {
+      const enteredSearch = searchInputRef.current!.value;
+      close();
+      navigate(`/search/?keyword=${enteredSearch}&page=0&size=4&choice=0`);
+    }
+  }
 
   const changeInputHandler = (event: React.ChangeEvent) => {
     event.preventDefault();
@@ -82,6 +96,7 @@ const SearchForm: React.FC = () => {
           id="search"
           ref={searchInputRef}
           placeholder="무엇이든 검색하세요."
+          onKeyPress={onKeyPressHandler}
           onChange={changeInputHandler}
         ></input>
         <button type="button" onClick={submitHandler}>
@@ -93,14 +108,14 @@ const SearchForm: React.FC = () => {
       <main className={styles.tag}>
         <h1>유저</h1>
         {dropDownUserList.length === 0 && <h2>해당하는 유저가 없습니다.</h2>}
-        <UserList users={dropDownUserList} />
+        <UserList users={dropDownUserList} close={close} />
       </main>
       <main>
         <h1>챌린지</h1>
         {dropDownChallengeList.length === 0 && (
           <h2>해당하는 챌린지가 없습니다.</h2>
         )}
-        <SearchChallengeList challenges={dropDownChallengeList} />
+        <SearchChallengeList challenges={dropDownChallengeList} close={close} />
       </main>
       <main>
         <h1>태그</h1>
@@ -110,7 +125,7 @@ const SearchForm: React.FC = () => {
             <div className={styles.tag}>
             <Link 
               to={`/search?keyword=${dropDownItem.name}&page=0&size=4&choice=2`}
-              key={dropDownItem.id}
+              key={dropDownItem.id} onClick={close}
             >
               # {dropDownItem.name}
             </Link>

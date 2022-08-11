@@ -3,11 +3,11 @@ import { UserInfo } from "../../store/auth";
 
 import styles from "./UserItem.module.scss"
 
-const UserItem: React.FC<{ user: UserInfo }> = ({ user }) => {
+const UserItem: React.FC<{ user: UserInfo, close: () => void }> = ({ user, close }) => {
   console.log(user);
   return (
     <div className={styles.items}>
-      ㅁ <Link to={`/user/${user.id}`}>{user.nickname}</Link>
+      ㅁ <Link to={`/user/${user.id}`} onClick={close}>{user.nickname}</Link>
       {/* {!!user.img && <img src={user.img} alt="user Img"></img>} */}
     </div>
   );

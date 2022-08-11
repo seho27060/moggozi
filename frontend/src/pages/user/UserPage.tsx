@@ -31,6 +31,7 @@ function UserPage() {
   const [followState, setFollowState] = useState(false);
 
   useEffect(() => {
+    
     otherUserDetail(userId, loginData.userInfo.id)
       .then((res) => {
         setNickname(res.nickname);

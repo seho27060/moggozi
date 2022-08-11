@@ -87,7 +87,7 @@ const NavigationBar: React.FC = () => {
           )}
         </ul>
         <SearchModal open={modalOpen} close={closeModal}>
-          <SearchForm />
+          <SearchForm close={closeModal} />
         </SearchModal>
       </div>
     </header>

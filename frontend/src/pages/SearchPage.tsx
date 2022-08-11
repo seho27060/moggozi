@@ -119,6 +119,20 @@ const SearchPage: React.FC = () => {
     });
   };
 
+  const onKeyPressHandler = (event: React.KeyboardEvent) => {
+    if (event.key === "Enter") {
+      const enteredSearch = searchInputRef.current!.value;
+      if (!!enteredSearch) {
+        setSearchParams({
+          keyword: enteredSearch,
+          page: "0",
+          size: String(size),
+          choice: String(choice),
+        });
+      }
+    }
+  }
+
   const submitHandler = (event: React.FormEvent) => {
     event.preventDefault();
     const enteredSearch = searchInputRef.current!.value;
@@ -137,7 +151,7 @@ const SearchPage: React.FC = () => {
       <div>
         <div className={styles.title}>검색</div>
       <div className={styles.form}>
-        <input type="text" placeholder="무엇이든 검색하세요." required id="search" ref={searchInputRef}></input>
+        <input type="text" placeholder="무엇이든 검색하세요." required id="search" ref={searchInputRef} onKeyPress={onKeyPressHandler}></input>
         <button onClick={submitHandler}>검색</button>
       </div>
 
