@@ -45,5 +45,5 @@ public interface FollowRepository extends JpaRepository<Follow, Long> {
     int deleteByFrom_memberAndTo_member(@Param("fromMemberId") Long fromMemberId, @Param("toMemberId") Long toMemberId);
 
     @Query(value = "SELECT count(f) FROM Follow f WHERE f.from_member.id = :fromMemberId AND f.to_member.id = :toMemberId")
-    boolean existsByFrom_memberAndTo_member(@Param("fromMemberId") Long fromMemberId, @Param("toMemberId") Long toMemberId);
+    int existsByFrom_memberAndTo_member(@Param("fromMemberId") Long fromMemberId, @Param("toMemberId") Long toMemberId);
 }

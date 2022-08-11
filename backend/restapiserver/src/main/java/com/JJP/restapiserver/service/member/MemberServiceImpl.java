@@ -199,7 +199,6 @@ public class MemberServiceImpl implements MemberService {
                 return ResponseEntity.ok(new MessageResponse("Username is available"));
             else
                 return ResponseEntity.badRequest().body(new MessageResponse("Error: Wrong format"));
-
         } else {
             return ResponseEntity.badRequest().body(new MessageResponse("Error: Username(email) is already taken."));
         }
@@ -291,7 +290,7 @@ public class MemberServiceImpl implements MemberService {
         Member member = memberRepository.findById(userId).get();
         int followedCnt = followRepository.countByFollower(member.getId());
         int followingCnt = followRepository.countByFollowing(member.getId());
-        int followStatus = followRepository.existsByFrom_memberAndTo_member(loginId, userId) ? 1 : 0; // 1: follow, 0: unfollow
+        int followStatus = followRepository.existsByFrom_memberAndTo_member(loginId, userId) >= 1 ? 1 : 0; // 1: follow, 0: unfollow
 
         return ProfileResponse.builder()
                 .id(member.getId())
