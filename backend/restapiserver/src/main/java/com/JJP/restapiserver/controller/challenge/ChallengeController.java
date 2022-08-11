@@ -128,9 +128,9 @@ public class ChallengeController {
     }
 
     @PutMapping("/complete/{challenge_id}")
-    public ResponseEntity completeChallenge(@RequestBody ChallengeCompleteRequestDto challengeCompleteRequestDto)
+    public ResponseEntity completeChallenge(@RequestBody ChallengeUpdateRequestDto challengeUpdateRequestDto)
     {
-        int response = challengeService.completeChallenge(challengeCompleteRequestDto);
+        challengeService.completeChallenge(challengeUpdateRequestDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

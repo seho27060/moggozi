@@ -30,8 +30,10 @@ public interface ChallengeService {
 
 
     // 특정 유저의 챌린지를 완료 상태 변경하는 api
-    int completeChallenge(ChallengeCompleteRequestDto challengeCompleteRequestDto);
+    void completeChallenge(ChallengeUpdateRequestDto challengeCompleteRequestDto);
+    void tryChallenge(ChallengeUpdateRequestDto challengeUpdateRequestDto);
 
+    void cancelChallenge(ChallengeUpdateRequestDto challengeUpdateRequestDto);
     Long joinedChallengeNum(Long member_id);
 
     List<ChallengeListResponseDto> joinedChallengeList8(Long member_id);
