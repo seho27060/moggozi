@@ -12,6 +12,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -22,6 +23,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@DynamicInsert
 public class Challenge extends BaseTimeEntity {
     @Id
     @GeneratedValue
@@ -45,6 +47,8 @@ public class Challenge extends BaseTimeEntity {
 
     private int state;
 
+    @Column(columnDefinition = "INTEGER default 0")
+    private int likeNum = 0;
     @Column(length = 50)
     private String description;
 
@@ -79,6 +83,13 @@ public class Challenge extends BaseTimeEntity {
         this.level = challengeRequestDto.getLevel();
 //        this.hobby = challengeRequestDto.getHobby();
         this.description = challengeRequestDto.getDescription();
+    }
+    public void setZeroLikeNum(){
+        this.likeNum = 0;
+    }
+
+    public void addLikeNum(){
+        this.likeNum++;
     }
 
     public void register(){

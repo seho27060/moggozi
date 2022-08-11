@@ -41,7 +41,7 @@ public class ChallengeListResponseDto {
         this.img = challenge.getChallenge_img();
         this.content = challenge.getContent();
         this.level = challenge.getLevel();
-        this.likeNum = challenge.getChallengeLikeList().size();
+        this.likeNum = challenge.getLikeNum();
         this.hobbyList = new ArrayList<>();
         this.userProgress = 0;
         this.state = challenge.getState();

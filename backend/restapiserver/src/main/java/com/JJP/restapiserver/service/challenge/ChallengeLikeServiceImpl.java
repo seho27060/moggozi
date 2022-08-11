@@ -1,6 +1,7 @@
 package com.JJP.restapiserver.service.challenge;
 
 import com.JJP.restapiserver.domain.dto.challenge.ChallengeLikeRequestDto;
+import com.JJP.restapiserver.domain.entity.challenge.Challenge;
 import com.JJP.restapiserver.domain.entity.challenge.ChallengeLike;
 import com.JJP.restapiserver.repository.challenge.ChallengeLikeRepository;
 import com.JJP.restapiserver.repository.challenge.ChallengeRepository;
@@ -9,11 +10,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class ChallengeLikeServiceImpl implements ChallengeLikeService{
 
     private final ChallengeLikeRepository challengeLikeRepository;
@@ -27,12 +30,16 @@ public class ChallengeLikeServiceImpl implements ChallengeLikeService{
                 member_id, challengeLikeRequestDto.getChallengeId()
         );
         if(challengeLike.isPresent())
-            challengeLikeRepository.delete(challengeLike.get());
-        else
+            return new ResponseEntity(HttpStatus.OK);
+        else{
+
             challengeLikeRepository.save(ChallengeLike.builder()
                     .member(memberRepository.getById(member_id))
                     .challenge(challengeRepository.getById(challengeLikeRequestDto.getChallengeId()))
                     .build());
+            Challenge challenge = challengeRepository.getById(challengeLikeRequestDto.getChallengeId());
+            challenge.addLikeNum();
+        }
         return new ResponseEntity(HttpStatus.OK);
     }
 

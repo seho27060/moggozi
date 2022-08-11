@@ -163,6 +163,7 @@ public class ChallengeServiceImpl implements ChallengeService{
                 .challenge_img(challengeData.getImg())
                 .content(challengeData.getContent())
                 .level(challengeData.getLevel())
+                .likeNum(0)
                 // 임시저장이기 때문에 작성 중이라는 뜻으로 state 값을 0으로 넣어줌.
                 .state(0)
                 .description(challengeData.getDescription())
@@ -297,17 +298,29 @@ public class ChallengeServiceImpl implements ChallengeService{
             // 내가 최근에 고른 5개의 취미의 인덱스
             List<Long> tag_ids = myhobby.stream().map(o -> o.getTag().getId()).collect(Collectors.toList());
             //
+            logger.debug("-------------내가 가진 취미 번호 리스트 --------------");
+            logger.debug(tag_ids.toString());
             List<Tag> myTag = tagRepository.findByIdIn(tag_ids);
 
+
             List<JoinedChallenge> joinedChallengeList = joinedChallengeRepository.findByMember_id(member_id);
+            logger.debug("내가 지금까지 참여한 챌린지 번호 리스트");
             List<Long> joined_ids = joinedChallengeList.stream().map(o -> o.getChallenge().getId()).collect(Collectors.toList());
+            logger.debug(joined_ids.toString());
             for(int i =0; i < tag_ids.size(); i++){
 
-            List<Object[]> results = challengeRepository.findUnjoinedChallenge(joined_ids, tag_ids);
-            Challenge challenge = challengeRepository.getById(Long.parseLong(results.get(0)[0].toString()));
-            ChallengeListResponseDto challengeListResponseDto = new ChallengeListResponseDto(challenge);
-            challengeListResponseDtoList.add(challengeListResponseDto);
-            joined_ids.add(challenge.getId());
+
+            List<Object[]> results = challengeRepository.findUnJoinedChallenge(joined_ids, tag_ids);
+
+            if(!results.isEmpty()){
+                Challenge challenge = challengeRepository.getById(Long.parseLong(results.get(0)[0].toString()));
+                ChallengeListResponseDto challengeListResponseDto = new ChallengeListResponseDto(challenge);
+                challengeListResponseDtoList.add(challengeListResponseDto);
+                joined_ids.add(challenge.getId());
+                }
+            else {
+                logger.debug("---------------------못해먹겠네 진짜---------------");
+            }
             }
         }
         return challengeListResponseDtoList;

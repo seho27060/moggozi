@@ -169,8 +169,14 @@ public class ChallengeController {
 
     @GetMapping("/recommendation")
     public ResponseEntity getRecommendationList(HttpServletRequest request){
+        if(request.getHeader("Authorization") != null){
         Long member_id = jwtUtils.getUserIdFromJwtToken(request.getHeader("Authorization"));
         List<ChallengeListResponseDto> challengeListResponseDtoList = challengeService.getChallengeRecommendationList(member_id, 5);
         return new ResponseEntity(challengeListResponseDtoList, HttpStatus.OK);
+        }
+        else{
+            List<ChallengeListResponseDto> challengeListResponseDtoList = challengeService.getChallengeRecommendationList(-1L,5);
+            return new ResponseEntity(challengeListResponseDtoList, HttpStatus.OK);
+        }
     }
 }
