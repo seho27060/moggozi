@@ -70,6 +70,7 @@ const UpdatePassword: React.FC = () => {
               id="currentPw"
               ref={currentPasswordRef}
               autoComplete="false"
+              className={styles.input1}
             />
           </div>
           <br />
@@ -83,6 +84,7 @@ const UpdatePassword: React.FC = () => {
               onChange={(event) => {
                 setPasswordInput(event.target.value);
               }}
+              className={styles.input2}
             />
           </div>
           <br />
@@ -100,6 +102,7 @@ const UpdatePassword: React.FC = () => {
                   setPasswordCheck(false);
                 }
               }}
+              className={styles.input1}
             />
           </div>
           {!passwordCheck && <p>비밀번호가 일치하지 않습니다.</p>}
@@ -119,8 +122,8 @@ const UpdatePassword: React.FC = () => {
             close={closeModal}
             header="비밀번호 변경 완료"
           >
-            <p>다시 로그인 해주세요.</p>
-          </ReturnMainModal>
+            <p>비밀번호가 변경되었습니다.</p>
+            <p>원할한 이용을 위해 다시 로그인해주세요</p>          </ReturnMainModal>
         </React.Fragment>
       </div>
     </div>

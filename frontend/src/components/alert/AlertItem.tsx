@@ -4,7 +4,7 @@ import { alertRead, postRead } from "../../lib/withTokenApi";
 import { Alert } from "../../store/alert";
 import { PostData } from "../../store/post";
 import {  setModalPostState, setPostModalOpen } from "../../store/postModal";
-
+// import styles from "./AlertOnair.module.scss"
 const AlertItem: React.FC<{ alertData: Alert }> = ({ alertData }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch()
@@ -38,11 +38,11 @@ const AlertItem: React.FC<{ alertData: Alert }> = ({ alertData }) => {
   };
   // type하고 index 이용해서 api요청후 이동할 라우터 정하기
   return (
-    <div>
+    <div  >
       <button onClick={alertCheckHandler}>
         {/* 확인한 알림/ 안한 알림에 따라 다르게 출력 */}
         {/* type 별로 라우터 다르게 navigate */}
-        <div>{alertData.message}</div>
+        <div >{alertData.message}</div>
       </button>
     </div>
   );

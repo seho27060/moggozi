@@ -7,6 +7,7 @@ import { RootState } from "../../store/store";
 import { setPostStageList } from "../../store/postStage";
 import { postRandomRead } from "../../lib/withTokenApi";
 import Loader from "../ui/Loader";
+import { PostData } from "../../store/post";
 
 const PostRandomList: React.FC<{}> = () => {
   const dispatch = useDispatch();
@@ -14,7 +15,7 @@ const PostRandomList: React.FC<{}> = () => {
     (state: RootState) => state.postStage
   );
 
-  const [isLogging, setIsLogging] = useState(false)
+  const [isLogging, setIsLogging] = useState(false);
   let postCountStart = postCount;
 
   const handleScroll = useCallback((): void => {
@@ -25,9 +26,9 @@ const PostRandomList: React.FC<{}> = () => {
     if (Math.round(scrollTop + innerHeight) > scrollHeight) {
       postRandomRead(16).then((res) => {
         console.log("infinite call ver1");
-        setIsLogging(true)
+        setIsLogging(true);
         dispatch(setPostStageList(res));
-        setTimeout(()=>setIsLogging(false),300)
+        setTimeout(() => setIsLogging(false), 300);
       });
     }
   }, [dispatch]);
@@ -46,27 +47,26 @@ const PostRandomList: React.FC<{}> = () => {
     <div>
       <hr />
       PostList
-      {postStageList!.map(
-        (post) => (
-          addPostCount(),
-          (
-            <div key={postCountStart}>
-              <PostItem post={post} />
-              <button
-                onClick={(event: MouseEvent) => {
-                  event.preventDefault();
-                  dispatch(setModalPostState(post));
-                  dispatch(setPostModalOpen(true));
-                }}
-              >
-                해당 포스팅 열기
-              </button>
-              <hr />
-            </div>
-          )
-        )
-      )}
-      {isLogging && <Loader/>}
+      {postStageList!.map((post: PostData) => {
+        addPostCount();
+        return(<div key={postCountStart}>
+          <>
+            <PostItem post={post} />
+            <button
+              onClick={(event: MouseEvent) => {
+                event.preventDefault();
+                dispatch(setModalPostState(post));
+                dispatch(setPostModalOpen(true));
+              }}
+            >
+              해당 포스팅 열기
+            </button>
+          </>
+
+          <hr />
+        </div>)
+      })}
+      {isLogging && <Loader />}
     </div>
   );
 };

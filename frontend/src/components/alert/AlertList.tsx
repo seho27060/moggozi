@@ -1,11 +1,16 @@
-import { MouseEvent } from "react";
+import { Dispatch, MouseEvent, SetStateAction } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { alertAll } from "../../lib/withTokenApi";
 import { Alert, setAlertList } from "../../store/alert";
 import { RootState } from "../../store/store";
 import AlertItem from "./AlertItem";
-const AlertList: React.FC<{}> = () => {
+
+import styles from "./AlertOnair.module.scss";
+
+const AlertList: React.FC<{
+  setIsToggle: Dispatch<SetStateAction<boolean>>;
+}> = ({ setIsToggle }) => {
   const dispatch = useDispatch();
   const loadedAlertList = useSelector(
     (state: RootState) => state.alert.alertList
@@ -20,16 +25,18 @@ const AlertList: React.FC<{}> = () => {
   console.log("loadAlertlist", loadedAlertList);
 
   return (
-    <div>
-      AlertList
+    <div className={styles.dropdownContent}>
       <>
         {loadedAlertList &&
           loadedAlertList.map((alert: Alert) => (
             <div key={alert.id}>
-              <AlertItem alertData={alert} />
+              <AlertItem alertData={alert}/>
             </div>
           ))}
         {}
+        <button onClick={alertAllHandler} style={{ zIndex: 1 }}>
+          알림 기록 확인
+        </button>
       </>
       {/* <button onClick={() => {
         alertReadall().then((res)=>{
@@ -40,11 +47,7 @@ const AlertList: React.FC<{}> = () => {
           })
         })
       }}>알림 전체 확인</button> */}
-      <button onClick={alertAllHandler}>알림 기록 확인</button>
-      {/* <div>
-        dropDiwn
-        <Dropdown dropdownItems = {loadedAlertList}/>
-      </div> */}
+      <button onClick={() => setIsToggle(false)}>닫기</button>
     </div>
   );
 };
