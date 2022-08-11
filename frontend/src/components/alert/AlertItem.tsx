@@ -1,15 +1,16 @@
 import { useDispatch } from "react-redux";
 import {  useNavigate } from "react-router-dom";
-import { alertRead } from "../../lib/withTokenApi";
+import { alertRead, postRead } from "../../lib/withTokenApi";
 import { Alert } from "../../store/alert";
-import {  setPostModalState } from "../../store/postModal";
+import { PostData } from "../../store/post";
+import {  setModalPostState, setPostModalOpen } from "../../store/postModal";
 
-const AlertItem: React.FC<{ alert: Alert }> = ({ alert }) => {
+const AlertItem: React.FC<{ alertData: Alert }> = ({ alertData }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch()
 
   const alertCheckHandler = () => {
-    alertRead(Number(alert!.id))
+    alertRead(Number(alertData!.id))
       .then((res) => {
         console.log("alert check", res);
       })
@@ -17,18 +18,22 @@ const AlertItem: React.FC<{ alert: Alert }> = ({ alert }) => {
         console.log(err);
       });
     if (
-      alert.type === "post" ||
-      alert.type === "comment" ||
-      alert.type === "reply"
+      alertData.type === "post" ||
+      alertData.type === "comment" ||
+      alertData.type === "reply"
     ) {
       // 모달 띄우기
-      // dispatch(setModalPostState(post));
-      dispatch(setPostModalState(true));
+      postRead(Number(alertData!.index)).then((res:PostData) => {
+        dispatch(setModalPostState(res));
+        dispatch(setPostModalOpen(true));
+      }).catch((err)=>{
+        alert(err)
+      })
       // dispatch(setPostModalStageId);
-    } else if (alert.type === "follow") {
-      navigate(`/user/${alert.senderId}`);
-    } else if (alert.type === "challenge") {
-      navigate(`/challenge/${alert.index}`);
+    } else if (alertData.type === "follow") {
+      navigate(`/user/${alertData.senderId}`);
+    } else if (alertData.type === "challenge") {
+      navigate(`/challenge/${alertData.index}`);
     }
   };
   // type하고 index 이용해서 api요청후 이동할 라우터 정하기
@@ -37,7 +42,7 @@ const AlertItem: React.FC<{ alert: Alert }> = ({ alert }) => {
       <button onClick={alertCheckHandler}>
         {/* 확인한 알림/ 안한 알림에 따라 다르게 출력 */}
         {/* type 별로 라우터 다르게 navigate */}
-        <div>{alert.message}</div>
+        <div>{alertData.message}</div>
       </button>
     </div>
   );

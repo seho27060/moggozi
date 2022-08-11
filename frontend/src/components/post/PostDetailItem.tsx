@@ -9,11 +9,13 @@ import CommentList from "../comment/CommentList";
 import { useDispatch } from "react-redux";
 import PostModifyBtn from "./PostModifyBtn";
 import PostLikeBtn from "./PostLikeBtn";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { setPostModalOpen } from "../../store/postModal";
 
 const PostDetailItem: React.FC<{}> = () => {
   const dispatch = useDispatch();
-  const user = useSelector((state:RootState)=>state.auth.userInfo)
+  const navigate = useNavigate();
+  const user = useSelector((state: RootState) => state.auth.userInfo);
   const post = useSelector((state: RootState) => state.postModal);
   const commentState = useSelector(
     (state: RootState) => state.comment.comments
@@ -39,10 +41,15 @@ const PostDetailItem: React.FC<{}> = () => {
 
         <div>postid:{post.postModalState!.id}</div>
         <div>
-          <div>프로필이미지 : {post.postModalState!.writer?.img}</div>
-          <Link to={`/user/${post.postModalState.writer!.id}`}>
+          <button
+            onClick={() => {
+              navigate(`/user/${post.postModalState.writer!.id}`);
+              dispatch(setPostModalOpen(false));
+            }}
+          >
+            <div>프로필이미지 : {post.postModalState!.writer?.img}</div>
             <div>작성자 : {post.postModalState!.writer?.nickname}</div>
-          </Link>
+          </button>
           <hr />
         </div>
         <div>

@@ -10,7 +10,7 @@ import { WebSocketContext } from "../../lib/WebSocketProvider";
 import PostUpdateForm from "../../components/post/PostUpdateForm";
 import {
   setPostUpdateFormState,
-  setPostModalState,
+  setPostModalOpen,
 } from "../../store/postModal";
 import Modal from "../ui/Modal";
 import PostDetailItem from "../post/PostDetailItem";
@@ -22,7 +22,7 @@ const AlertOnair: React.FC<{}> = () => {
     (state: RootState) => state.postModal
   );
   const closePostModal = () => {
-    dispatch(setPostModalState(false));
+    dispatch(setPostModalOpen(false));
     dispatch(setPostUpdateFormState(false));
   };
   const realTimeAlert = useSelector(
