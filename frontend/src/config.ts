@@ -5,6 +5,7 @@ export const apiConfig = {
   apiRoot: process.env.REACT_APP_API_ROOT
 }
 
+
 export const socialLogin = {
   kakaoOAuthURL: process.env.REACT_APP_KAKAO_OAUTH_URL,
   naverOAuthURL: process.env.REACT_APP_NAVER_OAUTH_URL,
