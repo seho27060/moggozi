@@ -7,6 +7,8 @@ import { logout } from "../../store/auth";
 
 import ReturnMainModal from "../../components/ui/ReturnMainModal";
 
+import styles from "./UpdatePassword.module.scss";
+
 const UpdatePassword: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -22,11 +24,9 @@ const UpdatePassword: React.FC = () => {
       .then((res) => {
         dispatch(logout());
         navigate("/");
-        window.location.reload()
+        window.location.reload();
       })
       .catch((err) => {
-
-        
         console.log(err);
       });
   };
@@ -46,7 +46,7 @@ const UpdatePassword: React.FC = () => {
       };
       updatePw(option)
         .then((res) => {
-          setModalOpen(true)
+          setModalOpen(true);
           console.log(res);
         })
         .catch((err) => {
@@ -57,57 +57,72 @@ const UpdatePassword: React.FC = () => {
   };
 
   return (
-    <div>
-      <form>
-        <label htmlFor="currentPw">현재 비밀번호 : </label>
-        <input
-          type="password"
-          name="currentPw"
-          id="currentPw"
-          ref={currentPasswordRef}
-          autoComplete="false"
-        />
-        <br />
-        <label htmlFor="updatePw">변경할 비밀번호 : </label>
-        <input
-          type="password"
-          name="updatePw"
-          id="updatePw"
-          autoComplete="false"
-          onChange={(event) => {
-            setPasswordInput(event.target.value);
-          }}
-        />
-        <br />
-        <label htmlFor="checkPw">비밀번호 확인 : </label>
-        <input
-          type="password"
-          name="checkPw"
-          id="checkPw"
-          autoComplete="false"
-          onChange={(event) => {
-            if (passwordInputState === event.target.value) {
-              setPasswordCheck(true);
-            } else {
-              setPasswordCheck(false);
-            }
-          }}
-        />
-        {!passwordCheck && <p>비밀번호가 일치하지 않습니다.</p>}
-        <br />
-        <button onClick={submitPwUpdateHandler} disabled={!passwordCheck}>
-          비밀번호 변경
-        </button>
-      </form>
-      <React.Fragment>
-        <ReturnMainModal
-          open={modalOpen}
-          close={closeModal}
-          header="비밀번호 변경 완료"
-        >
-          <p>다시 로그인 해주세요.</p>
-        </ReturnMainModal>
-      </React.Fragment>
+    <div className={styles.main}>
+      <div className={styles.container}>
+        <h1>비밀번호 변경</h1>
+        <hr />
+        <form className={styles.form}>
+          <div className={styles.nowPw}>
+            <label htmlFor="currentPw">현재 비밀번호 : </label>
+            <input
+              type="password"
+              name="currentPw"
+              id="currentPw"
+              ref={currentPasswordRef}
+              autoComplete="false"
+            />
+          </div>
+          <br />
+          <div>
+            <label htmlFor="updatePw">변경할 비밀번호 : </label>
+            <input
+              type="password"
+              name="updatePw"
+              id="updatePw"
+              autoComplete="false"
+              onChange={(event) => {
+                setPasswordInput(event.target.value);
+              }}
+            />
+          </div>
+          <br />
+          <div>
+            <label htmlFor="checkPw">비밀번호 확인 : </label>
+            <input
+              type="password"
+              name="checkPw"
+              id="checkPw"
+              autoComplete="false"
+              onChange={(event) => {
+                if (passwordInputState === event.target.value) {
+                  setPasswordCheck(true);
+                } else {
+                  setPasswordCheck(false);
+                }
+              }}
+            />
+          </div>
+          {!passwordCheck && <p>비밀번호가 일치하지 않습니다.</p>}
+          <br />
+        <hr />
+          <button
+            onClick={submitPwUpdateHandler}
+            disabled={!passwordCheck}
+            className={styles.pwChangeBtn}
+          >
+            비밀번호 변경
+          </button>
+        </form>
+        <React.Fragment>
+          <ReturnMainModal
+            open={modalOpen}
+            close={closeModal}
+            header="비밀번호 변경 완료"
+          >
+            <p>다시 로그인 해주세요.</p>
+          </ReturnMainModal>
+        </React.Fragment>
+      </div>
     </div>
   );
 };

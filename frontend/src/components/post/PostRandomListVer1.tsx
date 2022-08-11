@@ -1,7 +1,7 @@
 import { MouseEvent, useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import PostItem from "./PostItem";
-import { setModalPostState, setPostModalState } from "../../store/postModal";
+import { setModalPostState, setPostModalOpen } from "../../store/postModal";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import { setPostStageList } from "../../store/postStage";
@@ -56,7 +56,7 @@ const PostRandomList: React.FC<{}> = () => {
                 onClick={(event: MouseEvent) => {
                   event.preventDefault();
                   dispatch(setModalPostState(post));
-                  dispatch(setPostModalState(true));
+                  dispatch(setPostModalOpen(true));
                 }}
               >
                 해당 포스팅 열기

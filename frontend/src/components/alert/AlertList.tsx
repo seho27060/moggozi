@@ -26,7 +26,7 @@ const AlertList: React.FC<{}> = () => {
         {loadedAlertList &&
           loadedAlertList.map((alert: Alert) => (
             <div key={alert.id}>
-              <AlertItem alert={alert} />
+              <AlertItem alertData={alert} />
             </div>
           ))}
         {}

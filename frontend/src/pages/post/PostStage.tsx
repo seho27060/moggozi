@@ -6,14 +6,14 @@ import PostDetailItem from "../../components/post/PostDetailItem";
 import PostForm from "../../components/post/PostForm";
 import PostList from "../../components/post/PostList";
 import Modal from "../../components/ui/Modal";
-import {  postRead } from "../../lib/withTokenApi";
+import {  postListRead } from "../../lib/withTokenApi";
 import { RootState } from "../../store/store";
 import PostUpdateForm from "../../components/post/PostUpdateForm";
 import {
   setPostFormModalOpen,
   setPostFormButtonState,
   setPostUpdateFormState,
-  setPostModalState,
+  setPostModalOpen,
 } from "../../store/postModal";
 import { useParams } from "react-router-dom";
 
@@ -50,7 +50,7 @@ const PostStage = () => {
     };
   }, [handleScroll]);
   const closePostModal = () => {
-    dispatch(setPostModalState(false));
+    dispatch(setPostModalOpen(false));
     dispatch(setPostUpdateFormState(false));
   };
   const closePostFormModal = () => {
@@ -62,7 +62,7 @@ const PostStage = () => {
       stageId,
       "번 스테이지의 포스팅을 불러옵니다."
     );
-    postRead(Number(stageId))
+    postListRead(Number(stageId))
       .then((res) => {
         console.log("포스팅 불러오기 성공", res);
         dispatch(postSet(res));

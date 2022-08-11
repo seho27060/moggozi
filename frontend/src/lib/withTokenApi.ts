@@ -208,8 +208,13 @@ export const postUpdate = async (post: PostUpdateSend) => {
   return data;
 };
 
-export const postRead = async (stageId: number) => {
+export const postListRead = async (stageId: number) => {
   const { data } = await withTokenApi.get(`/stage/post/${stageId}`);
+  return data;
+};
+
+export const postRead = async (postId: number) => {
+  const { data } = await withTokenApi.get(`/stage/post/detail/${postId}`);
   return data;
 };
 
@@ -247,7 +252,10 @@ export const commentUpdate = async (
   const { data } = await withTokenApi.put(`/comment/${comment_id}`, comment);
   return data;
 };
-
+export const commentWriter = async (comment_id: number) => {
+  const { data } = await withTokenApi.get(`/comment/commentWriter/${comment_id}`);
+  return data;
+};
 //// 알림 관련
 // 알림 확인
 export const alertRead = async (alert_id: number) => {
