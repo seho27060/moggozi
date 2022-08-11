@@ -50,7 +50,6 @@ public class MemberController {
     })
     @PostMapping("/login")
     public ResponseEntity<?> login(@Valid @RequestBody LoginRequest loginRequest) { // 아이디, 비밀번호를 body에 담아 전송
-
         ResponseEntity responseEntity = memberService.login(loginRequest);
         return responseEntity;
     }
