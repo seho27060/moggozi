@@ -3,12 +3,10 @@ package com.JJP.restapiserver.service.member;
 import com.JJP.restapiserver.domain.dto.MessageResponse;
 import com.JJP.restapiserver.domain.dto.member.request.*;
 import com.JJP.restapiserver.domain.dto.member.response.*;
-import com.JJP.restapiserver.domain.entity.member.ERole;
-import com.JJP.restapiserver.domain.entity.member.Member;
-import com.JJP.restapiserver.domain.entity.member.RefreshToken;
-import com.JJP.restapiserver.domain.entity.member.Role;
+import com.JJP.restapiserver.domain.entity.member.*;
 import com.JJP.restapiserver.repository.member.FollowRepository;
 import com.JJP.restapiserver.repository.member.MemberRepository;
+import com.JJP.restapiserver.repository.member.MemberScoreRepository;
 import com.JJP.restapiserver.repository.member.RoleRepository;
 import com.JJP.restapiserver.security.JwtUtils;
 import com.JJP.restapiserver.security.UserDetailsImpl;
@@ -52,6 +50,7 @@ public class MemberServiceImpl implements MemberService {
     private final RefreshTokenService refreshTokenService;
 
     private final JavaMailSender javaMailSender;
+    private final MemberScoreRepository memberScoreRepository;
 
     @Value("${spring.mail.username}")
     private String sender;
@@ -331,13 +330,21 @@ public class MemberServiceImpl implements MemberService {
                     .introduce(introduce).user_img(user_img)
                     .is_private(is_private).role(role).is_social(is_social).build();
         } else {
-            member = Member.builder().id(user_id)
+             member = Member.builder().id(user_id)
                     .username(username).fullname(fullname)
                     .password(password).nickname(nickname)
                     .introduce(introduce).user_img(user_img)
                     .is_private(is_private).role(role).is_social(is_social).build();
         }
         memberRepository.save(member);
+
+        if (user_id == -1L) {
+            MemberScore memberScore = MemberScore.builder()
+                    .id(member.getId())
+                    .score(0L)
+                    .build();
+            memberScoreRepository.save(memberScore);
+        }
     }
 
     // 비밀번호 리셋
