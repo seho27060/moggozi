@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface StageJoinService {
     Long joinStage(StageJoinRequestDto stageJoinRequestDto);
-    Long completeStage(StageCompleteDto stageCompleteDto);
+    Long changeStageState(StageCompleteDto stageCompleteDto, int state);
     Long joinedStageNum(Long member_id);
     void deleteJoin(Long stage_id, Long member_id);
 

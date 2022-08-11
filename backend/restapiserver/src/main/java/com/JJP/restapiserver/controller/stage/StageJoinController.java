@@ -29,13 +29,13 @@ public class StageJoinController {
     }
 
     @PutMapping
-    public Long complete(@PathVariable Long stage_id, HttpServletRequest request){
+    public Long complete(@PathVariable Long stage_id, @RequestBody int state, HttpServletRequest request){
         Long member_id = jwtUtils.getUserIdFromJwtToken(request.getHeader("Authorization"));
         StageCompleteDto stageCompleteDto = StageCompleteDto.builder()
                 .stage_id(stage_id)
                 .member_id(member_id)
                 .build();
-        return stageJoinService.completeStage(stageCompleteDto);
+        return stageJoinService.changeStageState(stageCompleteDto, state);
     }
 
     @DeleteMapping
