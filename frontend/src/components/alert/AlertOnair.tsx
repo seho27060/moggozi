@@ -1,10 +1,10 @@
-import {  useState } from "react";
+import { useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import AlertList from "./AlertList";
 import { VscBell, VscBellDot } from "react-icons/vsc";
 import { useDispatch } from "react-redux";
-import {  setAlertList, setRealTimeAlert } from "../../store/alert";
+import { setAlertList, setRealTimeAlert } from "../../store/alert";
 import { alertReadall, alertRecent } from "../../lib/withTokenApi";
 // import { WebSocketContext } from "../../lib/WebSocketProvider";
 import PostUpdateForm from "../../components/post/PostUpdateForm";
@@ -53,7 +53,9 @@ const AlertOnair: React.FC<{}> = () => {
       >
         {realTimeAlert ? <VscBellDot /> : <VscBell />}
       </button>
-      <div >{isToggle && <AlertList />}</div>
+      <div>
+        {isToggle && <AlertList setIsToggle={setIsToggle}/>}
+      </div>
 
       <div>
         {postModalOpen && (

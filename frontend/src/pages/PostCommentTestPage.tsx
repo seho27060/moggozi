@@ -15,6 +15,7 @@ import {
   setPostUpdateFormState,
   setPostModalOpen,
 } from "../store/postModal";
+import Editor from "../components/ui/Editor";
 
 const PostCommentTestPage = () => {
   document.body.style.overflow = "auto"; //모달때문에 이상하게 스크롤이 안되서 강제로 스크롤 바 생성함
@@ -70,6 +71,7 @@ const PostCommentTestPage = () => {
 
   return (
     <div>
+      <Editor placeholder="123" value={""}/>
       <h1>PostCommentTest</h1>
       <form>
         <label htmlFor="stageId">stage id 입력 : </label>
