@@ -214,7 +214,7 @@ public class ChallengeServiceImpl implements ChallengeService{
     }
 
     @Override
-    public int completeChallenge(ChallengeCompleteRequestDto challengeCompleteRequestDto) {
+    public void completeChallenge(ChallengeUpdateRequestDto challengeCompleteRequestDto) {
 
         // 상태를 변화시켜줄 챌린지를 찾음.
         Challenge challenge = challengeRepository.findById(challengeCompleteRequestDto.getChallengeId()).get();
@@ -223,7 +223,34 @@ public class ChallengeServiceImpl implements ChallengeService{
                         challengeCompleteRequestDto.getMemberId()).get();
         // 완료되었다는 상태가 2임
         joinedChallenge.setState(2);
-        return 0;
+    }
+
+    @Override
+    public void tryChallenge(ChallengeUpdateRequestDto challengeUpdateRequestDto) {
+        Challenge challenge = challengeRepository.findById(challengeUpdateRequestDto.getChallengeId()).get();
+        Member member = memberRepository.findById(challengeUpdateRequestDto.getMemberId()).get();
+        Optional<JoinedChallenge> reulst =joinedChallengeRepository.findByChallenge_idAndMember_id(challengeUpdateRequestDto.getChallengeId(),
+                challengeUpdateRequestDto.getMemberId());
+        if(reulst.isPresent()){
+            reulst.get().setState(1);
+        }
+        else{
+        // 도전한다는게 1임
+        JoinedChallenge joinedChallenge = joinedChallengeRepository.
+                save(JoinedChallenge.builder()
+                                .state(1)
+                                .challenge(challenge)
+                                .member(member)
+                                .build());
+        }
+    }
+
+    @Override
+    public void cancelChallenge(ChallengeUpdateRequestDto challengeUpdateRequestDto) {
+        JoinedChallenge joinedChallenge = joinedChallengeRepository.
+                findByChallenge_idAndMember_id(challengeUpdateRequestDto.getChallengeId(),
+                        challengeUpdateRequestDto.getMemberId()).get();
+        joinedChallengeRepository.delete(joinedChallenge);
     }
 
     @Override
@@ -472,7 +499,7 @@ public class ChallengeServiceImpl implements ChallengeService{
 
     @Override
     public List<ChallengeListResponseDto> getMyChallenge(Long member_id) {
-        List<Challenge> challengeList = challengeRepository.findByMember_id(member_id);
+        List<Challenge> challengeList = challengeRepository.findByMember_idOrderByModifiedDate(member_id);
         List<ChallengeListResponseDto> challengeListResponseDtoList = new ArrayList<>();
         return challengeIntoListDto(challengeList, challengeListResponseDtoList, member_id);
     }

@@ -46,7 +46,7 @@ public interface ChallengeRepository extends JpaRepository<Challenge, Long> {
 
     List<Challenge> findByIdIn(List<Long> ids);
 
-    List<Challenge> findByMember_id(Long member_id);
+    List<Challenge> findByMember_idOrderByModifiedDate(Long member_id);
 
     @Query(value = "SELECT * FROM challenge order by RAND() LIMIT :size", nativeQuery = true)
     List<Challenge> findRandomChallengeList(@Param("size") int size);
