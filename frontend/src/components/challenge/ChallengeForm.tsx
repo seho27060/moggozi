@@ -1,14 +1,18 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { challengeAdd } from "../../lib/withTokenApi";
 import { RootState } from "../../store/store";
+
 import HobbyForm from "./HobbyForm";
 import HobbySetList from "./HobbySetList";
 
+import styles from "./ChallengeForm.module.scss"
+
 const ChallengeForm: React.FC = () => {
   const nameInputRef = useRef<HTMLInputElement>(null);
-  const descriptionInputRef = useRef<HTMLInputElement>(null);
+  const descriptionInputRef = useRef<HTMLTextAreaElement>(null);
+  const [ contentInput, setContentInput ] = useState("");
   const contentInputRef = useRef<HTMLTextAreaElement>(null);
   const levelSelectRef = useRef<HTMLSelectElement>(null);
 
@@ -49,32 +53,39 @@ const ChallengeForm: React.FC = () => {
   }
   return (
     <div>
-      <h3>Challenge Form</h3>
+      <div className={styles.shortIntroduce}>
+        <label htmlFor="description">짧은 소개</label>
+        <textarea name="description" id="description" placeholder="짧은 소개를 입력해주세요." ref={descriptionInputRef} ></textarea>
+      </div>
+
+      <div className={styles.level}>
+        <label htmlFor="level">난이도</label>
+        <select name="level" id="level" ref={levelSelectRef}>
+          <option value="1">쉬움</option>
+          <option value="2">보통</option>
+          <option value="3">어려움</option>
+        </select>
+      </div>
+      
       <HobbyForm />
       <HobbySetList hobbies={hobbyList} />
-      <form>
-        <label htmlFor="name">챌린지 이름: </label>
-        <input type="text" id="name" ref={nameInputRef} />
-        <br />
-        <label htmlFor="description">챌린지 간단 설명: </label>
-        <input type="text" id="description" ref={descriptionInputRef} />
-        <br />
-        <label htmlFor="content">챌린지 상세 내용: </label>
-        <textarea rows={5} id="content" ref={contentInputRef} />
-        <br />
-        <label htmlFor="level">챌린지 level</label>
-        <select name="level" id="level" ref={levelSelectRef}>
-          <option value="1">매우 쉬움</option>
-          <option value="2">쉬움</option>
-          <option value="3">보통</option>
-          <option value="4">어려움</option>
-          <option value="5">매우 어려움</option>
-        </select>
-        <br />
+
+      <div className={styles.challengeTitle}>
+        <input type="text" id="name" ref={nameInputRef} placeholder="챌린지 제목을 입력하세요." />
+      </div>
+
+      <div className={styles.challengeContent}>
+        <textarea rows={5} id="content" ref={contentInputRef} placeholder="내용을 입력해주세요." onChange={(event) => {
+          setContentInput(event.target.value)
+        }}/>
+      </div>
+
+      <div className={styles.checker}>{contentInput.length} / 500</div>
+      <div className={styles.done}>
         <button type="button" onClick={submitHandler}>
-          생성
+          등록하기
         </button>
-      </form>
+      </div>
     </div>
   );
 };
