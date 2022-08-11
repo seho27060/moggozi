@@ -41,7 +41,7 @@ export async function addUserImg(users: any[]) {
 // 반환 값은 이미지 경로 path이다.
 
 // 프로필 사진 읽어오기
-export const profileImgFetchAPI = async (id: number) => {
+export const profileImgFetchAPI = async (id: number | null) => {
   const imgRef = ref(storageService, `user/${id}`);
 
   return getDownloadURL(imgRef)

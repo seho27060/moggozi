@@ -70,11 +70,15 @@ const NavigationBar: React.FC = () => {
               <li>
                 <div className={style.profile}>
                   <NavLink to={`/user/${userState.userInfo.id}`}>
-                    <img
+                    {userState.userInfo.img ? <img
                       className={style.profileImg}
                       src={userState.userInfo.img}
                       alt=""
-                    />
+                    /> : <img
+                    className={style.profileImg}
+                    src={"https://i.pinimg.com/236x/f2/a1/d6/f2a1d6d87b1231ce39710e6ba1c1e129.jpg"}
+                    alt=""
+                  /> }
                     <div>{userState.userInfo.nickname}</div>
                   </NavLink>
                 </div>
@@ -83,7 +87,7 @@ const NavigationBar: React.FC = () => {
           )}
         </ul>
         <SearchModal open={modalOpen} close={closeModal}>
-          <SearchForm />
+          <SearchForm close={closeModal} />
         </SearchModal>
       </div>
     </header>
