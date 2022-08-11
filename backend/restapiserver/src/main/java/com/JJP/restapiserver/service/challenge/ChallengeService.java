@@ -45,4 +45,5 @@ public interface ChallengeService {
 
     List<ChallengeListResponseDto> getMyChallenge(Long member_id);
 
+
 }
