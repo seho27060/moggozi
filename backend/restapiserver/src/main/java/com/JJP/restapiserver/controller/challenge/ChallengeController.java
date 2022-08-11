@@ -10,6 +10,7 @@ import com.JJP.restapiserver.security.JwtUtils;
 import com.JJP.restapiserver.service.Tag.ChallengeTagService;
 import com.JJP.restapiserver.service.challenge.ChallengeService;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -166,4 +167,16 @@ public class ChallengeController {
         return new ResponseEntity(challengeListResponseDtoList, HttpStatus.OK);
     }
 
+    @GetMapping("/recommendation")
+    public ResponseEntity getRecommendationList(HttpServletRequest request){
+        if(request.getHeader("Authorization") != null){
+        Long member_id = jwtUtils.getUserIdFromJwtToken(request.getHeader("Authorization"));
+        List<ChallengeListResponseDto> challengeListResponseDtoList = challengeService.getChallengeRecommendationList(member_id, 5);
+        return new ResponseEntity(challengeListResponseDtoList, HttpStatus.OK);
+        }
+        else{
+            List<ChallengeListResponseDto> challengeListResponseDtoList = challengeService.getChallengeRecommendationList(-1L,5);
+            return new ResponseEntity(challengeListResponseDtoList, HttpStatus.OK);
+        }
+    }
 }
