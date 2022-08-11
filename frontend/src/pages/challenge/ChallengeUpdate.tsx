@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import ChallengeImgForm from "../../components/challenge/ChallengeImgForm";
-import ChallengeUpdateForm from "../../components/challenge/ChallengeUpdateForm";
 import { fetchChallenge } from "../../lib/generalApi";
 import { challengeImgFetchAPI } from "../../lib/imgApi";
 import { isLoginFetchChallenge } from "../../lib/withTokenApi";
 import { ChallengeDetailState } from "../../store/challenge";
 import { RootState } from "../../store/store";
+
+import ChallengeImgForm from "../../components/challenge/ChallengeImgForm";
+import ChallengeUpdateForm from "../../components/challenge/ChallengeUpdateForm";
+
+import styles from "./ChallengeUpdate.module.scss"
 
 const ChallengeUpdate: React.FC = () => {
   const { id } = useParams();
@@ -88,20 +90,20 @@ const ChallengeUpdate: React.FC = () => {
   };
 
   return (
-    <div>
-      <h3>ChallengeUpdate</h3>
+    <div className={styles.container}>
       {isLoading === true && (
         <section>
           <p>Loading...</p>
         </section>
       )}
       {isLoading === false && (
-        <div>
-          <ChallengeUpdateForm challenge={loadedChallenge!} />
+        <div className={styles.width}>
+          <div className={styles.title}>챌린지</div>
           <ChallengeImgForm
             challengeImg={loadedChallenge!.img || ""}
             imgHandler={imgHandler}
           />
+          <ChallengeUpdateForm challenge={loadedChallenge!} />
         </div>
       )}
     </div>

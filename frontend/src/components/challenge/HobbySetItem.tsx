@@ -8,8 +8,8 @@ const HobbySetItem: React.FC<{ hobby: Hobby }> = ({ hobby }) => {
   };
   return (
     <li>
-      <span>{hobby.name}</span>
-      <button onClick={deleteHandler}>제거</button>
+      <span># {hobby.name}</span>
+      <button onClick={deleteHandler}>&#215;</button>
     </li>
   );
 };

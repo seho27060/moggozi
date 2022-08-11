@@ -4,6 +4,8 @@ import { useParams } from "react-router-dom";
 import { storageService } from "../../fbase/fbase";
 import { challengeImgFetchAPI } from "../../lib/imgApi";
 
+import styles from "./ChallengeImgForm.module.scss";
+
 const ChallengeImgForm: React.FC<{
   challengeImg: string;
   imgHandler: (url: string) => void;
@@ -42,33 +44,56 @@ const ChallengeImgForm: React.FC<{
   };
 
   return (
-    <div>
+    <div className={styles.container}>
       {!challengeImg ? (
         <div>
           <form>
-            <label htmlFor="img">img 생성</label>
-            <input
-              type="file"
-              accept="image/*"
-              id="img"
-              onChange={onLoadHandler}
-            />
+            {previewImage ? (
+              <img className={styles.previewImg} src={previewImage} alt="img" />
+            ) : (
+              <div>
+                <label htmlFor="img" className={styles.label}>
+                  <div className={styles.readyImg}>
+                    <div>해당 창을 클릭해</div>
+                    <div>커버 사진을 업로드해 주세요.</div>
+                    <div>
+                      *권장 사이즈: 1920 x 1080, 최소 960 x 540 비율 (16:9){" "}
+                    </div>
+                    <div>커버사진 추가하기</div>
+                  </div>
+                </label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  id="img"
+                  className={styles.fileInput}
+                  onChange={onLoadHandler}
+                />
+              </div>
+            )}
+
             <button
+              className={styles.uploadButton}
               type="button"
               onClick={(e) => uploadHandler(e, `challenge/${challengeId}`)}
             >
               업로드
             </button>
           </form>
-          <p>이미지 미리보기</p>
-          <img src={previewImage} alt="img" />
         </div>
       ) : (
         <div>
-          <p>유저 이미지</p>
-          <img src={challengeImg} alt="img" />
-          <button onClick={(e) => deleteHandler(e, `challenge/${challengeId}`)}>
-            프로필 사진 삭제
+          {/* <p>{challengeImg}</p> */}
+          <img
+            className={`${styles.previewImg} ${styles.coverImg}`}
+            src={challengeImg}
+            alt=""
+          />
+          <button
+            className={styles.editButton}
+            onClick={(e) => deleteHandler(e, `challenge/${challengeId}`)}
+          >
+            이미지 수정
           </button>
         </div>
       )}
