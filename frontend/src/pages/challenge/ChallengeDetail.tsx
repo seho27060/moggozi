@@ -50,8 +50,6 @@ const ChallengeDetail: React.FC = () => {
     postModalOpen,
     postFormModalOpen,
     postUpdateFormOpen,
-    postFormButtonOpen,
-    postModalStageId,
   } = useSelector((state: RootState) => state.postModal);
 
   const closePostModal = () => {

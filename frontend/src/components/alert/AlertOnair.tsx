@@ -1,12 +1,12 @@
-import { useContext, useState } from "react";
+import {  useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import AlertList from "./AlertList";
 import { VscBell, VscBellDot } from "react-icons/vsc";
 import { useDispatch } from "react-redux";
-import { Alert, setAlertList, setRealTimeAlert } from "../../store/alert";
+import {  setAlertList, setRealTimeAlert } from "../../store/alert";
 import { alertReadall, alertRecent } from "../../lib/withTokenApi";
-import { WebSocketContext } from "../../lib/WebSocketProvider";
+// import { WebSocketContext } from "../../lib/WebSocketProvider";
 import PostUpdateForm from "../../components/post/PostUpdateForm";
 import {
   setPostUpdateFormState,
@@ -14,10 +14,13 @@ import {
 } from "../../store/postModal";
 import Modal from "../ui/Modal";
 import PostDetailItem from "../post/PostDetailItem";
+
+import styles from "./AlertOnair.module.scss";
+
 const AlertOnair: React.FC<{}> = () => {
   const dispatch = useDispatch();
   const [isToggle, setIsToggle] = useState(false);
-  const user = useSelector((state: RootState) => state.auth.userInfo);
+  // const user = useSelector((state: RootState) => state.auth.userInfo);
   const { postModalOpen, postUpdateFormOpen } = useSelector(
     (state: RootState) => state.postModal
   );
@@ -28,49 +31,10 @@ const AlertOnair: React.FC<{}> = () => {
   const realTimeAlert = useSelector(
     (state: RootState) => state.alert.realTimeAlert
   );
-  const ws = useContext(WebSocketContext);
+  // const ws = useContext(WebSocketContext);
 
   return (
-    <div style={{ border: "solid 10px" }}>
-      <button
-        onClick={() => {
-          let jsonSend: Alert = {
-            check: 0,
-            createdTime: "0",
-            id: "0",
-            index: "1",
-            message: "message",
-            receiverId: "11",
-            receiverName: "start",
-            senderId: user.id!.toString(),
-            senderName: "anonymous",
-            type: "comment",
-          };
-          ws.current.send(JSON.stringify(jsonSend));
-        }}
-      >
-        to 11
-      </button>
-      <button
-        onClick={() => {
-          let jsonSend: Alert = {
-            check: 0,
-            createdTime: "0",
-            id: "0",
-            index: "1",
-            message: "message",
-            receiverId: "43",
-            receiverName: "start",
-            senderId: user.id!.toString(),
-            senderName: "anonymous",
-            type: "reply",
-          };
-          ws.current.send(JSON.stringify(jsonSend));
-        }}
-      >
-        to 43
-      </button>
-
+    <div className={styles.dropdown}>
       <button
         onClick={() => {
           console.log("alertclick", realTimeAlert);
@@ -84,12 +48,12 @@ const AlertOnair: React.FC<{}> = () => {
             });
           setIsToggle(!isToggle);
           dispatch(setRealTimeAlert(false));
-          alertReadall()
+          alertReadall();
         }}
       >
         {realTimeAlert ? <VscBellDot /> : <VscBell />}
       </button>
-      <div>{isToggle && <AlertList />}</div>
+      <div >{isToggle && <AlertList />}</div>
 
       <div>
         {postModalOpen && (

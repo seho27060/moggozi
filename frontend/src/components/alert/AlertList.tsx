@@ -5,6 +5,9 @@ import { alertAll } from "../../lib/withTokenApi";
 import { Alert, setAlertList } from "../../store/alert";
 import { RootState } from "../../store/store";
 import AlertItem from "./AlertItem";
+
+import styles from "./AlertOnair.module.scss";
+
 const AlertList: React.FC<{}> = () => {
   const dispatch = useDispatch();
   const loadedAlertList = useSelector(
@@ -21,8 +24,7 @@ const AlertList: React.FC<{}> = () => {
 
   return (
     <div>
-      AlertList
-      <>
+      <div className={styles.dropdownContent}>
         {loadedAlertList &&
           loadedAlertList.map((alert: Alert) => (
             <div key={alert.id}>
@@ -30,7 +32,8 @@ const AlertList: React.FC<{}> = () => {
             </div>
           ))}
         {}
-      </>
+        <button onClick={alertAllHandler}>알림 기록 확인</button>
+      </div>
       {/* <button onClick={() => {
         alertReadall().then((res)=>{
           console.log("readall",res)
@@ -40,11 +43,6 @@ const AlertList: React.FC<{}> = () => {
           })
         })
       }}>알림 전체 확인</button> */}
-      <button onClick={alertAllHandler}>알림 기록 확인</button>
-      {/* <div>
-        dropDiwn
-        <Dropdown dropdownItems = {loadedAlertList}/>
-      </div> */}
     </div>
   );
 };
