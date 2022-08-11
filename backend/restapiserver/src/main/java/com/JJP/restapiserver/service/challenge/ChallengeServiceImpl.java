@@ -308,19 +308,26 @@ public class ChallengeServiceImpl implements ChallengeService{
             List<Long> joined_ids = joinedChallengeList.stream().map(o -> o.getChallenge().getId()).collect(Collectors.toList());
             logger.debug(joined_ids.toString());
             for(int i =0; i < tag_ids.size(); i++){
+                logger.debug("내가 지금까지 참여한 챌린지 번호 리스트");
+                logger.debug(joined_ids.toString());
+                // 내가 원하는 태그 중에 좋아요가 가장 많고 참여하지 않은 챌린지 하나 반환
+                List<Object[]> results = challengeRepository.findUnJoinedChallenge(joined_ids, tag_ids.get(i));
 
+                if(!results.isEmpty()){
+                    // 그런 챌린지가 있다면 현재 검색의 기준이 됐던 태그를 가지고 있는 챌린지를 찾아서 joined_ids에 넣어줌.
+                    Challenge challenge = challengeRepository.getById(Long.parseLong(results.get(0)[0].toString()));
+                    ChallengeListResponseDto challengeListResponseDto = new ChallengeListResponseDto(challenge);
+                    challengeListResponseDtoList.add(challengeListResponseDto);
+                    List<Challenge> challengeList = challengeRepository.findChallengeContainsTag(tag_ids.get(i));
+                    List<Long> additional = challengeList.stream().map(o -> o.getId()).collect(Collectors.toList());
+                    logger.debug("------------------내가 검색한 챌린지와 태그를 공유하는 모든 챌린지-----------");
+                    logger.debug(joined_ids.toString());
+                    joined_ids.addAll(additional);
 
-            List<Object[]> results = challengeRepository.findUnJoinedChallenge(joined_ids, tag_ids);
-
-            if(!results.isEmpty()){
-                Challenge challenge = challengeRepository.getById(Long.parseLong(results.get(0)[0].toString()));
-                ChallengeListResponseDto challengeListResponseDto = new ChallengeListResponseDto(challenge);
-                challengeListResponseDtoList.add(challengeListResponseDto);
-                joined_ids.add(challenge.getId());
+                    }
+                else {
+                    logger.debug("---------------------못해먹겠네 진짜---------------");
                 }
-            else {
-                logger.debug("---------------------못해먹겠네 진짜---------------");
-            }
             }
         }
         return challengeListResponseDtoList;
