@@ -3,11 +3,11 @@ import { ChallengeItemState } from "../../store/challenge";
 
 import styles from "./SearchChallengeItem.module.scss";
 
-const SearchChallengeItem: React.FC<{ challenge: ChallengeItemState }> = ({
-  challenge,
+const SearchChallengeItem: React.FC<{ challenge: ChallengeItemState, close: () => void }> = ({
+  challenge, close
 }) => {
   return (
-    <Link to={`/challenge/${challenge.id}`}>
+    <Link to={`/challenge/${challenge.id}`} onClick={close}>
       <div className={styles.challengeItem}>
         <div>
         {challenge.img ? (

@@ -1,9 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { useSearchParams } from "react-router-dom";
-import UserList from "../components/accounts/UserList";
-import ChallengeList from "../components/challenge/ChallengeList";
-import Paging from "../layout/Paging";
 import {
   searchChallengeApi,
   searchChallengeHobbyApi,
@@ -17,6 +14,12 @@ import { UserInfo } from "../store/auth";
 import { ChallengeItemState } from "../store/challenge";
 import { RootState } from "../store/store";
 
+import SearchUserList from "../components/accounts/SearchUserList";
+import ChallengeList from "../components/challenge/ChallengeList";
+import Paging from "../layout/Paging";
+
+import styles from "./SearchPage.module.scss"
+
 const SearchPage: React.FC = () => {
   const searchInputRef = useRef<HTMLInputElement>(null);
   const [searchParams, setSearchParams] = useSearchParams();
@@ -27,12 +30,15 @@ const SearchPage: React.FC = () => {
   const [challengeHobbyList, setChallengeHobbyList] = useState<
     ChallengeItemState[]
   >([]);
+  const [ totalElements, setTotalElement] = useState(0)
+
   const keyword = searchParams.get("keyword");
   const page = Number(searchParams.get("page"));
   const size = Number(searchParams.get("size"));
   const choice = Number(searchParams.get("choice"));
 
   useEffect(() => {
+    document.body.style.overflow = "unset"
     const keyword = searchParams.get("keyword");
     const page = Number(searchParams.get("page"));
     const size = Number(searchParams.get("size"));
@@ -48,6 +54,8 @@ const SearchPage: React.FC = () => {
             (res) => {
               setChallengeList(res.content);
               setTotalPages(res.totalPages);
+              setTotalElement(res.totalElements)
+
             }
           );
         } else {
@@ -55,14 +63,19 @@ const SearchPage: React.FC = () => {
             (res) => {
               setChallengeList(res.content);
               setTotalPages(res.totalPages);
+              setTotalElement(res.totalElements)
+
             }
           );
         }
         break;
       case 1: // 유저 조회
         searchUserApi(keyword, page, size).then((res) => {
+          // console.log(res)
           setUserList(res.content);
           setTotalPages(res.totalPages);
+          setTotalElement(res.totalElements)
+
         });
         break;
       case 2: // 태그 조회
@@ -70,11 +83,14 @@ const SearchPage: React.FC = () => {
           isLoginSearchChallengeHobbyApi(keyword, page, size).then((res) => {
             setChallengeHobbyList(res.content);
             setTotalPages(res.totalPages);
+            setTotalElement(res.totalElements)
+
           });
         } else {
           searchChallengeHobbyApi(keyword, page, size).then((res) => {
             setChallengeHobbyList(res.content);
             setTotalPages(res.totalPages);
+            setTotalElement(res.totalElements)
           });
         }
         break;
@@ -83,7 +99,7 @@ const SearchPage: React.FC = () => {
 
   const clickPageHandler = (event: React.MouseEvent, page: number) => {
     event.preventDefault();
-    console.log(totalPages);
+    // console.log(totalPages);
     setSearchParams({
       keyword: keyword!,
       page: String(page - 1),
@@ -94,7 +110,7 @@ const SearchPage: React.FC = () => {
 
   const changePageHandler = (event: React.MouseEvent, choice: number) => {
     event.preventDefault();
-    console.log(totalPages);
+    // console.log(totalPages);
     setSearchParams({
       keyword: keyword!,
       page: String(page),
@@ -102,6 +118,20 @@ const SearchPage: React.FC = () => {
       choice: String(choice),
     });
   };
+
+  const onKeyPressHandler = (event: React.KeyboardEvent) => {
+    if (event.key === "Enter") {
+      const enteredSearch = searchInputRef.current!.value;
+      if (!!enteredSearch) {
+        setSearchParams({
+          keyword: enteredSearch,
+          page: "0",
+          size: String(size),
+          choice: String(choice),
+        });
+      }
+    }
+  }
 
   const submitHandler = (event: React.FormEvent) => {
     event.preventDefault();
@@ -117,26 +147,34 @@ const SearchPage: React.FC = () => {
   };
 
   return (
-    <div>
-      <form>
-        <label htmlFor="search">search: </label>
-        <input type="text" required id="search" ref={searchInputRef}></input>
+    <div className={styles.layout}>
+      <div>
+        <div className={styles.title}>검색</div>
+      <div className={styles.form}>
+        <input type="text" placeholder="무엇이든 검색하세요." required id="search" ref={searchInputRef} onKeyPress={onKeyPressHandler}></input>
         <button onClick={submitHandler}>검색</button>
-      </form>
-      <hr></hr>
-      <button onClick={(e) => changePageHandler(e, 0)} disabled={choice === 0}>
-        챌린지
-      </button>
-      <button onClick={(e) => changePageHandler(e, 1)} disabled={choice === 1}>
-        유저
-      </button>
-      <button onClick={(e) => changePageHandler(e, 2)} disabled={choice === 2}>
-        태그로 챌린지 검색
-      </button>
+      </div>
+
+      <div className={styles.taps}>
+        <button onClick={(e) => changePageHandler(e, 0)} disabled={choice === 0}>
+          챌린지
+        </button>
+        <button onClick={(e) => changePageHandler(e, 1)} disabled={choice === 1}>
+          유저
+        </button>
+        <button onClick={(e) => changePageHandler(e, 2)} disabled={choice === 2}>
+          태그로 챌린지 검색
+        </button>
+      </div>
+
+      <div className={styles.cnt}>
+        검색결과 { totalElements }개
+      </div>
+
       {choice === 0 && (
         <ChallengeList challenges={challengeList}></ChallengeList>
       )}
-      {choice === 1 && <UserList users={userList} />}
+      {choice === 1 && <SearchUserList users={userList} />}
       {choice === 2 && (
         <ChallengeList challenges={challengeHobbyList}></ChallengeList>
       )}
@@ -145,6 +183,7 @@ const SearchPage: React.FC = () => {
         page={page + 1}
         totalPages={totalPages}
       />
+      </div>
     </div>
   );
 };
