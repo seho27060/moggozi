@@ -33,6 +33,8 @@ public interface ChallengeService {
     void completeChallenge(ChallengeUpdateRequestDto challengeCompleteRequestDto);
     void tryChallenge(ChallengeUpdateRequestDto challengeUpdateRequestDto);
 
+    void changeImg(Long challenge_id, String path);
+
     void cancelChallenge(ChallengeUpdateRequestDto challengeUpdateRequestDto);
     Long joinedChallengeNum(Long member_id);
 

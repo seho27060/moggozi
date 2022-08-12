@@ -246,6 +246,12 @@ public class ChallengeServiceImpl implements ChallengeService{
     }
 
     @Override
+    public void changeImg(Long challenge_id, String path) {
+        Challenge challenge = challengeRepository.getById(challenge_id);
+        challenge.imgUpdate(path);
+    }
+
+    @Override
     public void cancelChallenge(ChallengeUpdateRequestDto challengeUpdateRequestDto) {
         JoinedChallenge joinedChallenge = joinedChallengeRepository.
                 findByChallenge_idAndMember_id(challengeUpdateRequestDto.getChallengeId(),
