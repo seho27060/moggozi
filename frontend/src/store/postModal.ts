@@ -1,16 +1,17 @@
 import { createSlice } from "@reduxjs/toolkit";
+import ReactQuill, { Value } from "react-quill";
 import { PostData } from "./post";
 
 export interface PostUpdateSend {
   title: string | null;
-  content: string | null;
+  content:  ReactQuill.Value | null;
   postId: number | null;
   postImg: string | null;
 }
 export interface PostSend {
   memberId : number,
   title: string | null;
-  content: string | null;
+  content: Value|string | null;
   stageId: number | null;
   postImg: string | undefined;
 }

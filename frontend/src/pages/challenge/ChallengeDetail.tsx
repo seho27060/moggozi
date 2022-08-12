@@ -28,6 +28,7 @@ import ReviewList from "../../components/review/ReviewList";
 import StageList from "../../components/stage/StageList";
 import Modal from "../../components/ui/Modal";
 
+import Dompurify from "dompurify";
 import styles from "./ChallengeDetail.module.scss";
 
 const ChallengeDetail: React.FC = () => {
@@ -46,11 +47,9 @@ const ChallengeDetail: React.FC = () => {
   const dispatch = useDispatch();
   const reviews = useSelector((state: RootState) => state.review);
 
-  const {
-    postModalOpen,
-    postFormModalOpen,
-    postUpdateFormOpen,
-  } = useSelector((state: RootState) => state.postModal);
+  const { postModalOpen, postFormModalOpen, postUpdateFormOpen } = useSelector(
+    (state: RootState) => state.postModal
+  );
 
   const closePostModal = () => {
     dispatch(setPostModalOpen(false));
@@ -270,8 +269,12 @@ const ChallengeDetail: React.FC = () => {
                 {loadedChallenge!.writer.nickname}
               </div>
             </div>
-
-            <div className={styles.C_content}>{loadedChallenge!.content}</div>
+            <div
+              dangerouslySetInnerHTML={{
+                __html: Dompurify.sanitize(loadedChallenge!.content!.toString()),
+              }}
+              className="view ql-editor"
+            ></div>
             <div className={styles.like}>
               <div>
                 {isLoggedIn === true && loadedChallenge!.liked === false && (
@@ -285,7 +288,7 @@ const ChallengeDetail: React.FC = () => {
                 좋아요 <span>{loadedChallenge!.likeNum}</span>
               </div>
               <div>
-                ㅁ 댓글 <span>{reviews.length}</span>
+                댓글 <span>{reviews.length}</span>
               </div>
             </div>
             <div></div>

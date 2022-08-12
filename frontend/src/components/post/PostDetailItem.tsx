@@ -12,6 +12,10 @@ import PostLikeBtn from "./PostLikeBtn";
 import { Link, useNavigate } from "react-router-dom";
 import { setPostModalOpen } from "../../store/postModal";
 
+import Dompurify from "dompurify";
+import styles from "./PostDetailItem.module.scss";
+import "react-quill/dist/quill.snow.css";
+
 const PostDetailItem: React.FC<{}> = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -55,7 +59,13 @@ const PostDetailItem: React.FC<{}> = () => {
         <div>
           <>
             <div>제목 : {post.postModalState!.title}</div>
-            <p>포스팅 내용 : {post.postModalState!.content}</p>
+            <div
+              dangerouslySetInnerHTML={{
+                __html: Dompurify.sanitize(post.postModalState!.content!.toString()),
+              }}
+              // className={styles.postDetail}
+              className="view ql-editor"
+            ></div>
             {/* 좋아요 버튼 */}
             <PostLikeBtn />
             좋아요갯수:{post.postModalState!.likeNum}
