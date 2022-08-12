@@ -21,6 +21,10 @@ public class ReviewController {
     @PostMapping("/register")
     public ResponseEntity registerReview(@RequestBody ReviewRequestDto reviewRequestDto)
     {
+        ReviewResponseDto reviewResponseDto= reviewService.registerReview(reviewRequestDto);
+        if(reviewResponseDto == null){
+            return new ResponseEntity("이미 등록된 한줄평이 있습니다.", HttpStatus.OK);
+        }
         return new ResponseEntity(reviewService.registerReview(reviewRequestDto), HttpStatus.OK);
     }
 
