@@ -37,7 +37,7 @@ public class StageImgServiceImpl implements StageImgService {
         for(ImgDto imgDto : imgDtoList){
             stageImgRepository.save( StageImg.builder()
                     .stage(stageRepository.getById(stage_id))
-                    .order_id(imgDto.getId())
+                    .order_id(imgDto.getOrder())
                     .path(imgDto.getPath())
                     .build());
         }
