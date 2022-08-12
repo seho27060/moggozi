@@ -1,6 +1,7 @@
 package com.JJP.restapiserver.domain.entity.stage;
 
 import com.JJP.restapiserver.domain.entity.BaseTimeEntity;
+import com.JJP.restapiserver.domain.entity.file.PostImg;
 import com.JJP.restapiserver.domain.entity.member.Member;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -49,6 +50,8 @@ public class Post extends BaseTimeEntity {
     @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
     private List<Comment> postComment = new ArrayList<>();
 
+    @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
+    private List<PostImg> postImgList = new ArrayList<>();
     @Builder
     public Post(Long id, Member member, Stage stage, String title, String content, String post_img) {
         this.id = id;
