@@ -3,6 +3,8 @@ import { PostSend } from "../../store/postModal";
 import { postAdd } from "../../lib/withTokenApi";
 import { postRegister } from "../../store/post";
 import { useDispatch } from "react-redux";
+import EditorComponent from "../ui/Editor";
+import ReactQuill from "react-quill";
 
 const PostForm: React.FC<{
   stageId: number;
@@ -11,7 +13,7 @@ const PostForm: React.FC<{
   const dispatch = useDispatch();
 
   const titleInputRef = useRef<HTMLInputElement>(null);
-  const contentInputRef = useRef<HTMLTextAreaElement>(null);
+  const contentInputRef = useRef<ReactQuill>();
   const postImgInputRef = useRef<HTMLInputElement>(null);
 
   const PostData: PostSend = {
@@ -35,7 +37,7 @@ const PostForm: React.FC<{
 
   return (
     <div>
-      <form>
+      <form style={{ width: "auto" }}>
         <div>
           <label htmlFor="title">제목</label>
           <input type="text" id="title" ref={titleInputRef} />
@@ -44,9 +46,10 @@ const PostForm: React.FC<{
           <label htmlFor="img">사진첨부</label>
           <input type="text" id="img" ref={postImgInputRef} />
         </div>
+        {/* 에디터 적용 */}
         <div>
-          <label htmlFor="content">포스팅 작성</label>
-          <textarea rows={5} id="content" ref={contentInputRef} />
+          <EditorComponent QuillRef={contentInputRef} value={""} />
+          {/* <textarea rows={5} id="content" ref={contentInputRef} /> */}
         </div>
         <button onClick={postingSubmitHandler}>등록하기</button>
       </form>

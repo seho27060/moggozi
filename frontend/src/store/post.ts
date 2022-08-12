@@ -1,10 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { Value } from "react-quill";
 import { UserInfo } from "./auth";
 
 export interface PostData {
   id: number;
   title: string | null;
-  content: string | null;
+  content: Value | string | null;
   createdTime: Date | null;
   modifiedTime: Date | null;
   postImg: string | null;

@@ -17,6 +17,9 @@ import { imgState, StageState } from "../../store/stage";
 import { RootState } from "../../store/store";
 import PostList from "../post/PostList";
 
+import Dompurify from "dompurify";
+import styles from "./StageItem.module.scss";
+
 const StageItem: React.FC<{
   stage: StageState;
   challengeProgress: number;
@@ -28,6 +31,7 @@ const StageItem: React.FC<{
   const [getStageImg, setStageImg] = useState<imgState[]>([]);
   const [getStageProgress, setStageProgress] = useState(0);
   const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
+  const user = useSelector((state: RootState) => state.auth);
   const postingStageId = useSelector(
     (state: RootState) => state.post.postingStageId
   );
@@ -49,6 +53,13 @@ const StageItem: React.FC<{
   }, [isLoggedIn, stage.id]);
 
   // 스테이지 사진
+  let postedCheck = false;
+  postStageListState.map((post) => {
+    if (post.writer!.id === user.userInfo.id) {
+      postedCheck = true;
+      // break
+    }
+  });
   useEffect(() => {
     stageImgFetchAPI(stage.id!)
       .then((res) => {
@@ -103,7 +114,15 @@ const StageItem: React.FC<{
     <div>
       <h4>스테이지 아이템</h4>
       <p>스테이지 이름 : {stage.name}</p>
-      <p>스테이지 내용 : {stage.content}</p>
+      <p>
+        스테이지 내용 :{" "}
+        <div
+          dangerouslySetInnerHTML={{
+            __html: Dompurify.sanitize(stage.content!.toString()),
+          }}
+          className="view ql-editor"
+        ></div>
+      </p>
       <Link to={`/post/${stage.id}`}>스테이지 포스팅 더보기</Link>
       <ul>
         {Array.isArray(getStageImg) &&
@@ -124,13 +143,19 @@ const StageItem: React.FC<{
       )}
       {getStageProgress === 2 && <p>완료</p>}
       {getStageProgress === 1 &&
-        postFormButtonOpen &&
-        isLoggedIn &&
-        postingStageId && (
-          <button onClick={() => dispatch(setPostFormModalOpen())}>
-            포스팅 생성
-          </button>
-        )}
+      postFormButtonOpen &&
+      isLoggedIn &&
+      postingStageId &&
+      postedCheck ? (
+        <button onClick={() => dispatch(setPostFormModalOpen(true))}>
+          포스팅 생성
+        </button>
+      ) : (
+        <button onClick={() => dispatch(setPostFormModalOpen(false))}>
+          포스트 수정/ 원래있던 포스팅 띄우기
+        </button>
+      )}
+
       {postStageListState && (
         <>
           {`${stage.id}의 PostList 3개만`}

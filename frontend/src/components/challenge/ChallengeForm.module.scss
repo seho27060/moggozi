@@ -1,0 +1,8 @@
+@use "../../styles/mixin.scss" as mixin;
+
+@include mixin.desktop {
+  .challengeForm {
+    width : auto;
+    height: auto;
+  }
+}

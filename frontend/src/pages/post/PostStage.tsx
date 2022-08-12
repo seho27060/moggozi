@@ -54,7 +54,7 @@ const PostStage = () => {
     dispatch(setPostUpdateFormState(false));
   };
   const closePostFormModal = () => {
-    dispatch(setPostFormModalOpen());
+    dispatch(setPostFormModalOpen(false));
   };
 
   useEffect(() => {
@@ -77,7 +77,7 @@ const PostStage = () => {
 <div>
       <h1>PostStage</h1>
       {postFormButtonOpen && (
-        <button onClick={() => dispatch(setPostFormModalOpen())}>
+        <button onClick={() => dispatch(setPostFormModalOpen(true))}>
           포스팅 생성
         </button>
       )}

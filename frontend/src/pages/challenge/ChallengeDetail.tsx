@@ -33,6 +33,7 @@ import ReviewList from "../../components/review/ReviewList";
 import StageList from "../../components/stage/StageList";
 import Modal from "../../components/ui/Modal";
 
+import Dompurify from "dompurify";
 import styles from "./ChallengeDetail.module.scss";
 
 const ChallengeDetail: React.FC = () => {
@@ -51,20 +52,22 @@ const ChallengeDetail: React.FC = () => {
   const reviews = useSelector((state: RootState) => state.review);
 
   const {
+    alertPostModalOpen,
     postModalOpen,
     postFormModalOpen,
     postUpdateFormOpen,
-    postFormButtonOpen,
-    postModalStageId,
   } = useSelector((state: RootState) => state.postModal);
-
+  // if (postModalOpen) {
+  //   document.body.style.overflow = "auto"; //모달때문에 이상하게 스크롤이 안되서 강제로 스크롤 바 생성함
+  //   document.body.style.height = "auto";
+  // }
   const closePostModal = () => {
     dispatch(setPostModalOpen(false));
     dispatch(setPostUpdateFormState(false));
   };
 
   const closePostFormModal = () => {
-    dispatch(setPostFormModalOpen());
+    dispatch(setPostFormModalOpen(false));
   };
 
   // 챌린지 등록
@@ -306,8 +309,14 @@ const ChallengeDetail: React.FC = () => {
                 {loadedChallenge!.writer.nickname}
               </div>
             </div>
-
-            <div className={styles.C_content}>{loadedChallenge!.content}</div>
+            <div
+              dangerouslySetInnerHTML={{
+                __html: Dompurify.sanitize(
+                  loadedChallenge!.content!.toString()
+                ),
+              }}
+              className="view ql-editor"
+            ></div>
             <div className={styles.like}>
               <div>
                 {isLoggedIn === true && loadedChallenge!.liked === false && (
@@ -321,7 +330,7 @@ const ChallengeDetail: React.FC = () => {
                 좋아요 <span>{loadedChallenge!.likeNum}</span>
               </div>
               <div>
-                ㅁ 댓글 <span>{reviews.length}</span>
+                댓글 <span>{reviews.length}</span>
               </div>
             </div>
             <div></div>
@@ -343,22 +352,18 @@ const ChallengeDetail: React.FC = () => {
 
       <div>
         {postModalOpen && (
-          <Modal
-            open={postModalOpen}
-            close={closePostModal}
-            header="Modal heading"
-          >
+          <Modal open={postModalOpen} close={closePostModal} header="Post">
             {!postUpdateFormOpen && <PostDetailItem />}
             {postUpdateFormOpen && <PostUpdateForm />}
           </Modal>
         )}
+
         {postFormModalOpen && (
           <Modal
             open={postFormModalOpen}
             close={closePostFormModal}
-            header="Modal heading"
+            header="Post Create"
           >
-            "생성폼"
             <PostForm
               stageId={Number(stageId)}
               modalClose={closePostFormModal}

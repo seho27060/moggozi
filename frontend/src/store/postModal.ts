@@ -1,24 +1,27 @@
 import { createSlice } from "@reduxjs/toolkit";
+import ReactQuill, { Value } from "react-quill";
 import { PostData } from "./post";
 
 export interface PostUpdateSend {
   title: string | null;
-  content: string | null;
+  content: ReactQuill.Value | null;
   postId: number | null;
   postImg: string | null;
 }
 export interface PostSend {
   title: string | null;
-  content: string | null;
+  content: Value | string | null;
   stageId: number | null;
   postImg: string | undefined;
 }
 interface PostModal {
   postModalState: PostData;
+  alertPostModalState: PostData;
   postFormModalOpen: boolean;
   postUpdateFormOpen: boolean;
   postFormButtonOpen: boolean;
   postModalOpen: boolean;
+  alertPostModalOpen: boolean;
   postModalStageId: number | null;
 }
 const initialPostModalState: PostModal = {
@@ -33,10 +36,22 @@ const initialPostModalState: PostModal = {
     likeNum: null,
     writer: null,
   },
+  alertPostModalState: {
+    id: 0,
+    title: null,
+    content: null,
+    createdTime: null,
+    modifiedTime: null,
+    postImg: null,
+    liked: null,
+    likeNum: null,
+    writer: null,
+  },
   postFormModalOpen: false,
   postUpdateFormOpen: false,
   postFormButtonOpen: false,
   postModalOpen: false,
+  alertPostModalOpen: false,
   postModalStageId: null,
 };
 export const postModalSlice = createSlice({
@@ -46,8 +61,8 @@ export const postModalSlice = createSlice({
     setModalPostState: (state: PostModal, action) => {
       state.postModalState = { ...action.payload };
     },
-    setPostFormModalOpen: (state: PostModal) => {
-      state.postFormModalOpen = !state.postFormModalOpen;
+    setAlertModalPostState: (state: PostModal, action) => {
+      state.alertPostModalState = { ...action.payload };
     },
     setPostFormButtonState: (state: PostModal, action) => {
       state.postFormButtonOpen = action.payload;
@@ -58,6 +73,12 @@ export const postModalSlice = createSlice({
     setPostModalOpen: (state: PostModal, action) => {
       state.postModalOpen = action.payload;
     },
+    setAlertPostModalOpen: (state: PostModal, action) => {
+      state.alertPostModalOpen = action.payload;
+    },
+    setPostFormModalOpen: (state: PostModal, action) => {
+      state.postFormModalOpen = action.payload;
+    },
     setPostModalStageId: (state: PostModal, action) => {
       state.postModalStageId = action.payload;
     },
@@ -66,10 +87,12 @@ export const postModalSlice = createSlice({
 
 export const {
   setModalPostState,
+  setAlertModalPostState,
   setPostFormModalOpen,
   setPostFormButtonState,
   setPostUpdateFormState,
   setPostModalOpen,
+  setAlertPostModalOpen,
   setPostModalStageId,
 } = postModalSlice.actions;
 
