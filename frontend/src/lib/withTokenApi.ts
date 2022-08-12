@@ -75,6 +75,14 @@ export const isLoginFetchChallenge = async (id: number) => {
   return data;
 };
 
+export const MyChallengeList = async () => {
+  const { data } = await withTokenApi.get("/challenge/myChallenge");
+  const newData: ChallengeItemState[] = [];
+  return addChallengeImg(data, newData).then(() => {
+    return newData;
+  });
+};
+
 export const isLoginFetchChallengeRankList = async () => {
   const { data } = await withTokenApi.get("/challenge/rank");
   const newData: ChallengeItemState[] = [];
@@ -126,6 +134,29 @@ export const hobbyExist = async (name: string) => {
 
 export const setHobby = async (hobby: { name: string }) => {
   const { data } = await withTokenApi.post("/hobby/save", hobby);
+  return data;
+};
+
+// 챌린지 등록
+export const registerChallenge = async (challengeId: number) => {
+  const { data } = await withTokenApi.put(`/challenge/register/${challengeId}`);
+  return data;
+};
+
+// 챌린지 도전
+export const tryChallenge = async (userId: number, challengeId: number) => {
+  const { data } = await withTokenApi.post("/challenge/tryChallenge", {
+    memberId: userId,
+    challengeId: challengeId,
+  });
+  return data;
+};
+
+// 챌린지 도전 취소
+export const cancelChallenge = async (challengeId: number) => {
+  const { data } = await withTokenApi.delete(
+    `/challenge/cancelChallenge/${challengeId}`
+  );
   return data;
 };
 
@@ -192,6 +223,32 @@ export const fetchStages = async (ChallengeId: number) => {
   return data;
 };
 
+// 스테이지 진행도
+export const fetchStageProgress = async (stageId: number) => {
+  const { data } = await withTokenApi.get(`/stage/join${stageId}`);
+  return data;
+};
+
+export const stageJoin = async (stageId: number) => {
+  const { data } = await withTokenApi.post(`/stage/join${stageId}`);
+  return data;
+};
+
+export const stageComplete = async (stageId: number) => {
+  const { data } = await withTokenApi.put(`/stage/join${stageId}`, 2);
+  return data;
+};
+
+export const stageUnComplete = async (stageId: number) => {
+  const { data } = await withTokenApi.put(`/stage/join${stageId}`, 1);
+  return data;
+};
+
+export const stageCancel = async (stageId: number) => {
+  const { data } = await withTokenApi.delete(`/stage/join${stageId}`);
+  return data;
+};
+
 // 포스팅 관련
 export const postAdd = async (postAddData: PostSend) => {
   const { data } = await withTokenApi.post(`/stage/post`, postAddData);
@@ -253,7 +310,9 @@ export const commentUpdate = async (
   return data;
 };
 export const commentWriter = async (comment_id: number) => {
-  const { data } = await withTokenApi.get(`/comment/commentWriter/${comment_id}`);
+  const { data } = await withTokenApi.get(
+    `/comment/commentWriter/${comment_id}`
+  );
   return data;
 };
 //// 알림 관련
