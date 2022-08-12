@@ -9,14 +9,22 @@ import CommentList from "../comment/CommentList";
 import { useDispatch } from "react-redux";
 import PostModifyBtn from "./PostModifyBtn";
 import PostLikeBtn from "./PostLikeBtn";
+import { Link, useNavigate } from "react-router-dom";
+import { setPostModalOpen } from "../../store/postModal";
+
+import Dompurify from "dompurify";
+import styles from "./PostDetailItem.module.scss";
+import "react-quill/dist/quill.snow.css";
 
 const PostDetailItem: React.FC<{}> = () => {
   const dispatch = useDispatch();
-  const post = useSelector((state:RootState)=>state.postModal)
+  const navigate = useNavigate();
+  const user = useSelector((state: RootState) => state.auth.userInfo);
+  const post = useSelector((state: RootState) => state.postModal);
   const commentState = useSelector(
     (state: RootState) => state.comment.comments
   );
-  console.log("postDetail",post.postModalState)
+  console.log("postDetail", post.postModalState);
   useEffect(() => {
     commentRead(post.postModalState!.id)
       .then((res) => {
@@ -26,28 +34,40 @@ const PostDetailItem: React.FC<{}> = () => {
       .catch((err) => {
         console.log("ERR", err);
       });
-  }, [post, dispatch]);
+  }, []);
 
   return (
     <div style={{ height: "25rem", overflow: "scroll" }}>
       <div style={{ border: "solid", margin: "1rem", padding: "1rem" }}>
         <img src="" alt="포스팅이미지" />
         {/* 수정 버튼 */}
-        <PostModifyBtn/>
+        <PostModifyBtn />
 
         <div>postid:{post.postModalState!.id}</div>
         <div>
-          <div>프로필이미지 : {post.postModalState!.writer?.img}</div>
-          <div>작성자 : {post.postModalState!.writer?.nickname}</div>
-          <button>팔로잉/팔로우해체 버튼</button>
+          <button
+            onClick={() => {
+              navigate(`/user/${post.postModalState.writer!.id}`);
+              dispatch(setPostModalOpen(false));
+            }}
+          >
+            <div>프로필이미지 : {post.postModalState!.writer?.img}</div>
+            <div>작성자 : {post.postModalState!.writer?.nickname}</div>
+          </button>
           <hr />
         </div>
         <div>
           <>
             <div>제목 : {post.postModalState!.title}</div>
-            <p>포스팅 내용 : {post.postModalState!.content}</p>
+            <div
+              dangerouslySetInnerHTML={{
+                __html: Dompurify.sanitize(post.postModalState!.content!.toString()),
+              }}
+              // className={styles.postDetail}
+              className="view ql-editor"
+            ></div>
             {/* 좋아요 버튼 */}
-            <PostLikeBtn/>
+            <PostLikeBtn />
             좋아요갯수:{post.postModalState!.likeNum}
             <br />
             포스팅작성일 :{post.postModalState!.modifiedTime}

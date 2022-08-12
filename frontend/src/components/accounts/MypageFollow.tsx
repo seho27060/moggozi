@@ -1,6 +1,4 @@
-import { RootState } from "../../store/store";
 import { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 
 import { followedApi, followingApi } from "../../lib/withTokenApi";
@@ -19,10 +17,6 @@ interface Props {
 
 const MypageFollow = (props: Props) => {
   const { followedCnt, followingCnt } = props;
-
-  const userId = Number(
-    useSelector((state: RootState) => state.auth.userInfo.id)
-  );
   const toId = Number(useParams().id);
 
   const [followedOpenModal, setFollowedOpenModal] = useState(false);
@@ -45,8 +39,8 @@ const MypageFollow = (props: Props) => {
   };
 
   useEffect(() => {
-    followedApi(toId, userId)
-      .then((res) => {
+    followedApi(toId)
+      .then((res: { totalCount: number; memberInfoList: followed[] }) => {
         setFollowedInfo(res.memberInfoList);
       })
       .catch((err) => {
@@ -54,13 +48,13 @@ const MypageFollow = (props: Props) => {
       });
 
     followingApi(toId)
-      .then((res) => {
+      .then((res: { totalCount: number; memberInfoList: followed[] }) => {
         setFollowingInfo(res.memberInfoList);
       })
       .catch((err) => {
         console.log(err);
       });
-  }, [toId, userId]);
+  }, [toId]);
 
   return (
     <div>
@@ -68,10 +62,17 @@ const MypageFollow = (props: Props) => {
         <span onClick={followedModalHandler} className={styles.follow}>
           팔로워{" "}
         </span>
-        <span className={styles.cnt} style={{ marginRight: "10px"}}>{followedCnt}</span>{" "}
+        <span className={styles.cnt} style={{ marginRight: "10px" }}>
+          {followedCnt}
+        </span>{" "}
         <span className={styles.line}></span>
-        <span onClick={followingModalHandler} className={styles.follow} style={{ marginLeft: "10px"}}>
-        {" "}팔로잉{" "}
+        <span
+          onClick={followingModalHandler}
+          className={styles.follow}
+          style={{ marginLeft: "10px" }}
+        >
+          {" "}
+          팔로잉{" "}
         </span>
         <span className={styles.cnt}> {followingCnt}</span>
       </div>
@@ -82,7 +83,7 @@ const MypageFollow = (props: Props) => {
               <FollowerList
                 key={object.id}
                 id={object.id}
-                userImg={object.userImg}
+                img={object.img}
                 loginFollowState={object.loginFollowState}
                 nickname={object.nickname}
                 close={CloseModalHandler}
@@ -104,7 +105,7 @@ const MypageFollow = (props: Props) => {
               <FollowingList
                 key={object.id}
                 id={object.id}
-                userImg={object.userImg}
+                img={object.img}
                 nickname={object.nickname}
                 close={CloseModalHandler}
               />

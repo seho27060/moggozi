@@ -1,53 +1,60 @@
 import { createSlice } from "@reduxjs/toolkit";
+// import { useSelector } from "react-redux";
+// import { RootState } from "./store";
 
-export interface AlertSend {
-  senderId: number|null,
-  receiverId: number|null,
-  type: string|null,
-  index: number|null,
-  msg: string|null,
-}
 export interface Alert {
-  index: string|null,
-  message: string|null,
-  receiverId: string|null,
-  receiverName: string|null,
-  senderId: string|null,
-  senderName: string|null,
-  type: string|null,
+  check: number | null;
+  createdTime: string | null;
+  id: string | null;
+  index: string | null;
+  message: string | null;
+  receiverId: string | null;
+  receiverName: string | null;
+  senderId: string | null;
+  senderName: string | null;
+  type: string | null;
 }
 interface AlertState {
-  alert : AlertSend,
-  realTimeAlert : Alert|null
-  alertList : Alert[] | null,
+  wsocket : WebSocket | null,
+  alertList: Alert[];
+  alertAllList: Alert[];
+  realTimeAlert: boolean;
+  isConnecting: boolean;
 }
 
 const initialAlertState: AlertState = {
-  alert :{
-    senderId: null,
-    receiverId: null,
-    type: null,
-    index: null,
-    msg: null,
-  },
-  realTimeAlert : null,
-  alertList : null,
-};                                                                                             
-
-// 해당 데이터에 접근할 때에는 , useSelector 를 이용하여 state를 조회
-// useDispatch를 이용하면 action을 줄 수 있다.
+  wsocket : null,
+  alertList: [],
+  alertAllList: [],
+  realTimeAlert: false,
+  isConnecting: false,
+};
 
 export const alertSlice = createSlice({
   name: "alert",
   initialState: initialAlertState,
   reducers: {
-    setAlertList : (state,action) => {
-      const loadedAlertList: Alert[] | null = [...action.payload]
-      state.alertList = loadedAlertList
-    }
+    setAlertList: (state, action) => {
+      const loadedAlertList: Alert[] | null = [...action.payload];
+      state.alertList = [...loadedAlertList];
+    },
+    checkAlertList: (state) => {
+      const checkedAlertList = state.alertList.map((alert)=>({...alert,check : 1}))
+      console.log(checkedAlertList)
+      state.alertList = [...checkedAlertList];
+    },
+    setRealTimeAlert: (state, action) => {
+      console.log("realtimealert set",action.payload);
+      state.realTimeAlert = action.payload
+    },
+    setAllAlertList: (state, action) => {
+      const loadedAlertList: Alert[] | null = [...action.payload];
+      state.alertAllList = [...loadedAlertList];
+    },
   },
 });
 
-export const { setAlertList} = alertSlice.actions;
+export const {setAlertList, setRealTimeAlert,setAllAlertList,checkAlertList } =
+  alertSlice.actions;
 
 export default alertSlice.reducer;

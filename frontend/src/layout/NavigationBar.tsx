@@ -1,41 +1,53 @@
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import { useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
-import LogoutBtn from "../components/accounts/LogoutBtn";
 import { RootState } from "../store/store";
+
+import LogoutBtn from "../components/accounts/LogoutBtn";
+import SearchForm from "../components/search/SearchForm";
+import SearchModal from "../components/ui/SearchModal";
 
 import style from "./NavigationBar.module.scss";
 import logo from "../asset/moggo.png";
+import AlertOnair from "../components/alert/AlertOnair";
 
 const NavigationBar: React.FC = () => {
   const userState = useSelector((state: RootState) => state.auth);
 
+  const [ modalOpen, setModalOpen ] = useState(false)
+
+  const closeModal = () => {
+    document.body.style.overflow = "unset";
+    setModalOpen(false);
+  }
+
   return (
     <header className={style.header}>
-      <div>
+      <div className={style.div}>
         <ul>
           <li>
             <NavLink to="/">
               <img src={logo} alt="logo" />
             </NavLink>
           </li>
-          <div>
+          <div className={style.div}>
             <li>
               <NavLink to="/search">챌린지</NavLink>
             </li>
             <li>
-              <NavLink to="/search">포스팅</NavLink>
+              <NavLink to="/post/all">포스팅</NavLink>
             </li>
             <li>
               <NavLink to="/search">about</NavLink>
             </li>
             <li>
-              <NavLink to="/search">검색</NavLink>
+              <button onClick={() => {setModalOpen(true)
+              document.body.style.overflow = "hidden";}}>검색</button>
             </li>
           </div>
         </ul>
       </div>
-      <div>
+      <div className={style.div}>
         <ul>
           {!userState.isLoggedIn && (
             <Fragment>
@@ -49,17 +61,24 @@ const NavigationBar: React.FC = () => {
           )}
           {userState.isLoggedIn && (
             <Fragment>
+              <li>
+                <AlertOnair/>
+              </li>
               <li className={style.logout}>
                 <LogoutBtn />
               </li>
               <li>
                 <div className={style.profile}>
                   <NavLink to={`/user/${userState.userInfo.id}`}>
-                    <img
+                    {userState.userInfo.img ? <img
                       className={style.profileImg}
                       src={userState.userInfo.img}
-                      alt="user_profile_image"
-                    />
+                      alt=""
+                    /> : <img
+                    className={style.profileImg}
+                    src={"https://i.pinimg.com/236x/f2/a1/d6/f2a1d6d87b1231ce39710e6ba1c1e129.jpg"}
+                    alt=""
+                  /> }
                     <div>{userState.userInfo.nickname}</div>
                   </NavLink>
                 </div>
@@ -67,6 +86,9 @@ const NavigationBar: React.FC = () => {
             </Fragment>
           )}
         </ul>
+        <SearchModal open={modalOpen} close={closeModal}>
+          <SearchForm close={closeModal} />
+        </SearchModal>
       </div>
     </header>
   );

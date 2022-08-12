@@ -3,7 +3,9 @@ import { StageState } from "../../store/stage";
 import Modal from "../ui/Modal";
 import StageUpdateForm from "./StageUpdateForm";
 
-const StageUpdateBtn: React.FC<{ stage: StageState }> = ({ stage }) => {
+const StageUpdateBtn: React.FC<{
+  stage: StageState;
+}> = ({ stage }) => {
   const [modalOpen, setModalOpen] = useState(false);
 
   const openModal = () => {

@@ -49,6 +49,10 @@ const refresh = async (
     );
   }
 
+  if(expireAt === null) {
+    token = sessionStorage.getItem("accessToken");
+  }
+
   config.headers["Authorization"] = `Bearer ${token}`;
   return config;
 };

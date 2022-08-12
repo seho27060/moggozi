@@ -1,16 +1,17 @@
 import { createSlice } from "@reduxjs/toolkit";
+import ReactQuill, { Value } from "react-quill";
 import { PostData } from "./post";
 
 export interface PostUpdateSend {
   title: string | null;
-  content: string | null;
+  content:  ReactQuill.Value | null;
   postId: number | null;
   postImg: string | null;
 }
 export interface PostSend {
   memberId : number,
   title: string | null;
-  content: string | null;
+  content: Value|string | null;
   stageId: number | null;
   postImg: string | undefined;
 }
@@ -20,6 +21,7 @@ interface PostModal {
   postUpdateFormOpen: boolean;
   postFormButtonOpen: boolean;
   postModalOpen :boolean
+  postModalStageId : number|null
 }
 const initialPostModalState: PostModal = {
   postModalState: {
@@ -36,7 +38,8 @@ const initialPostModalState: PostModal = {
   postFormModalOpen: false,
   postUpdateFormOpen: false,
   postFormButtonOpen: false,
-  postModalOpen : false
+  postModalOpen : false,
+  postModalStageId : null
 };
 export const postModalSlice = createSlice({
   name: "postModal",
@@ -54,9 +57,12 @@ export const postModalSlice = createSlice({
     setPostUpdateFormState: (state: PostModal,action) => {
       state.postUpdateFormOpen = action.payload
     },
-    setPostModalState:(state: PostModal,action) => {
+    setPostModalOpen:(state: PostModal,action) => {
       state.postModalOpen = action.payload
     },
+    setPostModalStageId : (state:PostModal,action) => {
+      state.postModalStageId = action.payload
+    }
   },
 });
 
@@ -65,7 +71,8 @@ export const {
   setPostFormModalOpen,
   setPostFormButtonState,
   setPostUpdateFormState,
-  setPostModalState
+  setPostModalOpen,
+  setPostModalStageId
 } = postModalSlice.actions;
 
 export default postModalSlice.reducer;

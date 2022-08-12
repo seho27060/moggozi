@@ -1,22 +1,55 @@
+import { Dispatch, MouseEvent, SetStateAction } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import { alertRecent } from "../../lib/withTokenApi";
-import { setAlertList } from "../../store/alert";
+import { alertAll } from "../../lib/withTokenApi";
+import { Alert, setAlertList } from "../../store/alert";
 import { RootState } from "../../store/store";
+import AlertItem from "./AlertItem";
 
-function AlertList() {
-  const dispatch = useDispatch()
-  const loadedAlertList = useSelector((state:RootState)=> state.alert.alertList)
+import styles from "./AlertOnair.module.scss";
 
-  alertRecent().then((res) =>{
-    console.log("recent alert read",res)
-    dispatch(setAlertList(res))
-  }).catch((err) =>{
-    console.log("err",err)
-  })
-  return(<div>
+const AlertList: React.FC<{
+  setIsToggle: Dispatch<SetStateAction<boolean>>;
+}> = ({ setIsToggle }) => {
+  const dispatch = useDispatch();
+  const loadedAlertList = useSelector(
+    (state: RootState) => state.alert.alertList
+  );
 
-  </div>)
-}
+  const alertAllHandler = (event: MouseEvent) => {
+    event.preventDefault();
+    alertAll().then((res) => {
+      dispatch(setAlertList(res));
+    });
+  };
+  console.log("loadAlertlist", loadedAlertList);
+
+  return (
+    <div className={styles.dropdownContent}>
+      <>
+        {loadedAlertList &&
+          loadedAlertList.map((alert: Alert) => (
+            <div key={alert.id}>
+              <AlertItem alertData={alert}/>
+            </div>
+          ))}
+        {}
+        <button onClick={alertAllHandler} style={{ zIndex: 1 }}>
+          알림 기록 확인
+        </button>
+      </>
+      {/* <button onClick={() => {
+        alertReadall().then((res)=>{
+          console.log("readall",res)
+          alertRecent().then((res) => {
+            console.log("ll",res)
+            dispatch(checkAlertList())
+          })
+        })
+      }}>알림 전체 확인</button> */}
+      <button onClick={() => setIsToggle(false)}>닫기</button>
+    </div>
+  );
+};
 
 export default AlertList;

@@ -1,0 +1,17 @@
+@use "../../styles/mixin.scss" as mixin;
+
+@include mixin.desktop {
+  .hobbyList {
+    display: flex;
+
+    div {
+      margin: 0 15px 0 0;
+      font-weight: 400;
+      font-size: 20px;
+      line-height: 24px;}
+  }
+}
+
+@include mixin.mobile {
+
+}
