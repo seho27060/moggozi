@@ -1,0 +1,9 @@
+@use "../styles/mixin.scss" as mixin;
+
+@include mixin.desktop {
+  .alertButton {
+    background: white;
+    border-left: none;
+    border-right: none;
+  }
+}

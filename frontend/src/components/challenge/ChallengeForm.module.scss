@@ -2,6 +2,11 @@
 
 @include mixin.desktop {
 
+  .challengeForm {
+    width : auto;
+    height: auto;
+  }
+
   .shortIntroduce {
     display: flex;
 

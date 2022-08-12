@@ -1,46 +1,62 @@
 import ChallengeList from "../components/challenge/ChallengeList";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { isLoginFetchChallengeRankList } from "../lib/withTokenApi";
+import {
+  isLoginFetchChallengeRankList,
+  MyChallengeList,
+} from "../lib/withTokenApi";
 import { ChallengeItemState } from "../store/challenge";
 import { useSelector } from "react-redux";
 import { RootState } from "../store/store";
 import { fetchChallengeRankList } from "../lib/generalApi";
 
-import styles from "./MainPage.module.scss"
+import styles from "./MainPage.module.scss";
 
 const MainPage: React.FC = () => {
   const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
-  const [isLoading, setIsLoading] = useState(true);
+  const [rankIsLoading, setRankIsLoading] = useState(true);
+  const [myIsLoading, setMyIsLoading] = useState(true);
   const [loadedChallengeRankList, setLoadedChallengeRankList] = useState<
+    ChallengeItemState[]
+  >([]);
+  const [loadedMyChallengeList, setLoadedMyChallengeList] = useState<
     ChallengeItemState[]
   >([]);
 
   useEffect(() => {
-    setIsLoading(true);
-
+    setRankIsLoading(true);
+    setMyIsLoading(true);
     if (isLoggedIn) {
       // 로그인 한 경우
       isLoginFetchChallengeRankList()
         .then((res) => {
           setLoadedChallengeRankList(res);
-          setIsLoading(false);
+          setRankIsLoading(false);
         })
         .catch((err) => {
           console.log(err);
-          setIsLoading(false);
+          setRankIsLoading(false);
+        });
+      MyChallengeList()
+        .then((res) => {
+          setLoadedMyChallengeList(res);
+          setMyIsLoading(false);
+        })
+        .catch((err) => {
+          console.log(err);
+          setMyIsLoading(false);
         });
     } else {
       // 로그인 안 한 경우
       fetchChallengeRankList()
         .then((res) => {
           setLoadedChallengeRankList(res);
-          setIsLoading(false);
+          setRankIsLoading(false);
         })
         // console.log(res)
         .catch((err) => {
           console.log(err);
-          setIsLoading(false);
+          setRankIsLoading(false);
         });
     }
   }, [isLoggedIn]);
@@ -51,13 +67,23 @@ const MainPage: React.FC = () => {
       <Link to={`/challenge/new`}>
         <button>챌린지 생성</button>
       </Link>
-      
-      {isLoading === true && (
+      {isLoggedIn === true && myIsLoading === true && (
         <section>
-          <p>Loading...</p>
+          <p>MyList Loading...</p>
         </section>
       )}
-      {isLoading === false && (
+      {isLoggedIn === true && myIsLoading === false && (
+        <div>
+          <p>내가 작성한 챌린지 리스트</p>
+          <ChallengeList challenges={loadedMyChallengeList} />
+        </div>
+      )}
+      {rankIsLoading === true && (
+        <section>
+          <p>RankList Loading...</p>
+        </section>
+      )}
+      {rankIsLoading === false && (
         <div>
           <p>좋아요 순으로 정렬한 챌린지 리스트</p>
           <ChallengeList challenges={loadedChallengeRankList} />

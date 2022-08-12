@@ -1,10 +1,9 @@
 import axios from "axios";
 import { apiConfig } from "../config";
-import { ChallengeItemState, ChallengeSaveState } from "../store/challenge";
+import { ChallengeSaveState } from "../store/challenge";
 import { CommentSend } from "../store/comment";
 import { PostSend, PostUpdateSend } from "../store/postModal";
 import { StageSaveState } from "../store/stage";
-import { addChallengeImg, addUserImg, profileImgFetchAPI } from "./imgApi";
 import { refresh, refreshErrorHandle } from "./refresh";
 
 const withTokenApi = axios.create({
@@ -20,9 +19,7 @@ export default withTokenApi;
 // 계정 관련
 export const persistAuth = async () => {
   const { data } = await withTokenApi.get(`/user/myinfo`);
-  return profileImgFetchAPI(data.id).then((res) => {
-    return { ...data, userImg: res };
-  });
+  return data;
 };
 
 export const userDetail = async () => {
@@ -37,6 +34,11 @@ export const logoutApi = async () => {
 
 export const updateUserApi = async (id: number | null, option: object) => {
   const { data } = await withTokenApi.post(`/user/update/${id}`, option);
+  return data;
+};
+
+export const userImgApi = async (img: string) => {
+  const { data } = await withTokenApi.post("/user/updateImg", { userImg: img });
   return data;
 };
 
@@ -57,16 +59,12 @@ export const followApi = async (toId: number | null) => {
 
 export const followedApi = async (toMember: number) => {
   const { data } = await withTokenApi.get(`/user/followed/${toMember}`);
-  return addUserImg(data.memberInfoList).then((res) => {
-    return { ...data, memberInfoList: res };
-  });
+  return data;
 };
 
 export const followingApi = async (fromMemberId: number) => {
   const { data } = await withTokenApi.get(`/user/following/${fromMemberId}`);
-  return addUserImg(data.memberInfoList).then((res) => {
-    return { ...data, memberInfoList: res };
-  });
+  return data;
 };
 
 // 챌린지 관련
@@ -75,12 +73,14 @@ export const isLoginFetchChallenge = async (id: number) => {
   return data;
 };
 
+export const MyChallengeList = async () => {
+  const { data } = await withTokenApi.get("/challenge/myChallenge");
+  return data;
+};
+
 export const isLoginFetchChallengeRankList = async () => {
   const { data } = await withTokenApi.get("/challenge/rank");
-  const newData: ChallengeItemState[] = [];
-  return addChallengeImg(data, newData).then(() => {
-    return newData;
-  });
+  return data;
 };
 
 export const challengeAdd = async (challengeAddData: ChallengeSaveState) => {
@@ -96,6 +96,12 @@ export const challengeUpdate = async (
     `/challenge/${id}`,
     challengeUpdateData
   );
+  return data;
+};
+
+// 챌린지 이미지 업데이트
+export const challengeImgApi = async (challengeId: number, img: string) => {
+  const { data } = await withTokenApi.put(`/challenge/img/${challengeId}`, img);
   return data;
 };
 
@@ -126,6 +132,29 @@ export const hobbyExist = async (name: string) => {
 
 export const setHobby = async (hobby: { name: string }) => {
   const { data } = await withTokenApi.post("/hobby/save", hobby);
+  return data;
+};
+
+// 챌린지 등록
+export const registerChallenge = async (challengeId: number) => {
+  const { data } = await withTokenApi.put(`/challenge/register/${challengeId}`);
+  return data;
+};
+
+// 챌린지 도전
+export const tryChallenge = async (userId: number, challengeId: number) => {
+  const { data } = await withTokenApi.post("/challenge/tryChallenge", {
+    memberId: userId,
+    challengeId: challengeId,
+  });
+  return data;
+};
+
+// 챌린지 도전 취소
+export const cancelChallenge = async (challengeId: number) => {
+  const { data } = await withTokenApi.delete(
+    `/challenge/cancelChallenge/${challengeId}`
+  );
   return data;
 };
 
@@ -192,34 +221,65 @@ export const fetchStages = async (ChallengeId: number) => {
   return data;
 };
 
+// 스테이지 진행도
+export const fetchStageProgress = async (stageId: number) => {
+  const { data } = await withTokenApi.get(`/stage/join${stageId}`);
+  return data;
+};
+
+export const stageJoin = async (stageId: number) => {
+  const { data } = await withTokenApi.post(`/stage/join${stageId}`);
+  return data;
+};
+
+export const stageComplete = async (stageId: number) => {
+  const { data } = await withTokenApi.put(`/stage/join${stageId}`, 2);
+  return data;
+};
+
+export const stageUnComplete = async (stageId: number) => {
+  const { data } = await withTokenApi.put(`/stage/join${stageId}`, 1);
+  return data;
+};
+
+export const stageCancel = async (stageId: number) => {
+  const { data } = await withTokenApi.delete(`/stage/join${stageId}`);
+  return data;
+};
+
 // 포스팅 관련
 export const postAdd = async (postAddData: PostSend) => {
-  const { data } = await withTokenApi.post(`/stage/post`, postAddData);
+  const { data } = await withTokenApi.post(`/post`, postAddData);
   return data;
 };
 
 export const postDelete = async (post_id: number) => {
-  const { data } = await withTokenApi.delete(`/stage/post/${post_id}`);
+  const { data } = await withTokenApi.delete(`/post/${post_id}`);
   return data;
 };
 
 export const postUpdate = async (post: PostUpdateSend) => {
-  const { data } = await withTokenApi.put(`/stage/post`, post);
+  const { data } = await withTokenApi.put(`/post`, post);
   return data;
 };
 
 export const postListRead = async (stageId: number) => {
-  const { data } = await withTokenApi.get(`/stage/post/${stageId}`);
+  const { data } = await withTokenApi.get(`/post/${stageId}`);
   return data;
 };
 
 export const postRead = async (postId: number) => {
-  const { data } = await withTokenApi.get(`/stage/post/detail/${postId}`);
+  const { data } = await withTokenApi.get(`/post/detail/${postId}`);
+  return data;
+};
+
+export const stageMyPostRead = async (stageId: number) => {
+  const { data } = await withTokenApi.get(`/post/detail/stage/${stageId}`);
   return data;
 };
 
 export const postRandomRead = async (size: number) => {
-  const { data } = await withTokenApi.get(`/stage/post/random/${size}`);
+  const { data } = await withTokenApi.get(`/post/random/${size}`);
   return data;
 };
 
@@ -253,7 +313,9 @@ export const commentUpdate = async (
   return data;
 };
 export const commentWriter = async (comment_id: number) => {
-  const { data } = await withTokenApi.get(`/comment/commentWriter/${comment_id}`);
+  const { data } = await withTokenApi.get(
+    `/comment/commentWriter/${comment_id}`
+  );
   return data;
 };
 //// 알림 관련
@@ -286,10 +348,7 @@ export const isLoginSearchChallengeApi = async (
   const { data } = await withTokenApi.get(
     `/challenge/search/?keyword=${q}&page=${page}&size=${size}`
   );
-  const newData: ChallengeItemState[] = [];
-  return addChallengeImg(data.content, newData).then(() => {
-    return { ...data, content: newData };
-  });
+  return data;
 };
 
 export const isLoginSearchChallengeHobbyApi = async (
@@ -300,10 +359,7 @@ export const isLoginSearchChallengeHobbyApi = async (
   const { data } = await withTokenApi.get(
     `/challenge/tag/search/?keyword=${q}&page=${page}&size=${size}`
   );
-  const newData: ChallengeItemState[] = [];
-  return addChallengeImg(data.content, newData).then(() => {
-    return { ...data, content: newData };
-  });
+  return data;
 };
 
 // 사용법 - 해당 axios는 기본적으로 토큰이 만료되었을 경우 refresh를 겸함.

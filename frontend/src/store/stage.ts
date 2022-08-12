@@ -1,9 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { Value } from "react-quill";
 import { PostItem } from "./post";
 
 export interface StageSaveState {
   name: string | null;
-  content: string | null;
+  content:Value |string | null;
   img: imgState[] | string;
 }
 
@@ -17,7 +18,6 @@ export interface StageState extends StageSaveState {
   createDate: number | null;
   modifiedDate: number | null;
   postList: PostItem[] | null;
-  state: number | 0;
 }
 
 const initialStagesState: StageState[] = [];

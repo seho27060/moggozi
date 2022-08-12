@@ -10,6 +10,10 @@ import HobbySetList from "./HobbySetList";
 
 import styles from "./ChallengeUpdateForm.module.scss";
 
+import EditorComponent from "../ui/Editor";
+import ReactQuill from "react-quill";
+
+
 const ChallengeUpdateForm: React.FC<{ challenge: ChallengeDetailState }> = (
   props
 ) => {
@@ -17,14 +21,14 @@ const ChallengeUpdateForm: React.FC<{ challenge: ChallengeDetailState }> = (
 
   // 처음 켤 때 취미를 저장소에 넣어준다.
   useEffect(() => {
-    setContentInput(contentInputRef.current!.value)
+    // setContentInput(contentInputRef.current!.value)
     dispatch(fetchHobby(props.challenge.hobbyList));
   }, [dispatch, props]);
 
   const nameInputRef = useRef<HTMLInputElement>(null);
   const descriptionInputRef = useRef<HTMLTextAreaElement>(null);
-  const [ contentInput, setContentInput ] = useState("");
-  const contentInputRef = useRef<HTMLTextAreaElement>(null);
+  // const [ contentInput, setContentInput ] = useState();
+  const contentInputRef = useRef<ReactQuill>();
   const levelSelectRef = useRef<HTMLSelectElement>(null);
 
   const hobbyList = useSelector((state: RootState) => state.hobby.hobbyList);
@@ -107,15 +111,19 @@ const ChallengeUpdateForm: React.FC<{ challenge: ChallengeDetailState }> = (
           rows={5}
           id="content"
           required
-          ref={contentInputRef}
+          // ref={contentInputRef}
           defaultValue={props.challenge.content || ""}
           placeholder="내용을 입력해주세요."
           onChange={(e) => {
-            setContentInput(e.target.value)
+            // setContentInput(e.target.value)
           }}
         />
       </div>
-      <div className={styles.checker}>{contentInput.length} / 500</div>
+      <div>
+          챌린지 상세설명
+          <EditorComponent QuillRef={contentInputRef} value={props.challenge.content!}/>
+      </div>
+      {/* <div className={styles.checker}>{contentInput.length} / 500</div> */}
       <div className={styles.done}>
         <button  type="button" onClick={submitHandler}>
           변경하기

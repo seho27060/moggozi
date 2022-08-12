@@ -1,8 +1,13 @@
-import { deleteObject, ref, uploadBytes } from "firebase/storage";
+import {
+  deleteObject,
+  getDownloadURL,
+  ref,
+  uploadBytes,
+} from "firebase/storage";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { storageService } from "../../fbase/fbase";
-import { challengeImgFetchAPI } from "../../lib/imgApi";
+import { challengeImgApi } from "../../lib/withTokenApi";
 
 import styles from "./ChallengeImgForm.module.scss";
 
@@ -25,22 +30,28 @@ const ChallengeImgForm: React.FC<{
       setPreviewImage(URL.createObjectURL(fileList[0]));
     }
   };
-  // 이미지 서버에 업로드
+
+  // 이미지 업로드
   const uploadHandler = (event: React.MouseEvent, target: string) => {
     event.preventDefault();
     const imgRef = ref(storageService, target);
-    uploadBytes(imgRef, file!).then(() => {
-      challengeImgFetchAPI(challengeId).then((res) => imgHandler(res));
+    uploadBytes(imgRef, file!).then((res) => {
+      getDownloadURL(res.ref).then((res) => {
+        console.log(res);
+        imgHandler(res);
+        challengeImgApi(challengeId, res);
+      });
       setPreviewImage("");
     });
   };
 
+  // 이미지 제거
   const deleteHandler = (event: React.MouseEvent, target: string) => {
     event.preventDefault();
     const imgRef = ref(storageService, target);
     deleteObject(imgRef);
-
-    challengeImgFetchAPI(challengeId).then((res) => imgHandler(res));
+    imgHandler("");
+    challengeImgApi(challengeId, "");
   };
 
   return (

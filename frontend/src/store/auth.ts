@@ -53,7 +53,7 @@ export const authSlice = createSlice({
       state.userInfo = {
         id: action.payload.id,
         nickname: action.payload.nickname,
-        img: "",
+        img: action.payload.userImg,
       };
       state.isLoggedIn = !!action.payload.accessToken;
     },

@@ -11,17 +11,21 @@ import PostLikeBtn from "./PostLikeBtn";
 import { useNavigate } from "react-router-dom";
 import { setPostModalOpen } from "../../store/postModal";
 
-import styles from "./PostDetailItem.module.scss";
-import PostOptionBtn from "./PostOptionBtn";
 
+
+import PostOptionBtn from "./PostOptionBtn";
+import Dompurify from "dompurify";
+import styles from "./PostDetailItem.module.scss";
+import "react-quill/dist/quill.snow.css";
 
 const PostDetailItem: React.FC<{}> = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   // const user = useSelector((state: RootState) => state.auth.userInfo);
   const post = useSelector((state: RootState) => state.postModal);
-  console.log()
-  const commentState = useSelector((state: RootState) => state.comment.comments);
+  const commentState = useSelector(
+    (state: RootState) => state.comment.comments
+  );
 
   console.log("postDetail", post.postModalState);
   useEffect(() => {
@@ -36,13 +40,9 @@ const PostDetailItem: React.FC<{}> = () => {
   }, [dispatch, post.postModalState]);
 
   return (
-    <div className={styles.postDetail}>
-      <div>
-        <img
-          className={styles.img}
-          src="https://blog.kakaocdn.net/dn/vckff/btqCjeJmBHM/tMVpe4aUIMfH4nKS4aO3tK/img.jpg"
-          alt="포스팅이미지"
-        />
+    <div style={{ height: "25rem", overflow: "scroll" }}>
+      <div style={{ border: "solid", margin: "1rem", padding: "1rem" }}>
+        <img src="" alt="포스팅이미지" />
         {/* 수정 버튼 */}
       </div>
       <div className={styles.container}>
@@ -62,11 +62,31 @@ const PostDetailItem: React.FC<{}> = () => {
         
         <div>
           <>
-            <div className={styles.content}>{post.postModalState!.content}</div>
+            <div>제목 : {post.postModalState!.title}</div>
+            <div
+              dangerouslySetInnerHTML={{
+                __html: Dompurify.sanitize(
+                  post.postModalState!.content!.toString()
+                ),
+              }}
+              // className={styles.postDetail}
+              className="view ql-editor"
+            ></div>
             {/* 좋아요 버튼 */}
-            
-            <div className={styles.Btn_N_Date}><div className={styles.like}><PostLikeBtn />{post.postModalState!.likeNum}</div>
-            <>{String(post.postModalState.modifiedTime).slice(2, 10)}</></div>
+            <PostLikeBtn />
+            좋아요갯수:{post.postModalState!.likeNum}
+            <br />
+            {post.postModalState!.modifiedTime! && (
+              <div>
+                {new Date(
+                  post.postModalState!.modifiedTime!
+                ).toLocaleDateString("ko-Kr", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })}
+              </div>
+            )}
           </>
         </div>
 

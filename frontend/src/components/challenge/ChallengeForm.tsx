@@ -7,13 +7,17 @@ import { RootState } from "../../store/store";
 import HobbyForm from "./HobbyForm";
 import HobbySetList from "./HobbySetList";
 
+
+import EditorComponent from "../ui/Editor";
+import ReactQuill from "react-quill";
+
 import styles from "./ChallengeForm.module.scss"
 
 const ChallengeForm: React.FC = () => {
   const nameInputRef = useRef<HTMLInputElement>(null);
   const descriptionInputRef = useRef<HTMLTextAreaElement>(null);
   const [ contentInput, setContentInput ] = useState("");
-  const contentInputRef = useRef<HTMLTextAreaElement>(null);
+  const contentInputRef = useRef<ReactQuill>();
   const levelSelectRef = useRef<HTMLSelectElement>(null);
 
   const hobbyList = useSelector((state: RootState) => state.hobby.hobbyList);
@@ -80,6 +84,10 @@ const ChallengeForm: React.FC = () => {
         }}/>
       </div>
 
+      <div>
+          <EditorComponent QuillRef={contentInputRef} value={""} />
+        </div>
+      
       <div className={styles.checker}>{contentInput.length} / 500</div>
       <div className={styles.done}>
         <button type="button" onClick={submitHandler}>

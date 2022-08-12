@@ -6,14 +6,28 @@ import styles from "./StageList.module.scss";
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
+import { useDispatch } from "react-redux";
+import { setPostingStageId } from "../../store/post";
 
-const StageList: React.FC<{ stages: StageState[] }> = ({ stages }) => {
+const StageList: React.FC<{ stages: StageState[];
+  challengeProgress: number;
+}> = ({ stages, challengeProgress }) => {
+
   const [value, setValue] = useState(0);
   const [choice, setChoice] = useState(0);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
+
+  const dispatch = useDispatch();
+  const [showStageId, setShowStageId] = useState(
+    stages.length !== 0 ? stages[0].id : null
+  );
+  const stageSelectHandler = (event: React.MouseEvent, id: number) => {
+    event.preventDefault();
+    setShowStageId(id);
+    dispatch(setPostingStageId(id));
 
   return (
     <Box className={styles.tabs}>
@@ -69,10 +83,13 @@ const StageList: React.FC<{ stages: StageState[] }> = ({ stages }) => {
       style={{height: "1000px"}}
       >
       {stages.map((stage, index) => (
-        <div>{choice === index && <StageItem stage={stage} index={index} />}</div>
+        <div>{choice === index && <StageItem stage={stage} index={index} challengeProgress={challengeProgress} />}</div>
       ))}
       </div>
     </Box>
   );
 };
+};
+
+
 export default StageList;

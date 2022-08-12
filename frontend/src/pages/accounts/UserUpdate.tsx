@@ -9,11 +9,11 @@ function UserUpdate() {
   }, [])
   
   return(
-  <div>
-    UserUpdate
-    <EditUserInfoForm/>
-  </div>
-  )
+    <div>
+      UserUpdate
+      <EditUserInfoForm/>
+    </div>
+    )
 }
 
 export default UserUpdate;

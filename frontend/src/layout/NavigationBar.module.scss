@@ -37,9 +37,9 @@
 
       li {
         padding: 0 25px 0 25px;
-        button {
+        .searchButton {
           border: 0;
-          background: #fff;
+          background-color: transparent;
           font-size: 1.1rem;
           font-weight: 700;
           cursor: pointer;

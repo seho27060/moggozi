@@ -2,9 +2,17 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { stageImgFetchAPI } from "../../lib/imgApi";
-import { postListRead } from "../../lib/withTokenApi";
+import {
+  fetchStageProgress,
+  postListRead,
+  stageCancel,
+  stageJoin,
+} from "../../lib/withTokenApi";
 import { PostData } from "../../store/post";
-import { setPostFormButtonState, setPostFormModalOpen } from "../../store/postModal";
+import {
+  setPostFormButtonState,
+  setPostFormModalOpen,
+} from "../../store/postModal";
 import { imgState, StageState } from "../../store/stage";
 import { RootState } from "../../store/store";
 import Carousel from "../ui/Slider";
@@ -13,30 +21,56 @@ import styles from "./StageItem.module.scss"
 import "./Carousel.module.scss"
 import PostList from "../post/PostList";
 
+import Dompurify from "dompurify";
+
 const StageItem: React.FC<{
-  stage: StageState, index: number
-}> = ({ stage, index }) => {
+  stage: StageState, index: number,
+  challengeProgress: number;
+}> = ({ stage, index, challengeProgress }) => {
   document.body.style.overflow = "auto"; //모달때문에 이상하게 스크롤이 안되서 강제로 스크롤 바 생성함
 
   const dispatch = useDispatch();
   const [postStageListState, setPostStageListState] = useState<PostData[]>([]);
-  const [getStage, setStage] = useState<StageState>(stage);
-  const isLoggedIn = useSelector((state:RootState)=> state.auth.isLoggedIn)
-  const postingStageId = useSelector((state:RootState)=> state.post.postingStageId)
+  const [getStageImg, setStageImg] = useState<imgState[]>([]);
+  const [getStageProgress, setStageProgress] = useState(0);
+  const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
+  const user = useSelector((state: RootState) => state.auth);
+  const postingStageId = useSelector(
+    (state: RootState) => state.post.postingStageId
+  );
   const { postFormButtonOpen } = useSelector(
     (state: RootState) => state.postModal
   );
 
+  // 스테이지 진행도
+  useEffect(() => {
+    if (isLoggedIn === true) {
+      fetchStageProgress(stage.id!)
+        .then((res) => {
+          setStageProgress(res);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }, [isLoggedIn, stage.id]);
+
+  // 스테이지 사진
+  let postedCheck = postStageListState.some((post) => {
+    return post.writer!.id !== user.userInfo.id
+  })
+
   useEffect(() => {
     stageImgFetchAPI(stage.id!)
       .then((res) => {
-        setStage({ ...getStage, img: res });
+        setStageImg(res);
       })
       .catch((err) => {
-        setStage({ ...getStage, img: [] });
+        console.log(err);
       });
-  }, [stage, getStage]);
+  }, [stage.id]);
 
+  // 포스트 리스트
   useEffect(() => {
     postListRead(Number(stage.id))
       .then((res) => {
@@ -51,21 +85,36 @@ const StageItem: React.FC<{
       .catch((err) => {
         console.log("ERR", err);
       });
-    }, [dispatch, stage.id]);
-    
+  }, [dispatch, stage.id]);
+
+  // 스테이지 도전 버튼 클릭
+  const stageTryHandler = () => {
+    stageJoin(stage.id!)
+      .then(() => {
+        alert("도전하시겠습니까?");
+        setStageProgress(1);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  // 스테이지 도전 취소버튼 클릭
+  const stageCancelHandler = () => {
+    stageCancel(stage.id!)
+      .then(() => {
+        alert("취소하시겠습니까?");
+        setStageProgress(0);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   return (
     <div>
       <div className={styles.stageInfo}>
       <div className={styles.carouesl}>
         <Carousel>
-          {/* {Array.isArray(getStage.img) &&
-            getStage.img.map((img: imgState) => {
-              return (
-                <div>
-                  <img src="https://via.placeholder.com/500x350/09f.png/fff%20C/O%20https://placeholder.com/" alt="img" />
-                </div>
-              );
-            })} */}
           <div>
             <img src="https://img1.daumcdn.net/thumb/R800x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbgHC4M%2FbtqBVf8rCqB%2FZz5aJuALI4JSKV8ZKAm8YK%2Fimg.jpg" alt="" />
           </div>
@@ -80,12 +129,17 @@ const StageItem: React.FC<{
         <div className={styles.content}>
           <div>{index+1}단계</div>
           <div>{stage.name}</div>
-          <div>{stage.content}</div>
+          <div
+          dangerouslySetInnerHTML={{
+            __html: Dompurify.sanitize(stage.content!.toString()),
+          }}
+          className="view ql-editor"
+        ></div>
         </div>
       </div>
           <div className={styles.btnPosition}>
             {(postFormButtonOpen && isLoggedIn && postingStageId) && (
-              <button onClick={() => dispatch(setPostFormModalOpen())}>
+              <button onClick={() => dispatch(setPostFormModalOpen(true))}>
                 완료 / 포스팅하기
               </button>
             )}
