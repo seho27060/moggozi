@@ -3,9 +3,7 @@ package com.JJP.restapiserver.domain.entity.file;
 import com.JJP.restapiserver.domain.entity.stage.Post;
 import com.JJP.restapiserver.domain.entity.stage.Stage;
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -13,6 +11,7 @@ import javax.persistence.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
 public class PostImg {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
