@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -27,6 +28,12 @@ public class ReviewServiceImpl implements ReviewService{
 
     @Override
     public ReviewResponseDto registerReview(ReviewRequestDto reviewRequestDto) {
+        Optional<Review> existingReview = reviewRepository.findByMember_idAndChallenge_id(
+                reviewRequestDto.getMemberId(), reviewRequestDto.getChallengeId()
+        );
+        if(existingReview.isPresent()){
+            return null;
+        }
         Review review = Review.builder()
                 .review_content(reviewRequestDto.getReviewContent())
                 .rate(reviewRequestDto.getRate())
