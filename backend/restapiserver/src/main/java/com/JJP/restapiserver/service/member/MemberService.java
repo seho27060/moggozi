@@ -12,6 +12,9 @@ public interface MemberService {
     ResponseEntity<?> delete(String password, Long user_id); // 회원탈퇴
     ResponseEntity<?> update(Long user_id, UpdateUserRequest updateUserRequest); // 회원정보수정
     ResponseEntity<?> resetPassword(PasswordRequest passwordRequest); // 패스워드 찾기 - 리셋
+
+    ResponseEntity<?> updateImg(Long user_id, UserImgRequest userImgRequest);
+
     ResponseEntity<?> updatePassword(PwUpdateRequest pwUpdateRequest, Long userid);
 //    public ResponseEntity<?> checkValidity(LoginRequest loginRequest); // 사용자 확인
     ResponseEntity<?> usernameCheck(String username);
