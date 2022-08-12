@@ -174,65 +174,107 @@ public class ChallengeServiceImpl implements ChallengeService{
         ChallengeResponseDto challengeResponseDto = new ChallengeResponseDto(challenge);
         return challengeResponseDto;
     }
+
     @Override
-    public ChallengeResponseDto registerChallenge(Long challenge_id){
-        Challenge challenge = challengeRepository.getById(challenge_id);
-        challenge.register();
-        return new ChallengeResponseDto(challenge);
+    public ChallengeResponseDto registerChallenge(Long member_id, Long challenge_id){
+        Optional<Challenge> challenge = challengeRepository.findByMember_idAndId(member_id, challenge_id);
+        if(challenge.isPresent()){
+            challenge.get().register();
+            return new ChallengeResponseDto(challenge.get());
+        }
+        return null;
     }
 
     @Override
     public ChallengeResponseDto updateChallenge(Long challenge_id, ChallengeRequestDto challengeData) {
 
         Challenge challenge = challengeRepository.findById(challenge_id).get();
-//        System.out.println(challengeData.getHobbyList().toString());
-        challenge.updateChallenge(challengeData);
-
-        if(challenge.getChallengeTagList() != null)
-        {
-            for(int i = 0; i < challenge.getChallengeTagList().size(); i++)
-            {
-                Long index = challenge.getChallengeTagList().get(i).getId();
-                ChallengeTag challengeTag = challengeTagRepository.getById(index);
-//                System.out.println("삭제할 번호 입니다. " + index);
-                challengeTagRepository.delete(challengeTag);
-            }
+        // 이미 등록이 완료된 챌린지임.
+        if(challenge.getState() == 2){
+            return null;
         }
-        challenge.getChallengeTagList().clear();
-//        challengeRepository.save(challenge);
-
-        tagRegister(challenge_id, challengeData);
-        return new ChallengeResponseDto(challenge);
+        if(challenge.getMember().getId() == challengeData.getMemberId())
+        {
+            challenge.updateChallenge(challengeData);
+            if(challenge.getChallengeTagList() != null)
+            {
+                for(int i = 0; i < challenge.getChallengeTagList().size(); i++)
+                {
+                    Long index = challenge.getChallengeTagList().get(i).getId();
+                    ChallengeTag challengeTag = challengeTagRepository.getById(index);
+                    challengeTagRepository.delete(challengeTag);
+                }
+            }
+            challenge.getChallengeTagList().clear();
+            tagRegister(challenge_id, challengeData);
+            return new ChallengeResponseDto(challenge);
+        }
+        else
+            return null;
     }
 
 
     // 테스트 완료
     @Override
+    public int deleteChallenge(Long member_id, Long challenge_id) {
+        Optional<Challenge> challenge = challengeRepository.findById(challenge_id);
+        if(challenge.isPresent()){
+            if(challenge.get().getMember().getId() == member_id){
+                if(challenge.get().getState() == 2)
+                    return -3;
+                challengeRepository.delete(challenge.get());
+                return 1;
+            }
+            else return -2;
+        }
+        else
+            return -1;
+    }
+    @Override
     public int deleteChallenge(Long challenge_id) {
-        challengeRepository.deleteById(challenge_id);
+        Optional<Challenge> challenge = challengeRepository.findById(challenge_id);
+        if(challenge.isPresent()){
+            challengeRepository.delete(challenge.get());
+            return 1;
+            }
         return 0;
     }
 
     @Override
-    public void completeChallenge(ChallengeUpdateRequestDto challengeCompleteRequestDto) {
+    public List<ChallengeListResponseDto> getTop8ByMember_idOrderByModifiedDateDesc(Long member_id) {
+        List<JoinedChallenge> joinedChallengeList = joinedChallengeRepository.findTop8ByMember_idOrderByModifiedDateDesc(member_id);
+        List<Challenge> challengeList = joinedChallengeList.stream().map(o -> o.getChallenge()).collect(Collectors.toList());
+        List<ChallengeListResponseDto> challengeListResponseDtoList = new ArrayList<>();
+        return challengeIntoListDto(challengeList,challengeListResponseDtoList, member_id);
+    }
 
-        // 상태를 변화시켜줄 챌린지를 찾음.
-        Challenge challenge = challengeRepository.findById(challengeCompleteRequestDto.getChallengeId()).get();
-        JoinedChallenge joinedChallenge = joinedChallengeRepository.
-                findByChallenge_idAndMember_id(challengeCompleteRequestDto.getChallengeId(),
-                        challengeCompleteRequestDto.getMemberId()).get();
-        // 완료되었다는 상태가 2임
-        joinedChallenge.setState(2);
+
+    @Override
+    public int completeChallenge(Long member_id, Long challenge_id) {
+        Optional<Challenge> challenge = challengeRepository.findById(challenge_id);
+        if(challenge.isPresent()){
+            Optional<JoinedChallenge> joinedChallenge = joinedChallengeRepository.
+                    findByChallenge_idAndMember_id(challenge_id,
+                            member_id);
+            // 완료되었다는 상태가 2임
+            if(joinedChallenge.isPresent())
+            {
+
+            }
+            else
+                return -1;
+            joinedChallenge.setState(2);
+        }
     }
 
     @Override
-    public void tryChallenge(ChallengeUpdateRequestDto challengeUpdateRequestDto) {
+    public boolean tryChallenge(ChallengeUpdateRequestDto challengeUpdateRequestDto) {
         Challenge challenge = challengeRepository.findById(challengeUpdateRequestDto.getChallengeId()).get();
         Member member = memberRepository.findById(challengeUpdateRequestDto.getMemberId()).get();
-        Optional<JoinedChallenge> reulst =joinedChallengeRepository.findByChallenge_idAndMember_id(challengeUpdateRequestDto.getChallengeId(),
+        Optional<JoinedChallenge> result =joinedChallengeRepository.findByChallenge_idAndMember_id(challengeUpdateRequestDto.getChallengeId(),
                 challengeUpdateRequestDto.getMemberId());
-        if(reulst.isPresent()){
-            reulst.get().setState(1);
+        if(result.isPresent()){
+            return false;
         }
         else{
         // 도전한다는게 1임
@@ -242,15 +284,18 @@ public class ChallengeServiceImpl implements ChallengeService{
                                 .challenge(challenge)
                                 .member(member)
                                 .build());
+        return true;
         }
     }
 
     @Override
-    public void cancelChallenge(ChallengeUpdateRequestDto challengeUpdateRequestDto) {
-        JoinedChallenge joinedChallenge = joinedChallengeRepository.
-                findByChallenge_idAndMember_id(challengeUpdateRequestDto.getChallengeId(),
-                        challengeUpdateRequestDto.getMemberId()).get();
-        joinedChallengeRepository.delete(joinedChallenge);
+    public void cancelChallenge(Long member_id, Long challenge_id) {
+        Optional<JoinedChallenge> joinedChallenge = joinedChallengeRepository.
+                findByChallenge_idAndMember_id(challenge_id,
+                        member_id);
+        if(joinedChallenge.isPresent()){
+            joinedChallengeRepository.delete(joinedChallenge.get());
+        }
     }
 
     @Override

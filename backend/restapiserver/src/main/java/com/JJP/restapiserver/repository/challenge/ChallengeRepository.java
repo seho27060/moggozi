@@ -58,4 +58,6 @@ public interface ChallengeRepository extends JpaRepository<Challenge, Long> {
 
     @Query(value = "select * from challenge c inner join challenge_tag t on c.id = t.challenge_id where t.tag_id = :tag_ids", nativeQuery = true)
     List<Challenge> findChallengeContainsTag(@Param("tag_ids") Long tag_ids);
+
+    Optional<Challenge> findByMember_idAndId(Long member_id, Long challenge_id);
 }

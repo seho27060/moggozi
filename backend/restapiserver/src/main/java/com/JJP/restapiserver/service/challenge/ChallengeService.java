@@ -23,17 +23,26 @@ public interface ChallengeService {
     // 챌린지 등록하는 api
     ChallengeResponseDto saveChallenge(ChallengeRequestDto challengeData);
 
-    ChallengeResponseDto registerChallenge(Long challenge_ide);
+//    ChallengeResponseDto registerChallenge(Long challenge_ide);
+
+    ChallengeResponseDto registerChallenge(Long member_id, Long challenge_id);
+
     ChallengeResponseDto updateChallenge(Long id, ChallengeRequestDto challengeData);
     // 챌린지 만든 유저가 챌린지를 삭제하게 하는 api
+    int deleteChallenge(Long member_id, Long challenge_id);
     int deleteChallenge(Long challenge_id);
 
+    List<ChallengeListResponseDto> getTop8ByMember_idOrderByModifiedDateDesc(Long member_id);
 
     // 특정 유저의 챌린지를 완료 상태 변경하는 api
     void completeChallenge(ChallengeUpdateRequestDto challengeCompleteRequestDto);
-    void tryChallenge(ChallengeUpdateRequestDto challengeUpdateRequestDto);
 
-    void cancelChallenge(ChallengeUpdateRequestDto challengeUpdateRequestDto);
+    int completeChallenge(Long member_id, Long challenge_id);
+
+    boolean tryChallenge(ChallengeUpdateRequestDto challengeUpdateRequestDto);
+
+    void cancelChallenge(Long member_id, Long challenge_id);
+
     Long joinedChallengeNum(Long member_id);
 
     List<ChallengeListResponseDto> joinedChallengeList8(Long member_id);
