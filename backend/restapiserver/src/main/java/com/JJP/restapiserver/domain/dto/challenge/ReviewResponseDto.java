@@ -19,7 +19,7 @@ public class ReviewResponseDto {
     public ReviewResponseDto(Review review)
     {
         this.id = review.getId();
-        this.writer = new Writer(review.getMember().getId(), review.getMember().getNickname());
+        this.writer = new Writer(review.getMember().getId(), review.getMember().getNickname(), review.getMember().getUser_img());
         this.content = review.getReview_content();
         this.rate = review.getRate();
         this.createdTime = review.getCreatedDate();

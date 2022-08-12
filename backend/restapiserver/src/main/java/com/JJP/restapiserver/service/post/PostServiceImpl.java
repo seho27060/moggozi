@@ -148,7 +148,7 @@ public class PostServiceImpl implements PostService {
 
         System.out.println("=======================================================");
         System.out.println(post.getId());
-        Writer writer = new Writer(post.getMember().getId(), post.getMember().getNickname());
+        Writer writer = new Writer(post.getMember().getId(), post.getMember().getNickname(), post.getMember().getUser_img());
         PostDetailDto postDetailDto = PostDetailDto.builder()
                 .id(post_id)
                 .title(post.getTitle())
