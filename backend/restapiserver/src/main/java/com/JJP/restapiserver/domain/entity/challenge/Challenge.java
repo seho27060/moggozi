@@ -75,10 +75,14 @@ public class Challenge extends BaseTimeEntity {
     @JsonManagedReference
     private List<ChallengeTag> challengeTagList = new ArrayList<>();
 
+    public void imgUpdate(String path){
+        this.challenge_img = path;
+    }
+
     public void updateChallenge(ChallengeRequestDto challengeRequestDto)
     {
         this.name = challengeRequestDto.getName();
-        this.challenge_img = challengeRequestDto.getImg();
+//        this.challenge_img = challengeRequestDto.getImg();
         this.content = challengeRequestDto.getContent();
         this.level = challengeRequestDto.getLevel();
 //        this.hobby = challengeRequestDto.getHobby();

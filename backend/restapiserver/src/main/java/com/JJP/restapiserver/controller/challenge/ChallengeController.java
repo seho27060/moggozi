@@ -127,6 +127,14 @@ public class ChallengeController {
         ChallengeResponseDto challengeResponseDto = challengeService.updateChallenge(challenge_id, challengeRequestDto);
         return new ResponseEntity(challengeResponseDto, HttpStatus.OK);
     }
+
+    @Operation(summary = "챌린지 이미지 변경")
+    @PutMapping("/img/{challenge_id}")
+    public ResponseEntity changeImg(@PathVariable Long challenge_id, @RequestBody String path){
+        challengeService.changeImg(challenge_id, path);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
     @Operation(summary = "챌린지 삭제", description = "")
     @DeleteMapping("/{challenge_id}")
     public int deleteChallenge(@PathVariable Long challenge_id)
@@ -207,6 +215,7 @@ public class ChallengeController {
         challengeService.cancelChallenge(challengeUpdateRequestDto);
         return new ResponseEntity(HttpStatus.OK);
     }
+
 
 
 }
