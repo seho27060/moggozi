@@ -130,8 +130,9 @@ public class ChallengeController {
 
     @Operation(summary = "챌린지 이미지 변경")
     @PutMapping("/img/{challenge_id}")
-    public ResponseEntity changeImg(@PathVariable Long challenge_id, @RequestBody String path){
-        challengeService.changeImg(challenge_id, path);
+    public ResponseEntity changeImg(@PathVariable Long challenge_id, @RequestBody ChallengeImgDto img){
+
+        challengeService.changeImg(challenge_id, img.getImg());
         return new ResponseEntity(HttpStatus.OK);
     }
 
