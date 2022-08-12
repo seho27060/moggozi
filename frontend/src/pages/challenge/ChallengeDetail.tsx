@@ -29,6 +29,7 @@ import StageList from "../../components/stage/StageList";
 import Modal from "../../components/ui/Modal";
 
 import styles from "./ChallengeDetail.module.scss";
+import PostModal from "../../components/ui/PostModal";
 
 const ChallengeDetail: React.FC = () => {
   const { id } = useParams();
@@ -46,11 +47,9 @@ const ChallengeDetail: React.FC = () => {
   const dispatch = useDispatch();
   const reviews = useSelector((state: RootState) => state.review);
 
-  const {
-    postModalOpen,
-    postFormModalOpen,
-    postUpdateFormOpen,
-  } = useSelector((state: RootState) => state.postModal);
+  const { postModalOpen, postFormModalOpen, postUpdateFormOpen } = useSelector(
+    (state: RootState) => state.postModal
+  );
 
   const closePostModal = () => {
     dispatch(setPostModalOpen(false));
@@ -292,14 +291,14 @@ const ChallengeDetail: React.FC = () => {
           </div>
           <div className={styles.horizon}></div>
 
-          <div>{isLoggedIn && <ReviewForm image={userImg} />}</div>
+          <div>{isLoggedIn && <ReviewForm user_image={userImg} />}</div>
           <ReviewList reviews={reviews} />
 
-          {isLoggedIn === true && (
+          {/* {isLoggedIn === true && (
             <p>챌린지 유저 진행도: {loadedChallenge!.userProgress}</p>
-          )}
+          )} */}
           <div>
-            <p>스테이지</p>
+            <div className={styles.stageHr}></div>
             <StageList stages={loadedChallenge!.stageList} />
           </div>
         </div>
@@ -307,14 +306,10 @@ const ChallengeDetail: React.FC = () => {
 
       <div>
         {postModalOpen && (
-          <Modal
-            open={postModalOpen}
-            close={closePostModal}
-            header="Modal heading"
-          >
+          <PostModal open={postModalOpen} close={closePostModal}>
             {!postUpdateFormOpen && <PostDetailItem />}
             {postUpdateFormOpen && <PostUpdateForm />}
-          </Modal>
+          </PostModal>
         )}
         {postFormModalOpen && (
           <Modal
@@ -328,8 +323,7 @@ const ChallengeDetail: React.FC = () => {
               stageId={Number(stageId)}
               modalClose={closePostFormModal}
             />
-          </Modal>
-        )}
+          </Modal>)}
       </div>
     </div>
   );

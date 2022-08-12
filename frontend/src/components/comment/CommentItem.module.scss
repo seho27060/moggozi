@@ -1,0 +1,10 @@
+@use "../../styles/mixin.scss" as mixin;
+
+@include mixin.desktop {
+  
+
+  .writer {
+    display: flex;
+    justify-content:space-between;
+  }
+}

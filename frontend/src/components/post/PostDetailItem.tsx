@@ -7,19 +7,22 @@ import { commentSet } from "../../store/comment";
 
 import CommentList from "../comment/CommentList";
 import { useDispatch } from "react-redux";
-import PostModifyBtn from "./PostModifyBtn";
 import PostLikeBtn from "./PostLikeBtn";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { setPostModalOpen } from "../../store/postModal";
+
+import styles from "./PostDetailItem.module.scss";
+import PostOptionBtn from "./PostOptionBtn";
+
 
 const PostDetailItem: React.FC<{}> = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const user = useSelector((state: RootState) => state.auth.userInfo);
+  // const user = useSelector((state: RootState) => state.auth.userInfo);
   const post = useSelector((state: RootState) => state.postModal);
-  const commentState = useSelector(
-    (state: RootState) => state.comment.comments
-  );
+  console.log()
+  const commentState = useSelector((state: RootState) => state.comment.comments);
+
   console.log("postDetail", post.postModalState);
   useEffect(() => {
     commentRead(post.postModalState!.id)
@@ -30,43 +33,47 @@ const PostDetailItem: React.FC<{}> = () => {
       .catch((err) => {
         console.log("ERR", err);
       });
-  }, []);
+  }, [dispatch, post.postModalState]);
 
   return (
-    <div style={{ height: "25rem", overflow: "scroll" }}>
-      <div style={{ border: "solid", margin: "1rem", padding: "1rem" }}>
-        <img src="" alt="포스팅이미지" />
+    <div className={styles.postDetail}>
+      <div>
+        <img
+          className={styles.img}
+          src="https://blog.kakaocdn.net/dn/vckff/btqCjeJmBHM/tMVpe4aUIMfH4nKS4aO3tK/img.jpg"
+          alt="포스팅이미지"
+        />
         {/* 수정 버튼 */}
-        <PostModifyBtn />
-
-        <div>postid:{post.postModalState!.id}</div>
-        <div>
-          <button
-            onClick={() => {
-              navigate(`/user/${post.postModalState.writer!.id}`);
-              dispatch(setPostModalOpen(false));
-            }}
-          >
-            <div>프로필이미지 : {post.postModalState!.writer?.img}</div>
-            <div>작성자 : {post.postModalState!.writer?.nickname}</div>
-          </button>
-          <hr />
+      </div>
+      <div className={styles.container}>
+        <div
+          className={styles.writer}>
+          <div className={styles.writerInfo}  onClick={() => {
+            navigate(`/user/${post.postModalState.writer!.id}`);
+            dispatch(setPostModalOpen(false));}}>
+            { post.postModalState!.writer?.img ? <img src={post.postModalState!.writer?.img} alt="" /> : <img src="https://blog.kakaocdn.net/dn/vckff/btqCjeJmBHM/tMVpe4aUIMfH4nKS4aO3tK/img.jpg" alt="" />}
+            
+            <div>{post.postModalState!.writer?.nickname}</div>
+          </div>
+          <div><PostOptionBtn /></div>
         </div>
+
+        <div className={styles.horizon} ></div>
+        
         <div>
           <>
-            <div>제목 : {post.postModalState!.title}</div>
-            <p>포스팅 내용 : {post.postModalState!.content}</p>
+            <div className={styles.content}>{post.postModalState!.content}</div>
             {/* 좋아요 버튼 */}
-            <PostLikeBtn />
-            좋아요갯수:{post.postModalState!.likeNum}
-            <br />
-            포스팅작성일 :{post.postModalState!.modifiedTime}
+            
+            <div className={styles.Btn_N_Date}><div className={styles.like}><PostLikeBtn />{post.postModalState!.likeNum}</div>
+            <>{String(post.postModalState.modifiedTime).slice(2, 10)}</></div>
           </>
         </div>
-        <div style={{ border: "solid", margin: "1rem", padding: "1rem" }}>
-          댓글창
+
+        <div className={styles.horizon}></div>
+        <div>
           {/* // 해당 포스팅에 대한 댓글 불러온다는 가정하에 구현
-        // comment store에 state 저장해서 사용할것. */}
+          // comment store에 state 저장해서 사용할것. */}
           <CommentList comments={commentState} />
         </div>
       </div>

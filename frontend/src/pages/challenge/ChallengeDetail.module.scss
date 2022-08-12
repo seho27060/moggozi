@@ -10,6 +10,7 @@
   
   .container {
     margin-top: 60px;
+    width: 992px;
     
     // 챌린지 디테일 부분
     .C_article {
@@ -206,6 +207,17 @@
       height: 1px;
     }
 
+    .stageHr::before {
+      margin: 45px auto 45px auto;
+      display: block;
+      // display: inline-block;
+      // position: relative;
+      left: 300px;
+      background-color: mixin.$cloudLine;
+      content:"";
+      width: 450px;
+      height: 1px;
+    }
     
     //
   }

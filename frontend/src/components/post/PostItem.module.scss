@@ -1,0 +1,57 @@
+@use "../../styles/mixin.scss" as mixin;
+
+@include mixin.desktop {
+  .postItem {
+    width: 320px;
+    img {
+      width: 320px;
+      height: 200px;
+      object-fit: cover;
+    }
+
+    .title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      div:nth-child(1) {
+        margin: 10px 0 0 0;
+        font-weight: 600;
+        font-size: 20px;
+        line-height: 24px;
+      }
+
+      .name {
+        display: flex;
+        align-items: center;
+        margin: 10px 0 0 0;
+
+        svg {
+          color: red;
+          font-size: 18px;
+          &:hover {
+            color: rgb(255, 85, 85) !important;
+          }
+        }
+
+        div:nth-child(2) {
+          font-weight: 700;
+          font-size: 16px;
+          line-height: 18px;
+          margin: 0 0 0 3px;
+          color: mixin.$cloudGray
+        }
+      }
+    }
+
+    .writer {
+      margin: 10px 0 300px 0;
+      font-weight: 500;
+      font-size: 15px;
+      line-height: 18px;
+    }
+
+  }
+}
+
+@include mixin.mobile {
+}

@@ -60,9 +60,9 @@ const StageEdit: React.FC = () => {
       )}
       {isLoading === false && (
         <ul>
-          {stages.map((stage) => (
+          {stages.map((stage, index) => (
             <li key={stage.id}>
-              <StageItem stage={stage} />
+              <StageItem stage={stage} index={index} />
               <StageUpdateBtn stage={stage} />
               <StageDeleteBtn id={stage.id!} />
             </li>
