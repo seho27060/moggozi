@@ -3,22 +3,18 @@ import { PostSend } from "../../store/postModal";
 import { postAdd } from "../../lib/withTokenApi";
 import { postRegister } from "../../store/post";
 import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
-import { RootState } from "../../store/store";
 
 const PostForm: React.FC<{
   stageId: number;
   modalClose: () => void;
 }> = ({ stageId, modalClose }) => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const titleInputRef = useRef<HTMLInputElement>(null);
   const contentInputRef = useRef<HTMLTextAreaElement>(null);
   const postImgInputRef = useRef<HTMLInputElement>(null);
 
-  const userId = useSelector((state:RootState)=>state.auth.userInfo.id)
   const PostData: PostSend = {
-    memberId : userId!,
     title: "",
     content: "",
     postImg: "",
@@ -32,7 +28,7 @@ const PostForm: React.FC<{
     console.log(PostData);
     postAdd(PostData).then((res) => {
       console.log("포스팅 성공", res);
-      dispatch(postRegister(res))
+      dispatch(postRegister(res));
       modalClose();
     });
   };

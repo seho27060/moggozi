@@ -21,13 +21,13 @@ export interface PostItem {
   writer: UserInfo;
 }
 
-interface PostState{
-  posts: PostData[],
-  postingStageId : number|null,
+interface PostState {
+  posts: PostData[];
+  postingStageId: number | null;
 }
 const initialPostState: PostState = {
   posts: [],
-  postingStageId : null
+  postingStageId: null,
 };
 
 export const postSlice = createSlice({
@@ -60,13 +60,18 @@ export const postSlice = createSlice({
       );
     },
     setPostingStageId: (state, action) => {
-      console.log("setPostingStageId",action)
-      state.postingStageId = action.payload
-    }
+      console.log("setPostingStageId", action);
+      state.postingStageId = action.payload;
+    },
   },
 });
 
-export const { postSet, postModify, postRegister, postRemove,setPostingStageId } =
-  postSlice.actions;
+export const {
+  postSet,
+  postModify,
+  postRegister,
+  postRemove,
+  setPostingStageId,
+} = postSlice.actions;
 
 export default postSlice.reducer;

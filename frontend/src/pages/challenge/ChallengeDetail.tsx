@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { fetchChallenge } from "../../lib/generalApi";
-import { challengeImgFetchAPI } from "../../lib/imgApi";
 import { WebSocketContext } from "../../lib/WebSocketProvider";
 import {
   cancelChallenge,
@@ -137,7 +136,7 @@ const ChallengeDetail: React.FC = () => {
       });
     }
   };
-  console.log(loadedChallenge);
+
   // 페이지 데이터 받아오기
   useEffect(() => {
     setIsLoading(true);
@@ -148,31 +147,16 @@ const ChallengeDetail: React.FC = () => {
           .then((res) => {
             const challenge: ChallengeDetailState = {
               ...res,
-              img: "",
             };
             setLoadedChallenge(challenge);
-            // 파이어스토어에서 챌린지 사진 가져오기
-            challengeImgFetchAPI(challenge.id!)
-              .then((res) => {
-                setLoadedChallenge({
-                  ...challenge,
-                  img: res,
-                });
-                dispatch(reviewFetch(challenge.reviewList));
-                console.log("Challenge", challenge);
-                let postStageId = null;
-                if (challenge.stageList.length !== 0) {
-                  postStageId = challenge.stageList[0].id;
-                }
-                dispatch(setPostingStageId(postStageId));
-              })
-              .catch((err) => {
-                setLoadedChallenge({
-                  ...challenge,
-                  img: "",
-                });
-                dispatch(reviewFetch(challenge.reviewList));
-              });
+
+            dispatch(reviewFetch(challenge.reviewList));
+            let postStageId = null;
+            if (challenge.stageList.length !== 0) {
+              postStageId = challenge.stageList[0].id;
+            }
+            dispatch(setPostingStageId(postStageId));
+
             setIsLoading(false);
           })
           .catch((err) => {
@@ -181,30 +165,20 @@ const ChallengeDetail: React.FC = () => {
           });
       } else {
         // 로그인 안 한 경우
-        fetchChallenge(Number(id)).then((res) => {
-          const challenge: ChallengeDetailState = {
-            ...res,
-          };
-          setLoadedChallenge(challenge);
-          // 파이어스토어에서 챌린지 사진 가져오기
-          challengeImgFetchAPI(challenge.id!)
-            .then((res) => {
-              setLoadedChallenge({
-                ...challenge,
-                img: res,
-              });
-              dispatch(reviewFetch(challenge.reviewList));
-              setIsLoading(false);
-            })
-            .catch((err) => {
-              setLoadedChallenge({
-                ...challenge,
-                img: "",
-              });
-              dispatch(reviewFetch(challenge.reviewList));
-              setIsLoading(false);
-            });
-        });
+        fetchChallenge(Number(id))
+          .then((res) => {
+            const challenge: ChallengeDetailState = {
+              ...res,
+            };
+            setLoadedChallenge(challenge);
+
+            dispatch(reviewFetch(challenge.reviewList));
+            setIsLoading(false);
+          })
+          .catch((err) => {
+            console.log(err);
+            setIsLoading(false);
+          });
       }
     }
   }, [id, isLoggedIn, dispatch]);
