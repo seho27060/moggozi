@@ -24,6 +24,7 @@ const PostDetailItem: React.FC<{}> = () => {
   const commentState = useSelector(
     (state: RootState) => state.comment.comments
   );
+
   console.log("postDetail", post.postModalState);
   useEffect(() => {
     commentRead(post.postModalState!.id)
@@ -37,12 +38,11 @@ const PostDetailItem: React.FC<{}> = () => {
   }, []);
 
   return (
-    <div style={{ height: "25rem", overflow: "scroll" }}>
-      <div style={{ border: "solid", margin: "1rem", padding: "1rem" }}>
+    <div className={styles.postDetailContainer}>
+      <div className={styles.postDetailItem}>
         <img src="" alt="포스팅이미지" />
         {/* 수정 버튼 */}
         <PostModifyBtn />
-
         <div>postid:{post.postModalState!.id}</div>
         <div>
           <button
@@ -61,7 +61,9 @@ const PostDetailItem: React.FC<{}> = () => {
             <div>제목 : {post.postModalState!.title}</div>
             <div
               dangerouslySetInnerHTML={{
-                __html: Dompurify.sanitize(post.postModalState!.content!.toString()),
+                __html: Dompurify.sanitize(
+                  post.postModalState!.content!.toString()
+                ),
               }}
               // className={styles.postDetail}
               className="view ql-editor"
@@ -70,7 +72,17 @@ const PostDetailItem: React.FC<{}> = () => {
             <PostLikeBtn />
             좋아요갯수:{post.postModalState!.likeNum}
             <br />
-            포스팅작성일 :{post.postModalState!.modifiedTime}
+            {post.postModalState!.modifiedTime! && (
+              <div>
+                {new Date(
+                  post.postModalState!.modifiedTime!
+                ).toLocaleDateString("ko-Kr", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })}
+              </div>
+            )}
           </>
         </div>
         <div style={{ border: "solid", margin: "1rem", padding: "1rem" }}>

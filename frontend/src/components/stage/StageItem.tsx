@@ -4,7 +4,10 @@ import { Link } from "react-router-dom";
 import { stageImgFetchAPI } from "../../lib/imgApi";
 import { postListRead } from "../../lib/withTokenApi";
 import { PostData } from "../../store/post";
-import { setPostFormButtonState, setPostFormModalOpen } from "../../store/postModal";
+import {
+  setPostFormButtonState,
+  setPostFormModalOpen,
+} from "../../store/postModal";
 import { imgState, StageState } from "../../store/stage";
 import { RootState } from "../../store/store";
 import PostList from "../post/PostList";
@@ -20,12 +23,21 @@ const StageItem: React.FC<{
   const dispatch = useDispatch();
   const [postStageListState, setPostStageListState] = useState<PostData[]>([]);
   const [getStage, setStage] = useState<StageState>(stage);
-  const isLoggedIn = useSelector((state:RootState)=> state.auth.isLoggedIn)
-  const postingStageId = useSelector((state:RootState)=> state.post.postingStageId)
+  const user = useSelector((state: RootState) => state.auth);
+  const postingStageId = useSelector(
+    (state: RootState) => state.post.postingStageId
+  );
   const { postFormButtonOpen } = useSelector(
     (state: RootState) => state.postModal
   );
 
+  let postedCheck = false;
+  postStageListState.map((post) => {
+    if (post.writer!.id === user.userInfo.id) {
+      postedCheck = true;
+      // break
+    }
+  });
   useEffect(() => {
     stageImgFetchAPI(stage.id!)
       .then((res) => {
@@ -50,17 +62,20 @@ const StageItem: React.FC<{
         console.log("ERR", err);
       });
   }, [dispatch, stage.id]);
-  console.log(stage)
+  console.log(stage);
   return (
     <div>
       <h4>스테이지 아이템</h4>
       <p>스테이지 이름 : {stage.name}</p>
-      <p>스테이지 내용 : <div
-              dangerouslySetInnerHTML={{
-                __html: Dompurify.sanitize(stage.content!.toString()),
-              }}
-              className="view ql-editor"
-            ></div></p>
+      <p>
+        스테이지 내용 :{" "}
+        <div
+          dangerouslySetInnerHTML={{
+            __html: Dompurify.sanitize(stage.content!.toString()),
+          }}
+          className="view ql-editor"
+        ></div>
+      </p>
       <Link to={`/post/${stage.id}`}>스테이지 포스팅 더보기</Link>
       <ul>
         {Array.isArray(getStage.img) &&
@@ -72,9 +87,13 @@ const StageItem: React.FC<{
             );
           })}
       </ul>
-      {(postFormButtonOpen && isLoggedIn && postingStageId) && (
-        <button onClick={() => dispatch(setPostFormModalOpen())}>
+      {(postFormButtonOpen && user.isLoggedIn && postingStageId && postedCheck )? (
+        <button onClick={() => dispatch(setPostFormModalOpen(true))}>
           포스팅 생성
+        </button>
+      ) : (
+        <button onClick={() => dispatch(setPostFormModalOpen(false))}>
+          포스트 수정/ 원래있던 포스팅 띄우기
         </button>
       )}
       {postStageListState && (

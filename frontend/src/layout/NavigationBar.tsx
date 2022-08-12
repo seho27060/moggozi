@@ -14,12 +14,12 @@ import AlertOnair from "../components/alert/AlertOnair";
 const NavigationBar: React.FC = () => {
   const userState = useSelector((state: RootState) => state.auth);
 
-  const [ modalOpen, setModalOpen ] = useState(false)
+  const [modalOpen, setModalOpen] = useState(false);
 
   const closeModal = () => {
     document.body.style.overflow = "unset";
     setModalOpen(false);
-  }
+  };
 
   return (
     <header className={style.header}>
@@ -41,8 +41,15 @@ const NavigationBar: React.FC = () => {
               <NavLink to="/search">about</NavLink>
             </li>
             <li>
-              <button onClick={() => {setModalOpen(true)
-              document.body.style.overflow = "hidden";}}>검색</button>
+              <button
+                onClick={() => {
+                  setModalOpen(true);
+                  document.body.style.overflow = "hidden";
+                }}
+                className = {style.searchButton}
+              >
+                검색
+              </button>
             </li>
           </div>
         </ul>
@@ -62,7 +69,7 @@ const NavigationBar: React.FC = () => {
           {userState.isLoggedIn && (
             <Fragment>
               <li>
-                <AlertOnair/>
+                <AlertOnair />
               </li>
               <li className={style.logout}>
                 <LogoutBtn />
@@ -70,15 +77,21 @@ const NavigationBar: React.FC = () => {
               <li>
                 <div className={style.profile}>
                   <NavLink to={`/user/${userState.userInfo.id}`}>
-                    {userState.userInfo.img ? <img
-                      className={style.profileImg}
-                      src={userState.userInfo.img}
-                      alt=""
-                    /> : <img
-                    className={style.profileImg}
-                    src={"https://i.pinimg.com/236x/f2/a1/d6/f2a1d6d87b1231ce39710e6ba1c1e129.jpg"}
-                    alt=""
-                  /> }
+                    {userState.userInfo.img ? (
+                      <img
+                        className={style.profileImg}
+                        src={userState.userInfo.img}
+                        alt=""
+                      />
+                    ) : (
+                      <img
+                        className={style.profileImg}
+                        src={
+                          "https://i.pinimg.com/236x/f2/a1/d6/f2a1d6d87b1231ce39710e6ba1c1e129.jpg"
+                        }
+                        alt=""
+                      />
+                    )}
                     <div>{userState.userInfo.nickname}</div>
                   </NavLink>
                 </div>

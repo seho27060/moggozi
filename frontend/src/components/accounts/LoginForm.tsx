@@ -90,7 +90,7 @@ const LoginForm: React.FC = () => {
 
   return (
     <div>
-      <div className={style.loginForm}>
+      <div className={style.login}>
         <div className={style.logoImg}>
           <img
             src={logo}
@@ -100,7 +100,7 @@ const LoginForm: React.FC = () => {
             }}
           />
         </div>
-        <form onSubmit={loginHandler}>
+        <form className={style.loginForm} onSubmit={loginHandler}>
           <input
             className={style.email}
             type="text"

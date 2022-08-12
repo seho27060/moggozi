@@ -37,7 +37,7 @@ const PostCommentTestPage = () => {
     dispatch(setPostUpdateFormState(false));
   };
   const closePostFormModal = () => {
-    dispatch(setPostFormModalOpen());
+    dispatch(setPostFormModalOpen(false));
   };
 
   const readStagePosts = (event: FormEvent) => {
@@ -90,7 +90,7 @@ const PostCommentTestPage = () => {
         <button onClick={readPostComments}>불러오기</button>
       </form>
       {postFormButtonOpen && (
-        <button onClick={() => dispatch(setPostFormModalOpen())}>
+        <button onClick={() => dispatch(setPostFormModalOpen(true))}>
           포스팅 생성
         </button>
       )}

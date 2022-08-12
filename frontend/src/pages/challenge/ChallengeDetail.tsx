@@ -47,17 +47,20 @@ const ChallengeDetail: React.FC = () => {
   const dispatch = useDispatch();
   const reviews = useSelector((state: RootState) => state.review);
 
-  const { postModalOpen, postFormModalOpen, postUpdateFormOpen } = useSelector(
+  const { alertPostModalOpen,postModalOpen, postFormModalOpen, postUpdateFormOpen } = useSelector(
     (state: RootState) => state.postModal
   );
-
+  // if (postModalOpen) {
+  //   document.body.style.overflow = "auto"; //모달때문에 이상하게 스크롤이 안되서 강제로 스크롤 바 생성함
+  //   document.body.style.height = "auto";
+  // }
   const closePostModal = () => {
     dispatch(setPostModalOpen(false));
     dispatch(setPostUpdateFormState(false));
   };
 
   const closePostFormModal = () => {
-    dispatch(setPostFormModalOpen());
+    dispatch(setPostFormModalOpen(false));
   };
   // 좋아요
   const likeHandler = (event: React.MouseEvent) => {
@@ -313,26 +316,27 @@ const ChallengeDetail: React.FC = () => {
           <Modal
             open={postModalOpen}
             close={closePostModal}
-            header="Modal heading"
+            header="Post"
           >
             {!postUpdateFormOpen && <PostDetailItem />}
             {postUpdateFormOpen && <PostUpdateForm />}
           </Modal>
         )}
-        {postFormModalOpen && (
+
+        {postFormModalOpen && 
           <Modal
             open={postFormModalOpen}
             close={closePostFormModal}
-            header="Modal heading"
+            header="Post Create"
           >
-            "생성폼"
-            {/* 스테이지 번호를 넘겨줄만한 트리거가 필요함 */}
             <PostForm
               stageId={Number(stageId)}
               modalClose={closePostFormModal}
             />
           </Modal>
-        )}
+        
+        }
+        
       </div>
     </div>
   );
