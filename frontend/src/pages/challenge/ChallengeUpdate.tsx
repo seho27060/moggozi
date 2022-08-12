@@ -5,7 +5,6 @@ import { useParams } from "react-router-dom";
 import ChallengeImgForm from "../../components/challenge/ChallengeImgForm";
 import ChallengeUpdateForm from "../../components/challenge/ChallengeUpdateForm";
 import { fetchChallenge } from "../../lib/generalApi";
-import { challengeImgFetchAPI } from "../../lib/imgApi";
 import { isLoginFetchChallenge } from "../../lib/withTokenApi";
 import { ChallengeDetailState } from "../../store/challenge";
 import { RootState } from "../../store/store";
@@ -29,19 +28,6 @@ const ChallengeUpdate: React.FC = () => {
               ...res,
             };
             setLoadedChallenge(challenge);
-            challengeImgFetchAPI(challenge.id!)
-              .then((res) =>
-                setLoadedChallenge({
-                  ...challenge,
-                  img: res,
-                })
-              )
-              .catch((err) => {
-                setLoadedChallenge({
-                  ...challenge,
-                  img: "",
-                });
-              });
             setIsLoading(false);
           })
           // console.log(res)
@@ -57,19 +43,6 @@ const ChallengeUpdate: React.FC = () => {
               ...res,
             };
             setLoadedChallenge(challenge);
-            challengeImgFetchAPI(challenge.id!)
-              .then((res) =>
-                setLoadedChallenge({
-                  ...challenge,
-                  img: res,
-                })
-              )
-              .catch((err) => {
-                setLoadedChallenge({
-                  ...challenge,
-                  img: "",
-                });
-              });
             setIsLoading(false);
           })
           .catch((err) => {

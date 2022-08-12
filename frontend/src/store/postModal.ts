@@ -9,7 +9,6 @@ export interface PostUpdateSend {
   postImg: string | null;
 }
 export interface PostSend {
-  memberId: number;
   title: string | null;
   content: Value | string | null;
   stageId: number | null;
@@ -52,7 +51,7 @@ const initialPostModalState: PostModal = {
   postUpdateFormOpen: false,
   postFormButtonOpen: false,
   postModalOpen: false,
-  alertPostModalOpen:false,
+  alertPostModalOpen: false,
   postModalStageId: null,
 };
 export const postModalSlice = createSlice({

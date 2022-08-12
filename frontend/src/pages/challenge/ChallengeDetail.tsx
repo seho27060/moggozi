@@ -1,11 +1,16 @@
-import { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { fetchChallenge } from "../../lib/generalApi";
-import { challengeImgFetchAPI } from "../../lib/imgApi";
 import { WebSocketContext } from "../../lib/WebSocketProvider";
-import { challengeLike, isLoginFetchChallenge } from "../../lib/withTokenApi";
+import {
+  cancelChallenge,
+  challengeLike,
+  isLoginFetchChallenge,
+  registerChallenge,
+  tryChallenge,
+} from "../../lib/withTokenApi";
 import { Alert } from "../../store/alert";
 import { ChallengeDetailState } from "../../store/challenge";
 import { setPostingStageId } from "../../store/post";
@@ -38,7 +43,6 @@ const ChallengeDetail: React.FC = () => {
   const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
   const userInfo = useSelector((state: RootState) => state.auth.userInfo);
   const stageId = useSelector((state: RootState) => state.post.postingStageId);
-
   const userImg = useSelector((state: RootState) => state.auth.userInfo.img);
 
   const [isLoading, setIsLoading] = useState(true);
@@ -47,9 +51,12 @@ const ChallengeDetail: React.FC = () => {
   const dispatch = useDispatch();
   const reviews = useSelector((state: RootState) => state.review);
 
-  const { alertPostModalOpen,postModalOpen, postFormModalOpen, postUpdateFormOpen } = useSelector(
-    (state: RootState) => state.postModal
-  );
+  const {
+    alertPostModalOpen,
+    postModalOpen,
+    postFormModalOpen,
+    postUpdateFormOpen,
+  } = useSelector((state: RootState) => state.postModal);
   // if (postModalOpen) {
   //   document.body.style.overflow = "auto"; //모달때문에 이상하게 스크롤이 안되서 강제로 스크롤 바 생성함
   //   document.body.style.height = "auto";
@@ -62,6 +69,24 @@ const ChallengeDetail: React.FC = () => {
   const closePostFormModal = () => {
     dispatch(setPostFormModalOpen(false));
   };
+
+  // 챌린지 등록
+  const registerHandler = (event: React.MouseEvent) => {
+    event.preventDefault();
+    if (
+      window.confirm("챌린지 등록하시겠습니까? 등록하면 취소할 수 없습니다!")
+    ) {
+      registerChallenge(Number(id))
+        .then((res) =>
+          setLoadedChallenge({
+            ...loadedChallenge!,
+            state: 1,
+          })
+        )
+        .catch((err) => console.log(err));
+    }
+  };
+
   // 좋아요
   const likeHandler = (event: React.MouseEvent) => {
     event.preventDefault();
@@ -96,6 +121,24 @@ const ChallengeDetail: React.FC = () => {
         console.log(err);
       });
   };
+  // 챌린지 도전
+  const startHandler = (event: React.MouseEvent) => {
+    event.preventDefault();
+    if (window.confirm("정말 도전하시겠습니까?")) {
+      tryChallenge(userInfo.id!, loadedChallenge!.id!).then((res) => {
+        alert("챌린지 도전 완료!");
+      });
+    }
+  };
+  // 챌린지 도전 취소
+  const cancelHandler = (event: React.MouseEvent) => {
+    event.preventDefault();
+    if (window.confirm("도전 취소하시겠습니까?")) {
+      cancelChallenge(loadedChallenge!.id!).then((res) => {
+        alert("챌린지 도전 취소 완료");
+      });
+    }
+  };
 
   // 페이지 데이터 받아오기
   useEffect(() => {
@@ -107,31 +150,16 @@ const ChallengeDetail: React.FC = () => {
           .then((res) => {
             const challenge: ChallengeDetailState = {
               ...res,
-              img: "",
             };
             setLoadedChallenge(challenge);
-            // 파이어스토어에서 챌린지 사진 가져오기
-            challengeImgFetchAPI(challenge.id!)
-              .then((res) => {
-                setLoadedChallenge({
-                  ...challenge,
-                  img: res,
-                });
-                dispatch(reviewFetch(challenge.reviewList));
-                console.log("Challenge", challenge);
-                let postStageId = null;
-                if (challenge.stageList.length !== 0) {
-                  postStageId = challenge.stageList[0].id;
-                }
-                dispatch(setPostingStageId(postStageId));
-              })
-              .catch((err) => {
-                setLoadedChallenge({
-                  ...challenge,
-                  img: "",
-                });
-                dispatch(reviewFetch(challenge.reviewList));
-              });
+
+            dispatch(reviewFetch(challenge.reviewList));
+            let postStageId = null;
+            if (challenge.stageList.length !== 0) {
+              postStageId = challenge.stageList[0].id;
+            }
+            dispatch(setPostingStageId(postStageId));
+
             setIsLoading(false);
           })
           .catch((err) => {
@@ -140,30 +168,20 @@ const ChallengeDetail: React.FC = () => {
           });
       } else {
         // 로그인 안 한 경우
-        fetchChallenge(Number(id)).then((res) => {
-          const challenge: ChallengeDetailState = {
-            ...res,
-          };
-          setLoadedChallenge(challenge);
-          // 파이어스토어에서 챌린지 사진 가져오기
-          challengeImgFetchAPI(challenge.id!)
-            .then((res) => {
-              setLoadedChallenge({
-                ...challenge,
-                img: res,
-              });
-              dispatch(reviewFetch(challenge.reviewList));
-              setIsLoading(false);
-            })
-            .catch((err) => {
-              setLoadedChallenge({
-                ...challenge,
-                img: "",
-              });
-              dispatch(reviewFetch(challenge.reviewList));
-              setIsLoading(false);
-            });
-        });
+        fetchChallenge(Number(id))
+          .then((res) => {
+            const challenge: ChallengeDetailState = {
+              ...res,
+            };
+            setLoadedChallenge(challenge);
+
+            dispatch(reviewFetch(challenge.reviewList));
+            setIsLoading(false);
+          })
+          .catch((err) => {
+            console.log(err);
+            setIsLoading(false);
+          });
       }
     }
   }, [id, isLoggedIn, dispatch]);
@@ -207,10 +225,29 @@ const ChallengeDetail: React.FC = () => {
                       </div>
                     );
                 })()}
+                {isLoggedIn === true && (
+                  <div>
+                    {loadedChallenge!.userProgress === 0 && (
+                      <button onClick={startHandler}>도전</button>
+                    )}
+                    {loadedChallenge!.userProgress === 1 && (
+                      <div>
+                        <p>진행</p>
+                        <button onClick={cancelHandler}>도전 취소</button>
+                      </div>
+                    )}
+                    {loadedChallenge!.userProgress === 2 && <p>완료</p>}
+                  </div>
+                )}
               </div>
-
+              {userInfo.id === loadedChallenge!.writer.id &&
+                loadedChallenge!.state === 0 && (
+                  <div>
+                    <button onClick={registerHandler}>챌린지 등록</button>
+                  </div>
+                )}
               <div>
-                {loadedChallenge?.writer.id === userInfo.id ? (
+                {loadedChallenge!.writer.id === userInfo.id ? (
                   <div>
                     {userInfo.id === loadedChallenge!.writer.id && (
                       <div>
@@ -274,7 +311,9 @@ const ChallengeDetail: React.FC = () => {
             </div>
             <div
               dangerouslySetInnerHTML={{
-                __html: Dompurify.sanitize(loadedChallenge!.content!.toString()),
+                __html: Dompurify.sanitize(
+                  loadedChallenge!.content!.toString()
+                ),
               }}
               className="view ql-editor"
             ></div>
@@ -301,29 +340,25 @@ const ChallengeDetail: React.FC = () => {
           <div>{isLoggedIn && <ReviewForm image={userImg} />}</div>
           <ReviewList reviews={reviews} />
 
-          {isLoggedIn === true && (
-            <p>챌린지 유저 진행도: {loadedChallenge!.userProgress}</p>
-          )}
           <div>
             <p>스테이지</p>
-            <StageList stages={loadedChallenge!.stageList} />
+            <StageList
+              stages={loadedChallenge!.stageList}
+              challengeProgress={loadedChallenge!.userProgress}
+            />
           </div>
         </div>
       )}
 
       <div>
         {postModalOpen && (
-          <Modal
-            open={postModalOpen}
-            close={closePostModal}
-            header="Post"
-          >
+          <Modal open={postModalOpen} close={closePostModal} header="Post">
             {!postUpdateFormOpen && <PostDetailItem />}
             {postUpdateFormOpen && <PostUpdateForm />}
           </Modal>
         )}
 
-        {postFormModalOpen && 
+        {postFormModalOpen && (
           <Modal
             open={postFormModalOpen}
             close={closePostFormModal}
@@ -334,9 +369,7 @@ const ChallengeDetail: React.FC = () => {
               modalClose={closePostFormModal}
             />
           </Modal>
-        
-        }
-        
+        )}
       </div>
     </div>
   );
