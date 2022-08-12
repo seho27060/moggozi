@@ -15,16 +15,19 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 //@CrossOrigin("*")
 @RequiredArgsConstructor
-@RequestMapping("/stage/post")
+@RequestMapping("/post")
 @RestController
 public class PostController {
 
     private final PostService postService;
     private final JwtUtils jwtUtils;
 
+    // post 글 쓰기
     @PostMapping
-    private PostResponseDto save(@RequestBody PostSaveRequestDto postSaveRequestDto){
-        return postService.savePost(postSaveRequestDto);
+    private int save(@RequestBody PostSaveRequestDto postSaveRequestDto, HttpServletRequest request){
+        Long member_id = jwtUtils.getUserIdFromJwtToken(request.getHeader("Authorization"));
+
+        return postService.savePost(postSaveRequestDto, member_id);
     }
 
     // post detail 받기
@@ -35,11 +38,23 @@ public class PostController {
         return postService.detailPost(post_id, member_id);
     }
 
-    @PutMapping
-    private PostResponseDto update(@RequestBody PostUpdateRequestDto postUpdateRequestDto){
-        return postService.updatePost(postUpdateRequestDto);
+    // 사용자가 작성한 stage의 post 정보 조회
+    @GetMapping("/detail/stage/{stage_id}")
+    private Object memberPost(@PathVariable Long stage_id, HttpServletRequest request){
+        Long member_id = jwtUtils.getUserIdFromJwtToken(request.getHeader("Authorization"));
+
+        return postService.detailMemberPost(stage_id, member_id);
     }
 
+    // post 글 수정
+    @PutMapping
+    private int update(@RequestBody PostUpdateRequestDto postUpdateRequestDto, HttpServletRequest request){
+        Long member_id = jwtUtils.getUserIdFromJwtToken(request.getHeader("Authorization"));
+
+        return postService.updatePost(postUpdateRequestDto, member_id);
+    }
+
+    // psot 글 삭제
     @DeleteMapping("/{post_id}")
     private Long delete(@PathVariable Long post_id){
         postService.deletePost(post_id);
@@ -57,7 +72,6 @@ public class PostController {
     private List<PostResponseDto> stagePostList(@PathVariable Long stage_id){
         return postService.getStagePost(stage_id);
     }
-
 
     @GetMapping("/random/{size}")
     private ResponseEntity getRandomListBySize(@PathVariable int size){

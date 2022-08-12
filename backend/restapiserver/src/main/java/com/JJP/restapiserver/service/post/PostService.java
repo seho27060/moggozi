@@ -12,10 +12,10 @@ import java.util.List;
 public interface PostService {
 
     // 스테이지 포스트 등록
-    PostResponseDto savePost(PostSaveRequestDto postSaveRequestDto);
+    int savePost(PostSaveRequestDto postSaveRequestDto, Long member_id);
 
     // 스테이지 포스트 수정
-    PostResponseDto updatePost(PostUpdateRequestDto postUpdateRequestDto);
+    int updatePost(PostUpdateRequestDto postUpdateRequestDto, Long member_id);
 
     // 스테이지 포스트 삭제
     void deletePost(Long post_id);
@@ -36,4 +36,7 @@ public interface PostService {
 
     // 포스트 디테일 받아오기
     PostDetailDto detailPost(Long post_id, Long member_id);
+
+    // 포스트 사용자와 스테이지 정보로 받아오기
+    Object detailMemberPost(Long stage_id, Long member_id);
 }
