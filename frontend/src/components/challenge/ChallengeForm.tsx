@@ -78,11 +78,11 @@ const ChallengeForm: React.FC = () => {
         <input type="text" id="name" ref={nameInputRef} placeholder="챌린지 제목을 입력하세요." />
       </div>
 
-      <div className={styles.challengeContent}>
+      {/* <div className={styles.challengeContent}>
         <textarea rows={5} id="content" ref={contentInputRef} placeholder="내용을 입력해주세요." onChange={(event) => {
           setContentInput(event.target.value)
         }}/>
-      </div>
+      </div> */}
 
       <div>
           <EditorComponent QuillRef={contentInputRef} value={""} />

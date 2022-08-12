@@ -7,9 +7,10 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import { useDispatch } from "react-redux";
-import { setPostingStageId } from "../../store/post";
+// import { setPostingStageId } from "../../store/post";
 
-const StageList: React.FC<{ stages: StageState[];
+const StageList: React.FC<{ 
+  stages: StageState[];
   challengeProgress: number;
 }> = ({ stages, challengeProgress }) => {
 
@@ -24,10 +25,12 @@ const StageList: React.FC<{ stages: StageState[];
   const [showStageId, setShowStageId] = useState(
     stages.length !== 0 ? stages[0].id : null
   );
-  const stageSelectHandler = (event: React.MouseEvent, id: number) => {
-    event.preventDefault();
-    setShowStageId(id);
-    dispatch(setPostingStageId(id));
+  
+  // const stageSelectHandler = (event: React.MouseEvent, id: number) => {
+  //   event.preventDefault();
+  //   setShowStageId(id);
+  //   dispatch(setPostingStageId(id));
+  // }
 
   return (
     <Box className={styles.tabs}>
@@ -88,7 +91,6 @@ const StageList: React.FC<{ stages: StageState[];
       </div>
     </Box>
   );
-};
 };
 
 
