@@ -10,6 +10,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ImgDto {
-    private int id;
+    private int order;
     private String path;
 }
