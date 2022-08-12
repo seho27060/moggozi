@@ -8,7 +8,10 @@ import { PostData, postModify } from "../../store/post";
 import { Alert } from "../../store/alert";
 import { WebSocketContext } from "../../lib/WebSocketProvider";
 
-const PostLikeBtn: React.FC<{}> = () => {
+import styles from "./PostLikeBtn.module.scss"
+import FavoriteIcon from '@mui/icons-material/Favorite';
+
+const PostLikeBtn = () => {
   const dispatch = useDispatch();
   const ws = useContext(WebSocketContext);
   const postModal = useSelector((state: RootState) => state.postModal);
@@ -62,9 +65,7 @@ const PostLikeBtn: React.FC<{}> = () => {
 
   return (
     <div>
-      {!liked ?
-        <button onClick={postLikeHandler}>{liked ? "Unlike" : "Like"}</button>
-      : "이미 좋아요한 포스팅입니다"}
+      <div onClick={postLikeHandler}>{liked ? <div className={styles.like}><FavoriteIcon /></div> : <div className={styles.unlike}><FavoriteIcon /></div>}</div>
     </div>
   );
 };

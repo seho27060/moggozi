@@ -1,0 +1,17 @@
+@use "../../styles/mixin.scss" as mixin;
+
+@include mixin.desktop {
+  .postList {
+    display: flex;
+    justify-content: space-between;
+    margin: 20px 0 0 0;
+    
+    .postItem {
+      cursor: pointer;
+    }
+  }
+
+}
+
+@include mixin.mobile {
+}

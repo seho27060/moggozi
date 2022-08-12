@@ -1,0 +1,32 @@
+@use "../../styles/mixin.scss" as mixin;
+
+@include mixin.desktop {
+
+  .unlike {
+    color: mixin.$cloudGray;
+    margin: 0 5px 0 0;
+    svg {
+      font-size: 18px;
+      &:hover {
+        font-size: 18px;
+        color: red !important;
+        transition: all 0.5s !important;
+      }
+    }
+
+  }
+
+  .like {
+    color: red;
+    margin: 0 5px 0 0;
+    svg {
+      font-size: 18px;
+      &:hover {
+        font-size: 18px;
+        color: mixin.$cloudGray !important;
+        transition: all 0.5s !important;
+      }
+    }
+  }
+
+}

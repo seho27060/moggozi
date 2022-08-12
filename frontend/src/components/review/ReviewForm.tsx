@@ -11,11 +11,11 @@ import StarRating from "./StarRating";
 import styles from "./ReviewForm.module.scss";
 
 interface Props {
-  image: string | undefined;
+  user_image: string | undefined;
 }
 
 const ReviewForm = (props: Props) => {
-  const { image } = props;
+  const { user_image } = props;
 
   const dispatch = useDispatch();
   const contentInputRef = useRef<HTMLInputElement>(null);
@@ -71,7 +71,8 @@ const ReviewForm = (props: Props) => {
 
   return (
     <div className={styles.reviewForm}>
-        <img src="https://i.pinimg.com/550x/2c/b2/aa/2cb2aa6c4b8aac0be04d52ce2b1cc21a.jpg" alt="" />
+        { user_image ? <img src={user_image} alt="user_img" /> : <img src="https://i.pinimg.com/550x/2c/b2/aa/2cb2aa6c4b8aac0be04d52ce2b1cc21a.jpg" alt="" />}
+
       <form>
             <StarRating rate={rate} rateChangeHandler={rateChangeHandler} />
             <div className={styles.input}>
