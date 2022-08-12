@@ -1,6 +1,7 @@
 package com.JJP.restapiserver.handler;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -133,7 +134,9 @@ public class EchoHandler extends TextWebSocketHandler {
     private void saveAndSend(Long senderId, Long receiverId, String type, Long index,
                              String msg, WebSocketSession receiver) throws IOException {
         AlertResponseDto alertResponseDto = saveAlarm(senderId, receiverId, type, index, msg);
-
+        if(alertResponseDto == null){
+            return;
+        }
         TextMessage tmpMsg = new TextMessage(alertResponseDto.toString());
         receiver.sendMessage(tmpMsg);
     }

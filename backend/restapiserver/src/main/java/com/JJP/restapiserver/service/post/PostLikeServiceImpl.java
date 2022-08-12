@@ -23,14 +23,10 @@ public class PostLikeServiceImpl implements PostLikeService{
 
     @Override
     public ResponseEntity like(PostLikeRequestDto postLikeRequestDto, Long member_id) {
-        PostLike postLike = PostLike.builder()
-                .post(postRepository.getById(postLikeRequestDto.getPostId()))
-                .member(memberRepository.getById(member_id))
-                .build();
         Optional<PostLike> postLikeOptional = postLikeRepository.findByPost_idAndMember_id(
                 postLikeRequestDto.getPostId(), member_id);
         if(postLikeOptional.isPresent()) {
-            postLikeRepository.delete(postLikeOptional.get());
+            return new ResponseEntity(HttpStatus.OK);
         }
         else {
             postLikeRepository.save(PostLike.builder()
