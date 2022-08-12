@@ -2,36 +2,64 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { stageImgFetchAPI } from "../../lib/imgApi";
-import { postListRead } from "../../lib/withTokenApi";
+import {
+  fetchStageProgress,
+  postListRead,
+  stageCancel,
+  stageJoin,
+} from "../../lib/withTokenApi";
 import { PostData } from "../../store/post";
-import { setPostFormButtonState, setPostFormModalOpen } from "../../store/postModal";
+import {
+  setPostFormButtonState,
+  setPostFormModalOpen,
+} from "../../store/postModal";
 import { imgState, StageState } from "../../store/stage";
 import { RootState } from "../../store/store";
 import PostList from "../post/PostList";
 
 const StageItem: React.FC<{
   stage: StageState;
-}> = ({ stage }) => {
+  challengeProgress: number;
+}> = ({ stage, challengeProgress }) => {
   document.body.style.overflow = "auto"; //모달때문에 이상하게 스크롤이 안되서 강제로 스크롤 바 생성함
 
   const dispatch = useDispatch();
   const [postStageListState, setPostStageListState] = useState<PostData[]>([]);
-  const [getStage, setStage] = useState<StageState>(stage);
-  const isLoggedIn = useSelector((state:RootState)=> state.auth.isLoggedIn)
-  const postingStageId = useSelector((state:RootState)=> state.post.postingStageId)
+  const [getStageImg, setStageImg] = useState<imgState[]>([]);
+  const [getStageProgress, setStageProgress] = useState(0);
+  const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
+  const postingStageId = useSelector(
+    (state: RootState) => state.post.postingStageId
+  );
   const { postFormButtonOpen } = useSelector(
     (state: RootState) => state.postModal
   );
 
+  // 스테이지 진행도
+  useEffect(() => {
+    if (isLoggedIn === true) {
+      fetchStageProgress(stage.id!)
+        .then((res) => {
+          setStageProgress(res);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }, [isLoggedIn, stage.id]);
+
+  // 스테이지 사진
   useEffect(() => {
     stageImgFetchAPI(stage.id!)
       .then((res) => {
-        setStage({ ...getStage, img: res });
+        setStageImg(res);
       })
       .catch((err) => {
-        setStage({ ...getStage, img: [] });
+        console.log(err);
       });
-  }, [stage, getStage]);
+  }, [stage.id]);
+
+  // 포스트 리스트
   useEffect(() => {
     postListRead(Number(stage.id))
       .then((res) => {
@@ -48,6 +76,29 @@ const StageItem: React.FC<{
       });
   }, [dispatch, stage.id]);
 
+  // 스테이지 도전 버튼 클릭
+  const stageTryHandler = () => {
+    stageJoin(stage.id!)
+      .then(() => {
+        alert("도전하시겠습니까?");
+        setStageProgress(1);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  // 스테이지 도전 취소버튼 클릭
+  const stageCancelHandler = () => {
+    stageCancel(stage.id!)
+      .then(() => {
+        alert("취소하시겠습니까?");
+        setStageProgress(0);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   return (
     <div>
       <h4>스테이지 아이템</h4>
@@ -55,20 +106,31 @@ const StageItem: React.FC<{
       <p>스테이지 내용 : {stage.content}</p>
       <Link to={`/post/${stage.id}`}>스테이지 포스팅 더보기</Link>
       <ul>
-        {Array.isArray(getStage.img) &&
-          getStage.img.map((img: imgState) => {
+        {Array.isArray(getStageImg) &&
+          getStageImg.map((img: imgState) => {
             return (
-              <li>
+              <li key={img.id}>
                 <img src={img.url!} alt="img" />
               </li>
             );
           })}
       </ul>
-      {(postFormButtonOpen && isLoggedIn && postingStageId) && (
-        <button onClick={() => dispatch(setPostFormModalOpen())}>
-          포스팅 생성
-        </button>
+
+      {challengeProgress === 1 && getStageProgress === 0 && (
+        <button onClick={stageTryHandler}>진행하기</button>
       )}
+      {challengeProgress === 1 && getStageProgress === 1 && (
+        <button onClick={stageCancelHandler}>진행 취소</button>
+      )}
+      {getStageProgress === 2 && <p>완료</p>}
+      {getStageProgress === 1 &&
+        postFormButtonOpen &&
+        isLoggedIn &&
+        postingStageId && (
+          <button onClick={() => dispatch(setPostFormModalOpen())}>
+            포스팅 생성
+          </button>
+        )}
       {postStageListState && (
         <>
           {`${stage.id}의 PostList 3개만`}
