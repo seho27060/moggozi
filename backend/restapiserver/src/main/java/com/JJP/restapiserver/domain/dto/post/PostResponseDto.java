@@ -34,7 +34,7 @@ public class PostResponseDto {
         this.title = post.getTitle();
         this.content = post.getContent();
         this.postImgList = post.getPostImgList();
-        this.writer = new Writer(post.getMember().getId(), post.getMember().getNickname());
+        this.writer = new Writer(post.getMember().getId(), post.getMember().getNickname(), post.getMember().getUser_img());
         this.likeNum = 0;
         this.isLiked = false;
         if(post.getPostLikeList() != null){
