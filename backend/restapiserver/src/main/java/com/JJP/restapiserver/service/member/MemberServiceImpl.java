@@ -184,6 +184,23 @@ public class MemberServiceImpl implements MemberService {
         }
     }
 
+    /** 프로필 이미지 수정 */
+    @Override
+    public ResponseEntity<?> updateImg(Long user_id, UserImgRequest userImgRequest) {
+        Optional<Member> member = memberRepository.findById(user_id);
+        System.out.println("userImgRequest+++++++: " + userImgRequest.getUserImg());
+        if(member == null)
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: Error: User doesn't exist."));
+
+        saveMember(user_id, member.get().getUsername()
+                , member.get().getFullname(),
+                member.get().getPassword(), member.get().getNickname(),
+                member.get().getIntroduce(), userImgRequest.getUserImg(),
+                member.get().getIs_private(), member.get().getIs_social(),
+                member.get().getRole());
+        return ResponseEntity.ok(new MessageResponse("Successfully updated the user image."));
+    }
+
     /**
      * 아이디 중복 검사
      */
