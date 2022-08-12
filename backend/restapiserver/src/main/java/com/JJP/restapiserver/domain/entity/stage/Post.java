@@ -41,6 +41,8 @@ public class Post extends BaseTimeEntity {
     @Column(length = 300)
     private String postImg;
 
+    private int state;
+
 
     // 포스트 좋아요와 다대일 양방향 관계
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
