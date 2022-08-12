@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { MouseEvent, useState } from "react";
 import { StageState } from "../../store/stage";
 import StageItem from "./StageItem";
 
@@ -7,7 +7,7 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import { useDispatch } from "react-redux";
-// import { setPostingStageId } from "../../store/post";
+import { setPostingStageId } from "../../store/post";
 
 const StageList: React.FC<{ 
   stages: StageState[];
@@ -26,11 +26,11 @@ const StageList: React.FC<{
     stages.length !== 0 ? stages[0].id : null
   );
   
-  // const stageSelectHandler = (event: React.MouseEvent, id: number) => {
-  //   event.preventDefault();
-  //   setShowStageId(id);
-  //   dispatch(setPostingStageId(id));
-  // }
+  const stageSelectHandler = (event: React.MouseEvent, id: number, index:number) => {
+    event.preventDefault();
+    setChoice(index)
+    dispatch(setPostingStageId(id));
+  }
 
   return (
     <Box className={styles.tabs}>
@@ -62,10 +62,12 @@ const StageList: React.FC<{
         scrollButtons
         allowScrollButtonsMobile
         aria-label="scrollable force tabs example">
-
+  
         {stages.map((stage, index) => (
           <Tab key={stage.id}
-            onClick={() => setChoice(index)}
+            onClick={(event:MouseEvent) => {
+              stageSelectHandler(event,stage.id!,index)
+              }}
             // disabled={value === stage.id} 
             label={`${index+1}. ${stage.name}`}
             sx={{ 

@@ -32,7 +32,7 @@ const PostForm: React.FC<{
       console.log("포스팅 성공", res);
       dispatch(postRegister(res));
       modalClose();
-    });
+    }).catch((err)=> console.log("포스팅 실패",err))
   };
 
   return (

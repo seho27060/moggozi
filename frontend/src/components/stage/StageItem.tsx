@@ -19,7 +19,7 @@ import Carousel from "../ui/Slider";
 
 import styles from "./StageItem.module.scss"
 import "./Carousel.module.scss"
-import PostList from "../post/PostList";
+import PostList from "../post/PostList"; 
 
 import Dompurify from "dompurify";
 
