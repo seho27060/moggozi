@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -81,8 +82,14 @@ public class AlertServiceImpl implements AlertService {
         return alertResponseDtoList;
     }
 
+    //
     @Override
     public AlertResponseDto saveAlert(Long senderId, Long receiverId, String type, Long index, String msg) {
+        LocalDateTime now = LocalDateTime.now();
+        List<Alert> recent_alerts = alertRepository.findDuplicatedMessage(receiverId, type,now);
+        if(!recent_alerts.isEmpty()){
+            return null;
+        }
         Alert alert = Alert.builder()
                 .sender(memberRepository.getById(senderId))
                 .receiver(memberRepository.getById(receiverId))
