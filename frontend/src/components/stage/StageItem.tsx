@@ -9,6 +9,9 @@ import { imgState, StageState } from "../../store/stage";
 import { RootState } from "../../store/store";
 import PostList from "../post/PostList";
 
+import Dompurify from "dompurify";
+import styles from "./StageItem.module.scss";
+
 const StageItem: React.FC<{
   stage: StageState;
 }> = ({ stage }) => {
@@ -31,7 +34,7 @@ const StageItem: React.FC<{
       .catch((err) => {
         setStage({ ...getStage, img: [] });
       });
-  }, [stage, getStage]);
+  }, [stage]);
   useEffect(() => {
     postListRead(Number(stage.id))
       .then((res) => {
@@ -47,12 +50,17 @@ const StageItem: React.FC<{
         console.log("ERR", err);
       });
   }, [dispatch, stage.id]);
-
+  console.log(stage)
   return (
     <div>
       <h4>스테이지 아이템</h4>
       <p>스테이지 이름 : {stage.name}</p>
-      <p>스테이지 내용 : {stage.content}</p>
+      <p>스테이지 내용 : <div
+              dangerouslySetInnerHTML={{
+                __html: Dompurify.sanitize(stage.content!.toString()),
+              }}
+              className="view ql-editor"
+            ></div></p>
       <Link to={`/post/${stage.id}`}>스테이지 포스팅 더보기</Link>
       <ul>
         {Array.isArray(getStage.img) &&

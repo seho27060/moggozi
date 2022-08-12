@@ -1,7 +1,8 @@
 @use "../../styles/mixin.scss" as mixin;
 
 @include mixin.desktop {
-  .stageForm {
-    width : auto
+  .challengeUpdateForm {
+    width : auto;
+    height: auto;
   }
 }

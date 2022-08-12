@@ -1,4 +1,4 @@
-import { FormEvent, useRef } from "react";
+import { FormEvent, MouseEvent, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { postSet } from "../store/post";
@@ -15,7 +15,8 @@ import {
   setPostUpdateFormState,
   setPostModalOpen,
 } from "../store/postModal";
-import Editor from "../components/ui/Editor";
+import EditorComponent from "../components/ui/Editor";
+import ReactQuill from "react-quill";
 
 const PostCommentTestPage = () => {
   document.body.style.overflow = "auto"; //모달때문에 이상하게 스크롤이 안되서 강제로 스크롤 바 생성함
@@ -68,10 +69,15 @@ const PostCommentTestPage = () => {
         console.log("ERR", err);
       });
   };
-
+  const submitHandler=((event:MouseEvent)=> {
+    event.preventDefault()
+    console.log("submit ref",inputRef.current!.value,typeof(inputRef.current!.value))
+  })
+  const inputRef = useRef<ReactQuill>();
   return (
     <div>
-      <Editor placeholder="123" value={""}/>
+      <EditorComponent QuillRef={inputRef} value={""}/>
+      <button onClick={submitHandler}>입력</button>
       <h1>PostCommentTest</h1>
       <form>
         <label htmlFor="stageId">stage id 입력 : </label>

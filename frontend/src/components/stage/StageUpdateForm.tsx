@@ -5,6 +5,10 @@ import { fetchStages, stageUpdate } from "../../lib/withTokenApi";
 import { stageFetch, StageState } from "../../store/stage";
 import StageImgForm from "./StageImgForm";
 
+import EditorComponent from "../ui/Editor";
+import ReactQuill from "react-quill";
+
+import styles from "./StageUpdateForm.module.scss"
 // 수정하기가 글쓴이가 수정할 수 있도록 해야함.
 
 const StageUpdateForm: React.FC<{
@@ -12,7 +16,7 @@ const StageUpdateForm: React.FC<{
 }> = ({ stage }) => {
   const [isImgUpdate, setIsImgUpdate] = useState(false);
   const dispatch = useDispatch();
-  const contentInputRef = useRef<HTMLTextAreaElement>(null);
+  const contentInputRef = useRef<ReactQuill>();
   const nameInputRef = useRef<HTMLInputElement>(null);
   const { challengeId } = useParams();
 
@@ -54,7 +58,7 @@ const StageUpdateForm: React.FC<{
         </div>
       ) : (
         <div>
-          <form>
+          <form className={styles.stageUpdateForm}>
             <div>
               <label htmlFor="name">스테이지 이름 :</label>
               <input
@@ -66,14 +70,7 @@ const StageUpdateForm: React.FC<{
               />
             </div>
             <div>
-              <label htmlFor="content">스테이지 설명 :</label>
-              <textarea
-                required
-                id="content"
-                defaultValue={stage.content || ""}
-                ref={contentInputRef}
-                rows={5}
-              />
+            <EditorComponent QuillRef={contentInputRef} value={stage.content!}/>
             </div>
             <button onClick={stateUpdateHandler}>수정</button>
           </form>

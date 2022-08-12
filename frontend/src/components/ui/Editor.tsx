@@ -1,61 +1,57 @@
-import React from "react";
+import { useState, useMemo } from "react";
+import styles from "./Editor.module.scss";
+//이렇게 라이브러리를 불러와서 사용하면 됩니다
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 
-const toolbarOptions = [
-  ["link", "image", "video"],
-  [{ header: [1, 2, 3, false] }],
-  ["bold", "italic", "underline", "strike"],
-  ["blockquote"],
-  [{ list: "ordered" }, { list: "bullet" }],
-  [{ color: [] }, { background: [] }],
-  [{ align: [] }],
-];
+const EditorComponent: React.FC<{
+  QuillRef: React.MutableRefObject<ReactQuill | undefined>;
+  value: ReactQuill.Value;
+}> = ({ QuillRef, value }) => {
+  // const QuillRef = useRef<ReactQuill>();
+  const [contents, setContents] = useState(value);
 
-// 옵션에 상응하는 포맷, 추가해주지 않으면 text editor에 적용된 스타일을 볼수 없음
-const formats = [
-  "header",
-  "font",
-  "size",
-  "bold",
-  "italic",
-  "underline",
-  "strike",
-  "align",
-  "blockquote",
-  "list",
-  "bullet",
-  "indent",
-  "background",
-  "color",
-  "link",
-  "image",
-  "video",
-  "width",
-];
+  // quill에서 사용할 모듈을 설정하는 코드 입니다.
+  // 원하는 설정을 사용하면 되는데, 저는 아래와 같이 사용했습니다.
+  // useMemo를 사용하지 않으면, 키를 입력할 때마다, imageHandler 때문에 focus가 계속 풀리게 됩니다.
 
-const modules = {
-  toolbar: {
-    container: toolbarOptions,
-  },
-};
-const Editor: React.FC<{ placeholder: string; value: ReactQuill.Value }> = ({
-  placeholder,
-  value,
-  ...rest
-}) => {
+  const modules = useMemo(
+    () => ({
+      toolbar: {
+        container: [
+          ["bold", "italic", "underline", "strike", "blockquote"],
+          [{ size: ["small", false, "large", "huge"] }, { color: [] }],
+          [
+            { list: "ordered" },
+            { list: "bullet" },
+            { indent: "-1" },
+            { indent: "+1" },
+            { align: [] },
+          ],
+          [],
+        ],
+      },
+    }),
+    []
+  );
+
   return (
-    // 테마 (bubble, snow, custom) https://quilljs.com/docs/themes/
-    <ReactQuill
-      {...rest}
-      placeholder={placeholder}
-      value={value || ""}
-      theme="snow"
-      modules={modules}
-      formats={formats}
-    ></ReactQuill>
+    <div className={styles.EditorContainer}>
+      <ReactQuill
+        ref={(element) => {
+          if (element !== null) {
+            QuillRef.current = element;
+          }
+        }}
+        value={contents}
+        onChange={setContents}
+        modules={modules}
+        theme="snow"
+        placeholder="내용을 입력해주세요."
+        className={styles.Editor}
+      />
+    </div>
   );
 };
-// 사용하고 싶은 옵션, 나열 되었으면 하는 순서대로 나열
 
-export default Editor;
+export default EditorComponent;

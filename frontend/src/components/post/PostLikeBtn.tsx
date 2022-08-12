@@ -1,6 +1,6 @@
 import { MouseEvent, useContext } from "react";
 import { useSelector } from "react-redux";
-import {  postLike } from "../../lib/withTokenApi";
+import { postLike } from "../../lib/withTokenApi";
 import { RootState } from "../../store/store";
 import { setModalPostState } from "../../store/postModal";
 import { useDispatch } from "react-redux";
@@ -10,7 +10,7 @@ import { WebSocketContext } from "../../lib/WebSocketProvider";
 
 const PostLikeBtn: React.FC<{}> = () => {
   const dispatch = useDispatch();
-  const ws = useContext(WebSocketContext)
+  const ws = useContext(WebSocketContext);
   const postModal = useSelector((state: RootState) => state.postModal);
   const liked = postModal.postModalState.liked;
   const userInfo = useSelector((state: RootState) => state.auth.userInfo);
@@ -42,9 +42,9 @@ const PostLikeBtn: React.FC<{}> = () => {
         dispatch(setModalPostState(modifiedModalPost));
         // 포스트 좋아요 알림보내기
         let jsonSend: Alert = {
-          check : 0,
-          createdTime : "0",
-          id : "0",
+          check: 0,
+          createdTime: "0",
+          id: "0",
           index: postModal.postModalState!.id.toString(),
           message: "post",
           receiverId: postModal.postModalState!.writer!.id!.toString(),
@@ -53,8 +53,8 @@ const PostLikeBtn: React.FC<{}> = () => {
           senderName: userInfo.nickname!.toString(),
           type: "post",
         };
-        if ( postModal.postModalState!.writer!.id! !== userInfo.id! && !liked) {
-          ws.current.send(JSON.stringify(jsonSend))
+        if (postModal.postModalState!.writer!.id! !== userInfo.id! && !liked) {
+          ws.current.send(JSON.stringify(jsonSend));
         }
       });
     }
@@ -62,7 +62,9 @@ const PostLikeBtn: React.FC<{}> = () => {
 
   return (
     <div>
-      <button onClick={postLikeHandler}>{liked ? "Unlike" : "Like"}</button>
+      {!liked ?
+        <button onClick={postLikeHandler}>{liked ? "Unlike" : "Like"}</button>
+      : "이미 좋아요한 포스팅입니다"}
     </div>
   );
 };

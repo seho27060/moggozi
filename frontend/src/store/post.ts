@@ -1,10 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { Value } from "react-quill";
 import { UserInfo } from "./auth";
 
 export interface PostData {
   id: number;
   title: string | null;
-  content: string | null;
+  content: Value | string | null;
   createdTime: Date | null;
   modifiedTime: Date | null;
   postImg: string | null;
@@ -21,13 +22,13 @@ export interface PostItem {
   writer: UserInfo;
 }
 
-interface PostState{
-  posts: PostData[],
-  postingStageId : number|null,
+interface PostState {
+  posts: PostData[];
+  postingStageId: number | null;
 }
 const initialPostState: PostState = {
   posts: [],
-  postingStageId : null
+  postingStageId: null,
 };
 
 export const postSlice = createSlice({
@@ -60,13 +61,18 @@ export const postSlice = createSlice({
       );
     },
     setPostingStageId: (state, action) => {
-      console.log("setPostingStageId",action)
-      state.postingStageId = action.payload
-    }
+      console.log("setPostingStageId", action);
+      state.postingStageId = action.payload;
+    },
   },
 });
 
-export const { postSet, postModify, postRegister, postRemove,setPostingStageId } =
-  postSlice.actions;
+export const {
+  postSet,
+  postModify,
+  postRegister,
+  postRemove,
+  setPostingStageId,
+} = postSlice.actions;
 
 export default postSlice.reducer;

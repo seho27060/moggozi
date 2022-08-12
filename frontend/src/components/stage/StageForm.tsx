@@ -4,10 +4,14 @@ import { useParams } from "react-router-dom";
 import { fetchStages, stageAdd } from "../../lib/withTokenApi";
 import { stageFetch } from "../../store/stage";
 
+import EditorComponent from "../ui/Editor";
+import ReactQuill from "react-quill";
+
+import styles from "./StageForm.module.scss"
 const StageForm: React.FC = () => {
   const dispatch = useDispatch();
   const nameInputRef = useRef<HTMLInputElement>(null);
-  const contentInputRef = useRef<HTMLTextAreaElement>(null);
+  const contentInputRef = useRef<ReactQuill>();
   const { challengeId } = useParams();
   function stageSubmitHandler(event: React.FormEvent) {
     event.preventDefault();
@@ -35,14 +39,13 @@ const StageForm: React.FC = () => {
     <div>
       <h3>Stage Form</h3>
       <div>
-        <form>
+        <form className={styles.stageForm}>
           <div>
             <label htmlFor="name">name :</label>
             <input type="text" required id="name" ref={nameInputRef} />
           </div>
           <div>
-            <label htmlFor="content">content :</label>
-            <textarea required id="content" ref={contentInputRef} />
+          <EditorComponent QuillRef={contentInputRef} value={""}/>
           </div>
           <button type="button" onClick={stageSubmitHandler}>
             Register
