@@ -25,18 +25,16 @@ const AlertList: React.FC<{
   console.log("loadAlertlist", loadedAlertList);
 
   return (
-    <div className={styles.dropdownContent}>
+    <div className={styles.dropdownContent} style={{height:"20rem"}}>
       <>
         {loadedAlertList &&
           loadedAlertList.map((alert: Alert) => (
             <div key={alert.id}>
-              <AlertItem alertData={alert}/>
+              <AlertItem alertData={alert} />
+              <hr />
             </div>
           ))}
         {}
-        <button onClick={alertAllHandler} style={{ zIndex: 1 }}>
-          알림 기록 확인
-        </button>
       </>
       {/* <button onClick={() => {
         alertReadall().then((res)=>{
@@ -47,7 +45,20 @@ const AlertList: React.FC<{
           })
         })
       }}>알림 전체 확인</button> */}
-      <button onClick={() => setIsToggle(false)}>닫기</button>
+      <div style={{ display: "inline-flex", justifyContent: "center" }}>
+        <button
+          onClick={alertAllHandler}
+          style={{ margin: "3px 15px", padding: "5px 0px 10px 5px",fontSize:"0.6rem"}}
+        >
+          전체확인
+        </button>
+        <button
+          onClick={() => setIsToggle(false)}
+          style={{ margin: "3px 15px", padding: "5px 5px 10px 5px",fontSize:"0.6rem" }}
+        >
+          닫기
+        </button>
+      </div>
     </div>
   );
 };

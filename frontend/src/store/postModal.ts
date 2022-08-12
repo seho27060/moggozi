@@ -4,24 +4,26 @@ import { PostData } from "./post";
 
 export interface PostUpdateSend {
   title: string | null;
-  content:  ReactQuill.Value | null;
+  content: ReactQuill.Value | null;
   postId: number | null;
   postImg: string | null;
 }
 export interface PostSend {
-  memberId : number,
+  memberId: number;
   title: string | null;
-  content: Value|string | null;
+  content: Value | string | null;
   stageId: number | null;
   postImg: string | undefined;
 }
 interface PostModal {
   postModalState: PostData;
+  alertPostModalState: PostData;
   postFormModalOpen: boolean;
   postUpdateFormOpen: boolean;
   postFormButtonOpen: boolean;
-  postModalOpen :boolean
-  postModalStageId : number|null
+  postModalOpen: boolean;
+  alertPostModalOpen: boolean;
+  postModalStageId: number | null;
 }
 const initialPostModalState: PostModal = {
   postModalState: {
@@ -31,48 +33,68 @@ const initialPostModalState: PostModal = {
     createdTime: null,
     modifiedTime: null,
     postImg: null,
-    liked : null,
-    likeNum : null,
+    liked: null,
+    likeNum: null,
+    writer: null,
+  },
+  alertPostModalState: {
+    id: 0,
+    title: null,
+    content: null,
+    createdTime: null,
+    modifiedTime: null,
+    postImg: null,
+    liked: null,
+    likeNum: null,
     writer: null,
   },
   postFormModalOpen: false,
   postUpdateFormOpen: false,
   postFormButtonOpen: false,
-  postModalOpen : false,
-  postModalStageId : null
+  postModalOpen: false,
+  alertPostModalOpen:false,
+  postModalStageId: null,
 };
 export const postModalSlice = createSlice({
   name: "postModal",
   initialState: initialPostModalState,
   reducers: {
     setModalPostState: (state: PostModal, action) => {
-      state.postModalState = {...action.payload}
+      state.postModalState = { ...action.payload };
     },
-    setPostFormModalOpen: (state: PostModal) => {
-      state.postFormModalOpen = !state.postFormModalOpen;
+    setAlertModalPostState: (state: PostModal, action) => {
+      state.alertPostModalState = { ...action.payload };
     },
-    setPostFormButtonState: (state: PostModal,action) => {
-      state.postFormButtonOpen = action.payload
+    setPostFormButtonState: (state: PostModal, action) => {
+      state.postFormButtonOpen = action.payload;
     },
-    setPostUpdateFormState: (state: PostModal,action) => {
-      state.postUpdateFormOpen = action.payload
+    setPostUpdateFormState: (state: PostModal, action) => {
+      state.postUpdateFormOpen = action.payload;
     },
-    setPostModalOpen:(state: PostModal,action) => {
-      state.postModalOpen = action.payload
+    setPostModalOpen: (state: PostModal, action) => {
+      state.postModalOpen = action.payload;
     },
-    setPostModalStageId : (state:PostModal,action) => {
-      state.postModalStageId = action.payload
-    }
+    setAlertPostModalOpen: (state: PostModal, action) => {
+      state.alertPostModalOpen = action.payload;
+    },
+    setPostFormModalOpen: (state: PostModal, action) => {
+      state.postFormModalOpen = action.payload;
+    },
+    setPostModalStageId: (state: PostModal, action) => {
+      state.postModalStageId = action.payload;
+    },
   },
 });
 
 export const {
   setModalPostState,
+  setAlertModalPostState,
   setPostFormModalOpen,
   setPostFormButtonState,
   setPostUpdateFormState,
   setPostModalOpen,
-  setPostModalStageId
+  setAlertPostModalOpen,
+  setPostModalStageId,
 } = postModalSlice.actions;
 
 export default postModalSlice.reducer;

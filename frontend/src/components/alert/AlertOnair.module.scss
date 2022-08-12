@@ -3,24 +3,44 @@
 @include mixin.desktop {
   .dropbtn {
     background-color: #ea2129;
-    color: white;
+    // color: white;
     padding: 16px;
     font-size: 16px;
     border: none;
   }
-
+  .bell {
+    color:mixin.$mainColor
+  }
   .dropdown {
     position: relative;
     display: inline-block;
-  }
-
-  .dropdownContent {
-    display: none;
-    position: absolute;
-    background-color: #f1f1f1;
-    min-width: 100px;
-    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-    z-index:1 ;
+    background-color: white;
+    border-radius: 10px;
+    button {
+      background: transparent;
+      background-color: transparent;
+    }
+    .dropdownContent {
+      display: block;
+      position: absolute;
+      overflow-y: auto;
+      background-color: white;
+      min-width: 150px;
+      box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+      z-index: 3;
+      border-radius: 16px;
+      border-color: mixin.$cloudLine;
+    }
+    .dropdownContent::-webkit-scrollbar {
+      width: 10px;
+    }
+    .dropdownContent::-webkit-scrollbar-thumb {
+      background-color: mixin.$mainColor;
+      height: 0.5rem;
+    }
+    .dropdownContent::-webkit-scrollbar-track {
+      background-color: transparent
+    }
   }
 
   .dropdownItem {
@@ -29,19 +49,20 @@
   }
 
   .dropdownContent button {
-    color: black;
+    // color: black;
     padding: 12px 16px;
     text-decoration: none;
     z-index: 1;
+    border: mixin.$cloudGray;
   }
 
   .dropdownContent a:hover {
-    background-color: #ddd;
+    background: #ddd;
   }
 
-  .dropdown:hover .dropdownContent {
-    display: block;
-  }
+  // .dropdown:hover .dropdownContent {
+  //   display: block;
+  // }
 
   .dropdown:hover .dropbtn {
     background-color: #3e8e41;

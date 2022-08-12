@@ -33,7 +33,13 @@ const CommentItem: React.FC<{
       </div>
       <div>
         <div>{comment.text}</div>
-        <div>{comment.modifiedTime?.toString()}</div>
+        <div>{new Date(
+                  comment!.modifiedTime!
+                ).toLocaleDateString("ko-Kr", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })}</div>
       </div>
       <div>
         {/* 대댓글 */}

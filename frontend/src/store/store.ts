@@ -8,11 +8,13 @@ import postStageReducer from './postStage'
 import stageReducer from "./stage";
 import reviewReducer from "./review";
 import alertReducer from "./alert"
+import alertModalReducer from "./alertModal";
 
 export const store = configureStore({
   reducer: {
     auth: authReducer,
     alert : alertReducer,
+    alertModal : alertModalReducer,
     hobby: hobbyReducer,
     comment: commentReducer,
     post: postReducer,
