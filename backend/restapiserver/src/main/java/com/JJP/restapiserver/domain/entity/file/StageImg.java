@@ -4,6 +4,7 @@ import com.JJP.restapiserver.domain.entity.stage.Stage;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
@@ -12,6 +13,7 @@ import javax.persistence.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
 public class StageImg {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

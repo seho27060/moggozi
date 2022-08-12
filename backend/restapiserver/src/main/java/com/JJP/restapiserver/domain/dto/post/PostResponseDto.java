@@ -1,11 +1,13 @@
 package com.JJP.restapiserver.domain.dto.post;
 
 import com.JJP.restapiserver.domain.dto.challenge.Writer;
+import com.JJP.restapiserver.domain.entity.file.PostImg;
 import com.JJP.restapiserver.domain.entity.stage.Post;
 import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -16,7 +18,7 @@ public class PostResponseDto {
 
     private String content;
 
-    private String postImg;
+    private List<PostImg> postImgList;
 
     private Writer writer;
 
@@ -31,7 +33,7 @@ public class PostResponseDto {
         this.id = post.getId();
         this.title = post.getTitle();
         this.content = post.getContent();
-        this.postImg = post.getPostImg();
+        this.postImgList = post.getPostImgList();
         this.writer = new Writer(post.getMember().getId(), post.getMember().getNickname());
         this.likeNum = 0;
         this.isLiked = false;
