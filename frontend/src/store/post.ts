@@ -1,10 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { Value } from "react-quill";
 import { UserInfo } from "./auth";
 
 export interface PostData {
   id: number;
   title: string | null;
-  content: string | null;
+  content: Value | string | null;
   createdTime: Date | null;
   modifiedTime: Date | null;
   postImg: string | null;
@@ -20,19 +21,21 @@ export interface PostItem {
   img: string | null;
   writer: UserInfo;
 }
-export interface PostList {
-  posts: PostData[] | null;
-}
 
-const initialPostState: PostList = {
+interface PostState {
+  posts: PostData[];
+  postingStageId: number | null;
+}
+const initialPostState: PostState = {
   posts: [],
+  postingStageId: null,
 };
 
 export const postSlice = createSlice({
   name: "post",
   initialState: initialPostState,
   reducers: {
-    postSet: (state: PostList, action) => {
+    postSet: (state, action) => {
       console.log("postSet", action);
       const unorderedPosts = action.payload;
       unorderedPosts.sort((a: PostData, b: PostData) =>
@@ -40,27 +43,36 @@ export const postSlice = createSlice({
       );
       state.posts = unorderedPosts;
     },
-    postRegister: (state: PostList, action) => {
+    postRegister: (state, action) => {
       console.log("postRegister", action);
       state.posts = [...state.posts!, action.payload];
     },
-    postModify: (state: PostList, action) => {
+    postModify: (state, action) => {
       console.log("postModity", action);
       const postsModified = state.posts!.filter(
         (post) => post.id !== action.payload.id
       );
       state.posts = [...postsModified, action.payload];
     },
-    postRemove: (state: PostList, action) => {
+    postRemove: (state, action) => {
       console.log("postRemove", action);
       state.posts = state.posts!.filter(
         (post) => post.id !== action.payload.id
       );
     },
+    setPostingStageId: (state, action) => {
+      console.log("setPostingStageId", action);
+      state.postingStageId = action.payload;
+    },
   },
 });
 
-export const { postSet, postModify, postRegister, postRemove } =
-  postSlice.actions;
+export const {
+  postSet,
+  postModify,
+  postRegister,
+  postRemove,
+  setPostingStageId,
+} = postSlice.actions;
 
 export default postSlice.reducer;

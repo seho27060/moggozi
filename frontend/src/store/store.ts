@@ -4,6 +4,7 @@ import hobbyReducer from "./challenge";
 import commentReducer from "./comment";
 import postReducer from "./post";
 import postModalReducer from './postModal'
+import postStageReducer from './postStage'
 import stageReducer from "./stage";
 import reviewReducer from "./review";
 import alertReducer from "./alert"
@@ -16,6 +17,7 @@ export const store = configureStore({
     comment: commentReducer,
     post: postReducer,
     postModal : postModalReducer,
+    postStage : postStageReducer,
     stages: stageReducer,
     review: reviewReducer,
   },

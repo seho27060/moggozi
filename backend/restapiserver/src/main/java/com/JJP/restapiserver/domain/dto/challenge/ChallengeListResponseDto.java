@@ -36,12 +36,12 @@ public class ChallengeListResponseDto {
 
     public ChallengeListResponseDto(Challenge challenge){
         this.id = challenge.getId();
-        this.writer = new Writer(challenge.getMember().getId(), challenge.getMember().getNickname());
+        this.writer = new Writer(challenge.getMember().getId(), challenge.getMember().getNickname(), challenge.getMember().getUser_img());
         this.name = challenge.getName();
         this.img = challenge.getChallenge_img();
         this.content = challenge.getContent();
         this.level = challenge.getLevel();
-        this.likeNum = challenge.getChallengeLikeList().size();
+        this.likeNum = challenge.getLikeNum();
         this.hobbyList = new ArrayList<>();
         this.userProgress = 0;
         this.state = challenge.getState();

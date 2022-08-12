@@ -5,7 +5,6 @@ import { loginApi } from "../../lib/generalApi";
 import Cookie from "js-cookie";
 import moment from "moment";
 import { login } from "../../store/auth";
-
 import Modal from "../ui/Modal";
 
 import logo from "../../asset/moggo.png";
@@ -13,7 +12,11 @@ import style from "./LoginForm.module.scss";
 import google from "../../asset/google.svg";
 import kakao from "../../asset/kakao.svg";
 import naver from "../../asset/naver.svg";
-import { KAKAO_OAUTH_URL, NAVER_OAUTH_URL, GOOGLE_OAUTH_URL} from "../../lib/OAuth"
+import {
+  KAKAO_OAUTH_URL,
+  NAVER_OAUTH_URL,
+  GOOGLE_OAUTH_URL,
+} from "../../lib/OAuth";
 
 const LoginForm: React.FC = () => {
   const dispatch = useDispatch();

@@ -1,9 +1,11 @@
 package com.JJP.restapiserver.domain.dto.stage;
 
+import com.JJP.restapiserver.domain.entity.file.StageImg;
 import com.JJP.restapiserver.domain.entity.stage.Stage;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 public class StageResponseDto {
@@ -12,7 +14,8 @@ public class StageResponseDto {
     private Long challengeId;
     private String name;
     private String content;
-    private String img;
+
+    private List<StageImg> stageImgList;
     private LocalDateTime createdDate;
     private LocalDateTime modifiedDate;
     private Long order;
@@ -22,7 +25,7 @@ public class StageResponseDto {
         this.challengeId = entity.getChallenge().getId();
         this.name = entity.getName();
         this.content = entity.getContent();
-        this.img = entity.getImg();
+        this.stageImgList = entity.getStageImgList();
         this.createdDate = entity.getCreatedDate();
         this.modifiedDate = entity.getModifiedDate();
         this.order = entity.getStage_order();

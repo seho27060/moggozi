@@ -1,0 +1,68 @@
+@use "../../styles/mixin.scss" as mixin;
+
+@include mixin.desktop {
+
+  form {
+    margin: 0;
+  }
+
+  .filebox {
+    display: flex;
+  }
+
+  .filebox .uploadName {
+    display: inline-block;
+    height: 38px;
+    padding: 0 10px;
+    vertical-align: middle;
+    border: 1px solid mixin.$cloudLine;
+    border-radius:5px;
+    width: 61%;
+    color: mixin.$cloudGray;
+  }
+
+  .filebox label {
+    font-weight: 300;
+    font-size: 13px;
+    border: 0;
+    border-radius: 5px;
+    display: inline-block;
+    // padding: 0 0 0 10px;
+    color: #fff;
+    vertical-align: middle;
+    background-color: mixin.$mainColor;
+    cursor: pointer;
+    height: 40px;
+    width: 80px;
+    text-align: center;
+    margin-left: 10px;
+    line-height: 3;
+  }
+
+  .filebox input[type="file"] {
+    position: absolute;
+    width: 0;
+    height: 0;
+    padding: 0;
+    overflow: hidden;
+    border: 0;
+  }
+
+  img {
+    width: 200px;
+    height: 200px;
+    border-radius: 5px;
+    object-fit: cover;
+  }
+
+  button {
+    margin: 10px 0 10px 0;
+  }
+
+  .deleteButton {
+    div > button {
+      width: 150px !important;
+      height: 40px !important;  
+    }
+  }
+}

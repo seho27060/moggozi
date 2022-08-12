@@ -88,7 +88,7 @@ public class CommentServiceImpl implements CommentService{
     @Override
     public Writer getCommentWriter(Long comment_id) {
         Comment comment = commentRepository.getById(comment_id);
-        Writer writer = new Writer(comment.getMember().getId(), comment.getMember().getNickname());
+        Writer writer = new Writer(comment.getMember().getId(), comment.getMember().getNickname(), comment.getMember().getUser_img());
         return writer;
     }
 }

@@ -163,6 +163,7 @@ public class ChallengeServiceImpl implements ChallengeService{
                 .challenge_img(challengeData.getImg())
                 .content(challengeData.getContent())
                 .level(challengeData.getLevel())
+                .likeNum(0)
                 // 임시저장이기 때문에 작성 중이라는 뜻으로 state 값을 0으로 넣어줌.
                 .state(0)
                 .description(challengeData.getDescription())
@@ -213,7 +214,7 @@ public class ChallengeServiceImpl implements ChallengeService{
     }
 
     @Override
-    public int completeChallenge(ChallengeCompleteRequestDto challengeCompleteRequestDto) {
+    public void completeChallenge(ChallengeUpdateRequestDto challengeCompleteRequestDto) {
 
         // 상태를 변화시켜줄 챌린지를 찾음.
         Challenge challenge = challengeRepository.findById(challengeCompleteRequestDto.getChallengeId()).get();
@@ -222,7 +223,34 @@ public class ChallengeServiceImpl implements ChallengeService{
                         challengeCompleteRequestDto.getMemberId()).get();
         // 완료되었다는 상태가 2임
         joinedChallenge.setState(2);
-        return 0;
+    }
+
+    @Override
+    public void tryChallenge(ChallengeUpdateRequestDto challengeUpdateRequestDto) {
+        Challenge challenge = challengeRepository.findById(challengeUpdateRequestDto.getChallengeId()).get();
+        Member member = memberRepository.findById(challengeUpdateRequestDto.getMemberId()).get();
+        Optional<JoinedChallenge> reulst =joinedChallengeRepository.findByChallenge_idAndMember_id(challengeUpdateRequestDto.getChallengeId(),
+                challengeUpdateRequestDto.getMemberId());
+        if(reulst.isPresent()){
+            reulst.get().setState(1);
+        }
+        else{
+        // 도전한다는게 1임
+        JoinedChallenge joinedChallenge = joinedChallengeRepository.
+                save(JoinedChallenge.builder()
+                                .state(1)
+                                .challenge(challenge)
+                                .member(member)
+                                .build());
+        }
+    }
+
+    @Override
+    public void cancelChallenge(ChallengeUpdateRequestDto challengeUpdateRequestDto) {
+        JoinedChallenge joinedChallenge = joinedChallengeRepository.
+                findByChallenge_idAndMember_id(challengeUpdateRequestDto.getChallengeId(),
+                        challengeUpdateRequestDto.getMemberId()).get();
+        joinedChallengeRepository.delete(joinedChallenge);
     }
 
     @Override
@@ -284,20 +312,11 @@ public class ChallengeServiceImpl implements ChallengeService{
     @Override
     public List<ChallengeListResponseDto> getChallengeRecommendationList(Long member_id, int size) {
         List<MemberTag> myhobby = memberTagRepository.findTop5ByMember_idOrderByCreatedDateDesc(member_id);
-        // 대전제
-        // 한번 추천으로 뽑힌 것은 다시 돌려주지 않는다. (유효 기간은 6시간, 쿠키 활용)
-        // 사용자가 막 회원가입해서 등록된 취미가 없다면?
-        // 1. 완전 랜덤인 것으로 5개 뽑아서 돌려준다.
-        // get 으로 challenge/sear8ch/?pages=1&size=16&keyword=soccer
-
-        // 챌린지 이름으로 검색 5개,
-        // 사용자 이름으로 5개,
-
-        // 스프링과 매핑되는 그 방식이 있음
-        // 유저 검색
-        // 챌린지 검색
-        // 특정 태그를 포함한 챌린지 검색
-        if(myhobby == null){
+        logger.debug("---------------------------------------------------");
+        logger.debug(myhobby.toString());
+        List<ChallengeListResponseDto> challengeListResponseDtoList = new ArrayList<>();
+        if(myhobby.isEmpty()){
+            logger.debug("---------------------취미 없음---------------");
             List<Challenge> challengeList = challengeRepository.findRandomChallengeList(5);
             return challengeIntoListDto(challengeList, new ArrayList<ChallengeListResponseDto>(), member_id);
         }
@@ -306,14 +325,39 @@ public class ChallengeServiceImpl implements ChallengeService{
             // 내가 최근에 고른 5개의 취미의 인덱스
             List<Long> tag_ids = myhobby.stream().map(o -> o.getTag().getId()).collect(Collectors.toList());
             //
+            logger.debug("-------------내가 가진 취미 번호 리스트 --------------");
+            logger.debug(tag_ids.toString());
             List<Tag> myTag = tagRepository.findByIdIn(tag_ids);
 
+
             List<JoinedChallenge> joinedChallengeList = joinedChallengeRepository.findByMember_id(member_id);
+            logger.debug("내가 지금까지 참여한 챌린지 번호 리스트");
             List<Long> joined_ids = joinedChallengeList.stream().map(o -> o.getChallenge().getId()).collect(Collectors.toList());
+            logger.debug(joined_ids.toString());
+            for(int i =0; i < tag_ids.size(); i++){
+                logger.debug("내가 지금까지 참여한 챌린지 번호 리스트");
+                logger.debug(joined_ids.toString());
+                // 내가 원하는 태그 중에 좋아요가 가장 많고 참여하지 않은 챌린지 하나 반환
+                List<Object[]> results = challengeRepository.findUnJoinedChallenge(joined_ids, tag_ids.get(i));
 
+                if(!results.isEmpty()){
+                    // 그런 챌린지가 있다면 현재 검색의 기준이 됐던 태그를 가지고 있는 챌린지를 찾아서 joined_ids에 넣어줌.
+                    Challenge challenge = challengeRepository.getById(Long.parseLong(results.get(0)[0].toString()));
+                    ChallengeListResponseDto challengeListResponseDto = new ChallengeListResponseDto(challenge);
+                    challengeListResponseDtoList.add(challengeListResponseDto);
+                    List<Challenge> challengeList = challengeRepository.findChallengeContainsTag(tag_ids.get(i));
+                    List<Long> additional = challengeList.stream().map(o -> o.getId()).collect(Collectors.toList());
+                    logger.debug("------------------내가 검색한 챌린지와 태그를 공유하는 모든 챌린지-----------");
+                    logger.debug(joined_ids.toString());
+                    joined_ids.addAll(additional);
 
+                    }
+                else {
+                    logger.debug("---------------------못해먹겠네 진짜---------------");
+                }
+            }
         }
-        return null;
+        return challengeListResponseDtoList;
     }
 
     public List<ChallengeResponseDto> challengeIntoDto(List<Challenge> challengeList, List<ChallengeResponseDto> responseDtoList
@@ -455,7 +499,7 @@ public class ChallengeServiceImpl implements ChallengeService{
 
     @Override
     public List<ChallengeListResponseDto> getMyChallenge(Long member_id) {
-        List<Challenge> challengeList = challengeRepository.findByMember_id(member_id);
+        List<Challenge> challengeList = challengeRepository.findByMember_idOrderByModifiedDate(member_id);
         List<ChallengeListResponseDto> challengeListResponseDtoList = new ArrayList<>();
         return challengeIntoListDto(challengeList, challengeListResponseDtoList, member_id);
     }

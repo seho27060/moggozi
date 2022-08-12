@@ -1,5 +1,7 @@
 import React from "react";
 
+import styles from "./StarRating.module.scss";
+
 const StarRating: React.FC<{
   rate: number;
   rateChangeHandler: (star: number) => void;
@@ -15,8 +17,8 @@ const StarRating: React.FC<{
     <div>
       {starArray.map((starIndex) => {
         return (
-          <button key={starIndex} onClick={(e) => starHandler(starIndex, e)}>
-            {rate < starIndex ? <p>on</p> : <p>off</p>}
+          <button className={styles.starButton} key={starIndex} onClick={(e) => starHandler(starIndex, e)}>
+            {rate < starIndex ? <p>☆</p> : <p>★</p>}
           </button>
         );
       })}

@@ -6,10 +6,15 @@ import { RootState } from "../../store/store";
 import HobbyForm from "./HobbyForm";
 import HobbySetList from "./HobbySetList";
 
+import EditorComponent from "../ui/Editor";
+import ReactQuill from "react-quill";
+
+import styles from "./ChallengeForm.module.scss"
+
 const ChallengeForm: React.FC = () => {
   const nameInputRef = useRef<HTMLInputElement>(null);
   const descriptionInputRef = useRef<HTMLInputElement>(null);
-  const contentInputRef = useRef<HTMLTextAreaElement>(null);
+  const contentInputRef = useRef<ReactQuill>();
   const levelSelectRef = useRef<HTMLSelectElement>(null);
 
   const hobbyList = useSelector((state: RootState) => state.hobby.hobbyList);
@@ -52,15 +57,16 @@ const ChallengeForm: React.FC = () => {
       <h3>Challenge Form</h3>
       <HobbyForm />
       <HobbySetList hobbies={hobbyList} />
-      <form>
+      <form className={styles.challengeForm}>
         <label htmlFor="name">챌린지 이름: </label>
         <input type="text" id="name" ref={nameInputRef} />
         <br />
         <label htmlFor="description">챌린지 간단 설명: </label>
         <input type="text" id="description" ref={descriptionInputRef} />
         <br />
-        <label htmlFor="content">챌린지 상세 내용: </label>
-        <textarea rows={5} id="content" ref={contentInputRef} />
+        <div>
+          <EditorComponent QuillRef={contentInputRef} value={""} />
+        </div>
         <br />
         <label htmlFor="level">챌린지 level</label>
         <select name="level" id="level" ref={levelSelectRef}>

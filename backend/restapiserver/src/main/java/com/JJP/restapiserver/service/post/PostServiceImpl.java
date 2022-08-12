@@ -157,7 +157,9 @@ public class PostServiceImpl implements PostService {
     public PostDetailDto detailPost(Long post_id, Long member_id){
         Post post = postRepository.getById(post_id);
 
-        Writer writer = new Writer(post.getMember().getId(), post.getMember().getNickname());
+        System.out.println("=======================================================");
+        System.out.println(post.getId());
+        Writer writer = new Writer(post.getMember().getId(), post.getMember().getNickname(), post.getMember().getUser_img());
         PostDetailDto postDetailDto = PostDetailDto.builder()
                 .id(post_id)
                 .title(post.getTitle())

@@ -1,10 +1,10 @@
 import axios from "axios";
 import { apiConfig } from "../config";
-import { AlertSend } from "../store/alert";
-import { ChallengeSaveState } from "../store/challenge";
+import { ChallengeItemState, ChallengeSaveState } from "../store/challenge";
 import { CommentSend } from "../store/comment";
 import { PostSend, PostUpdateSend } from "../store/postModal";
 import { StageSaveState } from "../store/stage";
+import { addChallengeImg, addUserImg, profileImgFetchAPI } from "./imgApi";
 import { refresh, refreshErrorHandle } from "./refresh";
 
 const withTokenApi = axios.create({
@@ -20,7 +20,9 @@ export default withTokenApi;
 // 계정 관련
 export const persistAuth = async () => {
   const { data } = await withTokenApi.get(`/user/myinfo`);
-  return data;
+  return profileImgFetchAPI(data.id).then((res) => {
+    return { ...data, userImg: res };
+  });
 };
 
 export const userDetail = async () => {
@@ -48,20 +50,24 @@ export const withdrawal = async (option: object) => {
   return data;
 };
 
-export const followApi = async(toId: number | null) => {
+export const followApi = async (toId: number | null) => {
   const { data } = await withTokenApi.post(`/user/follow/${toId}`);
-  return data
-}
-
-export const followedApi = async(toMember: number, loginID: number) => {
-  const { data } = await withTokenApi.get(`user/followed/${toMember}/${loginID}`)
   return data;
-}
+};
 
-export const followingApi = async(fromMemberId: number) => {
-  const { data } = await withTokenApi.get(`user/following/${fromMemberId}`) 
-  return data;
-}
+export const followedApi = async (toMember: number) => {
+  const { data } = await withTokenApi.get(`/user/followed/${toMember}`);
+  return addUserImg(data.memberInfoList).then((res) => {
+    return { ...data, memberInfoList: res };
+  });
+};
+
+export const followingApi = async (fromMemberId: number) => {
+  const { data } = await withTokenApi.get(`/user/following/${fromMemberId}`);
+  return addUserImg(data.memberInfoList).then((res) => {
+    return { ...data, memberInfoList: res };
+  });
+};
 
 // 챌린지 관련
 export const isLoginFetchChallenge = async (id: number) => {
@@ -71,7 +77,10 @@ export const isLoginFetchChallenge = async (id: number) => {
 
 export const isLoginFetchChallengeRankList = async () => {
   const { data } = await withTokenApi.get("/challenge/rank");
-  return data;
+  const newData: ChallengeItemState[] = [];
+  return addChallengeImg(data, newData).then(() => {
+    return newData;
+  });
 };
 
 export const challengeAdd = async (challengeAddData: ChallengeSaveState) => {
@@ -106,12 +115,12 @@ export const challengeLike = async (challengeIdData: {
 };
 
 export const hobbySearch = async (query: string) => {
-  const { data } = await withTokenApi.get(`/hobby/search/${query}`);
+  const { data } = await withTokenApi.get(`/hobby/search?keyword=${query}`);
   return data;
 };
 
 export const hobbyExist = async (name: string) => {
-  const { data } = await withTokenApi.get(`/hobby/exist/${name}`);
+  const { data } = await withTokenApi.get(`/hobby/exist?keyword=${name}`);
   return data;
 };
 
@@ -199,8 +208,18 @@ export const postUpdate = async (post: PostUpdateSend) => {
   return data;
 };
 
-export const postRead = async (stageId: number) => {
+export const postListRead = async (stageId: number) => {
   const { data } = await withTokenApi.get(`/stage/post/${stageId}`);
+  return data;
+};
+
+export const postRead = async (postId: number) => {
+  const { data } = await withTokenApi.get(`/stage/post/detail/${postId}`);
+  return data;
+};
+
+export const postRandomRead = async (size: number) => {
+  const { data } = await withTokenApi.get(`/stage/post/random/${size}`);
   return data;
 };
 
@@ -233,8 +252,11 @@ export const commentUpdate = async (
   const { data } = await withTokenApi.put(`/comment/${comment_id}`, comment);
   return data;
 };
-
-// 알림 관련
+export const commentWriter = async (comment_id: number) => {
+  const { data } = await withTokenApi.get(`/comment/commentWriter/${comment_id}`);
+  return data;
+};
+//// 알림 관련
 // 알림 확인
 export const alertRead = async (alert_id: number) => {
   const { data } = await withTokenApi.put(`/notification/${alert_id}`);
@@ -250,15 +272,38 @@ export const alertReadall = async () => {
   const { data } = await withTokenApi.put(`/notification/readAll`);
   return data;
 };
-// 모든 알림 통틀어서 최근 6개 가져오기 
+// 모든 알림 통틀어서 최근 6개 가져오기
 export const alertRecent = async () => {
   const { data } = await withTokenApi.get(`/notification/recent`);
   return data;
 };
-// 새로운 알림 보내기
-export const alertSend = async (alert : AlertSend) => {
-  const { data } = await withTokenApi.post(`/notification/register`,alert);
-  return data;
+// 검색 관련
+export const isLoginSearchChallengeApi = async (
+  q: string,
+  page: number,
+  size: number
+) => {
+  const { data } = await withTokenApi.get(
+    `/challenge/search/?keyword=${q}&page=${page}&size=${size}`
+  );
+  const newData: ChallengeItemState[] = [];
+  return addChallengeImg(data.content, newData).then(() => {
+    return { ...data, content: newData };
+  });
+};
+
+export const isLoginSearchChallengeHobbyApi = async (
+  q: string,
+  page: number,
+  size: number
+) => {
+  const { data } = await withTokenApi.get(
+    `/challenge/tag/search/?keyword=${q}&page=${page}&size=${size}`
+  );
+  const newData: ChallengeItemState[] = [];
+  return addChallengeImg(data.content, newData).then(() => {
+    return { ...data, content: newData };
+  });
 };
 
 // 사용법 - 해당 axios는 기본적으로 토큰이 만료되었을 경우 refresh를 겸함.

@@ -1,0 +1,107 @@
+@use "../../styles/mixin.scss" as mixin;
+
+@include mixin.desktop {
+
+  .challengeItem {
+    display: flex;
+    margin: 20px 20px 20px 15px;
+    
+    .img {
+      width: 80px;
+      height: 50px;
+      object-fit: cover;
+    }
+
+    .challengeInfo {
+      display: flex;
+    }
+  }
+
+  .challengeInfo {
+    // display: block !important;
+    display: flex;
+    align-items: center;
+    margin: 0 0 0 10px;
+
+    .title {
+      display: flex;
+
+      //챌린지 이름
+      div:nth-child(1) {
+        font-size: 16px;
+        font-weight: 600;
+        line-height: 17px;
+      }
+
+      // 레벨
+      .level1 {
+        margin-left: 5px;
+        text-align: center;
+        line-height: 18px;
+        border-radius: 5px;
+        background-color: #F0D300;
+        font-weight: 700;
+        font-size: 12px;
+        color: #fff;
+        width: 30px;
+        height: 18px;
+      }
+
+      .level2 {
+        margin-left: 5px;
+        text-align: center;
+        line-height: 18px;
+        border-radius: 5px;
+        background-color: #5AAE33;
+        font-weight: 700;
+        font-size: 12px;
+        color: #fff;
+        width: 30px;
+        height: 18px;
+      }
+
+      .level3 {
+        margin-left: 5px;
+        text-align: center;
+        line-height: 18px;
+        border-radius: 5px;
+        background-color: #E2195A;
+        font-weight: 700;
+        font-size: 12px;
+        color: #fff;
+        width: 30px;
+        height: 18px;
+      }
+
+      div:nth-child(2) {
+        border: 0px;
+      }
+    }
+
+    .writer {
+      display: flex;
+      margin-top: 5px;
+
+      div:nth-child(1) {
+        font-weight: 400;
+        font-size: 16px;
+        line-height: 15px;
+        color: mixin.$cloudGray;
+        margin-right: 10px;
+      }
+
+      div:nth-child(2) {
+        font-weight: 400;
+        font-size: 16px;
+        line-height: 15px;
+        color: mixin.$cloudGray
+      }
+    }
+
+  }
+
+}
+
+@include mixin.mobile {
+
+}

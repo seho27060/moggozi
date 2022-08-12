@@ -4,7 +4,7 @@ import { postDelete } from "../../lib/withTokenApi";
 import { postRemove } from "../../store/post";
 import {
   setPostUpdateFormState,
-  setPostModalState,
+  setPostModalOpen,
 } from "../../store/postModal";
 import { RootState } from "../../store/store";
 const PostModifyBtn: React.FC<{}> = () => {
@@ -26,7 +26,7 @@ const PostModifyBtn: React.FC<{}> = () => {
       .then((res) => {
         console.log("post 삭제완료", res);
         dispatch(postRemove(post));
-        dispatch(setPostModalState(false));
+        dispatch(setPostModalOpen(false));
       })
       .catch((err) => {
         console.log(err);

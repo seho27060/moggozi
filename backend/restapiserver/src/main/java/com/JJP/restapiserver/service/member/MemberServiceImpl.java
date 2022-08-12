@@ -198,7 +198,6 @@ public class MemberServiceImpl implements MemberService {
                 return ResponseEntity.ok(new MessageResponse("Username is available"));
             else
                 return ResponseEntity.badRequest().body(new MessageResponse("Error: Wrong format"));
-
         } else {
             return ResponseEntity.badRequest().body(new MessageResponse("Error: Username(email) is already taken."));
         }
