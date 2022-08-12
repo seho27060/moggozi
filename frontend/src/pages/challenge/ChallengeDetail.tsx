@@ -52,7 +52,6 @@ const ChallengeDetail: React.FC = () => {
   const reviews = useSelector((state: RootState) => state.review);
 
   const {
-    alertPostModalOpen,
     postModalOpen,
     postFormModalOpen,
     postUpdateFormOpen,

@@ -1,4 +1,5 @@
 import { imgState, StageState } from "../../store/stage";
+import Dompurify from "dompurify";
 
 const StageEditItem: React.FC<{
   stage: StageState;
@@ -7,7 +8,13 @@ const StageEditItem: React.FC<{
     <div>
       <h4>스테이지 아이템</h4>
       <p>스테이지 이름 : {stage.name}</p>
-      <p>스테이지 내용 : {stage.content}</p>
+      <div
+        dangerouslySetInnerHTML={{
+          __html: Dompurify.sanitize(stage!.content!.toString()),
+        }}
+        // className={styles.postDetail}
+        className="view ql-editor"
+      ></div>
       <ul>
         {Array.isArray(stage.img) &&
           stage.img.map((img: imgState) => {

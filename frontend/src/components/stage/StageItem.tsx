@@ -18,7 +18,6 @@ import { RootState } from "../../store/store";
 import PostList from "../post/PostList";
 
 import Dompurify from "dompurify";
-import styles from "./StageItem.module.scss";
 
 const StageItem: React.FC<{
   stage: StageState;
@@ -53,13 +52,10 @@ const StageItem: React.FC<{
   }, [isLoggedIn, stage.id]);
 
   // 스테이지 사진
-  let postedCheck = false;
-  postStageListState.map((post) => {
-    if (post.writer!.id === user.userInfo.id) {
-      postedCheck = true;
-      // break
-    }
-  });
+  let postedCheck = postStageListState.some((post) => {
+    return post.writer!.id !== user.userInfo.id
+  })
+
   useEffect(() => {
     stageImgFetchAPI(stage.id!)
       .then((res) => {
@@ -142,17 +138,17 @@ const StageItem: React.FC<{
         <button onClick={stageCancelHandler}>진행 취소</button>
       )}
       {getStageProgress === 2 && <p>완료</p>}
-      {getStageProgress === 1 &&
+      {(getStageProgress === 1 &&
       postFormButtonOpen &&
       isLoggedIn &&
       postingStageId &&
-      postedCheck ? (
+      !postedCheck) ? (
         <button onClick={() => dispatch(setPostFormModalOpen(true))}>
           포스팅 생성
         </button>
       ) : (
         <button onClick={() => dispatch(setPostFormModalOpen(false))}>
-          포스트 수정/ 원래있던 포스팅 띄우기
+          이미포스트작성함/ 원래있던 포스팅 띄우기
         </button>
       )}
 
