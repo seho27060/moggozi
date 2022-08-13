@@ -97,16 +97,16 @@ public class EchoHandler extends TextWebSocketHandler {
             String msg = "";
             if (receiver != null) {
                 if (type.equals("challenge")) {
-                    msg = senderName + "님이a등록하신 챌린지에a좋아요를a눌렀습니다.";
+                    msg = senderName + "님이a등록하신 챌린지에a좋아요를 눌렀습니다.";
                 }
                 else if(type.equals("post")){
-                    msg = senderName + "님이a등록하신 포스트에a좋아요를a눌렀습니다.";
+                    msg = senderName + "님이a등록하신 포스트에a좋아요를 눌렀습니다.";
                 }
                 else if(type.equals("comment")){
-                    msg = senderName + "님이a등록하신 포스트에a댓글을a달았습니다.";
+                    msg = senderName + "님이a등록하신 포스트에a댓글을 달았습니다.";
                 }
                 else if(type.equals("reply")){
-                    msg = senderName + "님이a등록하신 댓글에a대댓글을a달았습니다.";
+                    msg = senderName + "님이a등록하신 댓글에a대댓글을 달았습니다.";
                 }
                 else if(type.equals("follow")){
                     msg = senderName + "님이a팔로우하기a시작했습니다.";
