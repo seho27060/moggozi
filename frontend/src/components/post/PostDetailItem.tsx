@@ -39,16 +39,16 @@ const PostDetailItem: React.FC<{}> = () => {
 
   return (
     <div className={styles.postDetail}>
-      <div>
+      <div style={{height:"550px",width:"550px"}}>
         <img
           className={styles.img}
           src={
-            post.postModalState.postImg.length !== 0
+            post.postModalState.postImg!.length !== 0
               ? post.postModalState.postImg[0].path!
               : "https://blog.kakaocdn.net/dn/vckff/btqCjeJmBHM/tMVpe4aUIMfH4nKS4aO3tK/img.jpg"
           }
           alt="포스팅이미지"
-          style={{height:"550px",width:"550px"}}
+          
         />
         {/* 수정 버튼 */}
       </div>
