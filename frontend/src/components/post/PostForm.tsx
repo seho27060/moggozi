@@ -36,30 +36,35 @@ const PostForm: React.FC<{
       .then((res) => {
         const postId = Number(res);
         // 이미지 업로드
-        const imgRef = ref(storageService, `post/${postId}`);
-        uploadBytes(imgRef, file!)
-          .then((res) => {
-            getDownloadURL(res.ref)
-              .then((res) => {
-                PostData.postImg = res;
-                console.log(PostData.postImg);
-                postUpdate({
-                  title: PostData.title,
-                  content: PostData.content,
-                  postImg: PostData.postImg,
-                  postId: postId,
-                })
-                  .then((res) => {
-                    console.log(res);
-                    dispatch(postRegister(PostData));
+        if (file) {
+          const imgRef = ref(storageService, `post/${postId}`);
+          uploadBytes(imgRef, file)
+            .then((res) => {
+              getDownloadURL(res.ref)
+                .then((res) => {
+                  PostData.postImg = res;
+                  console.log(PostData.postImg);
+                  postUpdate({
+                    title: PostData.title,
+                    content: PostData.content,
+                    postImg: PostData.postImg,
+                    postId: postId,
                   })
-                  .catch((err) => console.log("이미지 db에 저장 실패", err));
-                modalClose();
-              })
-              .catch((err) => console.log("이미지 url 가져오기 실패", err));
-            setPreviewImage("");
-          })
-          .catch((err) => console.log("이미지 firestore에 업로드 실패", err));
+                    .then((res) => {
+                      console.log(res);
+                      dispatch(postRegister(PostData));
+                    })
+                    .catch((err) => console.log("이미지 db에 저장 실패", err));
+                  modalClose();
+                })
+                .catch((err) => console.log("이미지 url 가져오기 실패", err));
+              setPreviewImage("");
+            })
+            .catch((err) => console.log("이미지 firestore에 업로드 실패", err));
+        } else {
+          dispatch(postRegister(PostData));
+          modalClose();
+        }
       })
       .catch((err) => console.log("포스팅 실패", err));
   };
