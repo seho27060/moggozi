@@ -581,4 +581,10 @@ public class ChallengeServiceImpl implements ChallengeService{
                 .build();
         return challengePageDto;
     }
+
+    @Override
+    public void changeImg(Long challenge_id, String img) {
+        Challenge challenge = challengeRepository.findById(challenge_id).get();
+        challenge.imgUpdate(img);
+    }
 }
