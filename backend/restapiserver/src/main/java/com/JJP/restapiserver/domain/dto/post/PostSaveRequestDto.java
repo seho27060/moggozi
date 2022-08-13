@@ -13,14 +13,12 @@ public class PostSaveRequestDto {
     private Long stageId;
     private String title;
     private String content;
-    private String postImg;
 
     @Builder
-    public PostSaveRequestDto(Long stageId, String title, String content, String postImg) {
+    public PostSaveRequestDto(Long stageId, String title, String content) {
         this.stageId = stageId;
         this.title = title;
         this.content = content;
-        this.postImg = postImg;
     }
 
     public Post toEntity(Member member, Stage stage){
@@ -29,7 +27,6 @@ public class PostSaveRequestDto {
                 .stage(stage)
                 .title(title)
                 .content(content)
-                .post_img(postImg)
                 .build();
     }
 }

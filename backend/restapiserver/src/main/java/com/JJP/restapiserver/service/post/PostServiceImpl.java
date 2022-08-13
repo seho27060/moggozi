@@ -54,7 +54,7 @@ public class PostServiceImpl implements PostService {
             return -1;
         }
 
-        entity.update(postUpdateRequestDto.getTitle(), postUpdateRequestDto.getContent(), postUpdateRequestDto.getPostImg());
+        entity.update(postUpdateRequestDto.getTitle(), postUpdateRequestDto.getContent());
         PostResponseDto postResponseDto= new PostResponseDto(entity);
         if(postLikeRepository.findByPost_idAndMember_id(postResponseDto.getId(), postResponseDto.getWriter().getId()).isPresent())
         {
