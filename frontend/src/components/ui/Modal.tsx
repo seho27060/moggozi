@@ -17,29 +17,15 @@ const Modal = (props: Props): ReactElement => {
       document.body.style.overflow = 'auto';
     };
   }, []);
-  // useEffect(() => {
-  //   document.body.style.cssText = `
-  //     position: fixed; 
-  //     top: -${window.scrollY}px;
-  //     overflow-y: scroll;
-  //     width: 100%;`;
-  //   return () => {
-  //     const scrollY = document.body.style.top;
-  //     document.body.style.cssText = "";
-  //     window.scrollTo(0, parseInt(scrollY || "0", 10) * -1);
-  //   };
-  // }, []);
   return (
-    // 모달이 열릴때 openModal 클래스가 생성된다.
-
-    <div
-      className={
+    <div onClick={close}>
+    <div className={
         open ? `${styles.openModal} ${styles.modal}` : `${styles.modal}`
       }
     >
       {/* <div className={open ? 'openModal modal' : 'modal'}> */}
       {open ? (
-        <section>
+        <section onClick={(event) => { event.stopPropagation(); }}>
           <header>
             {header}
             <button className="close" onClick={close}>
@@ -54,6 +40,7 @@ const Modal = (props: Props): ReactElement => {
           </footer>
         </section>
       ) : null}
+    </div>
     </div>
   );
 };

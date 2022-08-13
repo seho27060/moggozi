@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import PostDetailItem from "../../components/post/PostDetailItem";
 import PostRandomList from "../../components/post/PostRandomListVer1";
-import Modal from "../../components/ui/Modal";
+import PostModal from "../../components/ui/PostModal";
 import { postRandomRead } from "../../lib/withTokenApi";
 import { PostData } from "../../store/post";
 import {
@@ -41,18 +41,16 @@ const PostAll: React.FC<{}> = () => {
   }, [dispatch, user.id]);
   return (
     <div>
-      <div>Random posting</div>
       <PostRandomList />
-      <div style={{ height: "auto" }}>
+      <div>
         {postModalOpen && (
-          <Modal
+          <PostModal
             open={postModalOpen}
             close={closePostModal}
-            header="PostAll PostDetail"
           >
             <PostDetailItem />
-          </Modal>
-        )}
+          </PostModal>
+        )}   
       </div>
     </div>
   );
