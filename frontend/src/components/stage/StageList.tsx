@@ -39,8 +39,8 @@ const StageList: React.FC<{
         sx={{
           borderBottom: "2px solid #afafaf",
           // color: "blue",
-          px: 3
-          // fontSize: "30px"
+          px: 3,
+          // fontSize: "60px",
         }}
         value={value}
         onChange={handleChange}
@@ -80,10 +80,8 @@ const StageList: React.FC<{
               px: 1,
             }}
             />
-          // {/* </Tab> */}
         ))}
       </Tabs>
-      {/* </div> */}
       <div 
       style={{height: "1000px"}}
       >

@@ -115,6 +115,7 @@ const StageItem: React.FC<{
       <div className={styles.stageInfo}>
       <div className={styles.carouesl}>
         <Carousel>
+          {/* 여기서 map으로 div태그 안에 이미지 출력하면 된다. 밑의 3개는 임시 사진.*/}
           <div>
             <img src="https://img1.daumcdn.net/thumb/R800x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbgHC4M%2FbtqBVf8rCqB%2FZz5aJuALI4JSKV8ZKAm8YK%2Fimg.jpg" alt="" />
           </div>

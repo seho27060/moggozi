@@ -12,6 +12,7 @@ export interface UserInfo {
   id: number | null;
   nickname: string | null;
   img: string | undefined;
+  path: string | undefined;
 }
 
 export interface followed {
@@ -36,6 +37,7 @@ const initialAuthState: UserState = {
     id: 0,
     nickname: null,
     img: "",
+    path: "",
   },
   isLoggedIn: !!initialToken,
 };
@@ -54,6 +56,7 @@ export const authSlice = createSlice({
         id: action.payload.id,
         nickname: action.payload.nickname,
         img: action.payload.userImg,
+        path: action.payload.path,
       };
       state.isLoggedIn = !!action.payload.accessToken;
     },
@@ -69,6 +72,7 @@ export const authSlice = createSlice({
         id: action.payload.id,
         nickname: action.payload.nickname,
         img: action.payload.userImg,
+        path: action.payload.path,
       };
       state.isLoggedIn = true;
     },

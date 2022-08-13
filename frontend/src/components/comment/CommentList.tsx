@@ -19,6 +19,7 @@ const CommentList: React.FC<{ comments: Comment[] | null }> = ({
   const postModalState = useSelector(
     (state: RootState) => state.postModal.postModalState
   );
+  console.log(commentList)
   return (
     <div>
       {commentList?.map((comment) => (

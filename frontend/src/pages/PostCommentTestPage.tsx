@@ -120,6 +120,8 @@ const PostCommentTestPage = () => {
             <PostForm
               stageId={Number(stageIdRef.current!.value)}
               modalClose={closePostFormModal}
+              // 값을 넣어야 해서 임시로 아무거나 넣었음.
+              challenge={stageIdRef.current?.value!}
             />
           </Modal>
         )}

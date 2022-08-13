@@ -81,6 +81,11 @@ export const searchChallengeHobbyApi = async (
   );
   return data;
 };
+
+export const stageDetail = async(stageId: number) => {
+  const { data } = await generalApi.get(`stage/datail/${stageId}`)
+  return data;
+}
 // 사용법 - 토큰이 필요없는 일반 axios 요청을 사용할 때 이용
 // 위에서 기본 generalApi를 이용하여 사용하고자 하는 axios를 loginApi와 같이
 // 만들어준 뒤, 해당 api를 export하고 사용하고자 하는 component에서 불러와 사용하면 됨.

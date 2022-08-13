@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { fetchChallenge } from "../../lib/generalApi";
 import { WebSocketContext } from "../../lib/WebSocketProvider";
@@ -31,13 +31,16 @@ import PostUpdateForm from "../../components/post/PostUpdateForm";
 import ReviewForm from "../../components/review/ReviewForm";
 import ReviewList from "../../components/review/ReviewList";
 import StageList from "../../components/stage/StageList";
-import Modal from "../../components/ui/Modal";
 
 import Dompurify from "dompurify";
 import styles from "./ChallengeDetail.module.scss";
+import FavoriteIcon from '@mui/icons-material/Favorite';
 import PostModal from "../../components/ui/PostModal";
+import PostFormModal from "../../components/ui/PostFormModal";
 
 const ChallengeDetail: React.FC = () => {
+  const navigate = useNavigate()
+  
   const { id } = useParams();
   const ws = useContext(WebSocketContext);
 
@@ -220,20 +223,7 @@ const ChallengeDetail: React.FC = () => {
                       </div>
                     );
                 })()}
-                {isLoggedIn === true && (
-                  <div>
-                    {loadedChallenge!.userProgress === 0 && (
-                      <button onClick={startHandler}>도전</button>
-                    )}
-                    {loadedChallenge!.userProgress === 1 && (
-                      <div>
-                        <p>진행</p>
-                        <button onClick={cancelHandler}>도전 취소</button>
-                      </div>
-                    )}
-                    {loadedChallenge!.userProgress === 2 && <p>완료</p>}
-                  </div>
-                )}
+
               </div>
               {userInfo.id === loadedChallenge!.writer.id &&
                 loadedChallenge!.state === 0 && (
@@ -261,7 +251,7 @@ const ChallengeDetail: React.FC = () => {
                   </div>
                 ) : (
                   <div>
-                    <div className={styles.writer}>
+                    <div className={styles.writer} onClick={() => {navigate(`/user/${loadedChallenge!.writer.id}`)}}>
                       <img src={loadedChallenge!.writer.img} alt="" />
                       <div>
                         <div className={styles.user}>
@@ -287,23 +277,34 @@ const ChallengeDetail: React.FC = () => {
               </div>
             </div>
 
-            {loadedChallenge!.img && (
+            {loadedChallenge!.img === '""' ? (
               <img
                 className={styles.challengeImg}
-                src={loadedChallenge!.img}
+                src="https://via.placeholder.com/1000x450.png/"
+                alt=""
+              />
+            ) : (
+              <img
+                className={styles.challengeImg}
+                src={loadedChallenge!.img!}
                 alt="challenge Img"
-              ></img>
+              />
             )}
-            <div>
+            <div className={styles.tag_start}>
               <HobbyList hobbies={loadedChallenge!.hobbyList} />
+              {isLoggedIn === true && (
+                  <div>
+                    {loadedChallenge!.userProgress === 0 && (
+                      <button className={styles.button} onClick={startHandler}>도전</button>
+                    )}
+                    {loadedChallenge!.userProgress === 1 && (
+                      <button className={styles.button} onClick={cancelHandler}>도전 취소</button>
+                    )}
+                    {loadedChallenge!.userProgress === 2 && <button className={styles.complete}>완료</button>}
+                  </div>
+                )}
             </div>
 
-            <div className={styles.writer}>
-              <img src={loadedChallenge!.writer.img} alt="" />
-              <div className={styles.user}>
-                {loadedChallenge!.writer.nickname}
-              </div>
-            </div>
             <div
               dangerouslySetInnerHTML={{
                 __html: Dompurify.sanitize(
@@ -312,22 +313,31 @@ const ChallengeDetail: React.FC = () => {
               }}
               className="view ql-editor"
             ></div>
+
+            <div className={styles.writer} onClick={() => {navigate(`/user/${loadedChallenge!.writer.id!}`)}} >
+              <img src={loadedChallenge!.writer.img} alt="" />
+              <div className={styles.user}>
+                {loadedChallenge!.writer.nickname}
+              </div>
+            </div>
+
             <div className={styles.like}>
-              <div>
+              <div className={styles.likeLabel} onClick={likeHandler}>
                 {isLoggedIn === true && loadedChallenge!.liked === false && (
-                  <button onClick={likeHandler}>♥</button>
+                  <div className={styles.heart}><FavoriteIcon /></div>
                   // 챌린지 좋아요
                 )}
                 {isLoggedIn === true && loadedChallenge!.liked === true && (
-                  <button onClick={likeHandler}>♡</button>
+                  <div className={styles.nonHeart}><FavoriteIcon /></div>
                   // 챌린지좋아요 취소
                 )}{" "}
-                좋아요 <span>{loadedChallenge!.likeNum}</span>
+                좋아요 <div className={styles.likeCnt}>{loadedChallenge!.likeNum}</div>
               </div>
-              <div>
-                댓글 <span>{reviews.length}</span>
+              <div className={styles.commentCnt}>
+                <div>댓글 </div><div>{reviews.length}</div>
               </div>
             </div>
+
             <div></div>
           </div>
           <div className={styles.horizon}></div>
@@ -354,16 +364,18 @@ const ChallengeDetail: React.FC = () => {
         )}
 
         {postFormModalOpen && (
-          <Modal
+          <PostFormModal
             open={postFormModalOpen}
             close={closePostFormModal}
-            header="Post Create"
           >
             <PostForm
               stageId={Number(stageId)}
               modalClose={closePostFormModal}
+              challenge={loadedChallenge?.name!}
+              // stage={}
             />
-          </Modal>)}
+          </PostFormModal>
+        )}
       </div>
     </div>
   );
