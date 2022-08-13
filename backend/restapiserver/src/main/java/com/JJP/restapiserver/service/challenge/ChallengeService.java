@@ -58,4 +58,5 @@ public interface ChallengeService {
     ChallengePageDto getMyChallenge(Long member_id, Pageable pageable);
 
 
+    void changeImg(Long challenge_id, String img);
 }
