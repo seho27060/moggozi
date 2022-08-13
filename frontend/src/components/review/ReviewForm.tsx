@@ -6,7 +6,9 @@ import { fetchReview, reviewAdd } from "../../lib/withTokenApi";
 import { reviewFetch } from "../../store/review";
 import { RootState } from "../../store/store";
 
-import StarRating from "./StarRating";
+// Rating 관련 import
+import Box from "@mui/material/Box";
+import Rating from "@mui/material/Rating";
 
 import styles from "./ReviewForm.module.scss";
 
@@ -38,10 +40,6 @@ const ReviewForm = (props: Props) => {
     });
   };
 
-  const rateChangeHandler = (star: number) => {
-    setRate(star);
-  };
-
   const reviewSubmitHandler = (event: React.FormEvent) => {
     event.preventDefault();
     if (rate === 0 || !content) {
@@ -69,27 +67,49 @@ const ReviewForm = (props: Props) => {
     }
   };
 
+  ///// Rating 관련 코드
+  const [value, setValue] = React.useState<number | null>(null);
+
   return (
     <div className={styles.reviewForm}>
-        { user_image ? <img src={user_image} alt="user_img" /> : <img src="https://i.pinimg.com/550x/2c/b2/aa/2cb2aa6c4b8aac0be04d52ce2b1cc21a.jpg" alt="" />}
+      {user_image ? (
+        <img src={user_image} alt="user_img" />
+      ) : (
+        <img
+          src="https://i.pinimg.com/550x/2c/b2/aa/2cb2aa6c4b8aac0be04d52ce2b1cc21a.jpg"
+          alt=""
+        />
+      )}
 
       <form>
-            <StarRating rate={rate} rateChangeHandler={rateChangeHandler} />
-            <div className={styles.input}>
-              <input
-                name="content"
-                placeholder="챌린지 한줄평"
-                type="text"
-                required
-                id="content"
-                onChange={onChangeHandler}
-                value={content}
-                ref={contentInputRef}
-              />
-              <div className={styles.reviewSubmit} onClick={reviewSubmitHandler}>
-                등록
-              </div>
-            </div>
+        <Box sx={{ "& > legend": { mt: 2 }, mb: 1, mt: 2 }}>
+          <Rating
+            name="rate"
+            value={value}
+            onChange={(event, newValue) => {
+              console.log(newValue);
+              if (newValue != null) {
+                setRate(newValue);
+              }
+              setValue(newValue);
+            }}
+          />
+        </Box>
+        <div className={styles.input}>
+          <input
+            name="content"
+            placeholder="챌린지 한줄평"
+            type="text"
+            required
+            id="content"
+            onChange={onChangeHandler}
+            value={content}
+            ref={contentInputRef}
+          />
+          <div className={styles.reviewSubmit} onClick={reviewSubmitHandler}>
+            등록
+          </div>
+        </div>
       </form>
     </div>
   );
