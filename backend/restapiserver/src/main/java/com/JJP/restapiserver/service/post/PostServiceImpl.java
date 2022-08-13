@@ -32,16 +32,14 @@ public class PostServiceImpl implements PostService {
 
     @Transactional
     @Override
-    public int savePost(PostSaveRequestDto postSaveRequestDto, Long member_id) {
+    public Long savePost(PostSaveRequestDto postSaveRequestDto, Long member_id) {
         Post post = postRepository.findByStage_idAndMember_Id(postSaveRequestDto.getStageId(), member_id);
 
         if(post != null){
-            return -1;
+            return Long.valueOf(-1);
         }
 
-        postRepository.save(postSaveRequestDto.toEntity(memberRepository.getById(member_id), stageRepository.getById(postSaveRequestDto.getStageId())));
-
-        return 1;
+        return postRepository.save(postSaveRequestDto.toEntity(memberRepository.getById(member_id), stageRepository.getById(postSaveRequestDto.getStageId()))).getId();
     }
 
     @Transactional

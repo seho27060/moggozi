@@ -24,7 +24,7 @@ public class PostController {
 
     // post 글 쓰기
     @PostMapping
-    private int save(@RequestBody PostSaveRequestDto postSaveRequestDto, HttpServletRequest request){
+    private Long save(@RequestBody PostSaveRequestDto postSaveRequestDto, HttpServletRequest request){
         Long member_id = jwtUtils.getUserIdFromJwtToken(request.getHeader("Authorization"));
 
         return postService.savePost(postSaveRequestDto, member_id);
