@@ -1,9 +1,12 @@
 package com.JJP.restapiserver.domain.dto.notice;
 
+
+import java.time.LocalDateTime;
+
 public interface NoticeListResponse {
     Long getNoticeId();
     String getTitle();
     String getContent();
-    String getCreatedDate();
-    String getModifiedDate();
+    LocalDateTime getCreatedDate();
+    LocalDateTime getModifiedDate();
 }
