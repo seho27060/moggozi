@@ -44,6 +44,7 @@ const PostDetailItem: React.FC<{}> = () => {
           className={styles.img}
           src="https://blog.kakaocdn.net/dn/vckff/btqCjeJmBHM/tMVpe4aUIMfH4nKS4aO3tK/img.jpg"
           alt="포스팅이미지"
+          style={{height:"550px",width:"550px"}}
         />
         {/* 수정 버튼 */}
       </div>
@@ -62,6 +63,7 @@ const PostDetailItem: React.FC<{}> = () => {
               <img
                 src="https://blog.kakaocdn.net/dn/vckff/btqCjeJmBHM/tMVpe4aUIMfH4nKS4aO3tK/img.jpg"
                 alt=""
+                style={{height:"50px",width:"50px"}}
               />
             )}
 

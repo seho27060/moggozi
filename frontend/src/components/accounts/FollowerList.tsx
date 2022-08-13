@@ -40,15 +40,48 @@ const FollowerList = (props: Props): ReactElement => {
   }
 
   return (
-    <div style={{ display: "flex", margin: "30px", justifyContent: "space-between"}}>
-      <div onClick={moveHandler}>
-        <img src={`${img}`} alt="profile_image" style={{ width: "2.5rem", height: "2.5rem" }} />
+    <div
+      style={{
+        display: "flex",
+        margin: "1rem",
+        justifyContent: "space-between",
+      }}
+    >
+      <div style={{ display: "contents" }}>
+        <img
+          src={`${img}`}
+          alt="profile_image"
+          style={{ width: "2rem", height: "2rem" }}
+          onClick={moveHandler}
+        />
+        <div
+          onClick={moveHandler}
+          style={{ marginTop: "0.5rem", width: "5rem", textAlign: "end" }}
+        >
+          {nickname}
+        </div>
       </div>
-      <p onClick={moveHandler}>{nickname}</p>
+
       {userId === id ? (
-        <div>&nbsp;</div>
+        <div style={{
+          width: "4.3rem",
+          fontSize:"0.75rem",
+          margin: "0",
+        }}>&nbsp;</div>
       ) : (
-        <button onClick={followHandler}>
+        <button
+          onClick={followHandler}
+          style={{
+            width: "4.3rem",
+            fontSize:"0.75rem",
+            color:"#9b78ff",
+            margin: "0",
+            background: "white",
+            borderColor: "#9b78ff",
+            borderRadius: "5px",
+            border: "solid #9b78ff 2px",
+          }}
+        >
           {followState ? "언팔로우" : "팔로우"}
         </button>
       )}
