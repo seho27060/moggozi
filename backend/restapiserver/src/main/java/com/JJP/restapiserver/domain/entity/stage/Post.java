@@ -41,6 +41,7 @@ public class Post extends BaseTimeEntity {
     @Column(length = 300)
     private String postImg;
 
+    @Column()
     private int state;
 
 

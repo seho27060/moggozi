@@ -12,7 +12,7 @@ import java.util.List;
 public interface PostService {
 
     // 스테이지 포스트 등록
-    int savePost(PostSaveRequestDto postSaveRequestDto, Long member_id);
+    Long savePost(PostSaveRequestDto postSaveRequestDto, Long member_id);
 
     // 스테이지 포스트 수정
     int updatePost(PostUpdateRequestDto postUpdateRequestDto, Long member_id);
