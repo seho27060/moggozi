@@ -27,14 +27,14 @@ public class NoticeServiceImpl implements NoticeService {
     private final RoleRepository roleRepository;
 
     private final JwtUtils jwtUtils;
-    public ResponseEntity registerNotice(NoticeRequest noticeRequest, HttpServletRequest httpServletRequest) {
+    public ResponseEntity registerNotice(NoticeRequest noticeRequest) {
 
-        String jwtToken = httpServletRequest.getHeader("Authorization");
-        Long memberId = jwtToken == null? null : jwtUtils.getUserIdFromJwtToken(jwtToken);
-
-        if(memberId == null
-                || memberRepository.findById(memberId).get().getRole().getName() != ERole.ROLE_ADMIN)
-            return ResponseEntity.badRequest().body("Error: Administrator can only write.");
+//        String jwtToken = httpServletRequest.getHeader("Authorization");
+//        Long memberId = jwtToken == null? null : jwtUtils.getUserIdFromJwtToken(jwtToken);
+//
+//        if(memberId == null
+//                || memberRepository.findById(memberId).get().getRole().getName() != ERole.ROLE_ADMIN)
+//            return ResponseEntity.badRequest().body("Error: Administrator can only write.");
 
         noticeRepository.save(Notice.builder().title(noticeRequest.getTitle()).content(noticeRequest.getContent())
                 .build());
@@ -46,14 +46,14 @@ public class NoticeServiceImpl implements NoticeService {
         return ResponseEntity.ok(noticeRepository.findAllByLatest(PageRequest.of(page, 10)));
     }
 
-    public ResponseEntity updateNotice(NoticeRequest noticeRequest, Long noticeId, HttpServletRequest httpServletRequest) {
+    public ResponseEntity updateNotice(NoticeRequest noticeRequest, Long noticeId) {
 
-        String jwtToken = httpServletRequest.getHeader("Authorization");
-        Long memberId = jwtToken == null? null : jwtUtils.getUserIdFromJwtToken(jwtToken);
-
-        if(memberId == null
-                || memberRepository.findById(memberId).get().getRole().getName() != ERole.ROLE_ADMIN)
-            return ResponseEntity.badRequest().body("Error: Administrator can only write.");
+//        String jwtToken = httpServletRequest.getHeader("Authorization");
+//        Long memberId = jwtToken == null? null : jwtUtils.getUserIdFromJwtToken(jwtToken);
+//
+//        if(memberId == null
+//                || memberRepository.findById(memberId).get().getRole().getName() != ERole.ROLE_ADMIN)
+//            return ResponseEntity.badRequest().body("Error: Administrator can only write.");
 
         Optional<Notice> notice = noticeRepository.findById(noticeId);
 
