@@ -20,15 +20,15 @@ public class NoticeController {
 
     @Operation(summary = "공지사항 등록", description = "username과 password를 이용하여 로그인 하여 발행된 토큰을 검사하여 권한이 관리자일 경우에만 글을 등록할 수 있습니다.")
     @PostMapping("/register")
-    private ResponseEntity registerNotice(NoticeRequest noticeRequest, HttpServletRequest httpServletRequest) {
-        return noticeService.registerNotice(noticeRequest, httpServletRequest);
+    private ResponseEntity registerNotice(@RequestBody NoticeRequest noticeRequest) {
+        return noticeService.registerNotice(noticeRequest);
     }
 
     @Operation(summary = "공지사항 등록", description = "수정하고자하는 글의 번호를 {noticeId}에 넣어주세요~" +
             "username과 password를 이용하여 로그인 하여 발행된 토큰을 검사하여 권한이 관리자일 경우에만 글을 수정할 수 있습니다.")
     @PostMapping("/update/{noticeId}")
-    private ResponseEntity updateNotice(NoticeRequest noticeRequest, @PathVariable("noticeId") Long noticeId, HttpServletRequest httpServletRequest){
-        return noticeService.updateNotice(noticeRequest, noticeId, httpServletRequest);
+    private ResponseEntity updateNotice(@RequestBody NoticeRequest noticeRequest, @PathVariable("noticeId") Long noticeId){
+        return noticeService.updateNotice(noticeRequest, noticeId);
     }
 
     @Operation(summary = "공지사항 상세보기", description = "{noticeId}의 자세한 내용을 반환합니다(상세보기). ")
