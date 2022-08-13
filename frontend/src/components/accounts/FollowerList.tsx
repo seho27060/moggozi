@@ -40,9 +40,9 @@ const FollowerList = (props: Props): ReactElement => {
   }
 
   return (
-    <div style={{ display: "flex", margin: "30px" }}>
+    <div style={{ display: "flex", margin: "30px", justifyContent: "space-between"}}>
       <div onClick={moveHandler}>
-        <img src={`${img}`} alt="profile_image" style={{ width: "60px" }} />
+        <img src={`${img}`} alt="profile_image" style={{ width: "2.5rem", height: "2.5rem" }} />
       </div>
       <p onClick={moveHandler}>{nickname}</p>
       {userId === id ? (

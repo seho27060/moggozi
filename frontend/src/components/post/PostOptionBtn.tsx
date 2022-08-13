@@ -5,6 +5,7 @@ import { postRemove } from "../../store/post";
 import {
   setPostUpdateFormState,
   setPostModalOpen,
+  setAlertPostModalOpen
 } from "../../store/postModal";
 import { RootState } from "../../store/store";
 
@@ -43,6 +44,7 @@ export default function LongMenu(): JSX.Element {
         console.log("post 삭제완료", res);
         dispatch(postRemove(post));
         dispatch(setPostModalOpen(false));
+        dispatch(setAlertPostModalOpen(false))
         setAnchorEl(null);
       })
       .catch((err) => {
