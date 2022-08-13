@@ -67,6 +67,24 @@ export const followingApi = async (fromMemberId: number) => {
   return data;
 };
 
+// 유저페이지 관련
+export const myPageInfo = async (userId: number) => {
+  const { data } = await withTokenApi.get(`/mypage/info`);
+  return data;
+};
+export const myPageChallenge = async (userId: number) => {
+  const { data } = await withTokenApi.get(`/mypage/challenge/${userId}`);
+  return data;
+};
+export const myPagePost = async (userId: number|null) => {
+  const { data } = await withTokenApi.get(`/mypage/post/${userId}`);
+  return data;
+};
+export const myPageStage = async (userId: number|null) => {
+  const { data } = await withTokenApi.get(`/mypage/stage/${userId}`);
+  return data;
+};
+
 // 챌린지 관련
 export const isLoginFetchChallenge = async (id: number) => {
   const { data } = await withTokenApi.get(`/challenge/${id}`);
@@ -89,7 +107,15 @@ export const isLoginFetchChallengeRankList = async (
   );
   return data;
 };
-
+export const recentTryChallengeList = async (
+  page: number,
+  size: number
+) => {
+  const { data } = await withTokenApi.get(
+    `/challenge/recentCh?page=${page}&size=${size}`
+  );
+  return data;
+};
 export const challengeAdd = async (challengeAddData: ChallengeSaveState) => {
   const { data } = await withTokenApi.post("/challenge/save", challengeAddData);
   return data;

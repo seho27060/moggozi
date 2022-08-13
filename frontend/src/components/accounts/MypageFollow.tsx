@@ -77,8 +77,11 @@ const MypageFollow = (props: Props) => {
         <span className={styles.cnt}> {followingCnt}</span>
       </div>
       <Modal open={followedOpenModal} close={CloseModalHandler} header="팔로워">
+        {followedOpenModal
+          ? (document.body.style.overflow = "hidden")
+          : (document.body.style.overflow = "visible")}
         {!!followedInfo.length ? (
-          <div>
+          <div style={{ height: "15rem", overflowY: "auto" }}>
             {followedInfo.map((object) => (
               <FollowerList
                 key={object.id}
@@ -99,8 +102,11 @@ const MypageFollow = (props: Props) => {
         close={CloseModalHandler}
         header="팔로잉"
       >
+        {followingOpenModal
+          ? (document.body.style.overflow = "hidden")
+          : (document.body.style.overflow = "visible")}
         {!!followingInfo.length ? (
-          <div>
+          <div style={{ height: "15rem", overflowY: "auto" }}>
             {followingInfo.map((object) => (
               <FollowingList
                 key={object.id}

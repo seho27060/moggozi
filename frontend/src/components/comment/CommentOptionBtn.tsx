@@ -21,8 +21,8 @@ interface Props {
   postId: number | null;
 }
 
-function CommentOptionBtn (props: Props): JSX.Element {
-  const { comment, postId } = props
+function CommentOptionBtn(props: Props): JSX.Element {
+  const { comment, postId } = props;
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -80,16 +80,18 @@ function CommentOptionBtn (props: Props): JSX.Element {
 
   return (
     <div>
-      <IconButton
-        aria-label="more"
-        id="long-button"
-        aria-controls={open ? "long-menu" : undefined}
-        aria-expanded={open ? "true" : undefined}
-        aria-haspopup="true"
-        onClick={handleClick}
-      >
-        <MoreVertIcon />
-      </IconButton>
+      {userId === comment.writer!.id && (
+        <IconButton
+          aria-label="more"
+          id="long-button"
+          aria-controls={open ? "long-menu" : undefined}
+          aria-expanded={open ? "true" : undefined}
+          aria-haspopup="true"
+          onClick={handleClick}
+        >
+          <MoreVertIcon />
+        </IconButton>
+      )}
       <Menu
         id="long-menu"
         MenuListProps={{
@@ -104,14 +106,42 @@ function CommentOptionBtn (props: Props): JSX.Element {
           },
         }}
       >
-        {userId !== comment.writer!.id && <MenuItem onClick={() => {return commentModifyHandler}}>숨김</MenuItem>}
-        {userId === comment.writer!.id && <MenuItem onClick={() => {return commentRemoveHandler}}>삭제</MenuItem>}
+        {/* {userId !== comment.writer!.id && (
+          <MenuItem
+            onClick={() => {
+              return commentModifyHandler;
+            }}
+          >
+            숨김
+          </MenuItem>
+        )} */}
+        {userId === comment.writer!.id && (
+          <MenuItem
+            onClick={() => {
+              return commentRemoveHandler;
+            }}
+          >
+            삭제
+          </MenuItem>
+        )}
         {userId === comment.writer!.id && (
           <div>
-            <MenuItem onClick={() =>{setIsFormToggle(!isFormToggle)}}>{!isFormToggle && "수정"}</MenuItem>
+            <MenuItem
+              onClick={() => {
+                setIsFormToggle(!isFormToggle);
+              }}
+            >
+              {!isFormToggle && "수정"}
+            </MenuItem>
             {isFormToggle && (
               <form>
-                <button onClick={() => {return commentModifyHandler}}>수정완료</button>
+                <button
+                  onClick={() => {
+                    return commentModifyHandler;
+                  }}
+                >
+                  수정완료
+                </button>
                 <label htmlFor="content"></label>
                 <input
                   type="text"
@@ -132,7 +162,7 @@ function CommentOptionBtn (props: Props): JSX.Element {
 //   comment: Comment;
 //   postId: number | null;
 // }> = ({ comment, postId }) => {
-  
+
 // };
 
 export default CommentOptionBtn;
