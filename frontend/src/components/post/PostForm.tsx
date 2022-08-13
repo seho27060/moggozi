@@ -28,7 +28,7 @@ const PostForm: React.FC<{
   const [previewImage, setPreviewImage] = useState("");
   const [fileName, setFileName] = useState("");
 
-  const [stageInfo, setStageInfo] = useState<StageState[]>([]);
+  const [stageInfo, setStageInfo] = useState<StageState>();
 
   const PostData: PostSend = {
     title: "",
@@ -91,12 +91,14 @@ const PostForm: React.FC<{
   useEffect(() => {
     stageDetail(stageId)
       .then((res) => {
+        console.log(stageId);
+        console.log(res);
         setStageInfo(res);
       })
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, [stageId]);
 
   return (
     <div className={styles.container}>
@@ -105,9 +107,12 @@ const PostForm: React.FC<{
         <div>챌린지</div>
         <div>{challenge}</div>
         <div>스테이지</div>
-        <div>1단계 - css 실력 키우기</div>
+        {stageInfo && (
+          <div>
+            {stageInfo.id}단계 - {stageInfo.name}
+          </div>
+        )}
       </div>
-      {/* <div>{stageInfo.id}단계 - {stageInfo.name}</div> */}
       <form className={styles.form}>
         <div className={styles.inputTitle}>
           <label htmlFor="title">제목</label>
@@ -140,20 +145,23 @@ const PostForm: React.FC<{
             margin: "20px 0 20px 0",
           }}
         >
-          {/* <label htmlFor="img">파일 찾기</label>
+          <label htmlFor="img">파일 찾기</label>
           <input
             type="file"
             accept="image/*"
             id="img"
             onChange={onLoadHandler}
-          /> */}
+          />
+        </div>
+        {previewImage ? (
+          <img className={styles.img} src={previewImage} alt="preview img" />
+        ) : (
           <img
             className={styles.img}
             src="https://via.placeholder.com/400x250.png/"
             alt=""
           />
-        </div>
-        {previewImage && <img src={previewImage} alt="img" />}
+        )}
         {/* 에디터 적용 */}
         <div>
           <EditorComponent

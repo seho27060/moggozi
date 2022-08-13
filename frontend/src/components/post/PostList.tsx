@@ -8,7 +8,7 @@ import {
 } from "../../store/postModal";
 import { PostData } from "../../store/post";
 
-import styles from "./PostList.module.scss"
+import styles from "./PostList.module.scss";
 
 const PostList: React.FC<{
   posts: PostData[] | null;
@@ -23,7 +23,9 @@ const PostList: React.FC<{
     <div className={styles.postList}>
       {/* PostList */}
       {postList!.map((post) => (
-        <div className={styles.postItem}
+        <div
+          key={post.id}
+          className={styles.postItem}
           onClick={(event: MouseEvent) => {
             event.preventDefault();
             dispatch(setModalPostState(post));
@@ -31,7 +33,7 @@ const PostList: React.FC<{
             dispatch(setPostModalStageId);
           }}
         >
-          <div key={post.id}>
+          <div>
             <PostItem post={post} />
           </div>
         </div>
