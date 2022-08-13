@@ -6,8 +6,11 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 
 const PostItem: React.FC<{post: PostData}> = ({post}) =>{
   
+  console.log(post.writer?.path)
+
   return(
     <div className={styles.postItem}>
+      {/* <img src={post.writer?.path} alt="" /> */}
       {post.postImg ? <img src={post.postImg!} alt="" /> : <img src="" alt="" /> }
       <div className={styles.title}>
         {post.title!.length > 18 ? <div>{post.title?.slice(0, 18) + "..."}</div> : <div>{post.title}</div>}
