@@ -97,19 +97,19 @@ public class EchoHandler extends TextWebSocketHandler {
             String msg = "";
             if (receiver != null) {
                 if (type.equals("challenge")) {
-                    msg = senderName + "님이 등록하신 챌린지에 좋아요를 눌렀습니다.";
+                    msg = senderName + "님이\n등록하신 챌린지에\n좋아요를\n눌렀습니다.";
                 }
                 else if(type.equals("post")){
-                    msg = senderName + "님이 등록하신 포스트에 좋아요를 눌렀습니다.";
+                    msg = senderName + "님이\n등록하신 포스트에\n좋아요를\n눌렀습니다.";
                 }
                 else if(type.equals("comment")){
-                    msg = senderName + "님이 등록하신 포스트에 댓글을 달았습니다.";
+                    msg = senderName + "님이\n등록하신 포스트에\n댓글을\n달았습니다.";
                 }
                 else if(type.equals("reply")){
-                    msg = senderName + "님이 등록하신 댓글에 대댓글을 달았습니다.";
+                    msg = senderName + "님이\n등록하신 댓글에\n대댓글을\n달았습니다.";
                 }
                 else if(type.equals("follow")){
-                    msg = senderName + "님이 팔로우하기 시작했습니다.";
+                    msg = senderName + "님이\n팔로우하기\n시작했습니다.";
                 }
 
                 if(!msg.equals("")){

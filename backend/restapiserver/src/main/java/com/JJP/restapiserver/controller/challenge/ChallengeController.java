@@ -56,17 +56,18 @@ public class ChallengeController {
         return new ResponseEntity(challengeList, HttpStatus.OK);
     }
 
-    @Operation(summary = "챌린지 좋아요 순 5개", description = "")
+    @Operation(summary = "챌린지 좋아요 페이지 네이션 적용", description = "")
     @GetMapping("/rank")
-    public ResponseEntity getChallengeListByLike(HttpServletRequest request)
+    public ResponseEntity getChallengeListByLike(HttpServletRequest request, Pageable pageable)
     {
         Optional<Long> member_id = getMember_id(request);
-        List<ChallengeListResponseDto> challengeList;
+        ChallengePageDto challengePageDto;
         if(member_id.isPresent())
-            challengeList = challengeService.getChallengeListByLike(member_id.get());
+            challengePageDto = challengeService.getChallengeListByLike(member_id.get(), pageable);
         else
-            challengeList = challengeService.getChallengeListByLikeWithoutLogin();
-        return new ResponseEntity(challengeList, HttpStatus.OK);
+            challengePageDto = challengeService.getChallengeListByLikeWithoutLogin(pageable);
+
+        return new ResponseEntity(challengePageDto, HttpStatus.OK);
     }
 
     @Operation(summary = "챌린지 상세정보", description = "")
@@ -138,7 +139,7 @@ public class ChallengeController {
             if(response == 1)
                 return new ResponseEntity(HttpStatus.OK);
             else if(response == -2)
-                return new ResponseEntity("본인만 삭제할 수 있습니다.", HttpStatus.BAD_REQUEST)
+                return new ResponseEntity("본인만 삭제할 수 있습니다.", HttpStatus.BAD_REQUEST);
             else if(response == -1)
                 return new ResponseEntity("잘못된 요청입니다.", HttpStatus.BAD_REQUEST);
             else
@@ -162,16 +163,18 @@ public class ChallengeController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @Operation(summary = "최근 참여한 챌린지 8개", description = "최근 참여한 챌린지 8개")
+    @Operation(summary = "최근 참여한 챌린지", description = "최근 참여한 챌린지 페이지네이션 적용")
     @GetMapping("/recentCh")
-    public ResponseEntity recentChallenge(HttpServletRequest request){
+    public ResponseEntity recentChallenge(HttpServletRequest request, Pageable pageable){
         Optional<Long> member_id = getMember_id(request);
+        Optional<ChallengePageDto> challengePageDto;
         if(member_id.isPresent()){
-            List<ChallengeListResponseDto> challengeListResponseDtoList = challengeService.getTop8ByMember_idOrderByModifiedDateDesc(member_id.get());
-            if(challengeListResponseDtoList.isEmpty()){
+             challengePageDto = Optional.ofNullable(challengeService.getByMember_idOrderByModifiedDateDesc(member_id.get(),
+                    pageable));
+            if(challengePageDto.isEmpty()){
                 return new ResponseEntity("최근 참여하신 챌린지가 없습니다.", HttpStatus.OK);
             }
-            return new ResponseEntity<List>(joinedChallengeRepository.findTop8ByMember_idOrderByModifiedDateDesc(member_id.get()), HttpStatus.OK);
+            return new ResponseEntity(challengePageDto.get(), HttpStatus.OK);
         }
         return new ResponseEntity("액세스 토큰에 유저 아이디가 없습니다.", HttpStatus.BAD_REQUEST);
     }
@@ -198,10 +201,10 @@ public class ChallengeController {
 
     @Operation(summary = "만든 챌린지", description = "내가 만든 챌린지 API")
     @GetMapping("/myChallenge")
-    public ResponseEntity getMyChallenge(HttpServletRequest request){
+    public ResponseEntity getMyChallenge(HttpServletRequest request, Pageable pageable){
         Long member_id = jwtUtils.getUserIdFromJwtToken(request.getHeader("Authorization"));
-        List<ChallengeListResponseDto> challengeListResponseDtoList = challengeService.getMyChallenge(member_id);
-        return new ResponseEntity(challengeListResponseDtoList, HttpStatus.OK);
+        ChallengePageDto challengePageDto = challengeService.getMyChallenge(member_id, pageable);
+        return new ResponseEntity(challengePageDto, HttpStatus.OK);
     }
 
     @Operation(summary = "추천챌린지", description = "사용자 맞춤 추천 챌린지 API")

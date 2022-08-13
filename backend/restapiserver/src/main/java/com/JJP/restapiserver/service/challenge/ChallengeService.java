@@ -15,8 +15,10 @@ public interface ChallengeService {
     ChallengePageDto getChallengeListByKeyword(String keyword, Pageable pageable, Long member_id);
     ChallengePageDto getChallengeListByKeyword(String keyword, Pageable pageable);
     // 좋아요 순으로 챌린지 리스트 반환하는 api
-    List<ChallengeListResponseDto> getChallengeListByLike(Long member_id);
-    List<ChallengeListResponseDto> getChallengeListByLikeWithoutLogin();
+
+    ChallengePageDto getChallengeListByLike(Long member_id, Pageable pageable);
+
+    ChallengePageDto getChallengeListByLikeWithoutLogin(Pageable pageable);
     // 챌린지 상세정보를 불러오는 api
     ChallengeResponseDto getChallengeDetail(Long challenge_id, Long member_id);
     ChallengeResponseDto getChallengeDetail(Long challenge_id);
@@ -32,10 +34,9 @@ public interface ChallengeService {
     int deleteChallenge(Long member_id, Long challenge_id);
     int deleteChallenge(Long challenge_id);
 
-    List<ChallengeListResponseDto> getTop8ByMember_idOrderByModifiedDateDesc(Long member_id);
+    ChallengePageDto getByMember_idOrderByModifiedDateDesc(Long member_id, Pageable pageable);
 
     // 특정 유저의 챌린지를 완료 상태 변경하는 api
-    void completeChallenge(ChallengeUpdateRequestDto challengeCompleteRequestDto);
 
     int completeChallenge(Long member_id, Long challenge_id);
 
@@ -54,7 +55,7 @@ public interface ChallengeService {
     ChallengePageDto getChallengeContainingTag(String keyword, Pageable pageable, Long member_id);
     ChallengePageDto getChallengeContainingTag(String keyword, Pageable pageable);
 
-    List<ChallengeListResponseDto> getMyChallenge(Long member_id);
+    ChallengePageDto getMyChallenge(Long member_id, Pageable pageable);
 
 
 }

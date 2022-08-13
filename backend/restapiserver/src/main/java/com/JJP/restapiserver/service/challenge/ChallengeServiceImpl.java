@@ -109,29 +109,37 @@ public class ChallengeServiceImpl implements ChallengeService{
 
 
     @Override
-    public List<ChallengeListResponseDto> getChallengeListByLike(Long member_id) {
-        List<Object[]> list = challengeRepository.findByLike();
-        List<Challenge> challengeList = new ArrayList<>();
-        for (Object[] objects : list) {
-            Challenge challenge = challengeRepository.findById(Long.parseLong(objects[0].toString())).get();
-            challengeList.add(challenge);
-        }
-        List<ChallengeListResponseDto> responseDtoList = new ArrayList<>();
-        return challengeIntoListDto(challengeList, responseDtoList, member_id);
-    }
-    public List<ChallengeListResponseDto> getChallengeListByLikeWithoutLogin() {
-        List<Object[]> list = challengeRepository.findByLike();
-        List<Challenge> challengeList = new ArrayList<>();
-        List<ChallengeListResponseDto> responseDtoList = new ArrayList<>();
-        if(list != null)
-        {
+    public ChallengePageDto getChallengeListByLike(Long member_id, Pageable pageable) {
+        Page<Challenge> list = challengeRepository.findAllByOrderByLikeNumDesc(pageable);
+        List<Challenge> challengeList = list.toList();
 
-            for (Object[] objects : list) {
-                Challenge challenge = challengeRepository.findById(Long.parseLong(objects[0].toString())).get();
-                challengeList.add(challenge);
-            }
-        }
-        return challengeIntoListDto(challengeList, responseDtoList);
+        List<ChallengeListResponseDto> responseDtoList = new ArrayList<>();
+        responseDtoList = challengeIntoListDto(challengeList, responseDtoList, member_id);
+        ChallengePageDto challengePageDto = ChallengePageDto.builder()
+                .pageNum(list.getNumber())
+                .size(list.getSize())
+                .content(responseDtoList)
+                .hasNext(list.hasNext())
+                .totalElements(list.getTotalElements())
+                .totalPages(list.getTotalPages())
+                .build();
+        return challengePageDto;
+    }
+    public ChallengePageDto getChallengeListByLikeWithoutLogin(Pageable pageable) {
+        Page<Challenge> list = challengeRepository.findAllByOrderByLikeNumDesc(pageable);
+        List<Challenge> challengeList = list.toList();
+
+        List<ChallengeListResponseDto> responseDtoList = new ArrayList<>();
+        responseDtoList = challengeIntoListDto(challengeList, responseDtoList);
+        ChallengePageDto challengePageDto = ChallengePageDto.builder()
+                .pageNum(list.getNumber())
+                .size(list.getSize())
+                .content(responseDtoList)
+                .hasNext(list.hasNext())
+                .totalElements(list.getTotalElements())
+                .totalPages(list.getTotalPages())
+                .build();
+        return challengePageDto;
     }
 
     @Override
@@ -241,11 +249,22 @@ public class ChallengeServiceImpl implements ChallengeService{
     }
 
     @Override
-    public List<ChallengeListResponseDto> getTop8ByMember_idOrderByModifiedDateDesc(Long member_id) {
-        List<JoinedChallenge> joinedChallengeList = joinedChallengeRepository.findTop8ByMember_idOrderByModifiedDateDesc(member_id);
+    public ChallengePageDto getByMember_idOrderByModifiedDateDesc(Long member_id, Pageable pageable) {
+        Page<JoinedChallenge> list = joinedChallengeRepository.findByMember_idOrderByModifiedDateDesc(member_id, pageable);
+        List<JoinedChallenge> joinedChallengeList = list.toList();
         List<Challenge> challengeList = joinedChallengeList.stream().map(o -> o.getChallenge()).collect(Collectors.toList());
-        List<ChallengeListResponseDto> challengeListResponseDtoList = new ArrayList<>();
-        return challengeIntoListDto(challengeList,challengeListResponseDtoList, member_id);
+
+        List<ChallengeListResponseDto> responseDtoList = new ArrayList<>();
+        responseDtoList = challengeIntoListDto(challengeList, responseDtoList, member_id);
+        ChallengePageDto challengePageDto = ChallengePageDto.builder()
+                .pageNum(list.getNumber())
+                .size(list.getSize())
+                .content(responseDtoList)
+                .hasNext(list.hasNext())
+                .totalElements(list.getTotalElements())
+                .totalPages(list.getTotalPages())
+                .build();
+        return challengePageDto;
     }
 
 
@@ -259,12 +278,15 @@ public class ChallengeServiceImpl implements ChallengeService{
             // 완료되었다는 상태가 2임
             if(joinedChallenge.isPresent())
             {
-
+                if(joinedChallenge.get().getState() == 1){
+                    joinedChallenge.get().complete();
+                    return 1;
+                }
             }
             else
                 return -1;
-            joinedChallenge.setState(2);
         }
+        return -1;
     }
 
     @Override
@@ -543,9 +565,20 @@ public class ChallengeServiceImpl implements ChallengeService{
     }
 
     @Override
-    public List<ChallengeListResponseDto> getMyChallenge(Long member_id) {
-        List<Challenge> challengeList = challengeRepository.findByMember_idOrderByModifiedDate(member_id);
-        List<ChallengeListResponseDto> challengeListResponseDtoList = new ArrayList<>();
-        return challengeIntoListDto(challengeList, challengeListResponseDtoList, member_id);
+    public ChallengePageDto getMyChallenge(Long member_id, Pageable pageable) {
+        Page<Challenge> list = challengeRepository.findByMember_idOrderByModifiedDate(member_id, pageable);
+        List<Challenge> challengeList = list.toList();
+
+        List<ChallengeListResponseDto> responseDtoList = new ArrayList<>();
+        responseDtoList = challengeIntoListDto(challengeList, responseDtoList, member_id);
+        ChallengePageDto challengePageDto = ChallengePageDto.builder()
+                .pageNum(list.getNumber())
+                .size(list.getSize())
+                .content(responseDtoList)
+                .hasNext(list.hasNext())
+                .totalElements(list.getTotalElements())
+                .totalPages(list.getTotalPages())
+                .build();
+        return challengePageDto;
     }
 }
