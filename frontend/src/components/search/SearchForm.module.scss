@@ -2,6 +2,10 @@
 
 @include mixin.desktop {
 
+  .searchBtn {
+    margin: 0 5px 0 0;
+    padding: 5px 0 0 0; 
+  }
 
   main {
     padding: 20px 15px 10px 15px;
@@ -25,10 +29,32 @@
       margin: 0;
     }
 
-    .tag {
-      margin: 10px 10px 10px 10px !important;
-
+  }
+  .tag {
+    // display: flex;
+    
+    .noUser {
+      // display:block !important;
+      font-size: 18px;
+      font-weight: 700;
+      margin: 15px 0 0 17px !important;
     }
+
+  }
+  .challenge {
+    font-size: 18px;
+    font-weight: 700;
+    margin: 15px 0 0 17px !important;
+  }
+
+  .tagg {
+    font-size: 18px;
+    font-weight: 700;
+    margin: 15px 0 0 17px !important;
+  }
+
+  .hobbyTag {
+    margin: 10px 0 0 20px;
   }
 }
 
