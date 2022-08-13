@@ -99,6 +99,7 @@ const HobbyForm: React.FC = () => {
             id="hobby"
             ref={hobbyInputRef}
             onChange={changeInputHandler}
+            autoComplete="off"
           />
           <button type="button" onClick={submitHandler}>
             &#43;

@@ -4,8 +4,17 @@
 
   .challengeItem {
     display: flex;
-    margin: 20px 20px 20px 15px;
+    padding: 20px 20px 20px 15px;
     
+    &:hover {
+      background: rgb(228, 228, 228);
+      transition: all 0.5s
+    }
+
+    &:not(:hover) {
+      transition: all 0.5s
+    }
+
     .img {
       width: 80px;
       height: 50px;

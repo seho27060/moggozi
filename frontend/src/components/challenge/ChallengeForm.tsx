@@ -75,7 +75,7 @@ const ChallengeForm: React.FC = () => {
       <HobbySetList hobbies={hobbyList} />
 
       <div className={styles.challengeTitle}>
-        <input type="text" id="name" ref={nameInputRef} placeholder="챌린지 제목을 입력하세요." />
+        <input type="text" id="name" ref={nameInputRef} placeholder="챌린지 제목을 입력하세요." autoComplete="off" />
       </div>
 
       {/* <div className={styles.challengeContent}>
@@ -88,7 +88,6 @@ const ChallengeForm: React.FC = () => {
           <EditorComponent QuillRef={contentInputRef} value={""} />
         </div>
       
-      <div className={styles.checker}>{contentInput.length} / 500</div>
       <div className={styles.done}>
         <button type="button" onClick={submitHandler}>
           등록하기

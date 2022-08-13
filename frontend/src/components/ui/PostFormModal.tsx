@@ -1,5 +1,5 @@
 import React, { ReactElement, useEffect } from "react";
-import styles from "./PostModal.module.scss";
+import styles from "./PostFormModal.module.scss";
 
 interface Props {
   open: boolean;
@@ -7,7 +7,7 @@ interface Props {
   close: () => void;
 }
 
-const PostModal = (props: Props): ReactElement => {
+const PostFormModal = (props: Props): ReactElement => {
   // 열기, 닫기, 모달 헤더 텍스트를 부모로부터 받아옴
   const { open, close } = props;
   useEffect(() => {
@@ -18,15 +18,15 @@ const PostModal = (props: Props): ReactElement => {
   }, []);
 
   return (
-    <div className={styles.postModal} onClick={close} >
-      <div
+    <div className={styles.postModal} onClick={close}>
+      <div 
         className={
           open ? `${styles.openModal} ${styles.modal}` : `${styles.modal}`
         }
       >
         {/* <div className={open ? 'openModal modal' : 'modal'}> */}
         {open ? (
-          <section onClick={(event) => { event.stopPropagation();}}>
+          <section onClick={(event) => { event.stopPropagation(); }}>
             {props.children}
               {/* <button className="close" onClick={close}>
                 &times;
@@ -38,4 +38,4 @@ const PostModal = (props: Props): ReactElement => {
   );
 };
 
-export default PostModal;
+export default PostFormModal;

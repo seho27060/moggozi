@@ -1,5 +1,7 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { ReviewState } from "../../store/review";
+
 import ReviewDeleteBtn from "./ReviewDeleteBtn";
 import ReviewUpdateForm from "./ReviewUpdateForm";
 
@@ -7,6 +9,7 @@ import styles from "./ReviewItem.module.scss";
 import moment from "moment";
 
 const ReviewItem: React.FC<{ review: ReviewState }> = ({ review }) => {
+  const navigate = useNavigate();
   const [isUpdate, setUpdate] = useState(false);
   const updateHandler = (event: React.MouseEvent) => {
     event.preventDefault();
@@ -20,14 +23,13 @@ const ReviewItem: React.FC<{ review: ReviewState }> = ({ review }) => {
     <div>
       {!isUpdate && (
         <div className={styles.comment}>
-          <img
+          <img onClick={() => {navigate(`/user/${review.writer.id}`)}}
             src="https://i1.daumcdn.net/thumb/C230x300/?fname=https://blog.kakaocdn.net/dn/CUI4O/btqIarIJfHs/LxRhxkC8CcQ19Dyy8Wf6bK/img.jpg"
-            alt=""
-          />
+            alt="" />
 
           <div className={styles.data}>
             <div className={styles.line}>
-              <div>{review.writer.nickname}</div>
+              <div onClick={() => {navigate(`/user/${review.writer.id}`)}}>{review.writer.nickname}</div>
               <div>
                 <span>★</span> {review.rate}
               </div>

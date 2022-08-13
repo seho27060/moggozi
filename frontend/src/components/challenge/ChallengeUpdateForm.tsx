@@ -106,7 +106,7 @@ const ChallengeUpdateForm: React.FC<{ challenge: ChallengeDetailState }> = (
           defaultValue={props.challenge.name || ""}
         />
       </div>
-      <div className={styles.challengeContent}>
+      {/* <div className={styles.challengeContent}>
         <textarea
           rows={5}
           id="content"
@@ -118,9 +118,8 @@ const ChallengeUpdateForm: React.FC<{ challenge: ChallengeDetailState }> = (
             // setContentInput(e.target.value)
           }}
         />
-      </div>
+      </div> */}
       <div>
-          챌린지 상세설명
           <EditorComponent QuillRef={contentInputRef} value={props.challenge.content!}/>
       </div>
       {/* <div className={styles.checker}>{contentInput.length} / 500</div> */}

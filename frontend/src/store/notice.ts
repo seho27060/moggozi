@@ -1,19 +1,23 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { UserInfo } from "./auth";
 
-export interface notice {
+export interface Notice {
+  id:number|null,
   title: string | null;
   content: string | null;
+  updatedDate : Date |null
+  createdDate : Date |null
 }
-
-interface noticeState {
-  notice: notice;
-  noticeList: notice[];
+interface NoticeState {
+  notice: Notice;
+  noticeList: Notice[];
 }
-const initialNoticeState: noticeState = {
+const initialNoticeState: NoticeState = {
   notice: {
+    id:null,
     content: null,
     title: null,
+    updatedDate: null,
+    createdDate : null
   },
   noticeList: [],
 };
@@ -22,32 +26,16 @@ export const noticeSlice = createSlice({
   name: "notice",
   initialState: initialNoticeState,
   reducers: {
-    noticeSet: (state: noticeState, action) => {
+    setNotice: (state: NoticeState, action) => {
       console.log("noticeSet", action);
       state.notice = action.payload;
     },
-    noticeRegister: (state: noticeState, action) => {
-      console.log("noticeRegister", action);
-      state.noticeList = [...state.noticeList!, action.payload];
+    setNoticeList: (state: NoticeState, action) => {
+      console.log("noticeSet", action);
+      state.noticeList = [...action.payload];
     },
-    // commentModify: (state: noticeState, action) => {
-    //   console.log("noticeModify", action);
-    //   //0(숨김), 1(활성), 2(삭제)
-    //   const commentsModified = state.comments!.filter(
-    //     (notice) => notice.id !== action.payload.id
-    //   );
-    //   state.comments = [...commentsModified, action.payload];
-    // },
-    // commentRemove: (state: noticeState, action) => {
-    //   console.log("commentRemove", action);
-    //   //0(숨김), 1(활성), 2(삭제)
-    //   state.comments = state.comments!.filter(
-    //     (notice) => notice.id !== action.payload
-    //   );
-    // },
   },
 });
 
-export const { noticeSet, noticeRegister} =
-noticeSlice.actions;
+export const { setNotice, setNoticeList } = noticeSlice.actions;
 export default noticeSlice.reducer;

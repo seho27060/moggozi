@@ -5,8 +5,11 @@ import styles from "./PostItem.module.scss";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 
 const PostItem: React.FC<{ post: PostData }> = ({ post }) => {
+  console.log(post.writer?.path);
+
   return (
     <div className={styles.postItem}>
+      {/* <img src={post.writer?.path} alt="" /> */}
       {post.postImg.length !== 0 ? (
         <img src={post.postImg[0].path!} alt="" />
       ) : (

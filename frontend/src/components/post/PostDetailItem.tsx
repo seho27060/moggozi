@@ -11,8 +11,6 @@ import PostLikeBtn from "./PostLikeBtn";
 import { useNavigate } from "react-router-dom";
 import { setPostModalOpen } from "../../store/postModal";
 
-
-
 import PostOptionBtn from "./PostOptionBtn";
 import Dompurify from "dompurify";
 import styles from "./PostDetailItem.module.scss";
@@ -21,7 +19,7 @@ import "react-quill/dist/quill.snow.css";
 const PostDetailItem: React.FC<{}> = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  // const user = useSelector((state: RootState) => state.auth.userInfo);
+  const user = useSelector((state: RootState) => state.auth.userInfo);
   const post = useSelector((state: RootState) => state.postModal);
   const commentState = useSelector(
     (state: RootState) => state.comment.comments
@@ -40,29 +38,45 @@ const PostDetailItem: React.FC<{}> = () => {
   }, [dispatch, post.postModalState]);
 
   return (
-    <div style={{ height: "25rem", overflow: "scroll" }}>
-      <div style={{ border: "solid", margin: "1rem", padding: "1rem" }}>
-        <img src="" alt="포스팅이미지" />
+    <div className={styles.postDetail}>
+      <div >
+        <img className={styles.img}
+        src="https://blog.kakaocdn.net/dn/vckff/btqCjeJmBHM/tMVpe4aUIMfH4nKS4aO3tK/img.jpg" alt="포스팅이미지" />
         {/* 수정 버튼 */}
       </div>
       <div className={styles.container}>
-        <div
-          className={styles.writer}>
-          <div className={styles.writerInfo}  onClick={() => {
-            navigate(`/user/${post.postModalState.writer!.id}`);
-            dispatch(setPostModalOpen(false));}}>
-            { post.postModalState!.writer?.img ? <img src={post.postModalState!.writer?.img} alt="" /> : <img src="https://blog.kakaocdn.net/dn/vckff/btqCjeJmBHM/tMVpe4aUIMfH4nKS4aO3tK/img.jpg" alt="" />}
-            
+        <div className={styles.writer}>
+          <div
+            className={styles.writerInfo}
+            onClick={() => {
+              navigate(`/user/${post.postModalState.writer!.id}`);
+              dispatch(setPostModalOpen(false));
+            }}
+          >
+            {post.postModalState!.writer?.img ? (
+              <img src={post.postModalState!.writer?.img} alt="" />
+            ) : (
+              <img
+                src="https://blog.kakaocdn.net/dn/vckff/btqCjeJmBHM/tMVpe4aUIMfH4nKS4aO3tK/img.jpg"
+                alt=""
+              />
+            )}
+
             <div>{post.postModalState!.writer?.nickname}</div>
           </div>
-          <div><PostOptionBtn /></div>
+          {user.id === post.postModalState!.writer!.id && (
+            <div>
+              <PostOptionBtn />
+            </div>
+          )}
+          
         </div>
 
-        <div className={styles.horizon} ></div>
-        
+        <div className={styles.horizon}></div>
+
         <div>
           <>
-            <div>제목 : {post.postModalState!.title}</div>
+          {/* <div className={styles.content}>{post.postModalState!.content}</div> */}
             <div
               dangerouslySetInnerHTML={{
                 __html: Dompurify.sanitize(
@@ -70,24 +84,18 @@ const PostDetailItem: React.FC<{}> = () => {
                 ),
               }}
               // className={styles.postDetail}
-              className="view ql-editor"
+              className={`view ql-editor ${styles.content}`}
             ></div>
             {/* 좋아요 버튼 */}
-            <PostLikeBtn />
-            좋아요갯수:{post.postModalState!.likeNum}
-            <br />
-            {post.postModalState!.modifiedTime! && (
-              <div>
-                {new Date(
-                  post.postModalState!.modifiedTime!
-                ).toLocaleDateString("ko-Kr", {
+
+            <div className={styles.Btn_N_Date}>
+              <div className={styles.like}><PostLikeBtn />{post.postModalState!.likeNum}</div>
+            {post.postModalState!.modifiedTime! && (<div>{new Date(post.postModalState!.modifiedTime!)
+              .toLocaleDateString("ko-Kr", {
                   year: "numeric",
                   month: "long",
-                  day: "numeric",
-                })}
-              </div>
-            )}
-          </>
+                  day: "numeric",})}</div>)}</div>
+            </>
         </div>
 
         <div className={styles.horizon}></div>
