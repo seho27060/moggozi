@@ -101,7 +101,9 @@ export const challengeUpdate = async (
 
 // 챌린지 이미지 업데이트
 export const challengeImgApi = async (challengeId: number, img: string) => {
-  const { data } = await withTokenApi.put(`/challenge/img/${challengeId}`, img);
+  const { data } = await withTokenApi.put(`/challenge/img/${challengeId}`, {
+    img: img,
+  });
   return data;
 };
 
@@ -388,8 +390,6 @@ export const noticeUpdate = async (
   const { data } = await withTokenApi.put(`/comment/${comment_id}`, comment);
   return data;
 };
-
-
 
 // 사용법 - 해당 axios는 기본적으로 토큰이 만료되었을 경우 refresh를 겸함.
 
