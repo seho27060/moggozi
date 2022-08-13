@@ -15,10 +15,11 @@ const FollowModal = (props: Props): ReactElement => {
   return (
     // 모달이 열릴때 openModal 클래스가 생성된다.
 
-    <div className={open ? `${styles.openModal} ${styles.modal}` : `${styles.modal}` }>
+    <div onClick={close}
+    className={open ? `${styles.openModal} ${styles.modal}` : `${styles.modal}` }>
     {/* <div className={open ? 'openModal modal' : 'modal'}> */}
       {open ? (
-        <section>
+        <section onClick={(event) => {event.stopPropagation()}}>
           <header>
             {header}
             <button className="close" onClick={close}>
@@ -26,11 +27,6 @@ const FollowModal = (props: Props): ReactElement => {
             </button>
           </header>
           <main>{props.children}</main>
-          <footer>
-            <button className="close" onClick={close}>
-              close
-            </button>
-          </footer>
         </section>
       ) : null}
     </div>
