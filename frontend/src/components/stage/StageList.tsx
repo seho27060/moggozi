@@ -35,6 +35,8 @@ const StageList: React.FC<{
     dispatch(setPostingStageId(id));
   };
 
+  console.log(stages)
+
   return (
     <Box className={styles.tabs}>
       {/* <div className={styles.tabs}> */}
@@ -86,19 +88,21 @@ const StageList: React.FC<{
           />
         ))}
       </Tabs>
-      <div style={{ height: "1000px" }}>
-        {stages.map((stage, index) => (
-          <div key={stage.id}>
-            {choice === index && (
-              <StageItem
-                stage={stage}
-                index={index}
-                challengeProgress={challengeProgress}
-              />
-            )}
-          </div>
-        ))}
-      </div>
+        <div 
+        // style={{ height: "1000px" }}
+        >
+          {stages.map((stage, index) => (
+            <div key={stage.id}>
+              {choice === index && (
+                <StageItem
+                  stage={stage}
+                  index={index}
+                  challengeProgress={challengeProgress}
+                />
+              )}
+            </div>
+          ))}
+        </div>
     </Box>
   );
 };
