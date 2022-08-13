@@ -18,14 +18,14 @@ export interface followed {
   id: number | null;
   loginFollowState: number | null;
   nickname: string | null;
-  img: string | null;
+  userImg: string | null;
   username: string | null;
 }
 
 export interface following {
   id: number | null;
   nickname: string | null;
-  img: string | null;
+  userImg: string | null;
   username: string | null;
 }
 

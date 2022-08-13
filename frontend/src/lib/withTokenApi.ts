@@ -73,13 +73,20 @@ export const isLoginFetchChallenge = async (id: number) => {
   return data;
 };
 
-export const MyChallengeList = async () => {
-  const { data } = await withTokenApi.get("/challenge/myChallenge");
+export const MyChallengeList = async (page: number, size: number) => {
+  const { data } = await withTokenApi.get(
+    `/challenge/myChallenge?page=${page}&size=${size}`
+  );
   return data;
 };
 
-export const isLoginFetchChallengeRankList = async () => {
-  const { data } = await withTokenApi.get("/challenge/rank");
+export const isLoginFetchChallengeRankList = async (
+  page: number,
+  size: number
+) => {
+  const { data } = await withTokenApi.get(
+    `/challenge/rank?page=${page}&size=${size}`
+  );
   return data;
 };
 
@@ -101,7 +108,9 @@ export const challengeUpdate = async (
 
 // 챌린지 이미지 업데이트
 export const challengeImgApi = async (challengeId: number, img: string) => {
-  const { data } = await withTokenApi.put(`/challenge/img/${challengeId}`, img);
+  const { data } = await withTokenApi.put(`/challenge/img/${challengeId}`, {
+    img: img,
+  });
   return data;
 };
 
@@ -371,7 +380,6 @@ export const noticePageRead = async (noticePageNum: number) => {
   const { data } = await withTokenApi.get(`/notice/list/${noticePageNum}`);
   return data;
 };
-
 
 // 사용법 - 해당 axios는 기본적으로 토큰이 만료되었을 경우 refresh를 겸함.
 

@@ -30,7 +30,6 @@ function UserPage() {
   const [followState, setFollowState] = useState(false);
 
   useEffect(() => {
-    
     otherUserDetail(userId, loginData.userInfo.id)
       .then((res) => {
         setNickname(res.nickname);
@@ -39,11 +38,13 @@ function UserPage() {
         setFollowState(res.isFollowing);
         setFollowedCnt(res.followedCnt);
         setFollowingCnt(res.followingCnt);
-        if (res.img === "") {
+        if (!!res.userImg == false) {
           // 기본 프로필 이미지
-          setImg("https://i.pinimg.com/236x/f2/a1/d6/f2a1d6d87b1231ce39710e6ba1c1e129.jpg")
+          setImg(
+            "https://i.pinimg.com/236x/f2/a1/d6/f2a1d6d87b1231ce39710e6ba1c1e129.jpg"
+          );
         } else {
-          setImg(res.img)
+          setImg(res.userImg);
         }
       })
       .catch((err) => {
@@ -102,15 +103,15 @@ function UserPage() {
           </Link>
         ) : (
           <div>
-              <div
-                className={styles.editImg}
-                style={{
-                  backgroundImage: `url(${img})`,
-                  backgroundPosition: "center",
-                  backgroundSize: "cover",
-                  backgroundRepeat: "no-repeat",
-                }}
-              ></div>
+            <div
+              className={styles.editImg}
+              style={{
+                backgroundImage: `url(${img})`,
+                backgroundPosition: "center",
+                backgroundSize: "cover",
+                backgroundRepeat: "no-repeat",
+              }}
+            ></div>
             {/* {img ? (
               <div
                 className={styles.editImg}

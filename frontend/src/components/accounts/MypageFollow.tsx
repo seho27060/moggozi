@@ -83,7 +83,7 @@ const MypageFollow = (props: Props) => {
               <FollowerList
                 key={object.id}
                 id={object.id}
-                img={object.img}
+                img={object.userImg}
                 loginFollowState={object.loginFollowState}
                 nickname={object.nickname}
                 close={CloseModalHandler}
@@ -105,7 +105,7 @@ const MypageFollow = (props: Props) => {
               <FollowingList
                 key={object.id}
                 id={object.id}
-                img={object.img}
+                img={object.userImg}
                 nickname={object.nickname}
                 close={CloseModalHandler}
               />
