@@ -129,6 +129,15 @@ public class ChallengeController {
         }
         return new ResponseEntity("잘못된 요청입니다.", HttpStatus.BAD_REQUEST);
     }
+
+    @Operation(summary = "챌린지 이미지 변경")
+    @PutMapping("/img/{challenge_id}")
+    public ResponseEntity changeImg(@PathVariable Long challenge_id, @RequestBody ChallengeImgDto img){
+
+        challengeService.changeImg(challenge_id, img.getImg());
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
     @Operation(summary = "챌린지 삭제", description = "")
     @DeleteMapping("/{challenge_id}")
     public ResponseEntity deleteChallenge(@PathVariable Long challenge_id, HttpServletRequest request)

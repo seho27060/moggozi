@@ -4,18 +4,22 @@ import hobbyReducer from "./challenge";
 import commentReducer from "./comment";
 import postReducer from "./post";
 import postModalReducer from './postModal'
+import postStageReducer from './postStage'
 import stageReducer from "./stage";
 import reviewReducer from "./review";
 import alertReducer from "./alert"
+import alertModalReducer from "./alertModal";
 
 export const store = configureStore({
   reducer: {
     auth: authReducer,
     alert : alertReducer,
+    alertModal : alertModalReducer,
     hobby: hobbyReducer,
     comment: commentReducer,
     post: postReducer,
     postModal : postModalReducer,
+    postStage : postStageReducer,
     stages: stageReducer,
     review: reviewReducer,
   },

@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { Value } from "react-quill";
 import { UserInfo } from "./auth";
 import { ReviewState } from "./review";
 import { StageState } from "./stage";
@@ -14,6 +15,8 @@ export interface ChallengeItemState {
   level: number | null;
   userProgress: number | 0;
   likeNum: number | null;
+  state: number | 1;
+  modifiedDate: string | null;
 }
 
 // 챌린지 디테일 정보
@@ -33,7 +36,7 @@ export interface ChallengeSaveState {
   name: string | null;
   description: string | null;
   img: string | null;
-  content: string | null;
+  content: Value|string | null;
   hobbyList: Hobby[];
   level: number | null;
 }

@@ -1,6 +1,9 @@
 @use "../styles/mixin.scss" as mixin;
 
 @include mixin.desktop {
+  a {
+    color: black;
+  }
   .header {
     height: 90px;
     font-size: 1.1rem;
@@ -15,7 +18,7 @@
       height: 54px;
     }
 
-    div {
+    .div {
       align-items: center;
       display:flex;
 
@@ -34,9 +37,16 @@
 
       li {
         padding: 0 25px 0 25px;
+        .searchButton {
+          border: 0;
+          background-color: transparent;
+          font-size: 1.1rem;
+          font-weight: 700;
+          cursor: pointer;
+        }
       }
-      
     }
+
     .logout {
       p:hover {
         cursor: pointer;
@@ -46,16 +56,17 @@
     .profile{
       a {
         display: flex;
+        align-items: center;
         img {
           width: 45px;
           height: 45px;
           border-radius: 100px;
           border: 1px solid #eee;
-          margin: 2.5px
+          margin: 5px
         }
-        div {
-          margin: 2.5px
-        }
+        // a > div:nth-child(1) {
+        //   margin: 2.5px
+        // }
       }
     }
   }

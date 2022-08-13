@@ -32,16 +32,27 @@ public class PostServiceImpl implements PostService {
 
     @Transactional
     @Override
-    public PostResponseDto savePost(PostSaveRequestDto postSaveRequestDto) {
-        Post post = postRepository.save(postSaveRequestDto.toEntity(memberRepository.getById(postSaveRequestDto.getMemberId()), stageRepository.getById(postSaveRequestDto.getStageId())));
-        return new PostResponseDto(post);
+    public int savePost(PostSaveRequestDto postSaveRequestDto, Long member_id) {
+        Post post = postRepository.findByStage_idAndMember_Id(postSaveRequestDto.getStageId(), member_id);
+
+        if(post != null){
+            return -1;
+        }
+
+        postRepository.save(postSaveRequestDto.toEntity(memberRepository.getById(member_id), stageRepository.getById(postSaveRequestDto.getStageId())));
+
+        return 1;
     }
 
     @Transactional
     @Override
-    public PostResponseDto updatePost(PostUpdateRequestDto postUpdateRequestDto) {
+    public int updatePost(PostUpdateRequestDto postUpdateRequestDto, Long member_id) {
         Long post_id = postUpdateRequestDto.getPostId();
         Post entity = postRepository.findById(post_id).orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + post_id));
+
+        if(entity.getMember().getId() != member_id){
+            return -1;
+        }
 
         entity.update(postUpdateRequestDto.getTitle(), postUpdateRequestDto.getContent(), postUpdateRequestDto.getPostImg());
         PostResponseDto postResponseDto= new PostResponseDto(entity);
@@ -49,7 +60,7 @@ public class PostServiceImpl implements PostService {
         {
             postResponseDto.setLiked(true);
         }
-        return postResponseDto;
+        return 1;
     }
 
     @Override
@@ -146,15 +157,37 @@ public class PostServiceImpl implements PostService {
     public PostDetailDto detailPost(Long post_id, Long member_id){
         Post post = postRepository.getById(post_id);
 
-        System.out.println("=======================================================");
-        System.out.println(post.getId());
-        Writer writer = new Writer(post.getMember().getId(), post.getMember().getNickname());
+        Writer writer = new Writer(post.getMember().getId(), post.getMember().getNickname(), post.getMember().getUser_img());
         PostDetailDto postDetailDto = PostDetailDto.builder()
                 .id(post_id)
                 .title(post.getTitle())
                 .content(post.getContent())
                 .createdTime(post.getCreatedDate())
                 .isLiked(postLikeRepository.findByPost_idAndMember_id(post_id, member_id).isPresent() ? true : false)
+                .modifiedTime(post.getModifiedDate())
+                .postImg(post.getPostImg())
+                .likeNum(post.getPostLikeList().size())
+                .writer(writer)
+                .build();
+
+        return postDetailDto;
+    }
+
+    @Override
+    public Object detailMemberPost(Long stage_id, Long member_id){
+        Post post = postRepository.findByStage_idAndMember_Id(stage_id, member_id);
+
+        if(post == null){
+            return -1;
+        }
+
+        Writer writer = new Writer(member_id, post.getMember().getNickname(), post.getMember().getUser_img());
+        PostDetailDto postDetailDto = PostDetailDto.builder()
+                .id(post.getId())
+                .title(post.getTitle())
+                .content(post.getContent())
+                .createdTime(post.getCreatedDate())
+                .isLiked(postLikeRepository.findByPost_idAndMember_id(post.getId(), member_id).isPresent() ? true : false)
                 .modifiedTime(post.getModifiedDate())
                 .postImg(post.getPostImg())
                 .likeNum(post.getPostLikeList().size())

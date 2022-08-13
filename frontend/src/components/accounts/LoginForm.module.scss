@@ -2,7 +2,7 @@
 
 @include mixin.desktop {
 
-  .loginForm {
+  .login {
     height: 100vh;
     display: flex;
     flex-direction: column;
@@ -21,7 +21,7 @@
     }
   }
 
-  form {
+  .loginForm {
     display: flex;
     flex-direction: column;
     width: 300px;

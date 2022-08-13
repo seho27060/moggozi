@@ -2,6 +2,7 @@ package com.JJP.restapiserver.domain.entity.stage;
 
 import com.JJP.restapiserver.domain.entity.BaseTimeEntity;
 import com.JJP.restapiserver.domain.entity.challenge.Challenge;
+import com.JJP.restapiserver.domain.entity.file.StageImg;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Builder;
@@ -35,6 +36,10 @@ public class Stage extends BaseTimeEntity {
     @OneToMany(mappedBy = "stage", cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<StageUser> stageUserList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "stage", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private List<StageImg> stageImgList = new ArrayList<>();
 
     @Column(length = 20)
     private String name;

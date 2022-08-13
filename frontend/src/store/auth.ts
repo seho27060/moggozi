@@ -18,14 +18,14 @@ export interface followed {
   id: number | null;
   loginFollowState: number | null;
   nickname: string | null;
-  userImg: string | null;
+  img: string | null;
   username: string | null;
 }
 
 export interface following {
   id: number | null;
   nickname: string | null;
-  userImg: string | null;
+  img: string | null;
   username: string | null;
 }
 
@@ -53,7 +53,7 @@ export const authSlice = createSlice({
       state.userInfo = {
         id: action.payload.id,
         nickname: action.payload.nickname,
-        img: action.payload.userImg,
+        img: "",
       };
       state.isLoggedIn = !!action.payload.accessToken;
     },
@@ -70,7 +70,7 @@ export const authSlice = createSlice({
         nickname: action.payload.nickname,
         img: action.payload.userImg,
       };
-      // state.isLoggedIn = !!initialToken;
+      state.isLoggedIn = true;
     },
     kakaoLogin: (state, action) => {},
     // 유저이미지 불러오기

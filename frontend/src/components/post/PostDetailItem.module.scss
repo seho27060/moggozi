@@ -1,0 +1,14 @@
+@use "../../styles/mixin.scss" as mixin;
+
+@include mixin.desktop {
+  .postDetailContainer {
+    height: 25rem;
+    overflow: scroll;
+  }
+
+  .postDetailItem {
+    border: solid;
+    margin: 1rem;
+    padding: 1rem;
+  }
+}

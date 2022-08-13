@@ -147,8 +147,21 @@ public class MemberController {
             @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR")
     })
     @PostMapping("/update/{userId}")
-    public ResponseEntity<?> updateUser(@PathVariable Long userId, @Valid @RequestBody UpdateUserRequest updateUserRequest) {
+    public ResponseEntity<?> updateUser(@PathVariable("userId") Long userId, @Valid @RequestBody UpdateUserRequest updateUserRequest) {
         return memberService.update(userId, updateUserRequest);
+    }
+
+    @Operation(summary = "프로필 사진 수정", description = "프로필 정보 수정이 가능합니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = MessageResponse.class))),
+            @ApiResponse(responseCode = "400", description = "BAD REQUEST", content = @Content(schema = @Schema(implementation = MessageResponse.class))),
+            @ApiResponse(responseCode = "404", description = "NOT FOUND"),
+            @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR")
+    })
+    @PostMapping("/updateImg")
+    public ResponseEntity<?> updateUser(HttpServletRequest request, @RequestBody UserImgRequest userImgRequest) {
+        Long user_id = jwtUtils.getUserIdFromJwtToken(request.getHeader("Authorization"));
+        return memberService.updateImg(user_id, userImgRequest);
     }
 
 

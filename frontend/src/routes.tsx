@@ -14,14 +14,13 @@ import Login from "./pages/accounts/Login";
 import CompleteSignUp from "./pages/accounts/CompleteSignUp";
 import Signup from "./pages/accounts/Signup";
 import UserUpdate from "./pages/accounts/UserUpdate";
+import SocialUserUpdate from "./pages/accounts/SocialUserUpdate";
 import UpdatePassword from "./pages/accounts/UpdatePassword";
 import PasswordReissue from "./pages/accounts/PasswordReissue";
 import Withdrawal from "./pages/accounts/Withdrawal";
 
 //OAuth
-import KakaoOAuthRedirectHandler from "./pages/KakaoOAuthRedirectHandler";
-import NaverOAuthRedirectHandler from "./pages/NaverOAuthRedirectHandler";
-import GoogleOAuthRedirectHandler from "./pages/GoogleOAuthRedirectHandler";
+import OAuthRedirectHandler from "./pages/OAuthRedirectHandler";
 
 // Challenge
 import ChallengeDetail from "./pages/challenge/ChallengeDetail";
@@ -30,9 +29,9 @@ import Challenges from "./pages/challenge/Challenges";
 import ChallengeUpdate from "./pages/challenge/ChallengeUpdate";
 
 // Post
-import PostDetail from "./pages/post/PostDetail";
-import PostNew from "./pages/post/PostNew";
-import PostUpdate from "./pages/post/PostUpdate";
+import PostCommentTestPage from "./pages/PostCommentTestPage";
+import PostStage from "./pages/post/PostStage";
+import PostAll from "./pages/post/PostAll";
 
 // Stage
 
@@ -45,7 +44,6 @@ import SearchPage from "./pages/SearchPage";
 import UnknownPage from "./pages/UnknownPage";
 import WebsocketPage from "./pages/WebsocketTest";
 import StageEdit from "./pages/stage/StageEdit";
-import PostCommentTestPage from "./pages/PostCommentTestPage";
 
 export default function Router() {
   return useRoutes([
@@ -70,16 +68,8 @@ export default function Router() {
       ],
     },
     {
-      path: "/oauth/callback/kakao",
-      element: <KakaoOAuthRedirectHandler />,
-    },
-    {
-      path: "/oauth/callback/naver",
-      element: <NaverOAuthRedirectHandler />,
-    },
-    {
-      path: "/oauth/callback/google",
-      element: <GoogleOAuthRedirectHandler />,
+      path: "/oauth/callback",
+      element: <OAuthRedirectHandler />,
     },
     {
       path: "/account",
@@ -100,6 +90,10 @@ export default function Router() {
         {
           path: "userUpdate",
           element: <UserUpdate />,
+        },
+        {
+          path: "socialUserUpdate",
+          element: <SocialUserUpdate />,
         },
         {
           path: "passwordReissue",
@@ -142,16 +136,12 @@ export default function Router() {
       element: <PostLayout />,
       children: [
         {
-          path: ":id",
-          element: <PostDetail />,
+          path: ":stageId",
+          element: <PostStage />,
         },
         {
-          path: ":id/update",
-          element: <PostUpdate />,
-        },
-        {
-          path: "new",
-          element: <PostNew />,
+          path: "all/",
+          element: <PostAll />,
         },
       ],
     },

@@ -14,18 +14,23 @@ const CommentList: React.FC<{ comments: Comment[] | null }> = ({
   // console.log("comment", comments);
   const commentList = comments?.filter((comment) => comment.parentId === 0);
   commentList?.sort((a: Comment, b: Comment) => (a.id >= b.id ? 1 : -1));
-  const postId = useSelector((state: RootState) => state.postModal.postModalState!.id);
+  const postModalState = useSelector(
+    (state: RootState) => state.postModal.postModalState
+  );
   return (
     <div>
       PostComment
       <div>
-        <CommentForm postId={postId} parentId={0} order={0} />
+        {/* 원댓글 */}
+        <CommentForm
+          postId={postModalState.id}
+          parentId={0}
+          order={0}
+          receiver={postModalState.writer}
+        />
       </div>
       {commentList?.map((comment) => (
-        <CommentItem
-          key={comment.id}
-          comment={comment}
-        />
+        <CommentItem key={comment.id} comment={comment} />
       ))}
     </div>
   );

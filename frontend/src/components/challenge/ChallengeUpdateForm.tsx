@@ -7,6 +7,11 @@ import { RootState } from "../../store/store";
 import HobbyForm from "./HobbyForm";
 import HobbySetList from "./HobbySetList";
 
+import EditorComponent from "../ui/Editor";
+import ReactQuill from "react-quill";
+
+import styles from "./ChallengeUpdateForm.module.scss"
+
 const ChallengeUpdateForm: React.FC<{ challenge: ChallengeDetailState }> = (
   props
 ) => {
@@ -19,7 +24,7 @@ const ChallengeUpdateForm: React.FC<{ challenge: ChallengeDetailState }> = (
 
   const nameInputRef = useRef<HTMLInputElement>(null);
   const descriptionInputRef = useRef<HTMLInputElement>(null);
-  const contentInputRef = useRef<HTMLTextAreaElement>(null);
+  const contentInputRef = useRef<ReactQuill>();
   const levelSelectRef = useRef<HTMLSelectElement>(null);
 
   const hobbyList = useSelector((state: RootState) => state.hobby.hobbyList);
@@ -65,7 +70,7 @@ const ChallengeUpdateForm: React.FC<{ challenge: ChallengeDetailState }> = (
       <h3>Challenge Form</h3>
       <HobbyForm />
       <HobbySetList hobbies={hobbyList} />
-      <form>
+      <form className={styles.ChallengeUpdateForm}>
         <label htmlFor="name">챌린지 이름: </label>
         <input
           type="text"
@@ -84,14 +89,10 @@ const ChallengeUpdateForm: React.FC<{ challenge: ChallengeDetailState }> = (
           defaultValue={props.challenge.description || ""}
         />
         <br />
-        <label htmlFor="content">챌린지 상세 내용: </label>
-        <textarea
-          rows={5}
-          id="content"
-          required
-          ref={contentInputRef}
-          defaultValue={props.challenge.content || ""}
-        />
+        <div>
+          챌린지 상세설명
+          <EditorComponent QuillRef={contentInputRef} value={props.challenge.content!}/>
+        </div>
         <br />
         <label htmlFor="level">챌린지 level</label>
         <select

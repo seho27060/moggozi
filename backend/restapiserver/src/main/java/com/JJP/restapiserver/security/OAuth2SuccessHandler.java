@@ -1,8 +1,10 @@
 package com.JJP.restapiserver.security;
 
 import com.JJP.restapiserver.domain.entity.member.Member;
+import com.JJP.restapiserver.domain.entity.member.MemberScore;
 import com.JJP.restapiserver.domain.entity.member.Role;
 import com.JJP.restapiserver.repository.member.MemberRepository;
+import com.JJP.restapiserver.repository.member.MemberScoreRepository;
 import com.JJP.restapiserver.repository.member.RoleRepository;
 import com.JJP.restapiserver.service.RefreshTokenService;
 import lombok.RequiredArgsConstructor;
@@ -43,6 +45,7 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
 
     private final MemberRepository memberRepository;
     private final RoleRepository roleRepository;
+    private final MemberScoreRepository memberScoreRepository;
 
     PasswordEncoder encoder = new BCryptPasswordEncoder();
 
@@ -57,7 +60,7 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
         String username = null, fullname = null, nickname = null;
 
         // 카카오의 attributes 객체의 형태가 구글과 네이버와 다르기 때문에 username과 fullname을 얻는 방법을 달리해야 한다.
-        if(!oAuth2User.getAttributes().containsKey("email")) { // 카카오로 로그인 한 경우
+        if (!oAuth2User.getAttributes().containsKey("email")) { // 카카오로 로그인 한 경우
             username = (String) ((HashMap<String, Object>) ((OAuth2User) authentication.getPrincipal())
                     .getAttributes().get("kakao_account"))
                     .get("email");
@@ -78,7 +81,7 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
 //        String url = "http://localhost:8080"; /** 추후 주소 변경 필요 **/
         String url = "http://localhost:3000/oauth/callback";
 
-        if(member.isEmpty()) {
+        if (member.isEmpty()) {
             // 유저 객체 만들기
             Random random = new Random();
 
@@ -93,9 +96,18 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
 
             /** TODO: Role의 값이 1로 매칭되지 않는 문제 - 권한 부여 시 잘 체크되는지 필요) */
             Member newMember = Member.builder().username(username)
-                    .fullname(fullname).nickname("User"+randomNo).password(password).is_social(1).role(role).build();
+                    .fullname(fullname).nickname("User" + randomNo).password(password).is_social(1).role(role).build();
 
             memberRepository.saveAndFlush(newMember);
+            member = memberRepository.findByUsername(username);
+
+            // 새로 등록된 유저를 MemberScore 테이블에 등록한다.
+            MemberScore memberScore = MemberScore.builder()
+                    .id(member.get().getId())
+                    .score(0L)
+                    .build();
+            memberScoreRepository.save(memberScore);
+
 
         } else {
             nickname = member.get().getNickname(); /** TODO: 추후 리팩토링 시 삭제 필요 */

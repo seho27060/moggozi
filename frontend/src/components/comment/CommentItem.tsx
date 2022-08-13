@@ -12,7 +12,9 @@ import CommentChild from "./CommentChild";
 const CommentItem: React.FC<{
   comment: Comment;
 }> = ({ comment }) => {
-  const postId = useSelector((state: RootState) => state.postModal.postModalState!.id);
+  const postModalState = useSelector(
+    (state: RootState) => state.postModal.postModalState
+  );
   const comments = useSelector((state: RootState) => state.comment.comments);
   const parentId = comment.id;
 
@@ -27,14 +29,26 @@ const CommentItem: React.FC<{
       {/* 사용자이미지, img태그에 null값이 못들어감 수정필요 */}
       <div>
         작성자 : {comment.writer?.nickname}
-        <CommentModifyBtn comment={comment} postId={postId}/>
+        <CommentModifyBtn comment={comment} postId={postModalState.id} />
       </div>
       <div>
         <div>{comment.text}</div>
-        <div>{comment.modifiedTime?.toString()}</div>
+        <div>{new Date(
+                  comment!.modifiedTime!
+                ).toLocaleDateString("ko-Kr", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })}</div>
       </div>
       <div>
-        <CommentForm order={order} parentId={parentId} postId={postId} />
+        {/* 대댓글 */}
+        <CommentForm
+          order={order}
+          parentId={parentId}
+          postId={postModalState.id}
+          receiver={postModalState.writer}
+        />
       </div>
       <div style={{ border: "solid", margin: "1rem", padding: "1rem" }}>
         {childs?.map((child) => (
