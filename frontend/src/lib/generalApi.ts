@@ -42,8 +42,10 @@ export const otherUserDetail = async (
 };
 
 // 챌린지
-export const fetchChallengeRankList = async () => {
-  const { data } = await generalApi.get("/challenge/rank");
+export const fetchChallengeRankList = async (page: number, size: number) => {
+  const { data } = await generalApi.get(
+    `/challenge/rank?page=${page}&size=${size}`
+  );
   return data;
 };
 

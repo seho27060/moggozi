@@ -73,13 +73,20 @@ export const isLoginFetchChallenge = async (id: number) => {
   return data;
 };
 
-export const MyChallengeList = async () => {
-  const { data } = await withTokenApi.get("/challenge/myChallenge");
+export const MyChallengeList = async (page: number, size: number) => {
+  const { data } = await withTokenApi.get(
+    `/challenge/myChallenge?page=${page}&size=${size}`
+  );
   return data;
 };
 
-export const isLoginFetchChallengeRankList = async () => {
-  const { data } = await withTokenApi.get("/challenge/rank");
+export const isLoginFetchChallengeRankList = async (
+  page: number,
+  size: number
+) => {
+  const { data } = await withTokenApi.get(
+    `/challenge/rank?page=${page}&size=${size}`
+  );
   return data;
 };
 
