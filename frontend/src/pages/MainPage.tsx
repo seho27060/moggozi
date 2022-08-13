@@ -28,18 +28,18 @@ const MainPage: React.FC = () => {
     setMyIsLoading(true);
     if (isLoggedIn) {
       // 로그인 한 경우
-      isLoginFetchChallengeRankList()
+      isLoginFetchChallengeRankList(0, 5)
         .then((res) => {
-          setLoadedChallengeRankList(res);
+          setLoadedChallengeRankList(res.content);
           setRankIsLoading(false);
         })
         .catch((err) => {
           console.log(err);
           setRankIsLoading(false);
         });
-      MyChallengeList()
+      MyChallengeList(0, 5)
         .then((res) => {
-          setLoadedMyChallengeList(res);
+          setLoadedMyChallengeList(res.content);
           setMyIsLoading(false);
         })
         .catch((err) => {
@@ -48,9 +48,9 @@ const MainPage: React.FC = () => {
         });
     } else {
       // 로그인 안 한 경우
-      fetchChallengeRankList()
+      fetchChallengeRankList(0, 5)
         .then((res) => {
-          setLoadedChallengeRankList(res);
+          setLoadedChallengeRankList(res.content);
           setRankIsLoading(false);
         })
         // console.log(res)
@@ -60,7 +60,7 @@ const MainPage: React.FC = () => {
         });
     }
   }, [isLoggedIn]);
-
+  console.log(loadedChallengeRankList);
   return (
     <div className={styles.mainPage}>
       MainPage
