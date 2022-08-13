@@ -372,29 +372,12 @@ export const isLoginSearchChallengeHobbyApi = async (
 };
 
 // 공지사항 관련
-export const noticePage = async (notice_id: number) => {
+export const noticeRead = async (notice_id: number) => {
   const { data } = await withTokenApi.get(`/notice/${notice_id}`);
   return data;
 };
-export const noticeRead = async (notice_id: number) => {
-  const { data } = await withTokenApi.get(`/notice/list/${notice_id}`);
-  return data;
-};
-export const noticeAdd = async (comment: CommentSend) => {
-  const { data } = await withTokenApi.post(`/notice/register`, comment);
-  return data;
-};
-
-export const noticeDelete = async (notice_id: number) => {
-  const { data } = await withTokenApi.post(`/notice/delete/${notice_id}`);
-  return data;
-};
-
-export const noticeUpdate = async (
-  comment_id: number,
-  comment: CommentSend
-) => {
-  const { data } = await withTokenApi.put(`/comment/${comment_id}`, comment);
+export const noticePageRead = async (noticePageNum: number) => {
+  const { data } = await withTokenApi.get(`/notice/list/${noticePageNum}`);
   return data;
 };
 

@@ -8,7 +8,6 @@ import PostLayout from "./layout/PostLayout";
 import StageLayout from "./layout/StageLayout";
 import UserLayout from "./layout/UserLayout";
 import SearchLayout from "./layout/SearchLayout";
-
 // Accounts
 import Login from "./pages/accounts/Login";
 import CompleteSignUp from "./pages/accounts/CompleteSignUp";
@@ -44,7 +43,9 @@ import SearchPage from "./pages/SearchPage";
 import UnknownPage from "./pages/UnknownPage";
 import WebsocketPage from "./pages/WebsocketTest";
 import StageEdit from "./pages/stage/StageEdit";
-
+import NoticePage from "./pages/notice/NoticePage";
+import NoticeDetailPage from "./pages/notice/NoticeDetailPage";
+// import NoticeDetailPage from ""
 export default function Router() {
   return useRoutes([
     {
@@ -54,6 +55,14 @@ export default function Router() {
         {
           path: "",
           element: <MainPage />,
+        },
+        {
+          path: "/notice/:noticePageNum",
+          element: <NoticePage/>,
+        },
+        {
+          path: "/notice/detail/:noticeId",
+          element: <NoticeDetailPage/>,
         },
       ],
     },

@@ -11,8 +11,6 @@ import PostLikeBtn from "./PostLikeBtn";
 import { useNavigate } from "react-router-dom";
 import { setPostModalOpen } from "../../store/postModal";
 
-
-
 import PostOptionBtn from "./PostOptionBtn";
 import Dompurify from "dompurify";
 import styles from "./PostDetailItem.module.scss";
@@ -21,7 +19,7 @@ import "react-quill/dist/quill.snow.css";
 const PostDetailItem: React.FC<{}> = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  // const user = useSelector((state: RootState) => state.auth.userInfo);
+  const user = useSelector((state: RootState) => state.auth.userInfo);
   const post = useSelector((state: RootState) => state.postModal);
   const commentState = useSelector(
     (state: RootState) => state.comment.comments
@@ -46,20 +44,35 @@ const PostDetailItem: React.FC<{}> = () => {
         {/* 수정 버튼 */}
       </div>
       <div className={styles.container}>
-        <div
-          className={styles.writer}>
-          <div className={styles.writerInfo}  onClick={() => {
-            navigate(`/user/${post.postModalState.writer!.id}`);
-            dispatch(setPostModalOpen(false));}}>
-            { post.postModalState!.writer?.img ? <img src={post.postModalState!.writer?.img} alt="" /> : <img src="https://blog.kakaocdn.net/dn/vckff/btqCjeJmBHM/tMVpe4aUIMfH4nKS4aO3tK/img.jpg" alt="" />}
-            
+        <div className={styles.writer}>
+          <div
+            className={styles.writerInfo}
+            onClick={() => {
+              navigate(`/user/${post.postModalState.writer!.id}`);
+              dispatch(setPostModalOpen(false));
+            }}
+          >
+            {post.postModalState!.writer?.img ? (
+              <img src={post.postModalState!.writer?.img} alt="" />
+            ) : (
+              <img
+                src="https://blog.kakaocdn.net/dn/vckff/btqCjeJmBHM/tMVpe4aUIMfH4nKS4aO3tK/img.jpg"
+                alt=""
+              />
+            )}
+
             <div>{post.postModalState!.writer?.nickname}</div>
           </div>
-          <div><PostOptionBtn /></div>
+          {user.id === post.postModalState!.writer!.id && (
+            <div>
+              <PostOptionBtn />
+            </div>
+          )}
+          
         </div>
 
-        <div className={styles.horizon} ></div>
-        
+        <div className={styles.horizon}></div>
+
         <div>
           <>
             <div>제목 : {post.postModalState!.title}</div>
