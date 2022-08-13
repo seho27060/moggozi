@@ -223,27 +223,27 @@ export const fetchStages = async (ChallengeId: number) => {
 
 // 스테이지 진행도
 export const fetchStageProgress = async (stageId: number) => {
-  const { data } = await withTokenApi.get(`/stage/join${stageId}`);
+  const { data } = await withTokenApi.get(`/stage/join/${stageId}`);
   return data;
 };
 
 export const stageJoin = async (stageId: number) => {
-  const { data } = await withTokenApi.post(`/stage/join${stageId}`);
+  const { data } = await withTokenApi.post(`/stage/join/${stageId}`);
   return data;
 };
 
 export const stageComplete = async (stageId: number) => {
-  const { data } = await withTokenApi.put(`/stage/join${stageId}`, 2);
+  const { data } = await withTokenApi.put(`/stage/join/${stageId}`, 2);
   return data;
 };
 
 export const stageUnComplete = async (stageId: number) => {
-  const { data } = await withTokenApi.put(`/stage/join${stageId}`, 1);
+  const { data } = await withTokenApi.put(`/stage/join/${stageId}`, 1);
   return data;
 };
 
 export const stageCancel = async (stageId: number) => {
-  const { data } = await withTokenApi.delete(`/stage/join${stageId}`);
+  const { data } = await withTokenApi.delete(`/stage/join/${stageId}`);
   return data;
 };
 
@@ -361,6 +361,35 @@ export const isLoginSearchChallengeHobbyApi = async (
   );
   return data;
 };
+
+// 공지사항 관련
+export const noticePage = async (notice_id: number) => {
+  const { data } = await withTokenApi.get(`/notice/${notice_id}`);
+  return data;
+};
+export const noticeRead = async (notice_id: number) => {
+  const { data } = await withTokenApi.get(`/notice/list/${notice_id}`);
+  return data;
+};
+export const noticeAdd = async (comment: CommentSend) => {
+  const { data } = await withTokenApi.post(`/notice/register`, comment);
+  return data;
+};
+
+export const noticeDelete = async (notice_id: number) => {
+  const { data } = await withTokenApi.post(`/notice/delete/${notice_id}`);
+  return data;
+};
+
+export const noticeUpdate = async (
+  comment_id: number,
+  comment: CommentSend
+) => {
+  const { data } = await withTokenApi.put(`/comment/${comment_id}`, comment);
+  return data;
+};
+
+
 
 // 사용법 - 해당 axios는 기본적으로 토큰이 만료되었을 경우 refresh를 겸함.
 
