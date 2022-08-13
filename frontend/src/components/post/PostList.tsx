@@ -22,6 +22,9 @@ const PostList: React.FC<{
   return (
     <div className={styles.postList}>
       {/* PostList */}
+
+      {!postList.length && <div className={styles.none}>아직 등록된 포스트가 없어요!</div> }
+
       {postList!.map((post) => (
         <div
           key={post.id}

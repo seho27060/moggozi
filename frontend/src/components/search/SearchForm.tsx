@@ -126,7 +126,7 @@ const SearchForm = (props: Props) => {
         )}
         <SearchChallengeList challenges={dropDownChallengeList} close={close} />
       </main>
-      <main>
+      <main className={styles.tagPart}>
         <h1>태그</h1>
         {dropDownHobbyList.length === 0 && <div className={styles.tagg}>해당하는 태그가 없습니다.</div>}
         {dropDownHobbyList.map((dropDownItem) => {

@@ -1,6 +1,8 @@
 import { ReactElement } from "react";
 import { useNavigate } from "react-router-dom";
 
+import styles from "./FollowingList.module.scss"
+
 interface Props {
   id: number | null;
   img: string | null;
@@ -18,37 +20,9 @@ const FollowingList = (props: Props): ReactElement => {
   }
 
   return (
-    <div
-      style={{
-        display: "flex",
-        margin: "1rem",
-        justifyContent: "space-between",
-      }}
-    >
-      <div style={{ display: "contents" }}>
-        <img
-          src={`${img}`}
-          alt="profile_image"
-          style={{ width: "2rem", height: "2rem" }}
-          onClick={moveHandler}
-        />
-        <div
-          onClick={moveHandler}
-          style={{ marginTop: "0.5rem", width: "5rem", textAlign: "end" }}
-        >
-          {nickname}
-        </div>
-        <button
-          style={{
-            display: "hidden",
-            width: "4.3rem",
-            fontSize: "0.75rem",
-            color: "#9b78ff",
-            margin: "0",
-            background: "white",
-          }}
-        ></button>
-      </div>
+    <div className={styles.followers}>
+      { img ? <img src={`${img}`} alt="profile_image" onClick={moveHandler} /> : <img src="https://img1.daumcdn.net/thumb/C176x176/?fname=https://k.kakaocdn.net/dn/GHYFr/btrsSwcSDQV/UQZxkayGyAXrPACyf0MaV1/img.jpg" alt="" /> }
+      <div onClick={moveHandler}>{nickname}</div>
     </div>
   );
 };

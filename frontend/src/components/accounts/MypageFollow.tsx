@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import { followedApi, followingApi } from "../../lib/withTokenApi";
 import { followed, following } from "../../store/auth";
 
-import Modal from "../ui/FollowModal";
+import FollowModal from "../ui/FollowModal";
 import FollowerList from "./FollowerList";
 import FollowingList from "./FollowingList";
 
@@ -31,10 +31,12 @@ const MypageFollow = (props: Props) => {
   };
 
   const followedModalHandler = () => {
+    document.body.style.overflow = "hidden";
     setFollowedOpenModal(true);
   };
 
   const followingModalHandler = () => {
+    document.body.style.overflow = "hidden";
     setFollowingOpenModal(true);
   };
 
@@ -76,12 +78,12 @@ const MypageFollow = (props: Props) => {
         </span>
         <span className={styles.cnt}> {followingCnt}</span>
       </div>
-      <Modal open={followedOpenModal} close={CloseModalHandler} header="팔로워">
-        {followedOpenModal
+      <FollowModal open={followedOpenModal} close={CloseModalHandler} header="팔로워">
+        {/* {followedOpenModal
           ? (document.body.style.overflow = "hidden")
-          : (document.body.style.overflow = "visible")}
+          : (document.body.style.overflow = "visible")} */}
         {!!followedInfo.length ? (
-          <div style={{ height: "15rem", overflowY: "auto" }}>
+          <div>
             {followedInfo.map((object) => (
               <FollowerList
                 key={object.id}
@@ -96,15 +98,15 @@ const MypageFollow = (props: Props) => {
         ) : (
           "팔로워가 없습니다"
         )}
-      </Modal>
-      <Modal
+      </FollowModal>
+      <FollowModal
         open={followingOpenModal}
         close={CloseModalHandler}
         header="팔로잉"
       >
-        {followingOpenModal
+        {/* {followingOpenModal
           ? (document.body.style.overflow = "hidden")
-          : (document.body.style.overflow = "visible")}
+          : (document.body.style.overflow = "visible")} */}
         {!!followingInfo.length ? (
           <div style={{ height: "15rem", overflowY: "auto" }}>
             {followingInfo.map((object) => (
@@ -120,7 +122,7 @@ const MypageFollow = (props: Props) => {
         ) : (
           "팔로잉이 없습니다."
         )}
-      </Modal>
+      </FollowModal>
     </div>
   );
 };

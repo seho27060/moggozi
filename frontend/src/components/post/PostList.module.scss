@@ -3,12 +3,22 @@
 @include mixin.desktop {
   .postList {
     display: flex;
-    justify-content: space-between;
-    margin: 20px 0 0 0;
+    justify-content: space-around;
+    margin: 20px 0px 0px 0;
     
     .postItem {
       cursor: pointer;
     }
+  }
+  
+  .none {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 300px;
+    font-size: 20 px;
+    font-weight: 700;
+    color: mixin.$cloudGray
   }
 
 }

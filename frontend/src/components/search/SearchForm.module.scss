@@ -44,17 +44,21 @@
   .challenge {
     font-size: 18px;
     font-weight: 700;
-    margin: 15px 0 0 17px !important;
+    margin: 15px 0 20px 17px !important;
   }
 
+  .tagPart {
+    margin: 0 0 10px 0;
+    // padding: 10px 10px 10px 10px;
+  }
   .tagg {
     font-size: 18px;
     font-weight: 700;
-    margin: 15px 0 0 17px !important;
+    margin: 15px 0 20px 17px !important;
   }
 
   .hobbyTag {
-    margin: 10px 0 0 20px;
+    margin: 10px 0 10px 20px;
   }
 }
 

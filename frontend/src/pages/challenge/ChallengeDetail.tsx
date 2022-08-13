@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { fetchChallenge } from "../../lib/generalApi";
 import { WebSocketContext } from "../../lib/WebSocketProvider";
@@ -8,7 +8,6 @@ import {
   cancelChallenge,
   challengeLike,
   isLoginFetchChallenge,
-  registerChallenge,
   tryChallenge,
 } from "../../lib/withTokenApi";
 import { Alert } from "../../store/alert";
@@ -23,7 +22,6 @@ import { reviewFetch } from "../../store/review";
 import { RootState } from "../../store/store";
 import moment from "moment";
 
-import ChallengeDeleteBtn from "../../components/challenge/ChallengeDeleteBtn";
 import HobbyList from "../../components/challenge/HobbyList";
 import PostDetailItem from "../../components/post/PostDetailItem";
 import PostForm from "../../components/post/PostForm";
@@ -37,6 +35,7 @@ import styles from "./ChallengeDetail.module.scss";
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import PostModal from "../../components/ui/PostModal";
 import PostFormModal from "../../components/ui/PostFormModal";
+import ChallengeOptionBtn from "../../components/ui/ChallengeOptionBtn";
 
 const ChallengeDetail: React.FC = () => {
   const navigate = useNavigate()
@@ -69,21 +68,21 @@ const ChallengeDetail: React.FC = () => {
   };
 
   // 챌린지 등록
-  const registerHandler = (event: React.MouseEvent) => {
-    event.preventDefault();
-    if (
-      window.confirm("챌린지 등록하시겠습니까? 등록하면 취소할 수 없습니다!")
-    ) {
-      registerChallenge(Number(id))
-        .then((res) =>
-          setLoadedChallenge({
-            ...loadedChallenge!,
-            state: 1,
-          })
-        )
-        .catch((err) => console.log(err));
-    }
-  };
+  // const registerHandler = (event: React.MouseEvent) => {
+  //   event.preventDefault();
+  //   if (
+  //     window.confirm("챌린지 등록하시겠습니까? 등록하면 취소할 수 없습니다!")
+  //   ) {
+  //     registerChallenge(Number(id))
+  //       .then((res) =>
+  //         setLoadedChallenge({
+  //           ...loadedChallenge!,
+  //           state: 1,
+  //         })
+  //       )
+  //       .catch((err) => console.log(err));
+  //   }
+  // };
 
   // 좋아요
   const likeHandler = (event: React.MouseEvent) => {
@@ -225,27 +224,13 @@ const ChallengeDetail: React.FC = () => {
                 })()}
 
               </div>
-              {userInfo.id === loadedChallenge!.writer.id &&
-                loadedChallenge!.state === 0 && (
-                  <div>
-                    <button onClick={registerHandler}>챌린지 등록</button>
-                  </div>
-                )}
+
               <div>
                 {loadedChallenge!.writer.id === userInfo.id ? (
                   <div>
                     {userInfo.id === loadedChallenge!.writer.id && (
                       <div>
-                        <Link to={`/stage/${id}`}>
-                          <button>스테이지 편집</button>
-                        </Link>
-                        <Link
-                          to={`/challenge/${id}/update`}
-                          state={loadedChallenge}
-                        >
-                          <button>챌린지 수정</button>
-                        </Link>
-                        <ChallengeDeleteBtn />
+                        <div><ChallengeOptionBtn id={id} userId={userInfo.id} writerId={loadedChallenge!.writer.id} state={loadedChallenge!.state} loadedChallenge={loadedChallenge} /></div>
                       </div>
                     )}
                   </div>
