@@ -309,11 +309,11 @@ const ChallengeDetail: React.FC = () => {
             <div className={styles.like}>
               <div className={styles.likeLabel} onClick={likeHandler}>
                 {isLoggedIn === true && loadedChallenge!.liked === false && (
-                  <div className={styles.heart}><FavoriteIcon /></div>
+                  <div className={styles.nonHeart}><FavoriteIcon /></div>
                   // 챌린지 좋아요
                 )}
                 {isLoggedIn === true && loadedChallenge!.liked === true && (
-                  <div className={styles.nonHeart}><FavoriteIcon /></div>
+                  <div className={styles.heart}><FavoriteIcon /></div>
                   // 챌린지좋아요 취소
                 )}{" "}
                 좋아요 <div className={styles.likeCnt}>{loadedChallenge!.likeNum}</div>
