@@ -39,9 +39,12 @@ const PostDetailItem: React.FC<{}> = () => {
 
   return (
     <div className={styles.postDetail}>
-      <div >
-        <img className={styles.img}
-        src="https://blog.kakaocdn.net/dn/vckff/btqCjeJmBHM/tMVpe4aUIMfH4nKS4aO3tK/img.jpg" alt="포스팅이미지" />
+      <div>
+        <img
+          className={styles.img}
+          src="https://blog.kakaocdn.net/dn/vckff/btqCjeJmBHM/tMVpe4aUIMfH4nKS4aO3tK/img.jpg"
+          alt="포스팅이미지"
+        />
         {/* 수정 버튼 */}
       </div>
       <div className={styles.container}>
@@ -69,14 +72,13 @@ const PostDetailItem: React.FC<{}> = () => {
               <PostOptionBtn />
             </div>
           )}
-          
         </div>
 
         <div className={styles.horizon}></div>
 
         <div>
           <>
-          {/* <div className={styles.content}>{post.postModalState!.content}</div> */}
+            {/* <div className={styles.content}>{post.postModalState!.content}</div> */}
             <div
               dangerouslySetInnerHTML={{
                 __html: Dompurify.sanitize(
@@ -89,13 +91,23 @@ const PostDetailItem: React.FC<{}> = () => {
             {/* 좋아요 버튼 */}
 
             <div className={styles.Btn_N_Date}>
-              <div className={styles.like}><PostLikeBtn />{post.postModalState!.likeNum}</div>
-            {post.postModalState!.modifiedTime! && (<div>{new Date(post.postModalState!.modifiedTime!)
-              .toLocaleDateString("ko-Kr", {
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric",})}</div>)}</div>
-            </>
+              <div className={styles.like}>
+                <PostLikeBtn />
+                {post.postModalState!.likeNum}
+              </div>
+              {post.postModalState!.modifiedTime! && (
+                <div>
+                  {new Date(
+                    post.postModalState!.modifiedTime!
+                  ).toLocaleDateString("ko-Kr", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  })}
+                </div>
+              )}
+            </div>
+          </>
         </div>
 
         <div className={styles.horizon}></div>
