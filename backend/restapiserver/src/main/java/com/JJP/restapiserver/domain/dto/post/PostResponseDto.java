@@ -18,7 +18,7 @@ public class PostResponseDto {
 
     private String content;
 
-    private List<PostImg> postImgList;
+    private List<PostImg> postImg;
 
     private Writer writer;
 
@@ -33,7 +33,7 @@ public class PostResponseDto {
         this.id = post.getId();
         this.title = post.getTitle();
         this.content = post.getContent();
-        this.postImgList = post.getPostImgList();
+        this.postImg = post.getPostImgList();
         this.writer = new Writer(post.getMember().getId(), post.getMember().getNickname(), post.getMember().getUser_img());
         this.likeNum = 0;
         this.isLiked = false;
