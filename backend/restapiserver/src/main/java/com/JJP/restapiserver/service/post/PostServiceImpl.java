@@ -2,10 +2,7 @@ package com.JJP.restapiserver.service.post;
 
 import com.JJP.restapiserver.domain.dto.challenge.Writer;
 import com.JJP.restapiserver.domain.dto.member.response.MyPagePostDto;
-import com.JJP.restapiserver.domain.dto.post.PostDetailDto;
-import com.JJP.restapiserver.domain.dto.post.PostResponseDto;
-import com.JJP.restapiserver.domain.dto.post.PostSaveRequestDto;
-import com.JJP.restapiserver.domain.dto.post.PostUpdateRequestDto;
+import com.JJP.restapiserver.domain.dto.post.*;
 import com.JJP.restapiserver.domain.entity.stage.Post;
 import com.JJP.restapiserver.repository.member.MemberRepository;
 import com.JJP.restapiserver.repository.stage.PostLikeRepository;

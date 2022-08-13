@@ -1,13 +1,15 @@
 package com.JJP.restapiserver.controller.stage;
 
-import com.JJP.restapiserver.domain.dto.post.PostDetailDto;
-import com.JJP.restapiserver.domain.dto.post.PostResponseDto;
-import com.JJP.restapiserver.domain.dto.post.PostSaveRequestDto;
-import com.JJP.restapiserver.domain.dto.post.PostUpdateRequestDto;
+import com.JJP.restapiserver.domain.dto.post.*;
+import com.JJP.restapiserver.domain.entity.stage.Post;
+import com.JJP.restapiserver.repository.stage.PostRepository;
 import com.JJP.restapiserver.security.JwtUtils;
 import com.JJP.restapiserver.service.post.PostService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 //@CrossOrigin("*")
+@Tag(name = "PostController", description = "포스팅 API")
 @RequiredArgsConstructor
 @RequestMapping("/post")
 @RestController
@@ -22,6 +25,7 @@ public class PostController {
 
     private final PostService postService;
     private final JwtUtils jwtUtils;
+    private final PostRepository postRepository;
 
     // post 글 쓰기
     @Operation(summary = "포스트 등록", description = "이미 스테이지에 글 쓰면 -1, 성공시 post_id를 return")
@@ -81,9 +85,22 @@ public class PostController {
         return postService.getStagePost(stage_id);
     }
 
+    @Operation(summary = "랜덤 갯수 post리스트")
     @GetMapping("/random/{size}")
     private ResponseEntity getRandomListBySize(@PathVariable int size){
         List<PostResponseDto> postResponseDtoList = postService.getRandomPostList(size);
         return new ResponseEntity(postResponseDtoList, HttpStatus.OK);
+    }
+
+    @Operation(summary = "최근 작성순서에 따른 post리스트")
+    @GetMapping("/list/latest")
+    private Page<Post> postLatestList(Pageable pageable){
+        return postRepository.findAllByOrderByCreatedDateDesc(pageable);
+    }
+
+    @Operation(summary = "좋아요에 따른 post리스트")
+    @GetMapping("/list/like")
+    private Page<Post> postLikeList(Pageable pageable){
+        return postRepository.findAllByOrderByLikeNumDesc(pageable);
     }
 }

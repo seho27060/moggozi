@@ -24,4 +24,8 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     Slice<Post> findByMember_IdOrderByCreatedDateDesc(Long member_id, Pageable pageable);
 
     Post findByStage_idAndMember_Id(Long Stage_id, Long Member_id);
+
+    Page<Post> findAllByOrderByCreatedDateDesc(Pageable pageable);
+
+    Page<Post> findAllByOrderByLikeNumDesc(Pageable pageable);
 }

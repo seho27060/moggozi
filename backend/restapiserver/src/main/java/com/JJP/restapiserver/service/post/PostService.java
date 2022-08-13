@@ -1,10 +1,7 @@
 package com.JJP.restapiserver.service.post;
 
 import com.JJP.restapiserver.domain.dto.member.response.MyPagePostDto;
-import com.JJP.restapiserver.domain.dto.post.PostDetailDto;
-import com.JJP.restapiserver.domain.dto.post.PostResponseDto;
-import com.JJP.restapiserver.domain.dto.post.PostSaveRequestDto;
-import com.JJP.restapiserver.domain.dto.post.PostUpdateRequestDto;
+import com.JJP.restapiserver.domain.dto.post.*;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
