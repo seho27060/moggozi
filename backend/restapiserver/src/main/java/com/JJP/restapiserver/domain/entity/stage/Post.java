@@ -71,4 +71,8 @@ public class Post extends BaseTimeEntity {
         this.title = title;
         this.content = content;
     }
+
+    public void addLikeNum() {
+        this.likeNum++;
+    }
 }
