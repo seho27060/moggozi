@@ -292,9 +292,17 @@ export const postRandomRead = async (size: number) => {
   return data;
 };
 
-export const postLike = async (post_Id: number) => {
+export const postLike = async (postId: number) => {
   const { data } = await withTokenApi.post(`/postlike/like`, {
-    postId: post_Id,
+    postId: postId,
+  });
+  return data;
+};
+
+// 포스트 이미지 업데이트
+export const postImgApi = async (postId: number, postImg: string) => {
+  const { data } = await withTokenApi.post(`/img/post/${postId}`, {
+    imgDtoList: [{ order: 0, path: postImg }],
   });
   return data;
 };

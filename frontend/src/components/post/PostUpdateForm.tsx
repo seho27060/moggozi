@@ -6,7 +6,7 @@ import {
 } from "../../store/postModal";
 import { postModify, PostData } from "../../store/post";
 import { useDispatch, useSelector } from "react-redux";
-import { postUpdate } from "../../lib/withTokenApi";
+import { postImgApi, postUpdate } from "../../lib/withTokenApi";
 import { RootState } from "../../store/store";
 
 import EditorComponent from "../ui/Editor";
@@ -40,7 +40,6 @@ const PostUpdateForm: React.FC<{}> = () => {
       postId: PostModalState!.id!,
       title: titleInputRef.current!.value,
       content: contentInputRef.current!.value,
-      postImg: PostModalState!.postImg,
     };
 
     const modifiedModalPost: PostData = {
@@ -64,9 +63,8 @@ const PostUpdateForm: React.FC<{}> = () => {
             .then((res) => {
               getDownloadURL(res.ref)
                 .then((res) => {
-                  PostUpdateData.postImg = res;
-                  modifiedModalPost.postImg = res;
-                  postUpdate(PostUpdateData)
+                  modifiedModalPost.postImg = [{ path: res }];
+                  postImgApi(PostUpdateData.postId!, res)
                     .then((res) => {
                       console.log("post 수정완료", res);
                       dispatch(postModify(modifiedModalPost));

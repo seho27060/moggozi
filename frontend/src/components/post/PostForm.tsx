@@ -1,6 +1,6 @@
 import { ChangeEvent, FormEvent, useRef, useState } from "react";
 import { PostSend } from "../../store/postModal";
-import { postAdd, postUpdate } from "../../lib/withTokenApi";
+import { postAdd, postImgApi } from "../../lib/withTokenApi";
 import { postRegister } from "../../store/post";
 import { useDispatch } from "react-redux";
 import EditorComponent from "../ui/Editor";
@@ -24,7 +24,6 @@ const PostForm: React.FC<{
   const PostData: PostSend = {
     title: "",
     content: "",
-    postImg: "",
     stageId: stageId,
   };
   const postingSubmitHandler = (event: FormEvent) => {
@@ -42,17 +41,12 @@ const PostForm: React.FC<{
             .then((res) => {
               getDownloadURL(res.ref)
                 .then((res) => {
-                  PostData.postImg = res;
-                  console.log(PostData.postImg);
-                  postUpdate({
-                    title: PostData.title,
-                    content: PostData.content,
-                    postImg: PostData.postImg,
-                    postId: postId,
-                  })
+                  postImgApi(postId, res)
                     .then((res) => {
                       console.log(res);
-                      dispatch(postRegister(PostData));
+                      dispatch(
+                        postRegister({ ...PostData, postImg: [{ path: res }] })
+                      );
                     })
                     .catch((err) => console.log("이미지 db에 저장 실패", err));
                   modalClose();
