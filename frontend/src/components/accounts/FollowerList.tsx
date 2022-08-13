@@ -63,7 +63,11 @@ const FollowerList = (props: Props): ReactElement => {
       </div>
 
       {userId === id ? (
-        <div>&nbsp;</div>
+        <div style={{
+          width: "4.3rem",
+          fontSize:"0.75rem",
+          margin: "0",
+        }}>&nbsp;</div>
       ) : (
         <button
           onClick={followHandler}

@@ -8,17 +8,21 @@ export interface PostData {
   content: Value | string | null;
   createdTime: Date | null;
   modifiedTime: Date | null;
-  postImg: string | null;
+  postImg: PostImgData[];
   likeNum: number | null;
   liked: boolean | null;
   writer: UserInfo | null;
+}
+
+export interface PostImgData {
+  path: string | null;
 }
 
 export interface PostItem {
   id: number | null;
   title: string | null;
   likeCount: number | null;
-  img: string | null;
+  img: PostImgData[];
   writer: UserInfo;
 }
 
