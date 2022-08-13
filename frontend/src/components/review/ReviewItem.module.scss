@@ -10,6 +10,7 @@
       height: 50px;
       border-radius: 100%;
       object-fit: cover;
+      cursor: pointer;
     }
 
     .data {
@@ -24,6 +25,7 @@
           font-size: 17px;
           line-height: 21px;
           margin-right: 5px;
+          cursor: pointer;
         }
 
         // 평점
