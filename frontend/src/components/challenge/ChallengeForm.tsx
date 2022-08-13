@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { challengeAdd } from "../../lib/withTokenApi";
@@ -16,7 +16,7 @@ import styles from "./ChallengeForm.module.scss"
 const ChallengeForm: React.FC = () => {
   const nameInputRef = useRef<HTMLInputElement>(null);
   const descriptionInputRef = useRef<HTMLTextAreaElement>(null);
-  const [ contentInput, setContentInput ] = useState("");
+  // const [ contentInput, setContentInput ] = useState("");
   const contentInputRef = useRef<ReactQuill>();
   const levelSelectRef = useRef<HTMLSelectElement>(null);
 

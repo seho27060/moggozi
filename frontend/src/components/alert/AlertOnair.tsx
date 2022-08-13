@@ -13,16 +13,16 @@ import {
   setPostModalOpen,
   setAlertPostModalOpen,
 } from "../../store/postModal";
-import Modal from "../ui/Modal";
 import PostDetailItem from "../post/PostDetailItem";
 
 import styles from "./AlertOnair.module.scss";
+import PostModal from "../ui/PostModal";
 
 const AlertOnair: React.FC<{}> = () => {
   const dispatch = useDispatch();
   const [isToggle, setIsToggle] = useState(false);
   // const user = useSelector((state: RootState) => state.auth.userInfo);
-  const { alertPostModalOpen, postModalOpen, postUpdateFormOpen } = useSelector(
+  const { alertPostModalOpen, postUpdateFormOpen } = useSelector(
     (state: RootState) => state.postModal
   );
   const closePostModal = () => {
@@ -36,37 +36,37 @@ const AlertOnair: React.FC<{}> = () => {
   // const ws = useContext(WebSocketContext);
 
   const alertClickHandler = () => {
-    {
-      console.log("alertclick", realTimeAlert);
-      alertRecent()
-        .then((res) => {
-          console.log("recent alert read", res);
-          dispatch(setAlertList(res));
-        })
-        .catch((err) => {
-          console.log("err", err);
-        });
-      setIsToggle(!isToggle);
-      dispatch(setRealTimeAlert(false));
-      alertReadall();
-    }
+    console.log("alertclick", realTimeAlert);
+    alertRecent()
+      .then((res) => {
+        console.log("recent alert read", res);
+        dispatch(setAlertList(res));
+      })
+      .catch((err) => {
+        console.log("err", err);
+      });
+    setIsToggle(!isToggle);
+    dispatch(setRealTimeAlert(false));
+    alertReadall();
   };
   return (
-    <div className={styles.dropdown} style={{background:"white", paddingTop:"0"}}>
-      <button onClick={alertClickHandler} style={{border:"none", fontSize:"1.4rem"}}>
-        {realTimeAlert ? <VscBellDot className={styles.bell}/> : <VscBell />}
+    <div
+      className={styles.dropdown}
+      style={{ background: "white", paddingTop: "0" }}
+    >
+      <button
+        onClick={alertClickHandler}
+        style={{ border: "none", fontSize: "1.4rem" }}
+      >
+        {realTimeAlert ? <VscBellDot className={styles.bell} /> : <VscBell />}
       </button>
       <div>{isToggle && <AlertList setIsToggle={setIsToggle} />}</div>
       <div>
-        {alertPostModalOpen && ( 
-          <Modal
-            open={alertPostModalOpen}
-            close={closePostModal}
-            header="Alert Post"
-          >
+        {alertPostModalOpen && (
+          <PostModal open={alertPostModalOpen} close={closePostModal}>
             {!postUpdateFormOpen && <PostDetailItem />}
             {postUpdateFormOpen && <PostUpdateForm />}
-          </Modal>
+          </PostModal>
         )}
       </div>
     </div>

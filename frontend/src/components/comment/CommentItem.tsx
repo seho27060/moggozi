@@ -7,7 +7,7 @@ import OverCommentForm from "./OverCommentForm";
 import CommentChild from "./CommentChild";
 import CommentOptionBtn from "./CommentOptionBtn";
 
-import styles from "./CommentItem.module.scss"
+import styles from "./CommentItem.module.scss";
 import { useState } from "react";
 // 댓글 컴포넌트
 // 현재 스테이트에 불러들인 comment 리스트 가져오기
@@ -21,17 +21,16 @@ const CommentItem: React.FC<{
   const comments = useSelector((state: RootState) => state.comment.comments);
   const parentId = comment.id;
 
-  const [ toggle, setToggle ] = useState(false)
+  const [toggle, setToggle] = useState(false);
 
   const closeToggle = () => {
-    setToggle(false)
-  }
-  
+    setToggle(false);
+  };
 
   const childs = comments?.filter((comment) => comment.parentId === parentId);
   childs!.sort((a: Comment, b: Comment) => (a.id >= b.id ? 1 : -1));
   const order = Number(childs?.at(-1)?.order) + 1;
-  console.log(comment.writer?.img)
+  console.log(comment.writer?.img);
   // console.log(`${comment.id}의 childs`, childs);
 
   return (
@@ -40,33 +39,59 @@ const CommentItem: React.FC<{
       {/* 사용자이미지, img태그에 null값이 못들어감 수정필요 */}
       <div className={styles.writer}>
         <div className={styles.user}>
-        { comment.writer?.path ? <img className={styles.img} src={comment.writer?.path} alt="" /> : <img className={styles.img} src="https://blog.kakaocdn.net/dn/vckff/btqCjeJmBHM/tMVpe4aUIMfH4nKS4aO3tK/img.jpg" alt="" />}
+          {comment.writer?.path ? (
+            <img
+              className={styles.img}
+              src={comment.writer?.path}
+              alt=""
+              style={{ height: "50px", width: "50px" }}
+            />
+          ) : (
+            <img
+              className={styles.img}
+              src="https://blog.kakaocdn.net/dn/vckff/btqCjeJmBHM/tMVpe4aUIMfH4nKS4aO3tK/img.jpg"
+              alt=""
+              style={{ height: "50px", width: "50px" }}
+            />
+          )}
           <div>{comment.writer?.nickname}</div>
         </div>
-        <div className={styles.option}><CommentOptionBtn comment={comment} postId={postModalState.id} /></div>
+        <div className={styles.option}>
+          <CommentOptionBtn comment={comment} postId={postModalState.id} />
+        </div>
       </div>
       <div>
         <div className={styles.context}>{comment.text}</div>
         <div className={styles.comment_date}>
-          <div onClick={() => {setToggle(!toggle)}}>댓글달기</div>
-          <div>{new Date(
-                    comment!.modifiedTime!
-                  ).toLocaleDateString("ko-Kr", {
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric",
-                  })}</div>
+          <div
+            onClick={() => {
+              setToggle(!toggle);
+            }}
+          >
+            댓글달기
+          </div>
+          <div>
+            {new Date(comment!.modifiedTime!).toLocaleDateString("ko-Kr", {
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            })}
+          </div>
         </div>
       </div>
       <div>
         {/* 대댓글 */}
-        {toggle ? <OverCommentForm
-          order={order}
-          parentId={parentId}
-          postId={postModalState.id}
-          receiver={postModalState.writer}
-          close={closeToggle}
-        /> : <div></div>}
+        {toggle ? (
+          <OverCommentForm
+            order={order}
+            parentId={parentId}
+            postId={postModalState.id}
+            receiver={postModalState.writer}
+            close={closeToggle}
+          />
+        ) : (
+          <div></div>
+        )}
       </div>
       <div>
         {childs?.map((child) => (

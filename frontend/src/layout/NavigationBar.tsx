@@ -31,6 +31,9 @@ const NavigationBar: React.FC = () => {
             </NavLink>
           </li>
           <div className={style.div}>
+          <li>
+              <NavLink to="/notice/0">공지사항</NavLink>
+            </li>
             <li>
               <NavLink to="/search">챌린지</NavLink>
             </li>
