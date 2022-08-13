@@ -251,6 +251,9 @@ public class ChallengeController {
     }
 
     public Optional<Long> getMember_id(HttpServletRequest request){
+        if(request.getHeader("Authorization") == null){
+            return Optional.ofNullable(null);
+        }
         Long member_id = jwtUtils.getUserIdFromJwtToken(request.getHeader("Authorization"));
         return Optional.ofNullable(member_id);
     }
