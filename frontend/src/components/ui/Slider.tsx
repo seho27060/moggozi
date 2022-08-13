@@ -1,6 +1,5 @@
-import React, { Component } from "react";
+import React from "react";
 import Slider from "react-slick";
-
 
 import styles from "./Slider.module.scss"
 
@@ -13,16 +12,12 @@ interface Props {
   children: React.ReactNode;
 }
 
-
 interface NextArrowProps {
   // className?: any;
   // style?: any;
   onClick?: React.MouseEventHandler<HTMLDivElement>;
 }
 
-// function NextArrow({ className, style, onClick }: NextArrowProps) {
-//   return (<div className={className} style={{ ...style, display: 'block', background: 'red', right: "10px", }} onClick={onClick}><img src="https://via.placeholder.com/500x350/" alt="" /></div>);
-// }
 function NextArrow({ onClick }: NextArrowProps) {
   return (<div style={{ display: 'inline-block', position: "relative", bottom: "190px", left: "470px" }} onClick={onClick}><ArrowForwardIosIcon style={{cursor: "pointer", color: "RGB(204, 204, 204)"}} className={styles.hover} /></div>);
 }
