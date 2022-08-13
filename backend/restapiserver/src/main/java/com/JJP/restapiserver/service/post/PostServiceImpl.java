@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @RequiredArgsConstructor
@@ -138,10 +139,12 @@ public class PostServiceImpl implements PostService {
     @Override
     public MyPagePostDto infinitePostList(Long member_id, Pageable pageable){
         Slice<Post> challengeSlice = postRepository.findByMember_IdOrderByCreatedDateDesc(member_id, pageable);
+        List<Post> postList = challengeSlice.toList();
+        List<PostResponseDto> postResponseDtoList = postList.stream().map(o -> new PostResponseDto(o)).collect(Collectors.toList());
 
         MyPagePostDto myPagePostDto = MyPagePostDto.builder()
                 .pageNum(challengeSlice.getNumber())
-                .content(challengeSlice.getContent())
+                .content(postResponseDtoList)
                 .size(challengeSlice.getSize())
                 .hasNext(challengeSlice.hasNext())
                 .build();
