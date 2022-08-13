@@ -9,6 +9,8 @@ import { WebSocketContext } from "../../lib/WebSocketProvider";
 import { UserInfo } from "../../store/auth";
 import { useNavigate } from "react-router-dom";
 
+import styles from "./CommentForm.module.scss"
+
 const CommentForm: React.FC<{
   postId: number | null;
   parentId: number | null;
@@ -20,7 +22,7 @@ const CommentForm: React.FC<{
   const userInfo = useSelector((state: RootState) => state.auth.userInfo);
   const ws = useContext(WebSocketContext);
 
-  const enteredText = useRef<HTMLInputElement>(null);
+  const enteredText = useRef<HTMLTextAreaElement>(null);
 
   const commentSubmitHandler = (event: FormEvent) => {
     event.preventDefault();
@@ -87,10 +89,10 @@ const CommentForm: React.FC<{
 
   return (
     <>
-      <form>
-        <label htmlFor="comment">댓글 달기</label>
-        <input type="text" id="comment" ref={enteredText} required />
-        <button onClick={commentSubmitHandler}>등록</button>
+      <form className={styles.commentForm}>
+        <textarea name="comment" id="comment" ref={enteredText} placeholder="댓글달기"></textarea>
+        {/* <input type="text" id="comment" ref={enteredText} required placeholder="댓글달기"/> */}
+        <div><button onClick={commentSubmitHandler}>게시</button></div>
       </form>
     </>
   );

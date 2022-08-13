@@ -7,6 +7,8 @@ import { RootState } from "../../store/store";
 // id == parentID => 댓글 else 대댓글
 // order : 댓글 = 0, 대댓글 = 1,2,3..n
 
+import styles from "./CommentList.module.scss"
+
 const CommentList: React.FC<{ comments: Comment[] | null }> = ({
   comments,
 }) => {
@@ -19,8 +21,10 @@ const CommentList: React.FC<{ comments: Comment[] | null }> = ({
   );
   return (
     <div>
-      PostComment
-      <div>
+      {commentList?.map((comment) => (
+        <CommentItem key={comment.id} comment={comment} />
+      ))}
+      <div className={styles.commentForm}>
         {/* 원댓글 */}
         <CommentForm
           postId={postModalState.id}
@@ -29,9 +33,6 @@ const CommentList: React.FC<{ comments: Comment[] | null }> = ({
           receiver={postModalState.writer}
         />
       </div>
-      {commentList?.map((comment) => (
-        <CommentItem key={comment.id} comment={comment} />
-      ))}
     </div>
   );
 };

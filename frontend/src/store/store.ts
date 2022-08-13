@@ -9,6 +9,7 @@ import stageReducer from "./stage";
 import reviewReducer from "./review";
 import alertReducer from "./alert"
 import alertModalReducer from "./alertModal";
+import noticeReducer from  "./notice"
 
 export const store = configureStore({
   reducer: {
@@ -17,6 +18,7 @@ export const store = configureStore({
     alertModal : alertModalReducer,
     hobby: hobbyReducer,
     comment: commentReducer,
+    notice: noticeReducer,
     post: postReducer,
     postModal : postModalReducer,
     postStage : postStageReducer,

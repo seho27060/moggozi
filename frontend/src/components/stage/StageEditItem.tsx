@@ -3,6 +3,7 @@ import Dompurify from "dompurify";
 
 const StageEditItem: React.FC<{
   stage: StageState;
+  index: number | null;
 }> = ({ stage }) => {
   return (
     <div>

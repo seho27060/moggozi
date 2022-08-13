@@ -37,11 +37,11 @@ export const postSlice = createSlice({
   reducers: {
     postSet: (state, action) => {
       console.log("postSet", action);
-      const unorderedPosts = action.payload;
-      unorderedPosts.sort((a: PostData, b: PostData) =>
+      const orderedPosts = action.payload;
+      orderedPosts.sort((a: PostData, b: PostData) =>
         a.id! >= b.id! ? 1 : -1
       );
-      state.posts = unorderedPosts;
+      state.posts = orderedPosts;
     },
     postRegister: (state, action) => {
       console.log("postRegister", action);

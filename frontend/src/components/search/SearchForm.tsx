@@ -37,10 +37,19 @@ const SearchForm = (props: Props) => {
   };
 
   const onKeyPressHandler = (event: React.KeyboardEvent) => {
+    console.log(event.key)
     if (event.key === "Enter") {
       const enteredSearch = searchInputRef.current!.value;
       close();
       navigate(`/search/?keyword=${enteredSearch}&page=0&size=4&choice=0`);
+    } 
+  }
+
+  const onKeyDownHandler = (event: React.KeyboardEvent) => {
+    if(event.keyCode === 27) {
+      event.preventDefault();
+      document.body.style.overflow = "unset";
+      close();
     }
   }
 
@@ -97,6 +106,7 @@ const SearchForm = (props: Props) => {
           ref={searchInputRef}
           placeholder="무엇이든 검색하세요."
           onKeyPress={onKeyPressHandler}
+          onKeyDown={onKeyDownHandler}
           onChange={changeInputHandler}
         ></input>
         <button type="button" onClick={submitHandler}>

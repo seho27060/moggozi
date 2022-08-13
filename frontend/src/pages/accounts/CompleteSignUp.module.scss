@@ -1,0 +1,66 @@
+@use "../../styles/mixin.scss" as mixin;
+
+@include mixin.desktop {
+  .complete {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+
+    img {
+      width: 153px;
+      height: 128px;
+      object-fit: cover;
+    }
+
+    div:nth-child(2) {
+      font-weight: 700;
+      font-size: 40px;
+      margin: 20px 0 20px 0;
+      padding: 0px;
+
+    }
+    div:nth-child(3) {
+      font-weight: 400;
+      font-size: 20px;
+      margin: 20px 0 20px 0;
+    }
+
+    div:nth-child(4) {
+      font-weight: 400;
+      font-size: 20px;
+      margin: 20px 0 20px 0;
+    }
+
+    button:nth-child(5) {
+      font-weight: 400;
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+      width: 250px;
+      height: 60px;
+      border: 0;
+      border-radius: 5px;
+      background: mixin.$mainColor;
+      color: #fff;
+      cursor: pointer;
+
+      &:hover {
+        font-size: 16px;
+        // transition: all 1s;
+        transition: all 0.5s;
+      }
+
+      &:not(:hover) {
+        transition: all 0.5s
+      }
+
+    }
+
+  }
+}
+
+@include mixin.mobile {
+}

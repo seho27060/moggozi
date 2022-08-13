@@ -35,6 +35,7 @@ import Modal from "../../components/ui/Modal";
 
 import Dompurify from "dompurify";
 import styles from "./ChallengeDetail.module.scss";
+import PostModal from "../../components/ui/PostModal";
 
 const ChallengeDetail: React.FC = () => {
   const { id } = useParams();
@@ -51,15 +52,10 @@ const ChallengeDetail: React.FC = () => {
   const dispatch = useDispatch();
   const reviews = useSelector((state: RootState) => state.review);
 
-  const {
-    postModalOpen,
-    postFormModalOpen,
-    postUpdateFormOpen,
-  } = useSelector((state: RootState) => state.postModal);
-  // if (postModalOpen) {
-  //   document.body.style.overflow = "auto"; //모달때문에 이상하게 스크롤이 안되서 강제로 스크롤 바 생성함
-  //   document.body.style.height = "auto";
-  // }
+  const { postModalOpen, postFormModalOpen, postUpdateFormOpen } = useSelector(
+    (state: RootState) => state.postModal
+  );
+
   const closePostModal = () => {
     dispatch(setPostModalOpen(false));
     dispatch(setPostUpdateFormState(false));
@@ -336,11 +332,11 @@ const ChallengeDetail: React.FC = () => {
           </div>
           <div className={styles.horizon}></div>
 
-          <div>{isLoggedIn && <ReviewForm image={userImg} />}</div>
+          <div>{isLoggedIn && <ReviewForm user_image={userImg} />}</div>
           <ReviewList reviews={reviews} />
 
           <div>
-            <p>스테이지</p>
+            <div className={styles.stageHr}></div>
             <StageList
               stages={loadedChallenge!.stageList}
               challengeProgress={loadedChallenge!.userProgress}
@@ -351,10 +347,10 @@ const ChallengeDetail: React.FC = () => {
 
       <div>
         {postModalOpen && (
-          <Modal open={postModalOpen} close={closePostModal} header="Post">
+          <PostModal open={postModalOpen} close={closePostModal}>
             {!postUpdateFormOpen && <PostDetailItem />}
             {postUpdateFormOpen && <PostUpdateForm />}
-          </Modal>
+          </PostModal>
         )}
 
         {postFormModalOpen && (
@@ -367,8 +363,7 @@ const ChallengeDetail: React.FC = () => {
               stageId={Number(stageId)}
               modalClose={closePostFormModal}
             />
-          </Modal>
-        )}
+          </Modal>)}
       </div>
     </div>
   );

@@ -15,14 +15,18 @@ import {
 } from "../../store/postModal";
 import { imgState, StageState } from "../../store/stage";
 import { RootState } from "../../store/store";
-import PostList from "../post/PostList";
+import Carousel from "../ui/Slider";
+
+import styles from "./StageItem.module.scss"
+import "./Carousel.module.scss"
+import PostList from "../post/PostList"; 
 
 import Dompurify from "dompurify";
 
 const StageItem: React.FC<{
-  stage: StageState;
+  stage: StageState, index: number,
   challengeProgress: number;
-}> = ({ stage, challengeProgress }) => {
+}> = ({ stage, index, challengeProgress }) => {
   document.body.style.overflow = "auto"; //모달때문에 이상하게 스크롤이 안되서 강제로 스크롤 바 생성함
 
   const dispatch = useDispatch();
@@ -108,56 +112,51 @@ const StageItem: React.FC<{
 
   return (
     <div>
-      <h4>스테이지 아이템</h4>
-      <p>스테이지 이름 : {stage.name}</p>
-      <p>
-        스테이지 내용 :{" "}
-        <div
+      <div className={styles.stageInfo}>
+      <div className={styles.carouesl}>
+        <Carousel>
+          <div>
+            <img src="https://img1.daumcdn.net/thumb/R800x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbgHC4M%2FbtqBVf8rCqB%2FZz5aJuALI4JSKV8ZKAm8YK%2Fimg.jpg" alt="" />
+          </div>
+          <div>
+            <img src="https://via.placeholder.com/500x350/" alt="" />
+          </div>
+          <div>
+            <img src="https://img1.daumcdn.net/thumb/R800x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbgHC4M%2FbtqBVf8rCqB%2FZz5aJuALI4JSKV8ZKAm8YK%2Fimg.jpg" alt="" />
+          </div>
+        </Carousel>
+      </div>
+        <div className={styles.content}>
+          <div>{index+1}단계</div>
+          <div>{stage.name}</div>
+          <div
           dangerouslySetInnerHTML={{
             __html: Dompurify.sanitize(stage.content!.toString()),
           }}
           className="view ql-editor"
         ></div>
-      </p>
-      <Link to={`/post/${stage.id}`}>스테이지 포스팅 더보기</Link>
-      <ul>
-        {Array.isArray(getStageImg) &&
-          getStageImg.map((img: imgState) => {
-            return (
-              <li key={img.id}>
-                <img src={img.url!} alt="img" />
-              </li>
-            );
-          })}
-      </ul>
+        </div>
+      </div>
+          <div className={styles.btnPosition}>
+            {(postFormButtonOpen && isLoggedIn && postingStageId) && (
+              <button onClick={() => dispatch(setPostFormModalOpen(true))}>
+                완료 / 포스팅하기
+              </button>
+            )}
+          </div>
 
-      {challengeProgress === 1 && getStageProgress === 0 && (
-        <button onClick={stageTryHandler}>진행하기</button>
-      )}
-      {challengeProgress === 1 && getStageProgress === 1 && (
-        <button onClick={stageCancelHandler}>진행 취소</button>
-      )}
-      {getStageProgress === 2 && <p>완료</p>}
-      {(getStageProgress === 1 &&
-      postFormButtonOpen &&
-      isLoggedIn &&
-      postingStageId &&
-      !postedCheck) ? (
-        <button onClick={() => dispatch(setPostFormModalOpen(true))}>
-          포스팅 생성
-        </button>
-      ) : (
-        <button onClick={() => dispatch(setPostFormModalOpen(false))}>
-          이미포스트작성함/ 원래있던 포스팅 띄우기
-        </button>
-      )}
-
+      <div className={styles.horizon}></div>
+      
+      <div className={styles.postTitle}>
+        <div>포스트</div>
+        <Link to={`/post/${stage.id}`}>더보기</Link>
+      </div>
+      
+      <div>
       {postStageListState && (
-        <>
-          {`${stage.id}의 PostList 3개만`}
-          <PostList posts={postStageListState} />
-        </>
+        <PostList posts={postStageListState} />
       )}
+      </div>
     </div>
   );
 };

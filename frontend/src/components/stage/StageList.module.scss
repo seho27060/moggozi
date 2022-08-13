@@ -1,0 +1,12 @@
+@use "../../styles/mixin.scss" as mixin;
+
+@include mixin.desktop {
+  .tabs {
+      border-bottom: 2px solid mixin.$cloudLine;
+      border-top: 2px solid mixin.$cloudLine;
+      
+      // Tabs > TabsList {
+      //   border-bottom: 2px solid mixin.$cloudLine;
+      // }
+  }
+}

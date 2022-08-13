@@ -155,7 +155,7 @@ const SearchPage: React.FC = () => {
         <button onClick={submitHandler}>검색</button>
       </div>
 
-      <div className={styles.taps}>
+      <div className={styles.tabs}>
         <button onClick={(e) => changePageHandler(e, 0)} disabled={choice === 0}>
           챌린지
         </button>

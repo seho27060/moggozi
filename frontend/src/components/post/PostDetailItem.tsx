@@ -7,11 +7,13 @@ import { commentSet } from "../../store/comment";
 
 import CommentList from "../comment/CommentList";
 import { useDispatch } from "react-redux";
-import PostModifyBtn from "./PostModifyBtn";
 import PostLikeBtn from "./PostLikeBtn";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { setPostModalOpen } from "../../store/postModal";
 
+
+
+import PostOptionBtn from "./PostOptionBtn";
 import Dompurify from "dompurify";
 import styles from "./PostDetailItem.module.scss";
 import "react-quill/dist/quill.snow.css";
@@ -19,7 +21,7 @@ import "react-quill/dist/quill.snow.css";
 const PostDetailItem: React.FC<{}> = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const user = useSelector((state: RootState) => state.auth.userInfo);
+  // const user = useSelector((state: RootState) => state.auth.userInfo);
   const post = useSelector((state: RootState) => state.postModal);
   const commentState = useSelector(
     (state: RootState) => state.comment.comments
@@ -35,27 +37,29 @@ const PostDetailItem: React.FC<{}> = () => {
       .catch((err) => {
         console.log("ERR", err);
       });
-  }, []);
+  }, [dispatch, post.postModalState]);
 
   return (
-    <div className={styles.postDetailContainer}>
-      <div className={styles.postDetailItem}>
+    <div style={{ height: "25rem", overflow: "scroll" }}>
+      <div style={{ border: "solid", margin: "1rem", padding: "1rem" }}>
         <img src="" alt="포스팅이미지" />
         {/* 수정 버튼 */}
-        <PostModifyBtn />
-        <div>postid:{post.postModalState!.id}</div>
-        <div>
-          <button
-            onClick={() => {
-              navigate(`/user/${post.postModalState.writer!.id}`);
-              dispatch(setPostModalOpen(false));
-            }}
-          >
-            <div>프로필이미지 : {post.postModalState!.writer?.img}</div>
-            <div>작성자 : {post.postModalState!.writer?.nickname}</div>
-          </button>
-          <hr />
+      </div>
+      <div className={styles.container}>
+        <div
+          className={styles.writer}>
+          <div className={styles.writerInfo}  onClick={() => {
+            navigate(`/user/${post.postModalState.writer!.id}`);
+            dispatch(setPostModalOpen(false));}}>
+            { post.postModalState!.writer?.img ? <img src={post.postModalState!.writer?.img} alt="" /> : <img src="https://blog.kakaocdn.net/dn/vckff/btqCjeJmBHM/tMVpe4aUIMfH4nKS4aO3tK/img.jpg" alt="" />}
+            
+            <div>{post.postModalState!.writer?.nickname}</div>
+          </div>
+          <div><PostOptionBtn /></div>
         </div>
+
+        <div className={styles.horizon} ></div>
+        
         <div>
           <>
             <div>제목 : {post.postModalState!.title}</div>
@@ -85,10 +89,11 @@ const PostDetailItem: React.FC<{}> = () => {
             )}
           </>
         </div>
-        <div style={{ border: "solid", margin: "1rem", padding: "1rem" }}>
-          댓글창
+
+        <div className={styles.horizon}></div>
+        <div>
           {/* // 해당 포스팅에 대한 댓글 불러온다는 가정하에 구현
-        // comment store에 state 저장해서 사용할것. */}
+          // comment store에 state 저장해서 사용할것. */}
           <CommentList comments={commentState} />
         </div>
       </div>
