@@ -66,7 +66,7 @@ const PostingPageItem: React.FC<{ post: PostData }> = ({ post }) => {
         </div>
       </div>
 
-      {post.postImg.length !== 0 ? (
+      {post.postImg!.length !== 0 ? (
         <img
           onClick={(event: React.MouseEvent) => {
             event.preventDefault();
@@ -74,7 +74,7 @@ const PostingPageItem: React.FC<{ post: PostData }> = ({ post }) => {
             dispatch(setPostModalOpen(true));
           }}
           className={styles.postImg}
-          src={post.postImg[0].path!}
+          src={post.postImg![0].path!}
           alt=""
         />
       ) : (

@@ -15,20 +15,16 @@ const UserChallengeItem: React.FC<{
         <div
           style={{
             border: "solid 1px",
-            width: "15rem",
-            height: "15rem",
-            margin: "2rem",
+            width: "13.5rem",
+            height: "13.5rem",
+            margin: "1rem",
             borderRadius:"5px"
           }}
         >
           <img src={userChallenge.img!} alt="challengeImg" style={{
-            width: "15rem",
-            height: "12rem",
+            width: "13.5rem",
+            height: "13.5rem",
           }}/>
-          <br />
-          챌린지 레벨: {userChallenge.level}
-          <br />
-          {userChallenge.name}
         </div>
       </Link>
     </div>

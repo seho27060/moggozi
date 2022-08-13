@@ -62,6 +62,10 @@
       color: #ff6262;
     }
   }
+
+  .container {
+    width:992px;
+  }
 }
 
 @include mixin.mobile {
