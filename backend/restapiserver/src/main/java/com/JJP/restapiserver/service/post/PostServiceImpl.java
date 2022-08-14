@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 
@@ -35,7 +36,7 @@ public class PostServiceImpl implements PostService {
         Post post = postRepository.findByStage_idAndMember_Id(postSaveRequestDto.getStageId(), member_id);
 
         if(post != null){
-            return Long.valueOf(-1);
+            return (long) -1;
         }
 
         return postRepository.save(postSaveRequestDto.toEntity(memberRepository.getById(member_id), stageRepository.getById(postSaveRequestDto.getStageId()))).getId();
@@ -47,7 +48,7 @@ public class PostServiceImpl implements PostService {
         Long post_id = postUpdateRequestDto.getPostId();
         Post entity = postRepository.findById(post_id).orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + post_id));
 
-        if(entity.getMember().getId() != member_id){
+        if(!Objects.equals(entity.getMember().getId(), member_id)){
             return -1;
         }
 
@@ -70,26 +71,7 @@ public class PostServiceImpl implements PostService {
     @Override
     public SliceListDto getStagePost(Long stage_id, Pageable pageable) {
         Page<Post> postList = postRepository.findAllByStage_idOrderByCreatedDateDesc(stage_id, pageable);
-        List<PostResponseDto> postResponseDtoList = new ArrayList<>();
-        for(int i = 0; i < postList.getNumberOfElements(); i++)
-        {
-            Post post = postList.getContent().get(i);
-            PostResponseDto postResponseDto = new PostResponseDto(post);
-            if(postLikeRepository.findByPost_idAndMember_id(postResponseDto.getId(), postResponseDto.getWriter().getId()).isPresent())
-            {
-                postResponseDto.setLiked(true);
-            }
-            postResponseDtoList.add(postResponseDto);
-        }
-
-        SliceListDto sliceListDto = SliceListDto.builder()
-                .pageNum(postList.getTotalPages())
-                .content(postResponseDtoList)
-                .size(postList.getSize())
-                .hasNext(postList.hasNext())
-                .build();
-
-        return sliceListDto;
+        return getSliceListDto(postList);
     }
 
     @Override
@@ -121,20 +103,23 @@ public class PostServiceImpl implements PostService {
             List<Post> postList = postRepository.findRandomPostList(size);
             List<PostResponseDto> postResponseDtoList = new ArrayList<>();
             if(postList != null){
-            for(int i = 0; i < postList.size(); i++)
-                postResponseDtoList.add(new PostResponseDto(postList.get(i)));
+                for (Post post : postList) postResponseDtoList.add(new PostResponseDto(post));
             }
             return postResponseDtoList;
         }
 
     @Override
-    public List<PostResponseDto> getMemberPost(Long member_id) {
-        List<Post> postList = postRepository.findAllByMember_id(member_id);
+    public SliceListDto getMemberPost(Long member_id, Pageable pageable) {
+        Page<Post> postList = postRepository.findAllByMember_idOrderByCreatedDateDesc(member_id, pageable);
 
+        return getSliceListDto(postList);
+    }
+
+    private SliceListDto getSliceListDto(Page<Post> postList) {
         List<PostResponseDto> postResponseDtoList = new ArrayList<>();
-        for(int i = 0; i < postList.size(); i++)
+        for(int i = 0; i < postList.getNumberOfElements(); i++)
         {
-            Post post = postList.get(i);
+            Post post = postList.getContent().get(i);
             PostResponseDto postResponseDto = new PostResponseDto(post);
             if(postLikeRepository.findByPost_idAndMember_id(postResponseDto.getId(), postResponseDto.getWriter().getId()).isPresent())
             {
@@ -142,22 +127,28 @@ public class PostServiceImpl implements PostService {
             }
             postResponseDtoList.add(postResponseDto);
         }
-        return postResponseDtoList;
+
+        return SliceListDto.builder()
+                .totalPages(postList.getTotalPages())
+                .pageNum(postList.getNumber())
+                .content(postResponseDtoList)
+                .size(postList.getNumberOfElements())
+                .hasNext(postList.hasNext())
+                .build();
     }
 
     @Override
     public SliceListDto infinitePostList(Long member_id, Pageable pageable){
         Slice<Post> challengeSlice = postRepository.findByMember_IdOrderByCreatedDateDesc(member_id, pageable);
         List<Post> postList = challengeSlice.toList();
-        List<PostResponseDto> postResponseDtoList = postList.stream().map(o -> new PostResponseDto(o)).collect(Collectors.toList());
+        List<PostResponseDto> postResponseDtoList = postList.stream().map(PostResponseDto::new).collect(Collectors.toList());
 
-        SliceListDto myPagePostDto = SliceListDto.builder()
+        return SliceListDto.builder()
                 .pageNum(challengeSlice.getNumber())
                 .content(postResponseDtoList)
                 .size(challengeSlice.getSize())
                 .hasNext(challengeSlice.hasNext())
                 .build();
-        return myPagePostDto;
     }
 
     @Override
@@ -165,19 +156,18 @@ public class PostServiceImpl implements PostService {
         Post post = postRepository.getById(post_id);
 
         Writer writer = new Writer(post.getMember().getId(), post.getMember().getNickname(), post.getMember().getUser_img());
-        PostDetailDto postDetailDto = PostDetailDto.builder()
+
+        return PostDetailDto.builder()
                 .id(post_id)
                 .title(post.getTitle())
                 .content(post.getContent())
                 .createdTime(post.getCreatedDate())
-                .isLiked(postLikeRepository.findByPost_idAndMember_id(post_id, member_id).isPresent() ? true : false)
+                .isLiked(postLikeRepository.findByPost_idAndMember_id(post_id, member_id).isPresent())
                 .modifiedTime(post.getModifiedDate())
                 .postImg(post.getPostImg())
                 .likeNum(post.getPostLikeList().size())
                 .writer(writer)
                 .build();
-
-        return postDetailDto;
     }
 
     @Override
@@ -189,18 +179,17 @@ public class PostServiceImpl implements PostService {
         }
 
         Writer writer = new Writer(member_id, post.getMember().getNickname(), post.getMember().getUser_img());
-        PostDetailDto postDetailDto = PostDetailDto.builder()
+
+        return PostDetailDto.builder()
                 .id(post.getId())
                 .title(post.getTitle())
                 .content(post.getContent())
                 .createdTime(post.getCreatedDate())
-                .isLiked(postLikeRepository.findByPost_idAndMember_id(post.getId(), member_id).isPresent() ? true : false)
+                .isLiked(postLikeRepository.findByPost_idAndMember_id(post.getId(), member_id).isPresent())
                 .modifiedTime(post.getModifiedDate())
                 .postImg(post.getPostImg())
                 .likeNum(post.getPostLikeList().size())
                 .writer(writer)
                 .build();
-
-        return postDetailDto;
     }
 }

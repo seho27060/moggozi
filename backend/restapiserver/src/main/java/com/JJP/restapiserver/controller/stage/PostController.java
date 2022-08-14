@@ -73,26 +73,28 @@ public class PostController {
     }
 
     // member에 따른 post리스트
-    @Operation(summary = "member에 따른 post리스트")
+    @Operation(summary = "member에 따른 최신순 post리스트")
     @GetMapping("/member/{member_id}")
-    private List<PostResponseDto> memberPostList(@PathVariable Long member_id){
-        return postService.getMemberPost(member_id);
+    private ResponseEntity<SliceListDto> memberPostList(@PathVariable Long member_id, Pageable pageable){
+        SliceListDto sliceListDto = postService.getMemberPost(member_id, pageable);
+
+        return new ResponseEntity<>(sliceListDto, HttpStatus.OK);
     }
 
     // stage에 따른 post리스트
     @Operation(summary = "stage에 따른 최신순 post리스트")
     @GetMapping("/{stage_id}")
-    private ResponseEntity stagePostList(@PathVariable Long stage_id, Pageable pageable){
+    private ResponseEntity<SliceListDto> stagePostList(@PathVariable Long stage_id, Pageable pageable){
         SliceListDto sliceListDto = postService.getStagePost(stage_id, pageable);
 
-        return new ResponseEntity(sliceListDto, HttpStatus.OK);
+        return new ResponseEntity<>(sliceListDto, HttpStatus.OK);
     }
 
     @Operation(summary = "랜덤 갯수 post리스트")
     @GetMapping("/random/{size}")
-    private ResponseEntity getRandomListBySize(@PathVariable int size){
+    private ResponseEntity<List<PostResponseDto>> getRandomListBySize(@PathVariable int size){
         List<PostResponseDto> postResponseDtoList = postService.getRandomPostList(size);
-        return new ResponseEntity(postResponseDtoList, HttpStatus.OK);
+        return new ResponseEntity<>(postResponseDtoList, HttpStatus.OK);
     }
 
     @Operation(summary = "최근 작성순서에 따른 post리스트")
