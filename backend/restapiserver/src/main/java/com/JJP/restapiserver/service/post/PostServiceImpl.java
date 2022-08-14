@@ -3,11 +3,17 @@ package com.JJP.restapiserver.service.post;
 import com.JJP.restapiserver.domain.dto.challenge.Writer;
 import com.JJP.restapiserver.domain.dto.member.response.MyPagePostDto;
 import com.JJP.restapiserver.domain.dto.post.*;
+import com.JJP.restapiserver.domain.entity.challenge.Challenge;
+import com.JJP.restapiserver.domain.entity.challenge.JoinedChallenge;
 import com.JJP.restapiserver.domain.entity.stage.Post;
+import com.JJP.restapiserver.domain.entity.stage.Stage;
+import com.JJP.restapiserver.domain.entity.stage.StageUser;
+import com.JJP.restapiserver.repository.challenge.JoinedChallengeRepository;
 import com.JJP.restapiserver.repository.member.MemberRepository;
 import com.JJP.restapiserver.repository.stage.PostLikeRepository;
 import com.JJP.restapiserver.repository.stage.PostRepository;
 import com.JJP.restapiserver.repository.stage.StageRepository;
+import com.JJP.restapiserver.repository.stage.StageUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
@@ -16,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -26,13 +33,29 @@ public class PostServiceImpl implements PostService {
     private final PostRepository postRepository;
     private final MemberRepository memberRepository;
     private final StageRepository stageRepository;
+    private final StageUserRepository stageUserRepository;
     private final PostLikeRepository postLikeRepository;
+    private final JoinedChallengeRepository joinedChallengeRepository;
 
     @Transactional
     @Override
     public Long savePost(PostSaveRequestDto postSaveRequestDto, Long member_id) {
         Post post = postRepository.findByStage_idAndMember_Id(postSaveRequestDto.getStageId(), member_id);
-
+        Long stage_id = postSaveRequestDto.getStageId();
+        Stage stage =  stageRepository.getById(stage_id);
+        Challenge challenge = stage.getChallenge();
+        JoinedChallenge joinedChallenge = joinedChallengeRepository.findByChallenge_idAndMember_id(challenge.getId(), member_id).get();
+        int stage_num = challenge.getStageList().size();
+        Optional<StageUser> userState = stageUserRepository.findByMember_idAndStage_id(member_id, stage_id);
+        // 포스트가 등록이 되면 유저가 참여중인 스테이지의 상태를 완료(2)로 바꿈
+        if(userState.isPresent()){
+            userState.get().setState(2);
+        }
+        // 그 다음에 만약 포스트의 개수가 챌린지의 스테이트 개수와 같다면, 조인드 챌린지의 상태를 2로 바꿔야함.
+        int post_num = postRepository.countByMember_idAndStage_id(member_id, stage_id);
+        if(post_num + 1 == stage_num){
+            joinedChallenge.setState(2);
+        }
         if(post != null){
             return Long.valueOf(-1);
         }

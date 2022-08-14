@@ -28,4 +28,6 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     Page<Post> findAllByOrderByCreatedDateDesc(Pageable pageable);
 
     Page<Post> findAllByOrderByLikeNumDesc(Pageable pageable);
+
+    int countByMember_idAndStage_id(Long member_id, Long stage_id);
 }
