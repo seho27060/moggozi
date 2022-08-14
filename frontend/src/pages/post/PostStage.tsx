@@ -65,7 +65,7 @@ const PostStage = () => {
     postListRead(Number(stageId))
       .then((res) => {
         console.log("포스팅 불러오기 성공", res);
-        dispatch(postSet(res));
+        dispatch(postSet(res.content));
         dispatch(setPostFormButtonState(true));
       })
       .catch((err) => {
@@ -107,6 +107,8 @@ const PostStage = () => {
             <PostForm
               stageId={Number(stageId)}
               modalClose={closePostFormModal}
+              // 값이 비면 안되서 아무거나 넣었음.
+              challenge={"123"}
             />
           </Modal>
         )}

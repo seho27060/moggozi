@@ -22,12 +22,14 @@
         height: 30px;
         border: 0;
         padding: 0 20px 0 15px;
+        margin: 0 0 10px 0;
         font-size: 20px;
         font-weight: 600;
 
         &::placeholder {
           font-weight: 600;
           font-size: 20px;
+          font-family: pretendard;
           line-height: 20px;
           color: mixin.$cloudGray
         }
@@ -44,10 +46,12 @@
         color: mixin.$cloudGray;
         font-size: 16px;
         font-weight: 600;
+        font-family: pretendard;
+        margin: 0 5px 0 0;
       }
     }
 
-    .taps {
+    .tabs {
       display: flex;
       border-bottom: 2px solid mixin.$cloudLine;
       padding: 0 0 7px 0;
@@ -61,6 +65,7 @@
         line-height: 20px;
         color: mixin.$cloudGray;
         transition: all 0.7s;
+        font-family: pretendard;
 
 
         &:disabled {

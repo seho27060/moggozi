@@ -10,6 +10,7 @@
   
   .container {
     margin-top: 60px;
+    width: 992px;
     
     // 챌린지 디테일 부분
     .C_article {
@@ -76,19 +77,9 @@
           height: 25px;
         }
         
-        button {
-          border: 0;
-          border-radius: 5px;
-          background: mixin.$mainColor;
-          font-size: 15px;
-          color: #fff;
-          width: 120px;
-          height: 40px;
-          margin: 0 10px 0 10px;
-        }
-
         .writer {
           display: flex;
+          cursor: pointer;
 
           img {
             width: 36px;
@@ -122,12 +113,62 @@
       }
 
       // 태그
-      ul {
-        display: flex;
-        font-weight: 700;
-        font-size: 15px;
-        li {  
-          margin-right: 20px;
+      .tag_start {
+        display:flex;
+        justify-content: space-between;
+        align-items: center;
+        ul {
+          display: flex;
+          font-weight: 700;
+          font-size: 15px;
+          li {  
+            margin-right: 20px;
+          }
+        }
+        .button {
+          width: 120px;
+          height: 40px;
+          font-weight: 700;
+          font-size: 17px;
+          font-family: pretendard;
+          line-height: 21px;
+          color: #fff;
+          border: 0;
+          border-radius: 5px;
+          background: linear-gradient(90deg, #FF9B25 -6.15%, #FF9415 -6.14%, #FFD362 106.15%);
+          cursor: pointer;
+
+          &:hover {
+            font-size: 20px;
+            transition: all 0.5s;
+          }
+
+          &:not(:hover) {
+            transition: all 0.5s;
+          }
+
+        }
+        
+        .complete {
+          width: 120px;
+          height: 40px;
+          font-weight: 700;
+          font-size: 17px;
+          font-family: pretendard;
+          line-height: 21px;
+          color: #fff;
+          border: 0;
+          border-radius: 5px;
+          background: linear-gradient(90deg, #FF9B25 -6.15%, #FF9415 -6.14%, #FFD362 106.15%);
+          &:hover {
+            font-size: 20px;
+            transition: all 0.5s;
+          }
+
+          &:not(:hover) {
+            transition: all 0.5s;
+          }
+
         }
       }
 
@@ -143,35 +184,66 @@
       // 좋아요 / 댓글
       .like {
         display: flex;
-
-        div:nth-child(1) {
+        
+        .likeLabel {
+          display: flex;
+          justify-content: center;
+          align-items: center;
           font-weight: 400;
           font-size: 14px;
           line-height: 15px;
           margin-right: 20px;
 
-          button {
-            margin: 0;
-            border: 0;
-            background: #fff;
+          .heart {
+            margin: 0 5px 0 0;
+            svg {
+              margin: 0;
+              border: 0;
+              background: #fff;
+              color: red;
+              font-size: 16px;
+
+              &:hover {
+                color: mixin.$cloudGray !important;
+              }
+            }
           }
 
-          span {
+          div {
             font-weight: 700;
             font-size: 16px;
             line-height: 15px;
+          }
+          
+          .nonHeart {
+            margin: 0 5px 0 0;            
+            svg {
+              font-size: 16px;
+              color: mixin.$cloudGray;
+
+              &:hover {
+                color: red !important;
+              }
+            }
+          }
+
+          .likeCnt {
+            margin: 0 0 0 5px;
           }
         }
 
-        div:nth-child(2) {
+        .commentCnt {
+          display: flex;
           font-weight: 400;
           font-size: 14px;
-          line-height: 15px;
-
-          span {
+          line-height: 21px;
+          div:nth-child(1) {
+            margin: 0 5px 0 0;
+          }
+          div:nth-child(2) {
             font-weight: 700;
             font-size: 16px;
-            line-height: 15px;
+            line-height: 21px;
           }
         }
       }
@@ -181,6 +253,7 @@
         display: flex;
         align-items: center;
         margin: 30px 0 20px 0;
+        cursor: pointer;
 
         img {
           width: 36px;
@@ -206,8 +279,21 @@
       height: 1px;
     }
 
-    
-    //
+    .stageHr::before {
+      margin: 45px auto 45px auto;
+      display: block;
+      // display: inline-block;
+      // position: relative;
+      left: 300px;
+      background-color: mixin.$cloudLine;
+      content:"";
+      width: 450px;
+      height: 1px;
+    }
+  }
+
+  .cont {
+    font-family: pretendard;
   }
 }
 

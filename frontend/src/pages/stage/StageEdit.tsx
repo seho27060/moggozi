@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import StageAddBtn from "../../components/stage/StageAddBtn";
 import StageDeleteBtn from "../../components/stage/StageDeleteBtn";
-import StageItem from "../../components/stage/StageItem";
+import StageEditItem from "../../components/stage/StageEditItem";
 import StageUpdateBtn from "../../components/stage/StageUpdateBtn";
 import { stageImgFetchAPI } from "../../lib/imgApi";
 import { fetchStages } from "../../lib/withTokenApi";
@@ -60,9 +60,9 @@ const StageEdit: React.FC = () => {
       )}
       {isLoading === false && (
         <ul>
-          {stages.map((stage) => (
+          {stages.map((stage, index) => (
             <li key={stage.id}>
-              <StageItem stage={stage} />
+              <StageEditItem stage={stage} index={index} />
               <StageUpdateBtn stage={stage} />
               <StageDeleteBtn id={stage.id!} />
             </li>

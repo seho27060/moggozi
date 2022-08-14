@@ -1,8 +1,151 @@
 @use "../../styles/mixin.scss" as mixin;
 
 @include mixin.desktop {
+
   .challengeForm {
     width : auto;
     height: auto;
   }
+
+  .shortIntroduce {
+    display: flex;
+
+    label {
+      display: block;
+      font-weight: 700;
+      font-size: 25px;
+      line-height: 30px;
+      margin: 0 50px 0 0 ;
+    }
+
+    textarea {
+      width: 737px;
+      height: 130px;
+      padding: 10px 10px 10px 10px;
+      border: 1px solid mixin.$cloudLine;
+      border-radius: 5px;
+      resize: none;
+      font-family: "Noto Sans";
+      font-size: 16px;
+      font-weight: 500;
+      font-family: pretendard;
+
+      &:focus {
+        outline: none;
+      }
+
+      &::placeholder {
+        font-family: "Noto Sans";
+        font-weight: 500;
+        font-size: 16px;
+        line-height: 24px;
+      }
+    }
+  }
+
+  .level {
+    display: flex;
+    margin: 60px 0 0 0;
+
+    label {
+      display: block;
+      font-weight: 700;
+      font-size: 25px;
+      line-height: 30px;
+      margin: 0 78px 0 0;
+    }
+
+    select {
+      width: 120px;
+      height: 35px;
+      padding: 0 0 0 10px;
+      border-radius: 5px;
+      border: 1px solid mixin.$cloudLine;
+      font-family: pretendard;
+      font-size: 16px;
+      option {
+        font-family: pretendard;
+        font-size: 16px;
+        margin: 10px 0 10px 0;
+      }
+    }
+  }
+
+  .challengeTitle {
+    margin: 80px 0 10px 0;
+
+    input {
+      width: 100%;
+      border: 0;
+      border-bottom: 1px solid mixin.$cloudLine;
+      padding: 10px 10px 10px 15px;
+      font-weight: 600;
+      font-size: 40px;
+      font-family: pretendard;
+
+      &:focus {
+        outline: none;
+      }
+
+      &::placeholder {
+        font-weight: 400;
+        font-size: 40px;
+        font-family: pretendard;
+        line-height: 48px;
+      }
+    }
+  }
+
+  .challengeContent {
+    textarea {
+      margin: 30px 20px 20px 20px;
+      font-size: 20px;
+      width: 97%;
+      height: 500px;
+      border: 0;
+      font-family: "pretendard";
+      resize: none;
+
+      &:focus {
+        outline: none;
+      }
+
+      &::placeholder {
+        font-weight: 400;
+        font-size: 20px;
+        font-family: "pretendard";
+        line-height: 24px;
+      }
+    }
+  }
+
+  .checker {
+    color: mixin.$cloudGray;
+    font-weight: 400;
+    font-size: 20px;
+    margin-right: 30px;
+    text-align: end;
+  }
+
+  .done {
+    display: flex;
+    justify-content: flex-end;
+    margin: 20px 10px 50px 0;
+    button {
+      font-size: 20px;
+      font-weight: 700;
+      font-family: pretendard;
+      cursor: pointer;
+      letter-spacing: 0.02em;
+      border: 0;
+      color: #fff;
+      border-radius: 5px;
+      background: linear-gradient(90deg, #FF9921 -1.06%, #FFC337 101.51%);
+      width: 140px;
+      height: 60px;
+    }
+  }
+}
+
+@include mixin.mobile {
 }

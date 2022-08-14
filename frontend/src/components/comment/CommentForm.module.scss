@@ -1,0 +1,37 @@
+@use "../../styles/mixin.scss" as mixin;
+
+@include mixin.desktop {
+  .commentForm {
+    textarea {
+      padding: 5px 5px 10px 5px;
+      border: 0;
+      height: 50px;
+      resize: none;
+      overflow: auto;
+      font-family: pretendard;
+      &:focus {
+        outline: none;
+      }
+
+      &::placeholder {
+        font-weight: 700;
+        font-family: pretendard;
+      }
+    }
+
+    div {
+      display: flex;
+      justify-content: flex-end;
+
+      button {
+        width: 50px !important;
+        font-size: 15px;
+        font-weight: 700;
+        font-family: pretendard;
+        color: #ff9f21;
+        background: #fff;
+        margin: 0;
+      }
+    }
+  }
+}

@@ -1,13 +1,15 @@
 import { Hobby } from "../../store/challenge";
 import HobbySetItem from "./HobbySetItem";
 
+import styles from "./HobbySetList.module.scss"
+
 const HobbySetList: React.FC<{ hobbies: Hobby[] }> = ({ hobbies }) => {
   return (
-    <ul>
+    <div className={styles.hobbySetList}>
       {hobbies.map((hobby) => (
         <HobbySetItem key={hobby.id} hobby={hobby} />
       ))}
-    </ul>
+    </div>
   );
 };
 

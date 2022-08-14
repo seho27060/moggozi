@@ -1,6 +1,10 @@
 @use "../../styles/mixin.scss" as mixin;
 
 @include mixin.desktop {
+  .margin {
+    margin: 0 0 200px 0;
+  }
+
   .info {
     display: flex;
     flex-direction: column;
@@ -61,6 +65,10 @@
       line-height: 27px;
       color: #ff6262;
     }
+  }
+
+  .container {
+    width:992px;
   }
 }
 

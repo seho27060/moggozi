@@ -10,19 +10,26 @@ import {
 } from "../../store/postModal";
 import { imgState, StageState } from "../../store/stage";
 import { RootState } from "../../store/store";
+import Carousel from "../ui/Slider";
+
+import styles from "./StageItem.module.scss";
+import "./Carousel.module.scss";
 import PostList from "../post/PostList";
 
 import Dompurify from "dompurify";
-import styles from "./StageItem.module.scss";
 
 const StageItem: React.FC<{
   stage: StageState;
-}> = ({ stage }) => {
+  index: number;
+  challengeProgress: number;
+}> = ({ stage, index, challengeProgress }) => {
   document.body.style.overflow = "auto"; //모달때문에 이상하게 스크롤이 안되서 강제로 스크롤 바 생성함
 
   const dispatch = useDispatch();
   const [postStageListState, setPostStageListState] = useState<PostData[]>([]);
-  const [getStage, setStage] = useState<StageState>(stage);
+  const [getStageImg, setStageImg] = useState<imgState[]>([]);
+  // const [getStageProgress, setStageProgress] = useState(0);
+  const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
   const user = useSelector((state: RootState) => state.auth);
   const postingStageId = useSelector(
     (state: RootState) => state.post.postingStageId
@@ -31,30 +38,43 @@ const StageItem: React.FC<{
     (state: RootState) => state.postModal
   );
 
-  let postedCheck = false;
-  postStageListState.map((post) => {
-    if (post.writer!.id === user.userInfo.id) {
-      postedCheck = true;
-      // break
-    }
+  // // 스테이지 진행도
+  // useEffect(() => {
+  //   if (isLoggedIn === true) {
+  //     fetchStageProgress(stage.id!)
+  //       .then((res) => {
+  //         setStageProgress(res);
+  //       })
+  //       .catch((err) => {
+  //         console.log(err);
+  //       });
+  //   }
+  // }, [isLoggedIn, stage.id]);
+
+  // 스테이지 사진
+  let postedCheck = postStageListState.some((post) => {
+    return post.writer!.id !== user.userInfo.id;
   });
+
   useEffect(() => {
     stageImgFetchAPI(stage.id!)
       .then((res) => {
-        setStage({ ...getStage, img: res });
+        setStageImg(res);
       })
       .catch((err) => {
-        setStage({ ...getStage, img: [] });
+        console.log(err);
       });
-  }, [stage]);
+  }, [stage.id]);
+
+  // 포스트 리스트
   useEffect(() => {
     postListRead(Number(stage.id))
       .then((res) => {
-        console.log("포스팅 불러오기 성공", res);
-        res.sort((a: PostData, b: PostData) =>
+        console.log("포스팅 불러오기 성공", res.content);
+        res.content.sort((a: PostData, b: PostData) =>
           a.likeNum! >= b.likeNum! ? 1 : -1
         );
-        const loadedPostStageList = res.slice(0, 3);
+        const loadedPostStageList = res.content.slice(0, 3);
         setPostStageListState(loadedPostStageList);
         dispatch(setPostFormButtonState(true));
       })
@@ -62,46 +82,63 @@ const StageItem: React.FC<{
         console.log("ERR", err);
       });
   }, [dispatch, stage.id]);
-  console.log(stage);
+
   return (
     <div>
-      <h4>스테이지 아이템</h4>
-      <p>스테이지 이름 : {stage.name}</p>
-      <p>
-        스테이지 내용 :{" "}
-        <div
-          dangerouslySetInnerHTML={{
-            __html: Dompurify.sanitize(stage.content!.toString()),
-          }}
-          className="view ql-editor"
-        ></div>
-      </p>
-      <Link to={`/post/${stage.id}`}>스테이지 포스팅 더보기</Link>
-      <ul>
-        {Array.isArray(getStage.img) &&
-          getStage.img.map((img: imgState) => {
-            return (
-              <li>
-                <img src={img.url!} alt="img" />
-              </li>
-            );
-          })}
-      </ul>
-      {(postFormButtonOpen && user.isLoggedIn && postingStageId && postedCheck )? (
-        <button onClick={() => dispatch(setPostFormModalOpen(true))}>
-          포스팅 생성
-        </button>
-      ) : (
-        <button onClick={() => dispatch(setPostFormModalOpen(false))}>
-          포스트 수정/ 원래있던 포스팅 띄우기
-        </button>
-      )}
-      {postStageListState && (
-        <>
-          {`${stage.id}의 PostList 3개만`}
-          <PostList posts={postStageListState} />
-        </>
-      )}
+      <div className={styles.stageInfo}>
+        <div className={styles.carouesl}>
+          <Carousel>
+            {/* 여기서 map으로 div태그 안에 이미지 출력하면 된다. 밑의 3개는 임시 사진.*/}
+            {Array.isArray(getStageImg) && getStageImg.length !== 0 ? (
+              getStageImg.map((img) => {
+                return <img key={img.id!} src={img.url!} alt="" />;
+              })
+            ) : (
+              <img
+                src="https://img1.daumcdn.net/thumb/R800x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbgHC4M%2FbtqBVf8rCqB%2FZz5aJuALI4JSKV8ZKAm8YK%2Fimg.jpg"
+                alt=""
+              />
+            )}
+          </Carousel>
+        </div>
+        <div className={styles.content}>
+          <div>{index + 1}단계</div>
+          <div>{stage.name}</div>
+          <div
+            dangerouslySetInnerHTML={{
+              __html: Dompurify.sanitize(stage.content!.toString()),
+            }}
+            className="view ql-editor"
+          ></div>
+        </div>
+      </div>
+      <div className={styles.btnPosition}>
+        {/* 챌린지를 도전해야 포스팅 CRUD 가능 */}
+        {challengeProgress !== 0 &&
+          postFormButtonOpen &&
+          isLoggedIn &&
+          postingStageId && (
+            <div>
+              {postedCheck ? (
+                // 포스팅 모달 연결해야한다.
+                <button>내 포스팅 보기</button>
+              ) : (
+                <button onClick={() => dispatch(setPostFormModalOpen(true))}>
+                  포스팅하기
+                </button>
+              )}
+            </div>
+          )}
+      </div>
+
+      <div className={styles.horizon}></div>
+
+      <div className={styles.postTitle}>
+        <div>포스트</div>
+        <Link to={`/post/${stage.id}`}>더보기</Link>
+      </div>
+
+      <div>{postStageListState && <PostList posts={postStageListState} />}</div>
     </div>
   );
 };

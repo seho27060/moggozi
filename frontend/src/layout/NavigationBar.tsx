@@ -8,7 +8,7 @@ import SearchForm from "../components/search/SearchForm";
 import SearchModal from "../components/ui/SearchModal";
 
 import style from "./NavigationBar.module.scss";
-import logo from "../asset/moggo.png";
+import logo from "../asset/moggozi.png";
 import AlertOnair from "../components/alert/AlertOnair";
 
 const NavigationBar: React.FC = () => {
@@ -32,7 +32,10 @@ const NavigationBar: React.FC = () => {
           </li>
           <div className={style.div}>
             <li>
-              <NavLink to="/search">챌린지</NavLink>
+              <NavLink to="/notice/0">공지사항</NavLink>
+            </li>
+            <li>
+              <NavLink to="/challenge">챌린지</NavLink>
             </li>
             <li>
               <NavLink to="/post/all">포스팅</NavLink>
@@ -46,7 +49,7 @@ const NavigationBar: React.FC = () => {
                   setModalOpen(true);
                   document.body.style.overflow = "hidden";
                 }}
-                className = {style.searchButton}
+                className={style.searchButton}
               >
                 검색
               </button>

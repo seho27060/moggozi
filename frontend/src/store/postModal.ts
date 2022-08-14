@@ -6,14 +6,11 @@ export interface PostUpdateSend {
   title: string | null;
   content: ReactQuill.Value | null;
   postId: number | null;
-  postImg: string | null;
 }
 export interface PostSend {
-  memberId: number;
   title: string | null;
   content: Value | string | null;
   stageId: number | null;
-  postImg: string | undefined;
 }
 interface PostModal {
   postModalState: PostData;
@@ -32,7 +29,7 @@ const initialPostModalState: PostModal = {
     content: null,
     createdTime: null,
     modifiedTime: null,
-    postImg: null,
+    postImg: [],
     liked: null,
     likeNum: null,
     writer: null,
@@ -43,7 +40,7 @@ const initialPostModalState: PostModal = {
     content: null,
     createdTime: null,
     modifiedTime: null,
-    postImg: null,
+    postImg: [],
     liked: null,
     likeNum: null,
     writer: null,
@@ -52,7 +49,7 @@ const initialPostModalState: PostModal = {
   postUpdateFormOpen: false,
   postFormButtonOpen: false,
   postModalOpen: false,
-  alertPostModalOpen:false,
+  alertPostModalOpen: false,
   postModalStageId: null,
 };
 export const postModalSlice = createSlice({

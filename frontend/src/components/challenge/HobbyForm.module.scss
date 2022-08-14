@@ -1,0 +1,56 @@
+@use "../../styles/mixin.scss" as mixin;
+
+@include mixin.desktop {
+
+  .hobbyForm {
+    display: flex;
+    margin: 50px 0 0 0;  
+
+    label {
+      display: block;
+      font-weight: 700;
+      font-size: 25px;
+      line-height: 30px;
+      margin: 0 100px 0 0;
+    }
+
+    input {
+      width: 300px;
+      height: 40px;
+      padding: 0 10px 0 10px;
+      border-radius: 5px;
+      font-size: 16px;
+      font-family: pretendard;
+      border: 1px solid mixin.$cloudLine
+    }
+
+    button { 
+      display: block;
+      width: 46px;
+      height: 46px;
+      margin: 0;
+      font-size: 40px;
+      line-height: 16px;
+      border: 0;
+      color: mixin.$cloudGray;
+      background: #fff;
+      cursor: pointer;
+
+      &:hover {
+        color: mixin.$mainColor;
+        transition: all 0.5s;
+      }
+    }
+  }
+
+  .tag {
+    display: flex;
+    margin: 10px 0 0 150px;
+    div {
+      margin-right: 12px;
+    }
+  }
+}
+
+@include mixin.mobile {
+}

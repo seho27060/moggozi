@@ -2,8 +2,9 @@ import { RootState } from "../../store/store";
 import React, { ReactElement, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-
 import { followApi } from "../../lib/withTokenApi";
+
+import styles from "./FollowerList.module.scss";
 
 interface Props {
   id: number | null;
@@ -40,16 +41,18 @@ const FollowerList = (props: Props): ReactElement => {
   }
 
   return (
-    <div style={{ display: "flex", margin: "30px" }}>
-      <div onClick={moveHandler}>
-        <img src={`${img}`} alt="profile_image" style={{ width: "60px" }} />
+    <div className={styles.container}>
+      <div className={styles.followers}>
+        { img ? <img src={`${img}`} alt="profile_image" onClick={moveHandler} /> : <img src="https://img1.daumcdn.net/thumb/C176x176/?fname=https://k.kakaocdn.net/dn/GHYFr/btrsSwcSDQV/UQZxkayGyAXrPACyf0MaV1/img.jpg" alt="" />}
+        
+        <div onClick={moveHandler}>{nickname}</div>
       </div>
-      <p onClick={moveHandler}>{nickname}</p>
+
       {userId === id ? (
         <div>&nbsp;</div>
       ) : (
         <button onClick={followHandler}>
-          {followState ? "언팔로우" : "팔로우"}
+          {followState ? "unfollow" : "follow"}
         </button>
       )}
     </div>

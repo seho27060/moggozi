@@ -151,11 +151,11 @@ const SearchPage: React.FC = () => {
       <div>
         <div className={styles.title}>검색</div>
       <div className={styles.form}>
-        <input type="text" placeholder="무엇이든 검색하세요." required id="search" ref={searchInputRef} onKeyPress={onKeyPressHandler}></input>
+        <input type="text" placeholder="무엇이든 검색하세요." required id="search" ref={searchInputRef} onKeyPress={onKeyPressHandler} autoComplete="off"></input>
         <button onClick={submitHandler}>검색</button>
       </div>
 
-      <div className={styles.taps}>
+      <div className={styles.tabs}>
         <button onClick={(e) => changePageHandler(e, 0)} disabled={choice === 0}>
           챌린지
         </button>

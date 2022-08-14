@@ -76,9 +76,9 @@ public class JwtUtils {
     }
 
     public Long getUserIdFromJwtToken(String token) {
-        token = token.substring(7);
-        String username = getUserNameFromJwtToken(token);
         try {
+            token = token.substring(7);
+            String username = getUserNameFromJwtToken(token);
             Optional<Member> member = memberRepository.findByUsername(username);
 
             /** 해당 토큰을 가진 사용자가 없거나, 사용자가 휴면처리된 사용자의 경우 null 값을 반환하여,

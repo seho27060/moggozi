@@ -1,11 +1,15 @@
-import { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { fetchChallenge } from "../../lib/generalApi";
-import { challengeImgFetchAPI } from "../../lib/imgApi";
 import { WebSocketContext } from "../../lib/WebSocketProvider";
-import { challengeLike, isLoginFetchChallenge } from "../../lib/withTokenApi";
+import {
+  cancelChallenge,
+  challengeLike,
+  isLoginFetchChallenge,
+  tryChallenge,
+} from "../../lib/withTokenApi";
 import { Alert } from "../../store/alert";
 import { ChallengeDetailState } from "../../store/challenge";
 import { setPostingStageId } from "../../store/post";
@@ -18,7 +22,6 @@ import { reviewFetch } from "../../store/review";
 import { RootState } from "../../store/store";
 import moment from "moment";
 
-import ChallengeDeleteBtn from "../../components/challenge/ChallengeDeleteBtn";
 import HobbyList from "../../components/challenge/HobbyList";
 import PostDetailItem from "../../components/post/PostDetailItem";
 import PostForm from "../../components/post/PostForm";
@@ -26,19 +29,23 @@ import PostUpdateForm from "../../components/post/PostUpdateForm";
 import ReviewForm from "../../components/review/ReviewForm";
 import ReviewList from "../../components/review/ReviewList";
 import StageList from "../../components/stage/StageList";
-import Modal from "../../components/ui/Modal";
 
 import Dompurify from "dompurify";
 import styles from "./ChallengeDetail.module.scss";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import PostModal from "../../components/ui/PostModal";
+import PostFormModal from "../../components/ui/PostFormModal";
+import ChallengeOptionBtn from "../../components/ui/ChallengeOptionBtn";
 
 const ChallengeDetail: React.FC = () => {
+  const navigate = useNavigate();
+
   const { id } = useParams();
   const ws = useContext(WebSocketContext);
 
   const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
   const userInfo = useSelector((state: RootState) => state.auth.userInfo);
   const stageId = useSelector((state: RootState) => state.post.postingStageId);
-
   const userImg = useSelector((state: RootState) => state.auth.userInfo.img);
 
   const [isLoading, setIsLoading] = useState(true);
@@ -47,13 +54,10 @@ const ChallengeDetail: React.FC = () => {
   const dispatch = useDispatch();
   const reviews = useSelector((state: RootState) => state.review);
 
-  const { alertPostModalOpen,postModalOpen, postFormModalOpen, postUpdateFormOpen } = useSelector(
+  const { postModalOpen, postFormModalOpen, postUpdateFormOpen } = useSelector(
     (state: RootState) => state.postModal
   );
-  // if (postModalOpen) {
-  //   document.body.style.overflow = "auto"; //모달때문에 이상하게 스크롤이 안되서 강제로 스크롤 바 생성함
-  //   document.body.style.height = "auto";
-  // }
+
   const closePostModal = () => {
     dispatch(setPostModalOpen(false));
     dispatch(setPostUpdateFormState(false));
@@ -62,6 +66,7 @@ const ChallengeDetail: React.FC = () => {
   const closePostFormModal = () => {
     dispatch(setPostFormModalOpen(false));
   };
+
   // 좋아요
   const likeHandler = (event: React.MouseEvent) => {
     event.preventDefault();
@@ -96,6 +101,24 @@ const ChallengeDetail: React.FC = () => {
         console.log(err);
       });
   };
+  // 챌린지 도전
+  const startHandler = (event: React.MouseEvent) => {
+    event.preventDefault();
+    if (window.confirm("정말 도전하시겠습니까?")) {
+      tryChallenge(userInfo.id!, loadedChallenge!.id!).then((res) => {
+        alert("챌린지 도전 완료!");
+      });
+    }
+  };
+  // 챌린지 도전 취소
+  const cancelHandler = (event: React.MouseEvent) => {
+    event.preventDefault();
+    if (window.confirm("도전 취소하시겠습니까?")) {
+      cancelChallenge(loadedChallenge!.id!).then((res) => {
+        alert("챌린지 도전 취소 완료");
+      });
+    }
+  };
 
   // 페이지 데이터 받아오기
   useEffect(() => {
@@ -107,31 +130,16 @@ const ChallengeDetail: React.FC = () => {
           .then((res) => {
             const challenge: ChallengeDetailState = {
               ...res,
-              img: "",
             };
             setLoadedChallenge(challenge);
-            // 파이어스토어에서 챌린지 사진 가져오기
-            challengeImgFetchAPI(challenge.id!)
-              .then((res) => {
-                setLoadedChallenge({
-                  ...challenge,
-                  img: res,
-                });
-                dispatch(reviewFetch(challenge.reviewList));
-                console.log("Challenge", challenge);
-                let postStageId = null;
-                if (challenge.stageList.length !== 0) {
-                  postStageId = challenge.stageList[0].id;
-                }
-                dispatch(setPostingStageId(postStageId));
-              })
-              .catch((err) => {
-                setLoadedChallenge({
-                  ...challenge,
-                  img: "",
-                });
-                dispatch(reviewFetch(challenge.reviewList));
-              });
+
+            dispatch(reviewFetch(challenge.reviewList));
+            let postStageId = null;
+            if (challenge.stageList.length !== 0) {
+              postStageId = challenge.stageList[0].id;
+            }
+            dispatch(setPostingStageId(postStageId));
+
             setIsLoading(false);
           })
           .catch((err) => {
@@ -140,30 +148,20 @@ const ChallengeDetail: React.FC = () => {
           });
       } else {
         // 로그인 안 한 경우
-        fetchChallenge(Number(id)).then((res) => {
-          const challenge: ChallengeDetailState = {
-            ...res,
-          };
-          setLoadedChallenge(challenge);
-          // 파이어스토어에서 챌린지 사진 가져오기
-          challengeImgFetchAPI(challenge.id!)
-            .then((res) => {
-              setLoadedChallenge({
-                ...challenge,
-                img: res,
-              });
-              dispatch(reviewFetch(challenge.reviewList));
-              setIsLoading(false);
-            })
-            .catch((err) => {
-              setLoadedChallenge({
-                ...challenge,
-                img: "",
-              });
-              dispatch(reviewFetch(challenge.reviewList));
-              setIsLoading(false);
-            });
-        });
+        fetchChallenge(Number(id))
+          .then((res) => {
+            const challenge: ChallengeDetailState = {
+              ...res,
+            };
+            setLoadedChallenge(challenge);
+
+            dispatch(reviewFetch(challenge.reviewList));
+            setIsLoading(false);
+          })
+          .catch((err) => {
+            console.log(err);
+            setIsLoading(false);
+          });
       }
     }
   }, [id, isLoggedIn, dispatch]);
@@ -210,26 +208,30 @@ const ChallengeDetail: React.FC = () => {
               </div>
 
               <div>
-                {loadedChallenge?.writer.id === userInfo.id ? (
+                {loadedChallenge!.writer.id === userInfo.id ? (
                   <div>
                     {userInfo.id === loadedChallenge!.writer.id && (
                       <div>
-                        <Link to={`/stage/${id}`}>
-                          <button>스테이지 편집</button>
-                        </Link>
-                        <Link
-                          to={`/challenge/${id}/update`}
-                          state={loadedChallenge}
-                        >
-                          <button>챌린지 수정</button>
-                        </Link>
-                        <ChallengeDeleteBtn />
+                        <div>
+                          <ChallengeOptionBtn
+                            id={id}
+                            userId={userInfo.id}
+                            writerId={loadedChallenge!.writer.id}
+                            state={loadedChallenge!.state}
+                            loadedChallenge={loadedChallenge}
+                          />
+                        </div>
                       </div>
                     )}
                   </div>
                 ) : (
                   <div>
-                    <div className={styles.writer}>
+                    <div
+                      className={styles.writer}
+                      onClick={() => {
+                        navigate(`/user/${loadedChallenge!.writer.id}`);
+                      }}
+                    >
                       <img src={loadedChallenge!.writer.img} alt="" />
                       <div>
                         <div className={styles.user}>
@@ -255,88 +257,119 @@ const ChallengeDetail: React.FC = () => {
               </div>
             </div>
 
-            {loadedChallenge!.img && (
+            {loadedChallenge!.img === '""' ? (
               <img
                 className={styles.challengeImg}
-                src={loadedChallenge!.img}
+                src="https://via.placeholder.com/1000x450.png/"
+                alt=""
+              />
+            ) : (
+              <img
+                className={styles.challengeImg}
+                src={loadedChallenge!.img!}
                 alt="challenge Img"
-              ></img>
+              />
             )}
-            <div>
+            <div className={styles.tag_start}>
               <HobbyList hobbies={loadedChallenge!.hobbyList} />
+              {isLoggedIn === true && (
+                <div>
+                  {loadedChallenge!.userProgress === 0 && (
+                    <button className={styles.button} onClick={startHandler}>
+                      도전
+                    </button>
+                  )}
+                  {loadedChallenge!.userProgress === 1 && (
+                    <button className={styles.button} onClick={cancelHandler}>
+                      도전 취소
+                    </button>
+                  )}
+                  {loadedChallenge!.userProgress === 2 && (
+                    <button className={styles.complete}>완료</button>
+                  )}
+                </div>
+              )}
             </div>
 
-            <div className={styles.writer}>
+            <div
+              dangerouslySetInnerHTML={{
+                __html: Dompurify.sanitize(
+                  loadedChallenge!.content!.toString()
+                ),
+              }}
+              className={`view ql-editor ${styles.cont}`}
+            ></div>
+
+            <div
+              className={styles.writer}
+              onClick={() => {
+                navigate(`/user/${loadedChallenge!.writer.id!}`);
+              }}
+            >
               <img src={loadedChallenge!.writer.img} alt="" />
               <div className={styles.user}>
                 {loadedChallenge!.writer.nickname}
               </div>
             </div>
-            <div
-              dangerouslySetInnerHTML={{
-                __html: Dompurify.sanitize(loadedChallenge!.content!.toString()),
-              }}
-              className="view ql-editor"
-            ></div>
+
             <div className={styles.like}>
-              <div>
+              <div className={styles.likeLabel} onClick={likeHandler}>
                 {isLoggedIn === true && loadedChallenge!.liked === false && (
-                  <button onClick={likeHandler}>♥</button>
+                  <div className={styles.nonHeart}>
+                    <FavoriteIcon />
+                  </div>
                   // 챌린지 좋아요
                 )}
                 {isLoggedIn === true && loadedChallenge!.liked === true && (
-                  <button onClick={likeHandler}>♡</button>
+                  <div className={styles.heart}>
+                    <FavoriteIcon />
+                  </div>
                   // 챌린지좋아요 취소
                 )}{" "}
-                좋아요 <span>{loadedChallenge!.likeNum}</span>
+                좋아요{" "}
+                <div className={styles.likeCnt}>{loadedChallenge!.likeNum}</div>
               </div>
-              <div>
-                댓글 <span>{reviews.length}</span>
+              <div className={styles.commentCnt}>
+                <div>댓글 </div>
+                <div>{reviews.length}</div>
               </div>
             </div>
+
             <div></div>
           </div>
           <div className={styles.horizon}></div>
 
-          <div>{isLoggedIn && <ReviewForm image={userImg} />}</div>
+          <div>{isLoggedIn && <ReviewForm user_image={userImg} />}</div>
           <ReviewList reviews={reviews} />
 
-          {isLoggedIn === true && (
-            <p>챌린지 유저 진행도: {loadedChallenge!.userProgress}</p>
-          )}
           <div>
-            <p>스테이지</p>
-            <StageList stages={loadedChallenge!.stageList} />
+            <div className={styles.stageHr}></div>
+            <StageList
+              stages={loadedChallenge!.stageList}
+              challengeProgress={loadedChallenge!.userProgress}
+            />
           </div>
         </div>
       )}
 
       <div>
         {postModalOpen && (
-          <Modal
-            open={postModalOpen}
-            close={closePostModal}
-            header="Post"
-          >
+          <PostModal open={postModalOpen} close={closePostModal}>
             {!postUpdateFormOpen && <PostDetailItem />}
             {postUpdateFormOpen && <PostUpdateForm />}
-          </Modal>
+          </PostModal>
         )}
 
-        {postFormModalOpen && 
-          <Modal
-            open={postFormModalOpen}
-            close={closePostFormModal}
-            header="Post Create"
-          >
+        {postFormModalOpen && (
+          <PostFormModal open={postFormModalOpen} close={closePostFormModal}>
             <PostForm
               stageId={Number(stageId)}
               modalClose={closePostFormModal}
+              challenge={loadedChallenge?.name!}
+              // stage={}
             />
-          </Modal>
-        
-        }
-        
+          </PostFormModal>
+        )}
       </div>
     </div>
   );

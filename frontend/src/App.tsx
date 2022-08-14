@@ -2,12 +2,13 @@
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import Router from "./routes";
-import { authentication, userImgFetch } from "./store/auth";
+import { authentication } from "./store/auth";
 import { persistAuth } from "./lib/withTokenApi";
-import "./App.scss";
+// import styles from "./App.module.scss";
 import { useSelector } from "react-redux";
 import { RootState } from "./store/store";
 import WebSocketProvider from "./lib/WebSocketProvider";
+
 function App() {
   const dispatch = useDispatch();
 
@@ -26,7 +27,7 @@ function App() {
   }, [dispatch, user.id]);
 
   return (
-    <div>
+    <div style={{height: "100%"}}>
       <WebSocketProvider>
         <Router />
       </WebSocketProvider>

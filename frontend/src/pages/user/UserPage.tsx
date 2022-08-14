@@ -2,20 +2,49 @@ import type { RootState } from "../../store/store";
 import { useSelector } from "react-redux";
 
 import { Link, useParams } from "react-router-dom";
-import { useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 
 import { otherUserDetail } from "../../lib/generalApi";
-import { followApi } from "../../lib/withTokenApi";
+import {
+  fetchMyChallengeList,
+  followApi,
+  myPagePost,
+  userTryChallenge,
+} from "../../lib/withTokenApi";
 
 import MypageFollow from "../../components/accounts/MypageFollow";
 
 import styles from "./UserPage.module.scss";
+
 import { WebSocketContext } from "../../lib/WebSocketProvider";
 import { Alert } from "../../store/alert";
 
+import { UserChallengeType, UserPostType } from "../../store/userPage";
+
+import { useDispatch } from "react-redux";
+
+import {
+  setPostModalOpen,
+  setPostUpdateFormState,
+} from "../../store/postModal";
+import PostDetailItem from "../../components/post/PostDetailItem";
+import PostUpdateForm from "../../components/post/PostUpdateForm";
+import PostModal from "../../components/ui/PostModal";
+import { ChallengeItemState } from "../../store/challenge";
+
+import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
+import UserTabBox from "./UserTabBox";
+import { Box } from "@mui/material";
+import Loader from "../../components/ui/Loader";
+
 function UserPage() {
+  const { postModalOpen, postUpdateFormOpen } = useSelector(
+    (state: RootState) => state.postModal
+  );
+  const dispatch = useDispatch();
+
   const userId = Number(useParams().id);
-  // console.log(userId)
   const ws = useContext(WebSocketContext);
 
   const loginData = useSelector((state: RootState) => state.auth);
@@ -25,12 +54,94 @@ function UserPage() {
   const [introduce, setIntroduce] = useState("");
   const [img, setImg] = useState("");
   const [isPrivate, setIsPrivate] = useState(false);
+
   const [followedCnt, setFollowedCnt] = useState(0);
   const [followingCnt, setFollowingCnt] = useState(0);
   const [followState, setFollowState] = useState(false);
 
+  const [challengeList, setChallengeList] = useState<UserChallengeType[]>([]);
+  const [postList, setPostList] = useState<UserPostType[]>([]);
+  const [myChallengeList, setMyChallengeList] = useState<ChallengeItemState[]>(
+    []
+  );
+  const [isLogging, setIsLogging] = useState(false);
+  const [currentMyChallengePage, setCurrentMyChallengePage] = useState(1);
+  const [currentChallengePage, setCurrentChallengePage] = useState(1);
+  const [currentPostPage, setCurrentPostPage] = useState(1);
+
+  let tabMenus = ["모두보기", "포스팅", "도전한 챌린지"];
+  if (userId === loginId) {
+    tabMenus = ["모두보기", "포스팅", "도전한 챌린지", "만든 챌린지"];
+  }
+  const [value, setValue] = useState(0);
+
+  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+    setValue(newValue);
+  };
+
+  const handleScroll = useCallback((): void => {
+    const { innerHeight } = window;
+    const { scrollHeight } = document.body;
+    const { scrollTop } = document.documentElement;
+
+    if (value !== 0 && Math.round(scrollTop + innerHeight) >= scrollHeight) {
+      setIsLogging(true);
+      switch (value) {
+        case 1: // 내 포스팅
+          myPagePost(userId, currentPostPage, 16)
+            .then((res) => {
+              console.log(userId, "post", res);
+              setPostList(postList.concat(res.content));
+            })
+            .catch((err) => console.log("post err", err));
+          setCurrentPostPage(currentPostPage + 1);
+          break;
+        case 2: // 도전한 챌린지
+          userTryChallenge(userId, currentChallengePage, 16)
+            .then((res) => {
+              console.log(userId, "ch", res);
+              setChallengeList(challengeList.concat(res.content));
+            })
+            .catch((err) => console.log("ch err", err));
+          setCurrentChallengePage(currentChallengePage + 1);
+          break;
+        case 3: // 만든 챌린지
+          if (userId === loginData.userInfo.id) {
+            // 작성한 챌린지
+            fetchMyChallengeList(currentMyChallengePage, 16)
+              .then((res) => {
+                console.log("call my recentrych");
+                setMyChallengeList(myChallengeList.concat(res.content));
+              })
+              .catch((err) => console.log("myrecentch err", err));
+          }
+          setCurrentMyChallengePage(currentMyChallengePage + 1);
+          break;
+      }
+      setTimeout(() => setIsLogging(false), 300);
+    }
+  }, [
+    currentPostPage,
+    currentChallengePage,
+    currentMyChallengePage,
+    challengeList,
+    myChallengeList,
+    postList,
+    userId,
+    value,
+    loginData.userInfo.id,
+  ]);
+
   useEffect(() => {
-    
+    window.addEventListener("scroll", handleScroll, true);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll, true);
+    };
+  }, [handleScroll]);
+
+  useEffect(() => {
+    console.log(userId, loginData.userInfo.id);
     otherUserDetail(userId, loginData.userInfo.id)
       .then((res) => {
         setNickname(res.nickname);
@@ -39,16 +150,41 @@ function UserPage() {
         setFollowState(res.isFollowing);
         setFollowedCnt(res.followedCnt);
         setFollowingCnt(res.followingCnt);
-        if (res.img === "") {
+        if (!!res.userImg === false) {
           // 기본 프로필 이미지
-          setImg("https://i.pinimg.com/236x/f2/a1/d6/f2a1d6d87b1231ce39710e6ba1c1e129.jpg")
+          setImg(
+            "https://i.pinimg.com/236x/f2/a1/d6/f2a1d6d87b1231ce39710e6ba1c1e129.jpg"
+          );
         } else {
-          setImg(res.img)
+          setImg(res.userImg);
+        }
+        // 내 포스팅
+        myPagePost(userId, 0, 16)
+          .then((res) => {
+            console.log(userId, "post", res);
+            setPostList(res.content);
+          })
+          .catch((err) => console.log("post err", err));
+        // 도전한 챌린지
+        userTryChallenge(userId, 0, 16)
+          .then((res) => {
+            console.log(userId, "ch", res);
+            setChallengeList(res.content);
+          })
+          .catch((err) => console.log("ch err", err));
+        if (userId === loginData.userInfo.id) {
+          // 작성한 챌린지
+          fetchMyChallengeList(0, 16)
+            .then((res) => {
+              console.log("call my recentrych");
+              setMyChallengeList(res.content);
+            })
+            .catch((err) => console.log("myrecentch err", err));
         }
       })
       .catch((err) => {
         // alert("오류가 발생했습니다.")
-        console.log(err);
+        console.log("otherUserDetail", err);
       });
   }, [userId, loginData]);
 
@@ -80,9 +216,13 @@ function UserPage() {
         console.log(err);
       });
   }
+  const closePostModal = () => {
+    dispatch(setPostModalOpen(false));
+    dispatch(setPostUpdateFormState(false));
+  };
 
   return (
-    <div>
+    <div className={styles.margin}>
       <div style={{ margin: "20px" }}>
         <a href="#/">공유버튼</a>
       </div>
@@ -102,36 +242,15 @@ function UserPage() {
           </Link>
         ) : (
           <div>
-              <div
-                className={styles.editImg}
-                style={{
-                  backgroundImage: `url(${img})`,
-                  backgroundPosition: "center",
-                  backgroundSize: "cover",
-                  backgroundRepeat: "no-repeat",
-                }}
-              ></div>
-            {/* {img ? (
-              <div
-                className={styles.editImg}
-                style={{
-                  backgroundImage: `url(${img})`,
-                  backgroundPosition: "center",
-                  backgroundSize: "cover",
-                  backgroundRepeat: "no-repeat",
-                }}
-              ></div>
-            ) : (
-              <div
-                className={styles.editImg}
-                style={{
-                  backgroundImage: `url("https://i.pinimg.com/236x/f2/a1/d6/f2a1d6d87b1231ce39710e6ba1c1e129.jpg")`,
-                  backgroundPosition: "center",
-                  backgroundSize: "cover",
-                  backgroundRepeat: "no-repeat",
-                }}
-              ></div>
-            )} */}
+            <div
+              className={styles.editImg}
+              style={{
+                backgroundImage: `url(${img})`,
+                backgroundPosition: "center",
+                backgroundSize: "cover",
+                backgroundRepeat: "no-repeat",
+              }}
+            ></div>
           </div>
         )}
 
@@ -158,6 +277,124 @@ function UserPage() {
         )}
       </div>
       {isPrivate ? <div>블러 처리 가림막</div> : <div>보여주기</div>}
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        <div className={styles.container}>
+          <Box
+            display="flex"
+            justifyContent="center"
+            width="100%"
+            borderBottom="2px solid #afafaf"
+            margin="50px 0 0 0"
+          >
+            <Tabs
+              sx={{}}
+              value={value}
+              onChange={handleChange}
+              variant="scrollable"
+              textColor="inherit"
+              TabIndicatorProps={{
+                style: {
+                  background: "rgba(81, 255, 20, 0.62)",
+                  height: "10px",
+                  bottom: "10px",
+                },
+              }}
+              scrollButtons
+              allowScrollButtonsMobile
+              aria-label="scrollable force tabs example"
+            >
+              {tabMenus.map((menus, index) => (
+                <Tab
+                  key={index}
+                  label={`${menus}`}
+                  sx={{
+                    fontSize: "20px",
+                    fontWeight: "700",
+                    fontFamily: "pretendard",
+                    textAlign: "center",
+                    marginRight: "20px",
+                    px: 1,
+                  }}
+                />
+              ))}
+            </Tabs>
+          </Box>
+        </div>
+      </div>
+      <div></div>
+      {userId !== loginId ? (
+        <>
+          {value === 0 && (
+            <UserTabBox
+              myChallenges={null}
+              challenges={challengeList.slice(0, 8)}
+              nickname={nickname}
+              posts={postList.slice(0, 8)}
+            />
+          )}
+          {value === 1 && (
+            <UserTabBox
+              myChallenges={null}
+              challenges={null}
+              nickname={nickname}
+              posts={postList}
+            />
+          )}
+          {value === 2 && (
+            <UserTabBox
+              myChallenges={null}
+              challenges={challengeList}
+              nickname={nickname}
+              posts={null}
+            />
+          )}
+        </>
+      ) : (
+        <>
+          {value === 0 && (
+            <UserTabBox
+              myChallenges={myChallengeList.slice(0, 8)}
+              challenges={challengeList.slice(0, 8)}
+              nickname={nickname}
+              posts={postList.slice(0, 8)}
+            />
+          )}
+          {value === 1 && (
+            <UserTabBox
+              myChallenges={null}
+              challenges={null}
+              nickname={nickname}
+              posts={postList}
+            />
+          )}
+          {value === 2 && (
+            <UserTabBox
+              myChallenges={null}
+              challenges={challengeList}
+              nickname={nickname}
+              posts={null}
+            />
+          )}
+          {value === 3 && (
+            <UserTabBox
+              myChallenges={myChallengeList}
+              challenges={null}
+              nickname={nickname}
+              posts={null}
+            />
+          )}
+        </>
+      )}
+
+      <div>
+        {postModalOpen && (
+          <PostModal open={postModalOpen} close={closePostModal}>
+            {!postUpdateFormOpen && <PostDetailItem />}
+            {postUpdateFormOpen && <PostUpdateForm />}
+          </PostModal>
+        )}
+      </div>
+      {isLogging && <Loader />}
     </div>
   );
 }

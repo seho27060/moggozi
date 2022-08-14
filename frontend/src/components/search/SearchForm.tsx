@@ -11,6 +11,7 @@ import UserList from "../accounts/UserList";
 import SearchChallengeList from "../challenge/SearchChallengeList";
 
 import styles from "./SearchForm.module.scss";
+import SearchIcon from '@mui/icons-material/Search';
 
 interface Props {
   close: () => void;
@@ -37,10 +38,19 @@ const SearchForm = (props: Props) => {
   };
 
   const onKeyPressHandler = (event: React.KeyboardEvent) => {
+    console.log(event.key)
     if (event.key === "Enter") {
       const enteredSearch = searchInputRef.current!.value;
       close();
       navigate(`/search/?keyword=${enteredSearch}&page=0&size=4&choice=0`);
+    } 
+  }
+
+  const onKeyDownHandler = (event: React.KeyboardEvent) => {
+    if(event.keyCode === 27) {
+      event.preventDefault();
+      document.body.style.overflow = "unset";
+      close();
     }
   }
 
@@ -97,32 +107,31 @@ const SearchForm = (props: Props) => {
           ref={searchInputRef}
           placeholder="무엇이든 검색하세요."
           onKeyPress={onKeyPressHandler}
+          onKeyDown={onKeyDownHandler}
           onChange={changeInputHandler}
         ></input>
-        <button type="button" onClick={submitHandler}>
-          돋보기
-        </button>
+        <div className={styles.searchBtn} onClick={submitHandler}><SearchIcon /></div>
       </header>
 
       {/* <main> */}
       <main className={styles.tag}>
         <h1>유저</h1>
-        {dropDownUserList.length === 0 && <h2>해당하는 유저가 없습니다.</h2>}
+        {dropDownUserList.length === 0 && <div className={styles.noUser}>해당하는 유저가 없습니다.</div>}
         <UserList users={dropDownUserList} close={close} />
       </main>
       <main>
         <h1>챌린지</h1>
         {dropDownChallengeList.length === 0 && (
-          <h2>해당하는 챌린지가 없습니다.</h2>
+          <div className={styles.challenge}>해당하는 챌린지가 없습니다.</div>
         )}
         <SearchChallengeList challenges={dropDownChallengeList} close={close} />
       </main>
-      <main>
+      <main className={styles.tagPart}>
         <h1>태그</h1>
-        {dropDownHobbyList.length === 0 && <h2>해당하는 태그가 없습니다.</h2>}
+        {dropDownHobbyList.length === 0 && <div className={styles.tagg}>해당하는 태그가 없습니다.</div>}
         {dropDownHobbyList.map((dropDownItem) => {
           return (
-            <div className={styles.tag}>
+            <div className={styles.hobbyTag}>
             <Link 
               to={`/search?keyword=${dropDownItem.name}&page=0&size=4&choice=2`}
               key={dropDownItem.id} onClick={close}

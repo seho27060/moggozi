@@ -22,7 +22,6 @@ const SearchModal = (props: Props): ReactElement => {
     >
       {/* <div className={open ? 'openModal modal' : 'modal'}> */}
       {open ? <section onClick={(event) => { event.stopPropagation(); }}>{props.children}
-      <button onClick={close}>나가기</button>
       </section> : null}
       
     </div>
