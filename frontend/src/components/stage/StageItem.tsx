@@ -2,12 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { stageImgFetchAPI } from "../../lib/imgApi";
-import {
-  fetchStageProgress,
-  postListRead,
-  stageCancel,
-  stageJoin,
-} from "../../lib/withTokenApi";
+import { postListRead } from "../../lib/withTokenApi";
 import { PostData } from "../../store/post";
 import {
   setPostFormButtonState,
@@ -33,7 +28,7 @@ const StageItem: React.FC<{
   const dispatch = useDispatch();
   const [postStageListState, setPostStageListState] = useState<PostData[]>([]);
   const [getStageImg, setStageImg] = useState<imgState[]>([]);
-  const [getStageProgress, setStageProgress] = useState(0);
+  // const [getStageProgress, setStageProgress] = useState(0);
   const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
   const user = useSelector((state: RootState) => state.auth);
   const postingStageId = useSelector(
@@ -43,18 +38,18 @@ const StageItem: React.FC<{
     (state: RootState) => state.postModal
   );
 
-  // 스테이지 진행도
-  useEffect(() => {
-    if (isLoggedIn === true) {
-      fetchStageProgress(stage.id!)
-        .then((res) => {
-          setStageProgress(res);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
-  }, [isLoggedIn, stage.id]);
+  // // 스테이지 진행도
+  // useEffect(() => {
+  //   if (isLoggedIn === true) {
+  //     fetchStageProgress(stage.id!)
+  //       .then((res) => {
+  //         setStageProgress(res);
+  //       })
+  //       .catch((err) => {
+  //         console.log(err);
+  //       });
+  //   }
+  // }, [isLoggedIn, stage.id]);
 
   // 스테이지 사진
   let postedCheck = postStageListState.some((post) => {
@@ -87,29 +82,6 @@ const StageItem: React.FC<{
         console.log("ERR", err);
       });
   }, [dispatch, stage.id]);
-
-  // 스테이지 도전 버튼 클릭
-  const stageTryHandler = () => {
-    stageJoin(stage.id!)
-      .then(() => {
-        alert("도전하시겠습니까?");
-        setStageProgress(1);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-  // 스테이지 도전 취소버튼 클릭
-  const stageCancelHandler = () => {
-    stageCancel(stage.id!)
-      .then(() => {
-        alert("취소하시겠습니까?");
-        setStageProgress(0);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
 
   return (
     <div>
