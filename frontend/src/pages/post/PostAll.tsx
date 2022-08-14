@@ -83,20 +83,22 @@ const PostAll: React.FC<{}> = () => {
   }, [dispatch, user.id]);
 
   return (
-    <div className={styles.display}>
-      <div className={styles.container}>
-        <div className={styles.postingTitle}>인기 포스팅</div>
-        <PostPageList postList={likePostList} />
-        <div className={styles.postingTitle}>최신 포스팅</div>
-        <PostPageList postList={recentPostList} />
-      </div>
+    <div>
+      <div className={styles.display}>
+        <div className={styles.container}>
+          <div className={styles.postingTitle}>인기 포스팅</div>
+          <PostPageList postList={likePostList} />
+          <div className={styles.postingTitle}>최신 포스팅</div>
+          <PostPageList postList={recentPostList} />
+        </div>
 
-      <div>
-        {postModalOpen && (
-          <PostModal open={postModalOpen} close={closePostModal}>
-            <PostDetailItem />
-          </PostModal>
-        )}
+        <div>
+          {postModalOpen && (
+            <PostModal open={postModalOpen} close={closePostModal}>
+              <PostDetailItem />
+            </PostModal>
+          )}
+        </div>
       </div>
       {isLogging && <Loader />}
     </div>
