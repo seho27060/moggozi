@@ -1,7 +1,7 @@
 package com.JJP.restapiserver.service.post;
 
 import com.JJP.restapiserver.domain.dto.challenge.Writer;
-import com.JJP.restapiserver.domain.dto.member.response.MyPagePostDto;
+import com.JJP.restapiserver.domain.dto.SliceListDto;
 import com.JJP.restapiserver.domain.dto.post.*;
 import com.JJP.restapiserver.domain.entity.stage.Post;
 import com.JJP.restapiserver.repository.member.MemberRepository;
@@ -9,6 +9,7 @@ import com.JJP.restapiserver.repository.stage.PostLikeRepository;
 import com.JJP.restapiserver.repository.stage.PostRepository;
 import com.JJP.restapiserver.repository.stage.StageRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
@@ -67,12 +68,12 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<PostResponseDto> getStagePost(Long stage_id) {
-        List<Post> postList = postRepository.findAllByStage_id(stage_id);
+    public SliceListDto getStagePost(Long stage_id, Pageable pageable) {
+        Page<Post> postList = postRepository.findAllByStage_idOrderByCreatedDateDesc(stage_id, pageable);
         List<PostResponseDto> postResponseDtoList = new ArrayList<>();
-        for(int i = 0; i < postList.size(); i++)
+        for(int i = 0; i < postList.getNumberOfElements(); i++)
         {
-            Post post = postList.get(i);
+            Post post = postList.getContent().get(i);
             PostResponseDto postResponseDto = new PostResponseDto(post);
             if(postLikeRepository.findByPost_idAndMember_id(postResponseDto.getId(), postResponseDto.getWriter().getId()).isPresent())
             {
@@ -80,7 +81,15 @@ public class PostServiceImpl implements PostService {
             }
             postResponseDtoList.add(postResponseDto);
         }
-        return postResponseDtoList;
+
+        SliceListDto sliceListDto = SliceListDto.builder()
+                .pageNum(postList.getTotalPages())
+                .content(postResponseDtoList)
+                .size(postList.getSize())
+                .hasNext(postList.hasNext())
+                .build();
+
+        return sliceListDto;
     }
 
     @Override
@@ -137,12 +146,12 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public MyPagePostDto infinitePostList(Long member_id, Pageable pageable){
+    public SliceListDto infinitePostList(Long member_id, Pageable pageable){
         Slice<Post> challengeSlice = postRepository.findByMember_IdOrderByCreatedDateDesc(member_id, pageable);
         List<Post> postList = challengeSlice.toList();
         List<PostResponseDto> postResponseDtoList = postList.stream().map(o -> new PostResponseDto(o)).collect(Collectors.toList());
 
-        MyPagePostDto myPagePostDto = MyPagePostDto.builder()
+        SliceListDto myPagePostDto = SliceListDto.builder()
                 .pageNum(challengeSlice.getNumber())
                 .content(postResponseDtoList)
                 .size(challengeSlice.getSize())

@@ -1,6 +1,6 @@
 package com.JJP.restapiserver.service.post;
 
-import com.JJP.restapiserver.domain.dto.member.response.MyPagePostDto;
+import com.JJP.restapiserver.domain.dto.SliceListDto;
 import com.JJP.restapiserver.domain.dto.post.*;
 import org.springframework.data.domain.Pageable;
 
@@ -21,7 +21,7 @@ public interface PostService {
     List getMemberPost(Long member_id);
 
     // 특정 스테이지 전체 포스트 조회
-    List getStagePost(Long stage_id);
+    SliceListDto getStagePost(Long stage_id, Pageable pageable);
 
     Long writtenPostNum(Long member_id);
 
@@ -29,7 +29,7 @@ public interface PostService {
 
     List<PostResponseDto> getRandomPostList(int size);
 
-    MyPagePostDto infinitePostList(Long member_id, Pageable pageable);
+    SliceListDto infinitePostList(Long member_id, Pageable pageable);
 
     // 포스트 디테일 받아오기
     PostDetailDto detailPost(Long post_id, Long member_id);

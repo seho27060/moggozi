@@ -12,7 +12,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     List<Post> findAllByMember_id(Long member_id);
 
-    List<Post> findAllByStage_id(Long stage_id);
+    Page<Post> findAllByStage_idOrderByCreatedDateDesc(Long stage_id, Pageable pageable);
 
     Long countByMember_id(Long member_id);
 
