@@ -191,7 +191,10 @@ function UserPage() {
       {isPrivate ? <div>블러 처리 가림막</div> : <div>보여주기</div>}
       <div style={{ display: "flex", justifyContent: "center" }}>
         <div className={styles.container}>
-          <Box display="flex" justifyContent="center" width="100%" borderBottom= "2px solid #afafaf">
+          <Box 
+          display="flex" justifyContent="center" width="100%" borderBottom= "2px solid #afafaf"
+          margin="50px 0 0 0"
+          >
             <Tabs
               sx={{
               }}
@@ -213,7 +216,6 @@ function UserPage() {
               {tabMenus.map((menus, index) => (
                 <Tab
                   key={index}
-
                   label={`${menus}`}
                   sx={{
                     fontSize: "20px",

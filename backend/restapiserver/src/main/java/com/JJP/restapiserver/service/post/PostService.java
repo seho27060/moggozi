@@ -1,20 +1,18 @@
 package com.JJP.restapiserver.service.post;
 
-import com.JJP.restapiserver.domain.dto.challenge.ChallengeListResponseDto;
-import com.JJP.restapiserver.domain.dto.post.PostResponseDto;
-import com.JJP.restapiserver.domain.dto.post.PostSaveRequestDto;
-import com.JJP.restapiserver.domain.dto.post.PostUpdateRequestDto;
-import com.JJP.restapiserver.domain.entity.stage.Post;
+import com.JJP.restapiserver.domain.dto.member.response.MyPagePostDto;
+import com.JJP.restapiserver.domain.dto.post.*;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
 public interface PostService {
 
     // 스테이지 포스트 등록
-    PostResponseDto savePost(PostSaveRequestDto postSaveRequestDto);
+    Long savePost(PostSaveRequestDto postSaveRequestDto, Long member_id);
 
     // 스테이지 포스트 수정
-    PostResponseDto updatePost(PostUpdateRequestDto postUpdateRequestDto);
+    int updatePost(PostUpdateRequestDto postUpdateRequestDto, Long member_id);
 
     // 스테이지 포스트 삭제
     void deletePost(Long post_id);
@@ -28,4 +26,14 @@ public interface PostService {
     Long writtenPostNum(Long member_id);
 
     List<PostResponseDto> writtenPostList8(Long member_id);
+
+    List<PostResponseDto> getRandomPostList(int size);
+
+    MyPagePostDto infinitePostList(Long member_id, Pageable pageable);
+
+    // 포스트 디테일 받아오기
+    PostDetailDto detailPost(Long post_id, Long member_id);
+
+    // 포스트 사용자와 스테이지 정보로 받아오기
+    Object detailMemberPost(Long stage_id, Long member_id);
 }

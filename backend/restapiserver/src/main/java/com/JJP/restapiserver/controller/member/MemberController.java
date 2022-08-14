@@ -2,44 +2,44 @@ package com.JJP.restapiserver.controller.member;
 
 import com.JJP.restapiserver.domain.dto.MessageResponse;
 import com.JJP.restapiserver.domain.dto.member.request.*;
-import com.JJP.restapiserver.domain.dto.member.response.JwtResponse;
 import com.JJP.restapiserver.domain.dto.member.response.Following;
+import com.JJP.restapiserver.domain.dto.member.response.JwtResponse;
+import com.JJP.restapiserver.domain.dto.member.response.MemberPageDto;
 import com.JJP.restapiserver.domain.dto.member.response.TokenRefreshResponse;
 import com.JJP.restapiserver.domain.entity.member.RefreshToken;
 import com.JJP.restapiserver.exception.TokenRefreshException;
 import com.JJP.restapiserver.security.JwtUtils;
 import com.JJP.restapiserver.service.RefreshTokenService;
-import com.JJP.restapiserver.service.member.MemberServiceImpl;
+import com.JJP.restapiserver.service.member.MemberService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 @Tag(name = "MemberController", description = "사용자 API")
-@CrossOrigin(origins = "*", maxAge = 3600)
+//@CrossOrigin("*")
 @RestController
 @RequestMapping("/user")
+@RequiredArgsConstructor
 public class MemberController {
 
-    @Autowired
-    MemberServiceImpl memberService;
+    private final MemberService memberService;
 
     // RereshToken 생성을 위한 Service
-    @Autowired
-    RefreshTokenService refreshTokenService;
+    private final RefreshTokenService refreshTokenService;
 
     // jwt 토큰 생성을 위한 JWT Util
-    @Autowired
-    JwtUtils jwtUtils;
+    private final JwtUtils jwtUtils;
 
     @Operation(summary = "로그인", description = "username과 password를 이용하여 로그인 합니다.")
     @ApiResponses({
@@ -49,9 +49,9 @@ public class MemberController {
             @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR")
     })
     @PostMapping("/login")
-    public ResponseEntity<?> login(@Valid @RequestBody LoginRequest loginRequest, HttpSession session) { // 아이디, 비밀번호를 body에 담아 전송
-        session.setAttribute("memberEmail", loginRequest.getUsername());
-        return memberService.login(loginRequest);
+    public ResponseEntity<?> login(@Valid @RequestBody LoginRequest loginRequest) { // 아이디, 비밀번호를 body에 담아 전송
+        ResponseEntity responseEntity = memberService.login(loginRequest);
+        return responseEntity;
     }
 
     @Operation(summary = "회원가입", description = "username, password, nickname는 필수 입력 값 입니다.")
@@ -147,8 +147,21 @@ public class MemberController {
             @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR")
     })
     @PostMapping("/update/{userId}")
-    public ResponseEntity<?> updateUser(@PathVariable Long userId, @Valid @RequestBody UpdateUserRequest updateUserRequest) {
+    public ResponseEntity<?> updateUser(@PathVariable("userId") Long userId, @Valid @RequestBody UpdateUserRequest updateUserRequest) {
         return memberService.update(userId, updateUserRequest);
+    }
+
+    @Operation(summary = "프로필 사진 수정", description = "프로필 정보 수정이 가능합니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = MessageResponse.class))),
+            @ApiResponse(responseCode = "400", description = "BAD REQUEST", content = @Content(schema = @Schema(implementation = MessageResponse.class))),
+            @ApiResponse(responseCode = "404", description = "NOT FOUND"),
+            @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR")
+    })
+    @PostMapping("/updateImg")
+    public ResponseEntity<?> updateUser(HttpServletRequest request, @RequestBody UserImgRequest userImgRequest) {
+        Long user_id = jwtUtils.getUserIdFromJwtToken(request.getHeader("Authorization"));
+        return memberService.updateImg(user_id, userImgRequest);
     }
 
 
@@ -192,8 +205,22 @@ public class MemberController {
         return memberService.getMyInfo(user_id);
     }
 
+    @Operation(summary = "유저 검색", description = "Keyword를 이용하여 유저를 검색합니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK"),
+            @ApiResponse(responseCode = "400", description = "BAD REQUEST"),
+            @ApiResponse(responseCode = "404", description = "NOT FOUND"),
+            @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR")
+    })
+    @GetMapping("/search/{keyword}")
+    public ResponseEntity<?> searchMember(@PathVariable("keyword") String keyword) {
+        // keyword를 이용하여 유저를 검색합니다.
+        return memberService.searchMember(keyword);
+    }
 
-/*    @Operation(summary = "타유저 정보 획득", description = "타 유저의 정보를 알고 싶을 경우 'info/' url 뒤 타 유저의 userId를 통해 사용자 정보를 조회할 수 있습니다. ")
+
+
+    @Operation(summary = "타유저 정보 획득", description = "타 유저의 정보를 알고 싶을 경우 'info/' url 뒤 타 유저의 userId를 통해 사용자 정보를 조회할 수 있습니다. ")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = Following.class))),
             @ApiResponse(responseCode = "400", description = "BAD REQUEST", content = @Content(schema = @Schema(implementation = MessageResponse.class))),
@@ -201,10 +228,17 @@ public class MemberController {
             @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR")
     })
 
-    @GetMapping("/profile/{userId}")
-    public ResponseEntity<?> getUserInfo(@PathVariable Long userId) {
-        return ResponseEntity.ok(memberService.getMemberProfile(userId));
-    }*/
+    @GetMapping("/profile/{userId}/{loginId}")
+    public ResponseEntity<?> getUserInfo(@PathVariable("userId") Long userId, @PathVariable("loginId") Long loginId) {
+
+        return ResponseEntity.ok(memberService.getMemberProfile(userId, loginId));
+    }
+
+    @GetMapping("/search/pagination/")
+    public ResponseEntity<?> searchMemberUsingPagination(@RequestParam String keyword, Pageable pageable){
+        MemberPageDto memberPageDto =memberService.getMemberListUsingPagination(keyword, pageable);
+        return new ResponseEntity<>(memberPageDto, HttpStatus.OK);
+    }
 }
 
 

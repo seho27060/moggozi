@@ -1,5 +1,6 @@
 package com.JJP.restapiserver.service.stage;
 
+import com.JJP.restapiserver.domain.dto.stage.StageOrderDto;
 import com.JJP.restapiserver.domain.dto.stage.StageResponseDto;
 import com.JJP.restapiserver.domain.dto.stage.StageSaveRequestDto;
 import com.JJP.restapiserver.domain.dto.stage.StageUpdateRequestDto;
@@ -11,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -23,8 +25,15 @@ public class StageServiceImpl implements StageService {
 
     @Transactional(readOnly = true)
     @Override
-    public List<Stage> getStageList(Long challenge_id) {
-        return stageRepository.findAllByChallenge_id(challenge_id);
+    public List<StageResponseDto> getStageList(Long challenge_id) {
+        List<Stage> stageList = stageRepository.findAllByChallenge_id(challenge_id);
+        List<StageResponseDto> stageResponseDtoList = new ArrayList<>();
+        if(stageList != null){
+            for(Stage stage : stageList){
+                stageResponseDtoList.add(new StageResponseDto(stage));
+            }
+        }
+        return stageResponseDtoList;
     }
 
     @Transactional(readOnly = true)
@@ -38,7 +47,7 @@ public class StageServiceImpl implements StageService {
     @Transactional
     @Override
     public Long saveStage(Long challenge_id, StageSaveRequestDto stageRequestDto) {
-        return stageRepository.save(stageRequestDto.toEntity(challenge_id, challengeRepository)).getId();
+        return stageRepository.save(stageRequestDto.toEntity(challenge_id, challengeRepository, stageRepository.count())).getId();
     }
 
     @Transactional
@@ -47,7 +56,7 @@ public class StageServiceImpl implements StageService {
 
         Stage entity = stageRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + id));
 
-        entity.update(stageUpdateRequestDto.getName(), stageUpdateRequestDto.getContent(), stageUpdateRequestDto.getStageImg());
+        entity.update(stageUpdateRequestDto.getName(), stageUpdateRequestDto.getContent(), stageUpdateRequestDto.getImg());
 
         return id;
     }
@@ -58,5 +67,17 @@ public class StageServiceImpl implements StageService {
         Stage entity = stageRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + id));
 
         stageRepository.delete(entity);
+    }
+
+    @Transactional
+    @Override
+    public Long setOrder(StageOrderDto stageOrderDto){
+        Long id = stageOrderDto.getId();
+
+        Stage entity = stageRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + id));
+
+        entity.update(stageOrderDto.getOrder());
+
+        return id;
     }
 }

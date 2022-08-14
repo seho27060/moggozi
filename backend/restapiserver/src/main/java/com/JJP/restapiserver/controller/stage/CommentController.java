@@ -1,8 +1,8 @@
 package com.JJP.restapiserver.controller.stage;
 
+import com.JJP.restapiserver.domain.dto.challenge.Writer;
 import com.JJP.restapiserver.domain.dto.stage.CommentRequestDto;
 import com.JJP.restapiserver.domain.dto.stage.CommentResponseDto;
-import com.JJP.restapiserver.domain.entity.stage.Comment;
 import com.JJP.restapiserver.security.JwtUtils;
 import com.JJP.restapiserver.service.stage.CommentService;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
-@CrossOrigin("*")
+//@CrossOrigin("*")
 @RequestMapping("/comment")
 @RestController
 @RequiredArgsConstructor
@@ -53,6 +53,13 @@ public class CommentController {
     public ResponseEntity deleteComment(@PathVariable Long comment_id)
     {
         return commentService.deleteComment(comment_id);
+    }
+
+    @GetMapping("/commentWriter/{comment_id}")
+    public ResponseEntity getCommentWriter(@PathVariable Long comment_id)
+    {
+        Writer writer = commentService.getCommentWriter(comment_id);
+        return new ResponseEntity(writer, HttpStatus.OK);
     }
 
 }

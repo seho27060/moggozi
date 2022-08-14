@@ -20,4 +20,6 @@ public class ProfileResponse {
     private int followedCnt;
     private int followingCnt;
 
+    private int isFollowing;
+
 }

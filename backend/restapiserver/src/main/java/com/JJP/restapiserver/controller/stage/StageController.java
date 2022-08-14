@@ -1,15 +1,15 @@
 package com.JJP.restapiserver.controller.stage;
 
+import com.JJP.restapiserver.domain.dto.stage.StageOrderDto;
 import com.JJP.restapiserver.domain.dto.stage.StageResponseDto;
 import com.JJP.restapiserver.domain.dto.stage.StageSaveRequestDto;
 import com.JJP.restapiserver.domain.dto.stage.StageUpdateRequestDto;
-import com.JJP.restapiserver.domain.entity.stage.Stage;
 import com.JJP.restapiserver.service.stage.StageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-@CrossOrigin("*")
+//@CrossOrigin("*")
 @RequiredArgsConstructor
 @RequestMapping("/stage")
 @RestController()
@@ -18,7 +18,7 @@ public class StageController {
     private final StageService stageService;
 
     @GetMapping("/{challenge_id}")
-    public List<Stage> findById(@PathVariable Long challenge_id){
+    public List<StageResponseDto> findById(@PathVariable Long challenge_id){
         return stageService.getStageList(challenge_id);
     }
 
@@ -41,5 +41,11 @@ public class StageController {
     public Long delete(@PathVariable Long stage_id){
         stageService.deleteStage(stage_id);
         return stage_id;
+    }
+
+    // 스테이지 순서 변경 api
+    @PutMapping()
+    public Long setOrder(@RequestBody StageOrderDto stageOrderDto){
+        return stageService.setOrder(stageOrderDto);
     }
 }

@@ -5,6 +5,8 @@ import { PostData } from "../../store/post";
 import { setModalPostState, setPostModalOpen } from "../../store/postModal";
 import { UserPostType } from "../../store/userPage";
 
+import styles from "./UserChallengeItem.module.scss"
+
 const UserPostItem: React.FC<{
   userPost: UserPostType;
 }> = ({ userPost }) => {
@@ -18,27 +20,26 @@ const UserPostItem: React.FC<{
     .catch((err) => console.log("err post", userPost.id, err));
   return (
     <div
-      style={{
-        border: "solid 1px",
-        width: "13.5rem",
-        height: "13.5rem",
-        margin: "1rem",
-        borderRadius: "5px",
-      }}
+      // style={{
+      //   border: "solid 1px",
+      //   width: "13.5rem",
+      //   height: "13.5rem",
+      //   margin: "1rem",
+      //   borderRadius: "5px",
+      // }}
+      className={styles.link}
       onClick={(event: MouseEvent) => {
         event.preventDefault();
         dispatch(setModalPostState(postData!));
         dispatch(setPostModalOpen(true));
       }}
     >
+      <div className={styles.img}>
       <img
-        src={userPost.postImg.length !== 0 ? userPost.postImg[0].path! : ""}
+        src={userPost.postImg?.length !== 0 ? userPost.postImg[0].path! : ""}
         alt="challengeImg"
-        style={{
-          width: "13.5rem",
-          height: "13.5rem",
-        }}
       />
+      </div>
     </div>
   );
 };
