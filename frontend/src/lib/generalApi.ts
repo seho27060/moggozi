@@ -54,6 +54,18 @@ export const fetchChallenge = async (id: number) => {
   return data;
 };
 
+export const fetchRecentChallengeList = async (page: number, size: number) => {
+  const { data } = await generalApi.get(
+    `/challenge/getRecentChallenge?page=${page}&size=${size}`
+  );
+  return data;
+};
+
+export const fetchRecommendChallengeList = async () => {
+  const { data } = await generalApi.get("/challenge/recommendation");
+  return data;
+};
+
 // 검색
 export const searchUserApi = async (q: string, page: number, size: number) => {
   const { data } = await generalApi.get(

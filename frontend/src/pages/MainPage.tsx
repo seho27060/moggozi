@@ -5,7 +5,11 @@ import {
   isLoginFetchChallengeRankList,
   recentTryChallengeList,
 } from "../lib/withTokenApi";
-import { fetchChallengeRankList } from "../lib/generalApi";
+import {
+  fetchChallengeRankList,
+  fetchRecentChallengeList,
+  fetchRecommendChallengeList,
+} from "../lib/generalApi";
 import { ChallengeItemState } from "../store/challenge";
 import { RootState } from "../store/store";
 
@@ -18,17 +22,49 @@ import MainPopChallengeList from "../components/challenge/MainPopChallengeList";
 const MainPage: React.FC = () => {
   const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
   const [rankIsLoading, setRankIsLoading] = useState(true);
+  const [recentTryIsLoading, setRecentTryIsLoading] = useState(true);
   const [recentIsLoading, setRecentIsLoading] = useState(true);
+  const [recommendIsLoading, setRecommendIsLoading] = useState(true);
+
   const [loadedChallengeRankList, setLoadedChallengeRankList] = useState<
     ChallengeItemState[]
   >([]);
+  const [loadedRecentTryChallengeList, setLoadedRecentTryChallengeList] =
+    useState<ChallengeItemState[]>([]);
   const [loadedRecentChallengeList, setLoadedRecentChallengeList] = useState<
+    ChallengeItemState[]
+  >([]);
+  const [recommendChallengeList, setRecommendChallengeList] = useState<
     ChallengeItemState[]
   >([]);
 
   useEffect(() => {
     setRankIsLoading(true);
+    setRecentTryIsLoading(true);
     setRecentIsLoading(true);
+    setRecommendIsLoading(true);
+
+    fetchRecentChallengeList(0, 2)
+      .then((res) => {
+        setLoadedRecentChallengeList(res.content);
+        setRecentIsLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setRecentIsLoading(false);
+      });
+
+    fetchRecommendChallengeList()
+      .then((res) => {
+        const twoPickRecommend = res.slice(0, 2);
+        setRecommendChallengeList(twoPickRecommend);
+        setRecommendIsLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setRecommendIsLoading(false);
+      });
+
     if (isLoggedIn) {
       // 로그인 한 경우
       isLoginFetchChallengeRankList(0, 3)
@@ -40,14 +76,15 @@ const MainPage: React.FC = () => {
           console.log(err);
           setRankIsLoading(false);
         });
+      // 유저가 도전한 챌린지 리스트
       recentTryChallengeList(0, 2)
         .then((res) => {
-          setLoadedRecentChallengeList(res.content);
-          setRecentIsLoading(false);
+          setLoadedRecentTryChallengeList(res.content);
+          setRecentTryIsLoading(false);
         })
         .catch((err) => {
           console.log(err);
-          setRecentIsLoading(false);
+          setRecentTryIsLoading(false);
         });
     } else {
       // 로그인 안 한 경우
@@ -69,30 +106,62 @@ const MainPage: React.FC = () => {
       <Link to={`/challenge/new`}>
         <button>챌린지 생성</button>
       </Link>
-      {isLoggedIn === true && recentIsLoading === true && (
-        <section>
-          <p>MyList Loading...</p>
-        </section>
-      )}
       <div className={styles.mainPage}>
         <MainSlider />
-
-        {isLoggedIn === true && recentIsLoading === false && (
+        {/* 최신 챌린지*/}
+        {recentIsLoading === true && (
+          <section>
+            <p>recentList Loading...</p>
+          </section>
+        )}
+        {recentIsLoading === false && (
           <div className={styles.myChallenge}>
             <div className={styles.myTitle}>
-              <div>내가 참여한</div>
+              <div>최신</div>
               <div>챌린지</div>
             </div>
             <MainChallengeList challenges={loadedRecentChallengeList} />
           </div>
         )}
 
+        {/* 추천 챌린지*/}
+        {recommendIsLoading === true && (
+          <section>
+            <p>recommendList Loading...</p>
+          </section>
+        )}
+        {recommendIsLoading === false && (
+          <div className={styles.myChallenge}>
+            <div className={styles.myTitle}>
+              <div>추천</div>
+              <div>챌린지</div>
+            </div>
+            <MainChallengeList challenges={recommendChallengeList} />
+          </div>
+        )}
+
+        {/* 참여한 챌린지 */}
+        {isLoggedIn === true && recentTryIsLoading === true && (
+          <section>
+            <p>MyTryList Loading...</p>
+          </section>
+        )}
+        {isLoggedIn === true && recentTryIsLoading === false && (
+          <div className={styles.myChallenge}>
+            <div className={styles.myTitle}>
+              <div>내가 참여한</div>
+              <div>챌린지</div>
+            </div>
+            <MainChallengeList challenges={loadedRecentTryChallengeList} />
+          </div>
+        )}
+
+        {/* 인기 챌린지 */}
         {rankIsLoading === true && (
           <section>
             <p>RankList Loading...</p>
           </section>
         )}
-
         {rankIsLoading === false && (
           <div className={styles.popChallenge}>
             <div className={styles.title}>인기 챌린지</div>
