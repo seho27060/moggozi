@@ -4,13 +4,13 @@ import { setModalPostState, setPostModalOpen } from "../../store/postModal";
 
 import Modal from "../ui/Modal";
 
-import styles from "./PostingPageItem.module.scss";
+import styles from "./MainPageItem.module.scss";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import ShareIcon from "@mui/icons-material/Share";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-const PostingPageItem: React.FC<{ post: PostData }> = ({ post }) => {
+const MainPageItem: React.FC<{ post: PostData }> = ({ post }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -98,4 +98,4 @@ const PostingPageItem: React.FC<{ post: PostData }> = ({ post }) => {
     </div>
   );
 };
-export default PostingPageItem;
+export default MainPageItem;

@@ -72,15 +72,31 @@ export const myPageInfo = async (userId: number) => {
   const { data } = await withTokenApi.get(`/mypage/info`);
   return data;
 };
-export const myPageChallenge = async (userId: number) => {
-  const { data } = await withTokenApi.get(`/mypage/challenge/${userId}`);
+
+// 유저가 도전한 챌린지 목록
+export const userTryChallenge = async (
+  userId: number,
+  page: number,
+  size: number
+) => {
+  const { data } = await withTokenApi.get(
+    `/mypage/challenge/${userId}?page=${page}&size=${size}`
+  );
   return data;
 };
-export const myPagePost = async (userId: number|null) => {
-  const { data } = await withTokenApi.get(`/mypage/post/${userId}`);
+
+export const myPagePost = async (
+  userId: number | null,
+  page: number,
+  size: number
+) => {
+  const { data } = await withTokenApi.get(
+    `/mypage/post/${userId}?page=${page}&size=${size}`
+  );
   return data;
 };
-export const myPageStage = async (userId: number|null) => {
+
+export const myPageStage = async (userId: number | null) => {
   const { data } = await withTokenApi.get(`/mypage/stage/${userId}`);
   return data;
 };
@@ -91,7 +107,8 @@ export const isLoginFetchChallenge = async (id: number) => {
   return data;
 };
 
-export const MyChallengeList = async (page: number, size: number) => {
+// 유저가 작성한 챌린지 목록
+export const fetchMyChallengeList = async (page: number, size: number) => {
   const { data } = await withTokenApi.get(
     `/challenge/myChallenge?page=${page}&size=${size}`
   );
@@ -107,10 +124,23 @@ export const isLoginFetchChallengeRankList = async (
   );
   return data;
 };
-export const recentTryChallengeList = async (
+
+export const isLoginFetchRecentChallengeList = async (
   page: number,
   size: number
 ) => {
+  const { data } = await withTokenApi.get(
+    `/challenge/getRecentChallenge?page=${page}&size=${size}`
+  );
+  return data;
+};
+
+export const isLoginFetchRecommendChallengeList = async () => {
+  const { data } = await withTokenApi.get("/challenge/recommendation");
+  return data;
+};
+
+export const recentTryChallengeList = async (page: number, size: number) => {
   const { data } = await withTokenApi.get(
     `/challenge/recentCh?page=${page}&size=${size}`
   );
@@ -322,6 +352,22 @@ export const postLike = async (postId: number) => {
   const { data } = await withTokenApi.post(`/postlike/like`, {
     postId: postId,
   });
+  return data;
+};
+
+// 좋아요 순 post 리스트
+export const fetchPostLikeList = async (page: number, size: number) => {
+  const { data } = await withTokenApi.get(
+    `/post/list/like?page=${page}&size=${size}`
+  );
+  return data;
+};
+
+// 최신 post 리스트
+export const fetchPostRecentList = async (page: number, size: number) => {
+  const { data } = await withTokenApi.get(
+    `/post/list/latest?page=${page}&size=${size}`
+  );
   return data;
 };
 

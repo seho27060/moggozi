@@ -70,11 +70,11 @@ const StageItem: React.FC<{
   useEffect(() => {
     postListRead(Number(stage.id))
       .then((res) => {
-        console.log("포스팅 불러오기 성공", res);
-        res.sort((a: PostData, b: PostData) =>
+        console.log("포스팅 불러오기 성공", res.content);
+        res.content.sort((a: PostData, b: PostData) =>
           a.likeNum! >= b.likeNum! ? 1 : -1
         );
-        const loadedPostStageList = res.slice(0, 3);
+        const loadedPostStageList = res.content.slice(0, 3);
         setPostStageListState(loadedPostStageList);
         dispatch(setPostFormButtonState(true));
       })

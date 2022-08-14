@@ -1,12 +1,14 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
-import { noticePageRead, noticeRead } from "../../lib/withTokenApi";
-import { Notice, setNotice, setNoticeList } from "../../store/notice";
+import { useNavigate, useParams } from "react-router-dom";
+import { noticeRead } from "../../lib/withTokenApi";
+import { setNotice } from "../../store/notice";
 import { RootState } from "../../store/store";
+import styles from "./NoticeDetailPage.module.scss";
 
 const NoticeDetailPage: React.FC = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { noticeId } = useParams();
 
   const notice = useSelector((state: RootState) => state.notice.notice);
@@ -24,14 +26,26 @@ const NoticeDetailPage: React.FC = () => {
   }, []);
 
   return (
-    <div>
-      <p>
-        <div>{notice.id}</div>
-        <div>{notice.title}</div>
-        <p>{notice.content}</p>
-        {/* <div>{notice.updatedDate!.toString()}</div>/ */}
-        <div>{notice.createdDate!.toString()}</div>
-      </p>
+    <div className={styles.container}>
+      <div className={styles.noticeDetail}>
+        {/* <div>{notice.noticeId}</div> */}
+        <div className={styles.noticeTitle}>{notice.title}</div>
+        <div className={styles.noticeContentSection}>
+          <p className={styles.noticeContent}>{notice.content}</p>
+          {/* <div>{notice.updatedDate!.toString()}</div>/ */}
+          <div className={styles.noticeBottom}>
+            <button onClick={() => navigate(-1)} className={styles.navigateBtn}>뒤로가기</button>
+            <div className={styles.noticeDate}>
+              {new Date(notice.createdDate!).toLocaleDateString("ko-Kr", {
+                weekday: "long",
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              })}
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

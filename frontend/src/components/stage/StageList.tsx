@@ -79,7 +79,7 @@ const StageList: React.FC<{
             sx={{
               fontSize: "20px",
               fontWeight: "700",
-              fontFamily: "Noto Sans",
+              fontFamily: "pretendard",
               // textIndent: "15px",
               textAlign: "center",
               marginRight: "20px",

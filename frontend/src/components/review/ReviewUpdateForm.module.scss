@@ -32,9 +32,10 @@
           padding: 0 15px 5px 10px;
           width: 800px;
           font-size: 15px;
+          font-family: pretendard;
 
           &::placeholder {
-            font-weight: 700;
+            font-weight: 500;
             font-size: 15px;
             line-height: 0px;
             color: mixin.$cloudGray;
@@ -48,7 +49,7 @@
 
       .reviewSubmit {
         cursor: pointer;
-        font-weight: 700;
+        font-weight: 500;
         font-size: 15px;
         line-height: 18px;
         color: mixin.$cloudGray;
