@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import {
+  fetchPostLikeList,
+  fetchPostRecentList,
   isLoginFetchChallengeRankList,
   isLoginFetchRecentChallengeList,
   isLoginFetchRecommendChallengeList,
@@ -20,6 +22,12 @@ import MainSlider from "../components/ui/MainSlider";
 
 import styles from "./MainPage.module.scss";
 import MainPopChallengeList from "../components/challenge/MainPopChallengeList";
+import AutoPlaySlider from "../components/ui/AutoPlaySlider";
+import { PostData } from "../store/post";
+import { Grid } from "@mui/material";
+import PostingPageItem from "../components/post/PostingPageItem";
+import PostItem from "../components/post/PostItem";
+import MainPageItem from "../components/post/MainPageItem";
 
 const MainPage: React.FC = () => {
   const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
@@ -27,7 +35,8 @@ const MainPage: React.FC = () => {
   const [recentTryIsLoading, setRecentTryIsLoading] = useState(true);
   const [recentIsLoading, setRecentIsLoading] = useState(true);
   const [recommendIsLoading, setRecommendIsLoading] = useState(true);
-
+  const [recentPostList, setRecentPostList] = useState<PostData[]>([]);
+  const [likePostList, setLikePostList] = useState<PostData[]>([]);
   const [loadedChallengeRankList, setLoadedChallengeRankList] = useState<
     ChallengeItemState[]
   >([]);
@@ -45,6 +54,18 @@ const MainPage: React.FC = () => {
     setRecentTryIsLoading(true);
     setRecentIsLoading(true);
     setRecommendIsLoading(true);
+    fetchPostRecentList(0, 13)
+      .then((res) => {
+        console.log("recent post call", res);
+        setRecentPostList(res.content);
+      })
+      .catch((err) => console.log("recent post err", err));
+    fetchPostLikeList(0, 4)
+      .then((res) => {
+        console.log("like post call", res);
+        setLikePostList(res.content);
+      })
+      .catch((err) => console.log("like post err", err));
 
     if (isLoggedIn) {
       // 로그인 한 경우
@@ -192,6 +213,45 @@ const MainPage: React.FC = () => {
             <MainPopChallengeList challenges={loadedChallengeRankList} />
           </div>
         )}
+
+        {/*자동 슬라이더  */}
+        {[
+          [0, 4],
+          [4, 9],
+          [9, 13],
+        ].map((start) => (
+          <div style={{ minHeight: "13rem" }}>
+            <AutoPlaySlider>
+              {recentPostList.slice(start[0], start[1]).map(
+                (post) => (
+                  console.log(post),
+                  (
+                    <div key={post.id}>
+                      <img
+                        src={
+                          post.postImg!.length !== 0
+                            ? post.postImg[0].path!
+                            : "https://blog.kakaocdn.net/dn/vckff/btqCjeJmBHM/tMVpe4aUIMfH4nKS4aO3tK/img.jpg"
+                        }
+                        alt=""
+                        style={{ minWidth: "300px" }}
+                      ></img>
+                    </div>
+                  )
+                )
+              )}
+            </AutoPlaySlider>
+          </div>
+        ))}
+        <br />
+        {/* 인기순 포스팅 */}
+        <Grid container spacing={1}>
+          {likePostList.map((post) => (
+            <Grid key={post.id} item xs={3}>
+              <MainPageItem post={post} />
+            </Grid>
+          ))}
+        </Grid>
       </div>
     </div>
   );

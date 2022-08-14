@@ -8,7 +8,7 @@ import "slick-carousel/slick/slick-theme.css";
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 
-interface Props {
+export interface Props {
   children: React.ReactNode;
 }
 
