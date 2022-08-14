@@ -7,7 +7,7 @@ import StageDeleteBtn from "../../components/stage/StageDeleteBtn";
 import StageEditItem from "../../components/stage/StageEditItem";
 import StageUpdateBtn from "../../components/stage/StageUpdateBtn";
 import { fetchStages, stageOrderChange } from "../../lib/withTokenApi";
-import stage, { stageFetch } from "../../store/stage";
+import { stageFetch } from "../../store/stage";
 import { RootState } from "../../store/store";
 import styles from "./StageEdit.module.scss";
 
@@ -44,11 +44,12 @@ const StageEdit: React.FC = () => {
   const orderChangeHandler = (event: React.MouseEvent) => {
     event.preventDefault();
     items.map((item, index) => {
-      stageOrderChange(Number(item.id), index + 1)
+      return stageOrderChange(Number(item.id), index + 1)
         .then((res) => {
           console.log(item.id);
           console.log(index);
           console.log("순서 변경 완료");
+          setIsOrderEdit(false);
         })
         .catch((err) => {
           console.log(err);
