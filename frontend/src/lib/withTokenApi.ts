@@ -341,8 +341,14 @@ export const postUpdate = async (post: PostUpdateSend) => {
   return data;
 };
 
-export const postListRead = async (stageId: number) => {
-  const { data } = await withTokenApi.get(`/post/${stageId}`);
+export const postListRead = async (
+  stageId: number,
+  page: number,
+  size: number
+) => {
+  const { data } = await withTokenApi.get(
+    `/post/${stageId}?page=${page}&size=${size}`
+  );
   return data;
 };
 
