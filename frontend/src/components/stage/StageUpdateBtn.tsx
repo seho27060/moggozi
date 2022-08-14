@@ -19,7 +19,7 @@ const StageUpdateBtn: React.FC<{
     <div>
       <button onClick={openModal}>수정</button>
       <Modal open={modalOpen} close={closeModal} header="스테이지 수정">
-        <StageUpdateForm stage={stage} />
+        <StageUpdateForm stage={stage} closeModal={closeModal} />
       </Modal>
     </div>
   );

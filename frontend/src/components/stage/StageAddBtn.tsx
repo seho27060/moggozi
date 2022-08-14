@@ -16,7 +16,7 @@ const StageAddBtn: React.FC = () => {
     <div>
       <button onClick={openModal}>생성</button>
       <Modal open={modalOpen} close={closeModal} header="스테이지 생성">
-        <StageForm />
+        <StageForm closeModal={closeModal} />
       </Modal>
     </div>
   );

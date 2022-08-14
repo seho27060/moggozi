@@ -7,8 +7,8 @@ import { stageFetch } from "../../store/stage";
 import EditorComponent from "../ui/Editor";
 import ReactQuill from "react-quill";
 
-import styles from "./StageForm.module.scss"
-const StageForm: React.FC = () => {
+import styles from "./StageForm.module.scss";
+const StageForm: React.FC<{ closeModal: () => void }> = ({ closeModal }) => {
   const dispatch = useDispatch();
   const nameInputRef = useRef<HTMLInputElement>(null);
   const contentInputRef = useRef<ReactQuill>();
@@ -22,10 +22,11 @@ const StageForm: React.FC = () => {
     };
     stageAdd(stageData, Number(challengeId!))
       .then((res) => {
-        alert("스테이지 생성이 완료되었습니다.");
         fetchStages(Number(challengeId!))
           .then((res) => {
+            alert("스테이지 생성이 완료되었습니다.");
             dispatch(stageFetch(res));
+            closeModal();
           })
           .catch((err) => {
             alert(err.response);
@@ -45,7 +46,7 @@ const StageForm: React.FC = () => {
             <input type="text" required id="name" ref={nameInputRef} />
           </div>
           <div>
-          <EditorComponent QuillRef={contentInputRef} value={""}/>
+            <EditorComponent QuillRef={contentInputRef} value={""} />
           </div>
           <button type="button" onClick={stageSubmitHandler}>
             Register
