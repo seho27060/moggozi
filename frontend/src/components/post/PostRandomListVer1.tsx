@@ -8,7 +8,7 @@ import { postRandomRead } from "../../lib/withTokenApi";
 import Loader from "../ui/Loader";
 import { PostData } from "../../store/post";
 
-import styles from "./PostRandomListVer1.module.scss"
+import styles from "./PostRandomListVer1.module.scss";
 
 const PostRandomList: React.FC<{}> = () => {
   const dispatch = useDispatch();
@@ -25,7 +25,7 @@ const PostRandomList: React.FC<{}> = () => {
     const { scrollTop } = document.documentElement;
 
     if (Math.round(scrollTop + innerHeight) > scrollHeight) {
-      postRandomRead(16).then((res) => {
+      postRandomRead(9).then((res) => {
         console.log("infinite call ver1");
         setIsLogging(true);
         dispatch(setPostStageList(res));
@@ -51,13 +51,15 @@ const PostRandomList: React.FC<{}> = () => {
         <div className={styles.container}>
           {postStageList!.map((post: PostData) => {
             addPostCount();
-            return(<div key={postCountStart}>
-              <div>
-              <>
-                <PostingPageItem post={post}/>
-              </>
+            return (
+              <div key={postCountStart}>
+                <div>
+                  <>
+                    <PostingPageItem post={post} />
+                  </>
+                </div>
               </div>
-            </div>)
+            );
           })}
           {isLogging && <Loader />}
         </div>

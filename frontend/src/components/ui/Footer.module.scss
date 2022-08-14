@@ -1,0 +1,138 @@
+@use "../../styles/mixin.scss";
+
+@include mixin.desktop {
+  .container {
+    position: relative;
+    width: 100%;
+    // transform : translateY(-100%);
+    // footer 관련 문서
+    // https://lnk7424.tistory.com/13#:~:text=%ED%95%B4%EA%B2%B0%EB%B2%951&text=html%EA%B3%BC%20body%EC%9D%98%20height,%ED%95%98%EB%8B%A8%EC%97%90%20%EC%9C%84%EC%B9%98%ED%95%98%EB%8F%84%EB%A1%9D%20%ED%95%9C%EB%8B%A4.
+    
+    height: 290px;
+    background: RGB(247, 249, 250);
+    display: flex;
+    justify-content: center;
+
+    .block {
+      display: flex;
+      // justify-content: space-around;
+      width: 992px;
+      height: 220px;
+      margin: 20px 0 0 0;
+      // background: rgb(255, 0, 0);
+
+      .navigate {
+        margin: 0 200px 0 0;
+        transition: all 0.5s;
+        div:nth-child(1) {
+          font-weight: 700;
+          font-size: 20px;
+          color: #2f3438;
+          margin: 15px 0 15px 0;
+        }
+        div:nth-child(2) {
+          font-weight: 400;
+          font-size: 16px;
+          color: #828c94;
+          margin: 15px 0 15px 0;
+          cursor: pointer;
+          &:hover {
+            color: mixin.$mainColor;
+          }
+        }
+        div:nth-child(3) {
+          font-weight: 400;
+          font-size: 16px;
+          color: #828c94;
+          margin: 15px 0 15px 0;
+          cursor: pointer;
+          &:hover {
+            color: mixin.$mainColor;
+          }
+        }
+        div:nth-child(4) {
+          font-weight: 400;
+          font-size: 16px;
+          color: #828c94;
+          margin: 15px 0 15px 0;
+          cursor: pointer;
+          &:hover {
+            color: mixin.$mainColor;
+          }
+        }
+        div:nth-child(5) {
+          font-weight: 400;
+          font-size: 16px;
+          color: #828c94;
+          margin: 15px 0 15px 0;
+          cursor: pointer;
+          &:hover {
+            color: mixin.$mainColor;
+          }
+        }
+        div:nth-child(6) {
+          font-weight: 400;
+          font-size: 16px;
+          color: #828c94;
+          margin: 15px 0 15px 0;
+          cursor: pointer;
+          &:hover {
+            color: mixin.$mainColor;
+          }
+        }
+      }
+
+      .creator {
+        .team {
+          display: flex;
+          align-items: center;
+          font-weight: 700;
+          font-size: 20px;
+          color: #2f3438;
+          margin: 15px 0 15px 0;
+          svg {
+            color: #828c94;
+            margin: 0 0 0 5px;
+          }
+        }
+
+        .group {
+          display: flex;
+          margin: 20px 0 0 0;
+          & > div {
+            margin: 0 40px 0 0;
+            a {
+              display: block;
+              margin: 0px 15px 15px 0px;
+              font-weight: 400;
+              font-size: 16px;
+              color: #828c94;
+              transition: all 0.5s;
+              text-decoration: none;
+              &:hover {
+                color: mixin.$mainColor;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .copyright {
+    display: flex;
+    align-items: center;
+    background: RGB(247, 249, 250);
+    img {
+      width: 100px;
+      height: 40px;
+      object-fit: contain;
+      margin: 0 20px 0 0;
+    }
+    div {
+      font-weight: 400;
+      font-size: 16px;
+      color: #828c94;
+    }
+  }
+}

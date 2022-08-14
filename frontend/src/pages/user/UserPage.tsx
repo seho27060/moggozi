@@ -5,7 +5,12 @@ import { Link, useParams } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 
 import { otherUserDetail } from "../../lib/generalApi";
-import { followApi, myPageChallenge, myPagePost } from "../../lib/withTokenApi";
+import {
+  followApi,
+  MyChallengeList,
+  myPageChallenge,
+  myPagePost,
+} from "../../lib/withTokenApi";
 
 import MypageFollow from "../../components/accounts/MypageFollow";
 
@@ -25,6 +30,7 @@ import {
 import PostDetailItem from "../../components/post/PostDetailItem";
 import PostUpdateForm from "../../components/post/PostUpdateForm";
 import PostModal from "../../components/ui/PostModal";
+import { ChallengeItemState } from "../../store/challenge";
 
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
@@ -54,8 +60,14 @@ function UserPage() {
 
   const [challengeList, setChallengeList] = useState<UserChallengeType[]>([]);
   const [postList, setPostList] = useState<UserPostType[]>([]);
+  const [myChallengeList, setMyChallengeList] = useState<
+    ChallengeItemState[]
+  >([]);
 
-  const tabMenus = ["모두보기", "챌린지", "포스팅"];
+  let tabMenus = ["모두보기", "챌린지", "포스팅"];
+  if (userId === loginId) {
+    tabMenus = ["모두보기", "도전 챌린지", "챌린지", "포스팅"];
+  }
   const [value, setValue] = useState(0);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -93,10 +105,18 @@ function UserPage() {
             setPostList([...res.content]);
           })
           .catch((err) => console.log("post err", err));
+        if (userId === loginData.userInfo.id) {
+          MyChallengeList(0, 16)
+            .then((res) => {
+              console.log("call my recentrych");
+              setMyChallengeList(res.content);
+            })
+            .catch((err) => console.log("myrecentch err", err));
+        }
       })
       .catch((err) => {
         // alert("오류가 발생했습니다.")
-        console.log(err);
+        console.log("otherUserDetail", err);
       });
   }, [userId, loginData]);
 
@@ -134,7 +154,7 @@ function UserPage() {
   };
 
   return (
-    <div>
+    <div className={styles.margin}>
       <div style={{ margin: "20px" }}>
         <a href="#/">공유버튼</a>
       </div>
@@ -191,13 +211,15 @@ function UserPage() {
       {isPrivate ? <div>블러 처리 가림막</div> : <div>보여주기</div>}
       <div style={{ display: "flex", justifyContent: "center" }}>
         <div className={styles.container}>
-          <Box 
-          display="flex" justifyContent="center" width="100%" borderBottom= "2px solid #afafaf"
-          margin="50px 0 0 0"
+          <Box
+            display="flex"
+            justifyContent="center"
+            width="100%"
+            borderBottom="2px solid #afafaf"
+            margin="50px 0 0 0"
           >
             <Tabs
-              sx={{
-              }}
+              sx={{}}
               value={value}
               onChange={handleChange}
               variant="scrollable"
@@ -231,24 +253,71 @@ function UserPage() {
           </Box>
         </div>
       </div>
+      <div></div>
+      {userId !== loginId ? (
+        <>
+          {value === 0 && (
+            <UserTabBox
+              myChallenges={null}
+              challenges={challengeList.slice(0, 8)}
+              nickname={nickname}
+              posts={postList.slice(0, 8)}
+            />
+          )}
+          {value === 1 && (
+            <UserTabBox
+              myChallenges={null}
+              challenges={challengeList}
+              nickname={nickname}
+              posts={null}
+            />
+          )}
+          {value === 2 && (
+            <UserTabBox
+              myChallenges={null}
+              challenges={null}
+              nickname={nickname}
+              posts={postList}
+            />
+          )}
+        </>
+      ) : (
+        <>
+          {value === 0 && (
+            <UserTabBox
+              myChallenges={myChallengeList.slice(0,4)}
+              challenges={challengeList.slice(0, 8)}
+              nickname={nickname}
+              posts={postList.slice(0, 8)}
+            />
+          )}
+          {value === 1 && (
+            <UserTabBox
+              myChallenges={myChallengeList}
+              challenges={null}
+              nickname={nickname}
+              posts={null}
+            />
+          )}
+          {value === 2 && (
+            <UserTabBox
+              myChallenges={null}
+              challenges={challengeList}
+              nickname={nickname}
+              posts={null}
+            />
+          )}
+          {value === 3 && (
+            <UserTabBox
+              myChallenges={null}
+              challenges={null}
+              nickname={nickname}
+              posts={postList}
+            />
+          )}
+        </>
+      )}
 
-      {value === 0 && (
-        <UserTabBox
-          challenges={challengeList.slice(0, 8)}
-          nickname={nickname}
-          posts={postList.slice(0, 8)}
-        />
-      )}
-      {value === 1 && (
-        <UserTabBox
-          challenges={challengeList}
-          nickname={nickname}
-          posts={null}
-        />
-      )}
-      {value === 2 && (
-        <UserTabBox challenges={null} nickname={nickname} posts={postList} />
-      )}
       <div>
         {postModalOpen && (
           <PostModal open={postModalOpen} close={closePostModal}>

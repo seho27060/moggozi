@@ -1,0 +1,25 @@
+@use "../../styles/mixin.scss" as mixin;
+
+.container {
+  display: flex;
+  justify-content: center;
+  .noticeBanner {
+    font-size: 3rem;
+    font-weight: 700;
+    font-family: "Noto Sans KR";
+    padding: 2rem 0.5rem;
+  }
+  .noticeList {
+    width: 992px;
+  }
+  .navigateBtnContainer {
+    padding: 2rem 0rem;
+    display: flex;
+    justify-content: center;
+  }
+  .navigateBtn {
+    padding: 0rem 1rem;
+    text-decoration: none;
+    font-size: 1.2rem;
+  }
+}

@@ -1,0 +1,47 @@
+@use "../../styles/mixin.scss" as mixin;
+
+.container {
+  display: flex;
+  justify-content: center;
+  .noticeDetail {
+    min-height: 550px;
+    border: solid mixin.$mainColor;
+    border-radius: 10px;
+    width: 992px;
+    margin: 2rem;
+  }
+  .noticeTitle {
+    font-size: 3rem;
+    font-weight: 700;
+    font-family: "Noto Sans KR";
+    padding: 1rem 0.5rem;
+    border-bottom: solid mixin.$cloudLine;
+    margin: 1rem;
+  }
+  .noticeContentSection {
+    padding: 2rem;
+    flex-direction: column;
+    height: 25rem;
+    .noticeContent {
+      height: 24rem;
+      font-size: 1.4rem;
+    }
+    .noticeBottom {
+      display: flex;
+      justify-content: space-between;
+      .navigateBtn {
+        background: transparent;
+        border: mixin.$cloudGray solid;
+        border-radius: 5px;
+        border: none;
+        color: mixin.$mainColor;
+        font-size: 1rem;
+      }
+      .noticeDate {
+        text-align: end;
+        color: mixin.$cloudGray;
+        margin: 12px 0 10px 0;
+      }
+    }
+  }
+}
