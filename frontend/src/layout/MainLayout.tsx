@@ -1,14 +1,14 @@
 import { Outlet } from "react-router-dom"
 import NavigationBar from "./NavigationBar";
+import Footer from "../components/ui/Footer";
 
 function MainLayout () {
   return <div>
-    <NavigationBar />
-    <p>MainLayout</p>
-    <div>
-    <Outlet />
-      
+    <div style={{ minHeight: "100%", position: "relative"}}>
+        <NavigationBar />
+        <Outlet />      
     </div>
+    <Footer/>
   </div>
 }
 export default MainLayout;
