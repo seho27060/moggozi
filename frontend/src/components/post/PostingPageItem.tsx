@@ -78,7 +78,12 @@ const PostingPageItem: React.FC<{ post: PostData }> = ({ post }) => {
           alt=""
         />
       ) : (
-        <img className={styles.postImg} src="" alt="" />
+        <img className={styles.postImg} src="" alt="" 
+        onClick={(event: React.MouseEvent) => {
+          event.preventDefault();
+          dispatch(setModalPostState(post));
+          dispatch(setPostModalOpen(true));
+        }}/>
       )}
 
       <div className={styles.title}>

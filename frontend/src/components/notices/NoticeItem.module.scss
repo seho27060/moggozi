@@ -1,0 +1,18 @@
+@use "../../styles/mixin.scss" as mixin;
+.container {
+  display: flex;
+  justify-content: space-between;
+  margin: 1.6rem 1rem;
+  font-size: 1.5rem;
+
+  .noticeTitle {
+    text-decoration: none;
+    padding: 0rem 2.3rem;
+  }
+  .noticeDate {
+    font-size: 1.1rem;
+    padding: 0rem 1.9rem;
+    color: mixin.$cloudGray;
+    
+  }
+}

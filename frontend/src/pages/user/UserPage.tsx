@@ -209,21 +209,16 @@ function UserPage() {
               scrollButtons
               allowScrollButtonsMobile
               aria-label="scrollable force tabs example"
-              // style={{ display: "flex", justifyContent: "center" }}
             >
               {tabMenus.map((menus, index) => (
                 <Tab
                   key={index}
-                  // onClick={(event: MouseEvent) => {
-                  //   console.log(event);
-                  // }}
-                  // disabled={value === stage.id}
+
                   label={`${menus}`}
                   sx={{
                     fontSize: "20px",
                     fontWeight: "700",
                     fontFamily: "Noto Sans",
-                    // textIndent: "15px",
                     textAlign: "center",
                     marginRight: "20px",
                     px: 1,
