@@ -297,7 +297,7 @@ const ChallengeDetail: React.FC = () => {
                   loadedChallenge!.content!.toString()
                 ),
               }}
-              className="view ql-editor"
+              className={`view ql-editor ${styles.cont}`}
             ></div>
 
             <div

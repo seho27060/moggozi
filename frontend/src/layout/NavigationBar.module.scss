@@ -41,8 +41,9 @@
         .searchButton {
           border: 0;
           background-color: transparent;
-          font-size: 1.1rem;
-          font-weight: 700;
+          font-size: 17px;
+          font-weight: 500;
+          font-family: pretendard;
           cursor: pointer;
         }
       }
@@ -63,7 +64,8 @@
           height: 45px;
           border-radius: 100px;
           border: 1px solid #eee;
-          margin: 5px
+          margin: 5px;
+          object-fit: cover;
         }
         // a > div:nth-child(1) {
         //   margin: 2.5px

@@ -32,33 +32,51 @@
     .badge0 {
       display: none;
     }
+
     .badge1 {
-      display: inline-block;
-      position: relative;
-      border-radius: 0px 0px 5px 5px;
-      right: 55px;
-      width: 40px;
-      height: 20px;
-      background: mixin.$mainColor;
-      color: #fff;
-      text-align: center;
-      font-size: 14px;
-      font-weight: 600;
-      line-height: 19px;
+      width: 0px;
+      height: 0px;
+
+      &::before {
+        display: inline-block;
+        position: relative;
+        border-radius: 0px 0px 5px 5px;
+        right: 55px;
+        bottom: 4px;
+        width: 40px;
+        height: 20px;
+        background: mixin.$mainColor;
+        color: #fff;
+        text-align: center;
+        font-size: 14px;
+        font-weight: 600;
+        font-family: pretendard;
+        line-height: 22px;
+        content: "진행";
+      }
     }
+
     .badge2 {
-      display: inline-block;
-      position: relative;
-      border-radius: 0px 0px 5px 5px;
-      right: 55px;
-      width: 40px;
-      height: 20px;
-      background: linear-gradient(90deg, #FF9921 -1.06%, #FFC337 101.51%);
-      color: #fff;
-      text-align: center;
-      font-size: 14px;
-      font-weight: 700;
-      line-height: 19px;
+      width: 0px;
+      height: 0px;
+
+      &::before {
+        display: inline-block;
+        position: relative;
+        border-radius: 0px 0px 5px 5px;
+        right: 55px;
+        bottom: 4px;
+        width: 40px;
+        height: 20px;
+        background: linear-gradient(90deg, #FF9921 -1.06%, #FFC337 101.51%);
+        color: #fff;
+        text-align: center;
+        font-size: 14px;
+        font-weight: 700;
+        font-family: pretendard;
+        line-height: 19px;
+        content:"완료"
+      }
     }
     
     .challengeInfo {

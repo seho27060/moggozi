@@ -28,8 +28,8 @@ const ChallengeItem: React.FC<{ challenge: ChallengeItemState }> = ({
         >
           {(() => {
             if (challenge.userProgress === 0) return "";
-            if (challenge.userProgress === 1) return "진행";
-            if (challenge.userProgress === 2) return "완료";
+            if (challenge.userProgress === 1) return "";
+            if (challenge.userProgress === 2) return "";
           })()}
         </div>
 

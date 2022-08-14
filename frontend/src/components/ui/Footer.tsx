@@ -12,7 +12,7 @@ const Footer = () => {
         <div>
           <div className={styles.block}>
             <div className={styles.navigate}>
-              <div>navigate</div>
+              <div>Navigate</div>
               <div onClick={() => { navigate("/") }}>Main</div>
               <div onClick={() => { navigate("/challenge") }}>Challenge</div>
               <div onClick={() => { navigate("/post/all") }}>Posting</div>

@@ -310,7 +310,7 @@ function UserPage() {
                   sx={{
                     fontSize: "20px",
                     fontWeight: "700",
-                    fontFamily: "Noto Sans",
+                    fontFamily: "pretendard",
                     textAlign: "center",
                     marginRight: "20px",
                     px: 1,
