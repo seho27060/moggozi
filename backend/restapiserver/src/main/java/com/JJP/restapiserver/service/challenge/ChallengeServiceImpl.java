@@ -590,7 +590,7 @@ public class ChallengeServiceImpl implements ChallengeService{
 
     @Override
     public ChallengePageDto getRecentChallenge(Long member_id, Pageable pageable) {
-        Page<Challenge> challengeList = challengeRepository.findAllByOrderByCreatedDateDesc(pageable);
+        Page<Challenge> challengeList = challengeRepository.findByStateOrderByCreatedDateDesc(1, pageable);
         if(challengeList.hasContent())
         {
             List<ChallengeListResponseDto> challengeListResponseDtoList = new ArrayList<>();
@@ -613,7 +613,7 @@ public class ChallengeServiceImpl implements ChallengeService{
 
     @Override
     public ChallengePageDto getRecentChallenge(Pageable pageable) {
-        Page<Challenge> challengeList = challengeRepository.findAllByOrderByCreatedDateDesc(pageable);
+        Page<Challenge> challengeList = challengeRepository.findByStateOrderByCreatedDateDesc(1, pageable);
         if(challengeList.hasContent())
         {
             List<ChallengeListResponseDto> challengeListResponseDtoList = new ArrayList<>();
