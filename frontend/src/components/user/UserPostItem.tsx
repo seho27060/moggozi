@@ -20,9 +20,9 @@ const UserPostItem: React.FC<{
     <div
       style={{
         border: "solid 1px",
-        width: "15rem",
-        height: "15rem",
-        margin: "2rem",
+        width: "13.5rem",
+        height: "13.5rem",
+        margin: "1rem",
         borderRadius: "5px",
       }}
       onClick={(event: MouseEvent) => {
@@ -35,11 +35,10 @@ const UserPostItem: React.FC<{
         src={userPost.postImg.length !== 0 ? userPost.postImg[0].path! : ""}
         alt="challengeImg"
         style={{
-          width: "15rem",
-          height: "12rem",
+          width: "13.5rem",
+          height: "13.5rem",
         }}
       />
-      {userPost.title}
     </div>
   );
 };

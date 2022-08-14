@@ -15,10 +15,7 @@ import { WebSocketContext } from "../../lib/WebSocketProvider";
 import { Alert } from "../../store/alert";
 
 import { UserChallengeType, UserPostType } from "../../store/userPage";
-import UserChallengeItem from "../../components/user/UserChallengeItem";
-import UserPostItem from "../../components/user/UserPostItem";
 
-import { Grid } from "@mui/material";
 import { useDispatch } from "react-redux";
 
 import {
@@ -29,7 +26,10 @@ import PostDetailItem from "../../components/post/PostDetailItem";
 import PostUpdateForm from "../../components/post/PostUpdateForm";
 import PostModal from "../../components/ui/PostModal";
 
-import { BiDownArrow, BiUpArrow } from "react-icons/bi";
+import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
+import UserTabBox from "./UserTabBox";
+import { Box } from "@mui/material";
 
 function UserPage() {
   const { postModalOpen, postUpdateFormOpen } = useSelector(
@@ -38,7 +38,6 @@ function UserPage() {
   const dispatch = useDispatch();
 
   const userId = Number(useParams().id);
-  // console.log(userId)
   const ws = useContext(WebSocketContext);
 
   const loginData = useSelector((state: RootState) => state.auth);
@@ -56,8 +55,12 @@ function UserPage() {
   const [challengeList, setChallengeList] = useState<UserChallengeType[]>([]);
   const [postList, setPostList] = useState<UserPostType[]>([]);
 
-  const [isChallengeToggle, setIsChallengeToggle] = useState(false);
-  const [isPostToggle, setIsPostToggle] = useState(false);
+  const tabMenus = ["모두보기", "챌린지", "포스팅"];
+  const [value, setValue] = useState(0);
+
+  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+    setValue(newValue);
+  };
 
   useEffect(() => {
     console.log(userId, loginData.userInfo.id);
@@ -186,93 +189,69 @@ function UserPage() {
         )}
       </div>
       {isPrivate ? <div>블러 처리 가림막</div> : <div>보여주기</div>}
-      <div>
-        <p
-          style={{
-            fontSize: "2rem",
-            fontWeight: "700",
-            padding: "1rem 3.3rem",
-            fontFamily: "ui-serif",
-          }}
-        >
-          {nickname}의 챌린지
-        </p>
-
-        <Grid container spacing={2} style={{ minHeight: "20rem" }}>
-          {challengeList.slice(0, 8).map((challenge) => (
-            <Grid key={challenge.id} item xs={3}>
-              <UserChallengeItem userChallenge={challenge} />
-            </Grid>
-          ))}
-        </Grid>
-        {challengeList.length > 8 && (
-          <div
-            onClick={() => setIsChallengeToggle(!isChallengeToggle)}
-            style={{ display: "flex", justifyContent: "center" }}
-          >
-            {isChallengeToggle ? (
-              <BiUpArrow style={{ fontSize: "3rem", color: "#9b78ff" }} />
-            ) : (
-              <BiDownArrow style={{ fontSize: "3rem", color: "#9b78ff" }} />
-            )}
-          </div>
-        )}
-        {isChallengeToggle && challengeList.length > 8 && (
-          <>
-            <Grid container spacing={2} style={{ minHeight: "20rem" }}>
-              {challengeList.slice(8).map((challenge) => (
-                <Grid key={challenge.id} item xs={3}>
-                  <UserChallengeItem userChallenge={challenge} />
-                </Grid>
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        <div className={styles.container}>
+          <Box display="flex" justifyContent="center" width="100%" borderBottom= "2px solid #afafaf">
+            <Tabs
+              sx={{
+              }}
+              value={value}
+              onChange={handleChange}
+              variant="scrollable"
+              textColor="inherit"
+              TabIndicatorProps={{
+                style: {
+                  background: "rgba(81, 255, 20, 0.62)",
+                  height: "10px",
+                  bottom: "10px",
+                },
+              }}
+              scrollButtons
+              allowScrollButtonsMobile
+              aria-label="scrollable force tabs example"
+              // style={{ display: "flex", justifyContent: "center" }}
+            >
+              {tabMenus.map((menus, index) => (
+                <Tab
+                  key={index}
+                  // onClick={(event: MouseEvent) => {
+                  //   console.log(event);
+                  // }}
+                  // disabled={value === stage.id}
+                  label={`${menus}`}
+                  sx={{
+                    fontSize: "20px",
+                    fontWeight: "700",
+                    fontFamily: "Noto Sans",
+                    // textIndent: "15px",
+                    textAlign: "center",
+                    marginRight: "20px",
+                    px: 1,
+                  }}
+                />
               ))}
-            </Grid>
-          </>
-        )}
-        <hr
-          style={{ border: "solid 3px", color: "#9b78ff", margin: "1rem 4rem" }}
-        />
-        <p
-          style={{
-            fontSize: "2rem",
-            fontWeight: "700",
-            padding: "1rem 3.3rem",
-            fontFamily: "ui-serif",
-          }}
-        >
-          {nickname}의 포스트
-        </p>
-        <Grid container spacing={2} style={{ minHeight: "20rem" }}>
-          {postList.slice(0, 8).map((post) => (
-            <Grid key={post.id} item xs={3}>
-              <UserPostItem userPost={post} />
-            </Grid>
-          ))}
-        </Grid>
-        {postList.length > 8 && (
-          <div
-            onClick={() => setIsPostToggle(!isPostToggle)}
-            style={{ display: "flex", justifyContent: "center" }}
-          >
-            {isPostToggle ? (
-              <BiUpArrow style={{ fontSize: "3rem", color: "#9b78ff" }} />
-            ) : (
-              <BiDownArrow style={{ fontSize: "3rem", color: "#9b78ff" }} />
-            )}
-          </div>
-        )}
-        {isPostToggle && postList.length > 8 && (
-          <>
-            <Grid container spacing={2} style={{ minHeight: "20rem" }}>
-              {postList.slice(8).map((post) => (
-                <Grid key={post.id} item xs={3}>
-                  <UserPostItem userPost={post} />
-                </Grid>
-              ))}
-            </Grid>
-          </>
-        )}
+            </Tabs>
+          </Box>
+        </div>
       </div>
 
+      {value === 0 && (
+        <UserTabBox
+          challenges={challengeList.slice(0, 8)}
+          nickname={nickname}
+          posts={postList.slice(0, 8)}
+        />
+      )}
+      {value === 1 && (
+        <UserTabBox
+          challenges={challengeList}
+          nickname={nickname}
+          posts={null}
+        />
+      )}
+      {value === 2 && (
+        <UserTabBox challenges={null} nickname={nickname} posts={postList} />
+      )}
       <div>
         {postModalOpen && (
           <PostModal open={postModalOpen} close={closePostModal}>

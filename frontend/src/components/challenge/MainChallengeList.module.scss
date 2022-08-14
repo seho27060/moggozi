@@ -1,0 +1,11 @@
+@use "../../styles/mixin.scss" as mixin;
+
+@include mixin.desktop {
+  .challengeList {
+    display: flex;
+  }
+}
+
+@include mixin.mobile {
+
+}
