@@ -1,6 +1,7 @@
 package com.JJP.restapiserver.service.challenge;
 
 import com.JJP.restapiserver.domain.dto.challenge.*;
+import com.JJP.restapiserver.domain.dto.stage.StageJoinRequestDto;
 import com.JJP.restapiserver.domain.dto.tag.TagRequestDto;
 import com.JJP.restapiserver.domain.dto.tag.TagResponseDto;
 import com.JJP.restapiserver.domain.entity.Tag.ChallengeTag;
@@ -10,6 +11,7 @@ import com.JJP.restapiserver.domain.entity.challenge.Challenge;
 import com.JJP.restapiserver.domain.entity.challenge.ChallengeLike;
 import com.JJP.restapiserver.domain.entity.challenge.JoinedChallenge;
 import com.JJP.restapiserver.domain.entity.member.Member;
+import com.JJP.restapiserver.domain.entity.stage.Stage;
 import com.JJP.restapiserver.repository.Tag.ChallengeTagRepository;
 import com.JJP.restapiserver.repository.Tag.MemberTagRepository;
 import com.JJP.restapiserver.repository.Tag.TagRepository;
@@ -18,6 +20,7 @@ import com.JJP.restapiserver.repository.challenge.ChallengeRepository;
 import com.JJP.restapiserver.repository.challenge.JoinedChallengeRepository;
 import com.JJP.restapiserver.repository.member.MemberRepository;
 import com.JJP.restapiserver.service.Tag.ChallengeTagService;
+import com.JJP.restapiserver.service.stage.StageJoinService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,6 +50,7 @@ public class ChallengeServiceImpl implements ChallengeService{
     private final TagRepository tagRepository;
     private final ChallengeTagRepository challengeTagRepository;
 
+    private final StageJoinService stageJoinService;
     private final ChallengeLikeRepository challengeLikeRepository;
 
     private final MemberTagRepository memberTagRepository;
@@ -306,6 +310,9 @@ public class ChallengeServiceImpl implements ChallengeService{
                                 .challenge(challenge)
                                 .member(member)
                                 .build());
+        for(Stage stage : challenge.getStageList()) {
+            stageJoinService.joinStage(new StageJoinRequestDto(stage.getId(),challengeUpdateRequestDto.getMemberId(),1));
+        }
         return true;
         }
     }
