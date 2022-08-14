@@ -1,5 +1,5 @@
 import { deleteObject, listAll, ref, uploadBytes } from "firebase/storage";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { storageService } from "../../fbase/fbase";
@@ -13,8 +13,16 @@ const StageImgForm: React.FC<{
   console.log(stage);
   const [file, setFile] = useState<File>();
   const [previewImage, setPreviewImage] = useState("");
+  const [images, setImages] = useState<imgState[]>([]);
   const stages = useSelector((state: RootState) => state.stages);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    stageImgFetchAPI(stage.id!).then((res) => {
+      setImages(res);
+    });
+  }, [stage.id]);
+
   // 이미지 로드
   const onLoadHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
@@ -40,10 +48,7 @@ const StageImgForm: React.FC<{
         const imgRef = ref(storageService, `${target}/${imagId + 1}`); // 맨 마지막 id에 1을 더해 넣어주기
         uploadBytes(imgRef, file!).then(() => {
           stageImgFetchAPI(stage.id!).then((res) => {
-            const newStages = stages.map((item) =>
-              item.id === stage.id ? { ...item, img: res } : item
-            );
-            dispatch(stageFetch(newStages));
+            setImages(res);
           });
         });
         setPreviewImage("");
@@ -57,16 +62,10 @@ const StageImgForm: React.FC<{
 
     stageImgFetchAPI(stage.id!)
       .then((res) => {
-        const newStages = stages.map((item) =>
-          item.id === stage.id ? { ...item, img: res } : item
-        );
-        dispatch(stageFetch(newStages));
+        setImages(res);
       })
       .catch((err) => {
-        const newStages = stages.map((item) =>
-          item.id === stage.id ? { ...item, img: [] } : item
-        );
-        dispatch(stageFetch(newStages));
+        setImages([]);
       });
   };
 
@@ -121,8 +120,8 @@ const StageImgForm: React.FC<{
       <div>
         <p>스테이지 이미지들</p>
         <ul>
-          {Array.isArray(stage.img) &&
-            stage.img.map((img: imgState) => {
+          {Array.isArray(images) &&
+            images.map((img: imgState) => {
               return (
                 <li key={img.id}>
                   <img src={img.url!} alt="img" />

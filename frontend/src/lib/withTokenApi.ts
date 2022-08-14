@@ -281,8 +281,16 @@ export const stageUpdate = async (
   return data;
 };
 
-export const fetchStages = async (ChallengeId: number) => {
-  const { data } = await withTokenApi.get(`/stage/${ChallengeId}`);
+export const fetchStages = async (challengeId: number) => {
+  const { data } = await withTokenApi.get(`/stage/${challengeId}`);
+  return data;
+};
+
+export const stageOrderChange = async (stageId: number, order: number) => {
+  const { data } = await withTokenApi.put(`/stage`, {
+    id: stageId,
+    order: order,
+  });
   return data;
 };
 
