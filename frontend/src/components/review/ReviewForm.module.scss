@@ -30,12 +30,14 @@
           padding: 0 15px 5px 10px;
           width: 850px;
           font-size: 15px;
+          font-family: pretendard;
 
           &::placeholder {
-            font-weight: 700;
+            font-weight: 500;
             font-size: 15px;
             line-height: 0px;
             color: mixin.$cloudGray;
+            font-family: pretendard;
           }
 
           &:focus {
@@ -46,9 +48,9 @@
 
       .reviewSubmit {
         cursor: pointer;
-        font-weight: 700;
+        font-weight: 500;
         font-size: 15px;
-        line-height: 18px;
+        line-height: 27px;
         color: mixin.$cloudGray;
         margin: 0 15px 8px 0;
         // margin-right: 10px;

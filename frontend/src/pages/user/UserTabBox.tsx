@@ -25,12 +25,14 @@ const UserTabBox: React.FC<{
                     padding: "2rem",
                   }}
                 >
-                  {nickname}의 도전중 챌린지
+                  내가 생성한 챌린지
                 </p>
                 <Grid container spacing={1}>
                   {myChallenges.map((challenge) => (
                     <Grid key={challenge.id} item xs={3}>
-                      <UserChallengeItem userChallenge={{...challenge,img:challenge.img!}} />
+                      <UserChallengeItem
+                        userChallenge={{ ...challenge, img: challenge.img! }}
+                      />
                     </Grid>
                   ))}
                 </Grid>
@@ -48,7 +50,7 @@ const UserTabBox: React.FC<{
                     padding: "2rem",
                   }}
                 >
-                  {nickname}의 챌린지
+                  {nickname}님이 도전한 챌린지
                 </p>
                 <Grid container spacing={1}>
                   {challenges.map((challenge) => (
@@ -71,7 +73,7 @@ const UserTabBox: React.FC<{
                     padding: "2rem",
                   }}
                 >
-                  {nickname}의 포스트
+                  {nickname}님의 포스트
                 </p>
                 <Grid container spacing={2}>
                   {posts!.map((post) => (

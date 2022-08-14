@@ -73,6 +73,7 @@
     color: mixin.$mainColor;
     font-size: 13px;
     font-weight: 700;
+    font-family: pretendard;
     border-radius: 5px;
     z-index: 1000;
 
@@ -114,8 +115,9 @@
     border: 1px solid mixin.$mainColor;
     border-radius: 5px;
     background: #fff;
-    font-size: 16px;;
+    font-size: 15px;;
     font-weight: 700;
+    font-family: pretendard;
     color: mixin.$mainColor;
 
     &:hover {
