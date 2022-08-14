@@ -1,0 +1,30 @@
+@use '../../styles/mixin.scss';
+
+@include mixin.desktop {
+  .link {
+    text-decoration: none;
+    display: flex;
+    justify-content: center;
+    
+    .img {
+      overflow: hidden;
+      border-radius:5px;
+      margin: 10px 10px 10px 10px;
+      // width: 220px;
+
+
+      img {
+        width: 220px;
+        height: 160px;
+        border-radius:5px;
+        overflow: hidden;
+        transition: all 0.5s;
+  
+        &:hover {
+          transform: scale(1.1);
+        }
+      }
+    }
+
+  }
+}
