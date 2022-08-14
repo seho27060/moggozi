@@ -1,12 +1,12 @@
-import {  useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import { postSet } from "../../store/post";
+import { PostData, postSet } from "../../store/post";
 import PostDetailItem from "../../components/post/PostDetailItem";
 import PostForm from "../../components/post/PostForm";
 import PostList from "../../components/post/PostList";
 import Modal from "../../components/ui/Modal";
-import {  postListRead } from "../../lib/withTokenApi";
+import { postListRead, stageDetailRead, stageMyPostRead } from "../../lib/withTokenApi";
 import { RootState } from "../../store/store";
 import PostUpdateForm from "../../components/post/PostUpdateForm";
 import {
@@ -14,13 +14,18 @@ import {
   setPostFormButtonState,
   setPostUpdateFormState,
   setPostModalOpen,
+  setModalPostState,
 } from "../../store/postModal";
 import { useParams } from "react-router-dom";
+import PostModal from "../../components/ui/PostModal";
+
+import styles from "./PostStage.module.scss";
+import { StageState } from "../../store/stage";
 
 const PostStage = () => {
   document.body.style.overflow = "auto"; //모달때문에 이상하게 스크롤이 안되서 강제로 스크롤 바 생성함
-  document.body.style.height = "auto"
-  const {stageId} = useParams()
+  document.body.style.height = "auto";
+  const { stageId } = useParams();
 
   const dispatch = useDispatch();
   const postListState = useSelector((state: RootState) => state.post.posts);
@@ -28,8 +33,11 @@ const PostStage = () => {
     postModalOpen,
     postFormModalOpen,
     postUpdateFormOpen,
-    postFormButtonOpen,
+
   } = useSelector((state: RootState) => state.postModal);
+
+  const [checkedPost, setCheckedPost] = useState<PostData | number>(-1);
+  const [stageState, setStageState] =useState<StageState|null>(null)
 
   // const [isLogging, setIsLogging] = useState(false)
 
@@ -39,7 +47,6 @@ const PostStage = () => {
     const { scrollTop } = document.documentElement;
 
     if (Math.round(scrollTop + innerHeight) > scrollHeight) {
-      
     }
   }, []);
   useEffect(() => {
@@ -58,10 +65,7 @@ const PostStage = () => {
   };
 
   useEffect(() => {
-    console.log(
-      stageId,
-      "번 스테이지의 포스팅을 불러옵니다."
-    );
+    console.log(stageId, "번 스테이지의 포스팅을 불러옵니다.");
     postListRead(Number(stageId))
       .then((res) => {
         console.log("포스팅 불러오기 성공", res);
@@ -71,31 +75,51 @@ const PostStage = () => {
       .catch((err) => {
         console.log("ERR", err);
       });
-  }, [dispatch,stageId]);
+    stageMyPostRead(Number(stageId)).then((res) => {
+      console.log("user stage post", res);
+      setCheckedPost(res);
+    }).catch((err)=>console.log("stagepostread err",err))
+    stageDetailRead(Number(stageId)).then((res)=>{
+      console.log("stage ",res)
+      setStageState(res)
+    }).catch((err)=>console.log("stage err",err))
+  }, [dispatch, stageId]);
 
   return (
-<div>
-      <h1>PostStage</h1>
-      {postFormButtonOpen && (
-        <button onClick={() => dispatch(setPostFormModalOpen(true))}>
-          포스팅 생성
-        </button>
-      )}
-      {postListState && (
-        <>
-          <PostList posts={postListState} />
-        </>
-      )}
-      <div >
-        {postModalOpen && (
-          <Modal
-            open={postModalOpen}
-            close={closePostModal}
-            header="Modal heading"
+    <div className={styles.display}>
+      <div className={styles.container}>
+        <h1>{stageState!.name} 스테이지의 포스팅</h1>
+        {checkedPost === -1 ? (
+          <button
+            onClick={() => dispatch(setPostFormModalOpen(true))}
+            className={styles.postBtn}
           >
+            포스팅 생성
+          </button>
+        ) : (
+          <button
+            onClick={() => {
+              dispatch(setModalPostState(checkedPost));
+              dispatch(setPostModalOpen(true));
+            }}
+            className={styles.postBtn}
+          >
+            내 포스팅 보기
+          </button>
+        )}
+        {postListState && (
+          <>
+            <PostList posts={postListState} />
+          </>
+        )}
+      </div>
+
+      <div>
+        {postModalOpen && (
+          <PostModal open={postModalOpen} close={closePostModal}>
             {!postUpdateFormOpen && <PostDetailItem />}
             {postUpdateFormOpen && <PostUpdateForm />}
-          </Modal>
+          </PostModal>
         )}
         {postFormModalOpen && (
           <Modal
