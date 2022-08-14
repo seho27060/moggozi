@@ -134,7 +134,7 @@ function UserPage() {
   };
 
   return (
-    <div>
+    <div className={styles.margin}>
       <div style={{ margin: "20px" }}>
         <a href="#/">공유버튼</a>
       </div>

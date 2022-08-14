@@ -31,11 +31,11 @@ const NavigationBar: React.FC = () => {
             </NavLink>
           </li>
           <div className={style.div}>
-          <li>
+            <li>
               <NavLink to="/notice/0">공지사항</NavLink>
             </li>
             <li>
-              <NavLink to="/search">챌린지</NavLink>
+              <NavLink to="/challenge">챌린지</NavLink>
             </li>
             <li>
               <NavLink to="/post/all">포스팅</NavLink>
@@ -49,7 +49,7 @@ const NavigationBar: React.FC = () => {
                   setModalOpen(true);
                   document.body.style.overflow = "hidden";
                 }}
-                className = {style.searchButton}
+                className={style.searchButton}
               >
                 검색
               </button>

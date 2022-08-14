@@ -27,7 +27,7 @@ function App() {
   }, [dispatch, user.id]);
 
   return (
-    <div>
+    <div style={{height: "100%"}}>
       <WebSocketProvider>
         <Router />
       </WebSocketProvider>
