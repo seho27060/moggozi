@@ -311,7 +311,7 @@ public class ChallengeServiceImpl implements ChallengeService{
                                 .member(member)
                                 .build());
         for(Stage stage : challenge.getStageList()) {
-            stageJoinService.joinStage(new StageJoinRequestDto(stage.getId(),challengeUpdateRequestDto.getMemberId(),1));
+            stageJoinService.joinStage(new StageJoinRequestDto(challengeUpdateRequestDto.getMemberId(), stage.getId(),1));
         }
         return true;
         }
