@@ -60,4 +60,6 @@ public interface ChallengeRepository extends JpaRepository<Challenge, Long> {
     List<Challenge> findChallengeContainsTag(@Param("tag_ids") Long tag_ids);
 
     Optional<Challenge> findByMember_idAndId(Long member_id, Long challenge_id);
+
+    Page<Challenge> findAllByOrderByCreatedDateDesc(Pageable pageable);
 }
