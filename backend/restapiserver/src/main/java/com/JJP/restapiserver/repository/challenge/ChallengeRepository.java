@@ -61,5 +61,5 @@ public interface ChallengeRepository extends JpaRepository<Challenge, Long> {
 
     Optional<Challenge> findByMember_idAndId(Long member_id, Long challenge_id);
 
-    Page<Challenge> findAllByOrderByCreatedDateDesc(Pageable pageable);
+    Page<Challenge> findByStateOrderByCreatedDateDesc(int state, Pageable pageable);
 }
