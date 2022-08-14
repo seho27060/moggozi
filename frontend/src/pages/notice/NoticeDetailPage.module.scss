@@ -33,11 +33,14 @@
         background: transparent;
         border: mixin.$cloudGray solid;
         border-radius: 5px;
+        border: none;
+        color: mixin.$mainColor;
+        font-size: 1rem;
       }
       .noticeDate {
         text-align: end;
         color: mixin.$cloudGray;
-        margin: 12px 0 10px 0
+        margin: 12px 0 10px 0;
       }
     }
   }

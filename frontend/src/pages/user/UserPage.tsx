@@ -96,7 +96,7 @@ function UserPage() {
       })
       .catch((err) => {
         // alert("오류가 발생했습니다.")
-        console.log(err);
+        console.log("otherUserDetail",err);
       });
   }, [userId, loginData]);
 

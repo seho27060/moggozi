@@ -34,7 +34,7 @@ const NoticeDetailPage: React.FC = () => {
           <p className={styles.noticeContent}>{notice.content}</p>
           {/* <div>{notice.updatedDate!.toString()}</div>/ */}
           <div className={styles.noticeBottom}>
-            <button onClick={() => navigate(-1)}>뒤로가기</button>
+            <button onClick={() => navigate(-1)} className={styles.navigateBtn}>뒤로가기</button>
             <div className={styles.noticeDate}>
               {new Date(notice.createdDate!).toLocaleDateString("ko-Kr", {
                 weekday: "long",
