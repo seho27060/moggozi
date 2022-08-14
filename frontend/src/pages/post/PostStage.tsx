@@ -6,7 +6,11 @@ import PostDetailItem from "../../components/post/PostDetailItem";
 import PostForm from "../../components/post/PostForm";
 import PostList from "../../components/post/PostList";
 import Modal from "../../components/ui/Modal";
-import { postListRead, stageDetailRead, stageMyPostRead } from "../../lib/withTokenApi";
+import {
+  postListRead,
+  stageDetailRead,
+  stageMyPostRead,
+} from "../../lib/withTokenApi";
 import { RootState } from "../../store/store";
 import PostUpdateForm from "../../components/post/PostUpdateForm";
 import {
@@ -21,6 +25,7 @@ import PostModal from "../../components/ui/PostModal";
 
 import styles from "./PostStage.module.scss";
 import { StageState } from "../../store/stage";
+import PostPageList from "../../components/post/PostPageList";
 
 const PostStage = () => {
   document.body.style.overflow = "auto"; //모달때문에 이상하게 스크롤이 안되서 강제로 스크롤 바 생성함
@@ -29,15 +34,12 @@ const PostStage = () => {
 
   const dispatch = useDispatch();
   const postListState = useSelector((state: RootState) => state.post.posts);
-  const {
-    postModalOpen,
-    postFormModalOpen,
-    postUpdateFormOpen,
-
-  } = useSelector((state: RootState) => state.postModal);
+  const { postModalOpen, postFormModalOpen, postUpdateFormOpen } = useSelector(
+    (state: RootState) => state.postModal
+  );
 
   const [checkedPost, setCheckedPost] = useState<PostData | number>(-1);
-  const [stageState, setStageState] =useState<StageState|null>(null)
+  const [stageState, setStageState] = useState<StageState | null>(null);
 
   // const [isLogging, setIsLogging] = useState(false)
 
@@ -75,20 +77,24 @@ const PostStage = () => {
       .catch((err) => {
         console.log("ERR", err);
       });
-    stageMyPostRead(Number(stageId)).then((res) => {
-      console.log("user stage post", res);
-      setCheckedPost(res);
-    }).catch((err)=>console.log("stagepostread err",err))
-    stageDetailRead(Number(stageId)).then((res)=>{
-      console.log("stage ",res)
-      setStageState(res)
-    }).catch((err)=>console.log("stage err",err))
+    stageMyPostRead(Number(stageId))
+      .then((res) => {
+        console.log("user stage post", res);
+        setCheckedPost(res);
+      })
+      .catch((err) => console.log("stagepostread err", err));
+    stageDetailRead(Number(stageId))
+      .then((res) => {
+        console.log("stage ", res);
+        setStageState(res);
+      })
+      .catch((err) => console.log("stage err", err));
   }, [dispatch, stageId]);
 
   return (
     <div className={styles.display}>
       <div className={styles.container}>
-        <h1>{stageState!.name} 스테이지의 포스팅</h1>
+        {stageState && <h1>{stageState!.name} 스테이지의 포스팅</h1>}
         {checkedPost === -1 ? (
           <button
             onClick={() => dispatch(setPostFormModalOpen(true))}
@@ -109,7 +115,7 @@ const PostStage = () => {
         )}
         {postListState && (
           <>
-            <PostList posts={postListState} />
+            <PostPageList postList={postListState} />
           </>
         )}
       </div>
