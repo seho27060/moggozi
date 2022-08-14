@@ -1,5 +1,6 @@
 package com.JJP.restapiserver.service.stage;
 
+import com.JJP.restapiserver.domain.dto.challenge.Writer;
 import com.JJP.restapiserver.domain.dto.stage.CommentRequestDto;
 import com.JJP.restapiserver.domain.dto.stage.CommentResponseDto;
 import com.JJP.restapiserver.domain.entity.stage.Comment;
@@ -18,4 +19,5 @@ public interface CommentService {
     ResponseEntity updateComment(Long comment_id, CommentRequestDto commentRequestDto);
     ResponseEntity deleteComment(Long comment_id);
 
+    Writer getCommentWriter(Long comment_id);
 }

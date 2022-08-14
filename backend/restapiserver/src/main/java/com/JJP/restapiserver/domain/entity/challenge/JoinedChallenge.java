@@ -40,4 +40,7 @@ public class JoinedChallenge  {
     @LastModifiedDate
     private LocalDateTime modifiedDate;
 
+    public void complete(){
+        this.state = 2;
+    }
 }

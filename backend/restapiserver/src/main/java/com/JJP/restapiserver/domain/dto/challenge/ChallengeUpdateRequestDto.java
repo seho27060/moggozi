@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ChallengeCompleteRequestDto {
+public class ChallengeUpdateRequestDto {
     public Long memberId;
     public Long challengeId;
 

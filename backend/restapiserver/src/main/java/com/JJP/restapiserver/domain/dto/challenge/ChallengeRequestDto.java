@@ -21,6 +21,5 @@ public class ChallengeRequestDto {
     private int level;
     private List<TagRequestDto> hobbyList = new ArrayList<>();
     // 작성중, 등록 완료
-    private int state;
     private String description;
 }

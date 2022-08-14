@@ -29,29 +29,32 @@ public class ChallengeResponseDto {
     private List<TagResponseDto> hobbyList;
     private int userProgress;
 
+    private int state;
+
     private LocalDateTime createdTime;
 
     private LocalDateTime modifiedTime;
 
     private String description;
 
+    private boolean isLiked;
+
     public ChallengeResponseDto(Challenge challenge){
         this.id = challenge.getId();
-        this.writer = new Writer(challenge.getMember().getId(), challenge.getMember().getFullname());
+        this.writer = new Writer(challenge.getMember().getId(), challenge.getMember().getNickname(), challenge.getMember().getUser_img());
         this.name = challenge.getName();
         this.img = challenge.getChallenge_img();
         this.content = challenge.getContent();
         this.level = challenge.getLevel();
         this.stageList = new ArrayList<>();
+        this.state = challenge.getState();
         if(challenge.getStageList() != null)
             for(int i = 0; i < challenge.getStageList().size(); i++){
                 Stage stage = challenge.getStageList().get(i);
                 StageResponseDto stageResponseDto = new StageResponseDto(stage);
                 this.stageList.add(stageResponseDto);
             }
-        if(challenge.getChallengeLikeList() != null)
-            this.likeNum = challenge.getChallengeLikeList().size();
-        else this.likeNum = 0;
+        this.likeNum = challenge.getLikeNum();
         this.reviewList = new ArrayList<>();
         if(challenge.getReviewList() != null)
             for(int i = 0; i < challenge.getReviewList().size(); i++){
@@ -64,5 +67,6 @@ public class ChallengeResponseDto {
         this.description = challenge.getDescription();
         this.createdTime = challenge.getCreatedDate();
         this.modifiedTime = challenge.getModifiedDate();
+        this.isLiked = false;
     }
 }

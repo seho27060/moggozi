@@ -1,11 +1,15 @@
 package com.JJP.restapiserver.controller.challenge;
 
 import com.JJP.restapiserver.domain.dto.challenge.ChallengeLikeRequestDto;
+import com.JJP.restapiserver.security.JwtUtils;
 import com.JJP.restapiserver.service.challenge.ChallengeLikeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-@CrossOrigin("*")
+
+import javax.servlet.http.HttpServletRequest;
+
+//@CrossOrigin("*")
 @RestController
 @RequestMapping("/challengeLike")
 @RequiredArgsConstructor
@@ -13,15 +17,12 @@ public class ChallengeLikeController {
 
     private final ChallengeLikeService challengeLikeService;
 
-    @PostMapping("/like")
-    public ResponseEntity like(@RequestBody ChallengeLikeRequestDto challengeLikeRequestDto)
-    {
-        return challengeLikeService.like(challengeLikeRequestDto);
-    }
+    private final JwtUtils jwtUtils;
 
-    @DeleteMapping("/unlike")
-    public ResponseEntity unlike(@RequestBody ChallengeLikeRequestDto challengeLikeRequestDto)
+    @PostMapping("/like")
+    public ResponseEntity like(@RequestBody ChallengeLikeRequestDto challengeLikeRequestDto, HttpServletRequest request)
     {
-        return challengeLikeService.unlike(challengeLikeRequestDto);
+        Long member_id = jwtUtils.getUserIdFromJwtToken(request.getHeader("Authorization"));
+        return challengeLikeService.like(challengeLikeRequestDto, member_id);
     }
 }
