@@ -53,16 +53,22 @@ const ReviewForm = (props: Props) => {
       };
       console.log(reviewData);
       reviewAdd(reviewData).then((res) => {
-        alert("review 생성이 완료되었습니다.");
-        fetchReview(Number(id))
-          .then((res) => {
-            dispatch(reviewFetch(res));
-            setRate(0);
-            setInputs({ content: "" });
-          })
-          .catch((err) => {
-            alert(err.response);
-          });
+        if (!!res) {
+          console.log(res);
+          alert(res);
+        } else {
+          alert("리뷰 작성이 완료되었습니다.");
+          fetchReview(Number(id))
+            .then((res) => {
+              dispatch(reviewFetch(res));
+            })
+            .catch((err) => {
+              alert(err.response);
+            });
+        }
+        setRate(0);
+        setValue(0);
+        setInputs({ content: "" });
       });
     }
   };
