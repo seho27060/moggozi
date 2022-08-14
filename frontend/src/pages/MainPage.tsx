@@ -3,6 +3,8 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import {
   isLoginFetchChallengeRankList,
+  isLoginFetchRecentChallengeList,
+  isLoginFetchRecommendChallengeList,
   recentTryChallengeList,
 } from "../lib/withTokenApi";
 import {
@@ -44,27 +46,6 @@ const MainPage: React.FC = () => {
     setRecentIsLoading(true);
     setRecommendIsLoading(true);
 
-    fetchRecentChallengeList(0, 2)
-      .then((res) => {
-        setLoadedRecentChallengeList(res.content);
-        setRecentIsLoading(false);
-      })
-      .catch((err) => {
-        console.log(err);
-        setRecentIsLoading(false);
-      });
-
-    fetchRecommendChallengeList()
-      .then((res) => {
-        const twoPickRecommend = res.slice(0, 2);
-        setRecommendChallengeList(twoPickRecommend);
-        setRecommendIsLoading(false);
-      })
-      .catch((err) => {
-        console.log(err);
-        setRecommendIsLoading(false);
-      });
-
     if (isLoggedIn) {
       // 로그인 한 경우
       isLoginFetchChallengeRankList(0, 3)
@@ -76,6 +57,28 @@ const MainPage: React.FC = () => {
           console.log(err);
           setRankIsLoading(false);
         });
+
+      isLoginFetchRecentChallengeList(0, 2)
+        .then((res) => {
+          setLoadedRecentChallengeList(res.content);
+          setRecentIsLoading(false);
+        })
+        .catch((err) => {
+          console.log(err);
+          setRecentIsLoading(false);
+        });
+
+      isLoginFetchRecommendChallengeList()
+        .then((res) => {
+          const twoPickRecommend = res.slice(0, 2);
+          setRecommendChallengeList(twoPickRecommend);
+          setRecommendIsLoading(false);
+        })
+        .catch((err) => {
+          console.log(err);
+          setRecommendIsLoading(false);
+        });
+
       // 유저가 도전한 챌린지 리스트
       recentTryChallengeList(0, 2)
         .then((res) => {
@@ -97,6 +100,27 @@ const MainPage: React.FC = () => {
         .catch((err) => {
           console.log(err);
           setRankIsLoading(false);
+        });
+
+      fetchRecentChallengeList(0, 2)
+        .then((res) => {
+          setLoadedRecentChallengeList(res.content);
+          setRecentIsLoading(false);
+        })
+        .catch((err) => {
+          console.log(err);
+          setRecentIsLoading(false);
+        });
+
+      fetchRecommendChallengeList()
+        .then((res) => {
+          const twoPickRecommend = res.slice(0, 2);
+          setRecommendChallengeList(twoPickRecommend);
+          setRecommendIsLoading(false);
+        })
+        .catch((err) => {
+          console.log(err);
+          setRecommendIsLoading(false);
         });
     }
   }, [isLoggedIn]);
