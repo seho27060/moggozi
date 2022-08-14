@@ -164,7 +164,7 @@ public class PostServiceImpl implements PostService {
                 .createdTime(post.getCreatedDate())
                 .isLiked(postLikeRepository.findByPost_idAndMember_id(post_id, member_id).isPresent())
                 .modifiedTime(post.getModifiedDate())
-                .postImg(post.getPostImg())
+                .postImg(post.getPostImgList())
                 .likeNum(post.getPostLikeList().size())
                 .writer(writer)
                 .build();
@@ -187,7 +187,7 @@ public class PostServiceImpl implements PostService {
                 .createdTime(post.getCreatedDate())
                 .isLiked(postLikeRepository.findByPost_idAndMember_id(post.getId(), member_id).isPresent())
                 .modifiedTime(post.getModifiedDate())
-                .postImg(post.getPostImg())
+                .postImg(post.getPostImgList())
                 .likeNum(post.getPostLikeList().size())
                 .writer(writer)
                 .build();
