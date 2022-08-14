@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface PostRepository extends JpaRepository<Post, Long> {
 
-    List<Post> findAllByMember_id(Long member_id);
+    Page<Post> findAllByMember_idOrderByCreatedDateDesc(Long member_id, Pageable pageable);
 
     Page<Post> findAllByStage_idOrderByCreatedDateDesc(Long stage_id, Pageable pageable);
 

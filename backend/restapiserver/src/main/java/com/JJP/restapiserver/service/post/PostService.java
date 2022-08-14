@@ -18,7 +18,7 @@ public interface PostService {
     void deletePost(Long post_id);
 
     // 특정 유저가 올린 스테이지 포스트 리스트 조회
-    List getMemberPost(Long member_id);
+    SliceListDto getMemberPost(Long member_id, Pageable pageable);
 
     // 특정 스테이지 전체 포스트 조회
     SliceListDto getStagePost(Long stage_id, Pageable pageable);
