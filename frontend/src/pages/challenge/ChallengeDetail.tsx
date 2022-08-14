@@ -32,14 +32,14 @@ import StageList from "../../components/stage/StageList";
 
 import Dompurify from "dompurify";
 import styles from "./ChallengeDetail.module.scss";
-import FavoriteIcon from '@mui/icons-material/Favorite';
+import FavoriteIcon from "@mui/icons-material/Favorite";
 import PostModal from "../../components/ui/PostModal";
 import PostFormModal from "../../components/ui/PostFormModal";
 import ChallengeOptionBtn from "../../components/ui/ChallengeOptionBtn";
 
 const ChallengeDetail: React.FC = () => {
-  const navigate = useNavigate()
-  
+  const navigate = useNavigate();
+
   const { id } = useParams();
   const ws = useContext(WebSocketContext);
 
@@ -66,23 +66,6 @@ const ChallengeDetail: React.FC = () => {
   const closePostFormModal = () => {
     dispatch(setPostFormModalOpen(false));
   };
-
-  // 챌린지 등록
-  // const registerHandler = (event: React.MouseEvent) => {
-  //   event.preventDefault();
-  //   if (
-  //     window.confirm("챌린지 등록하시겠습니까? 등록하면 취소할 수 없습니다!")
-  //   ) {
-  //     registerChallenge(Number(id))
-  //       .then((res) =>
-  //         setLoadedChallenge({
-  //           ...loadedChallenge!,
-  //           state: 1,
-  //         })
-  //       )
-  //       .catch((err) => console.log(err));
-  //   }
-  // };
 
   // 좋아요
   const likeHandler = (event: React.MouseEvent) => {
@@ -222,7 +205,6 @@ const ChallengeDetail: React.FC = () => {
                       </div>
                     );
                 })()}
-
               </div>
 
               <div>
@@ -230,13 +212,26 @@ const ChallengeDetail: React.FC = () => {
                   <div>
                     {userInfo.id === loadedChallenge!.writer.id && (
                       <div>
-                        <div><ChallengeOptionBtn id={id} userId={userInfo.id} writerId={loadedChallenge!.writer.id} state={loadedChallenge!.state} loadedChallenge={loadedChallenge} /></div>
+                        <div>
+                          <ChallengeOptionBtn
+                            id={id}
+                            userId={userInfo.id}
+                            writerId={loadedChallenge!.writer.id}
+                            state={loadedChallenge!.state}
+                            loadedChallenge={loadedChallenge}
+                          />
+                        </div>
                       </div>
                     )}
                   </div>
                 ) : (
                   <div>
-                    <div className={styles.writer} onClick={() => {navigate(`/user/${loadedChallenge!.writer.id}`)}}>
+                    <div
+                      className={styles.writer}
+                      onClick={() => {
+                        navigate(`/user/${loadedChallenge!.writer.id}`);
+                      }}
+                    >
                       <img src={loadedChallenge!.writer.img} alt="" />
                       <div>
                         <div className={styles.user}>
@@ -278,16 +273,22 @@ const ChallengeDetail: React.FC = () => {
             <div className={styles.tag_start}>
               <HobbyList hobbies={loadedChallenge!.hobbyList} />
               {isLoggedIn === true && (
-                  <div>
-                    {loadedChallenge!.userProgress === 0 && (
-                      <button className={styles.button} onClick={startHandler}>도전</button>
-                    )}
-                    {loadedChallenge!.userProgress === 1 && (
-                      <button className={styles.button} onClick={cancelHandler}>도전 취소</button>
-                    )}
-                    {loadedChallenge!.userProgress === 2 && <button className={styles.complete}>완료</button>}
-                  </div>
-                )}
+                <div>
+                  {loadedChallenge!.userProgress === 0 && (
+                    <button className={styles.button} onClick={startHandler}>
+                      도전
+                    </button>
+                  )}
+                  {loadedChallenge!.userProgress === 1 && (
+                    <button className={styles.button} onClick={cancelHandler}>
+                      도전 취소
+                    </button>
+                  )}
+                  {loadedChallenge!.userProgress === 2 && (
+                    <button className={styles.complete}>완료</button>
+                  )}
+                </div>
+              )}
             </div>
 
             <div
@@ -299,7 +300,12 @@ const ChallengeDetail: React.FC = () => {
               className="view ql-editor"
             ></div>
 
-            <div className={styles.writer} onClick={() => {navigate(`/user/${loadedChallenge!.writer.id!}`)}} >
+            <div
+              className={styles.writer}
+              onClick={() => {
+                navigate(`/user/${loadedChallenge!.writer.id!}`);
+              }}
+            >
               <img src={loadedChallenge!.writer.img} alt="" />
               <div className={styles.user}>
                 {loadedChallenge!.writer.nickname}
@@ -309,17 +315,23 @@ const ChallengeDetail: React.FC = () => {
             <div className={styles.like}>
               <div className={styles.likeLabel} onClick={likeHandler}>
                 {isLoggedIn === true && loadedChallenge!.liked === false && (
-                  <div className={styles.nonHeart}><FavoriteIcon /></div>
+                  <div className={styles.nonHeart}>
+                    <FavoriteIcon />
+                  </div>
                   // 챌린지 좋아요
                 )}
                 {isLoggedIn === true && loadedChallenge!.liked === true && (
-                  <div className={styles.heart}><FavoriteIcon /></div>
+                  <div className={styles.heart}>
+                    <FavoriteIcon />
+                  </div>
                   // 챌린지좋아요 취소
                 )}{" "}
-                좋아요 <div className={styles.likeCnt}>{loadedChallenge!.likeNum}</div>
+                좋아요{" "}
+                <div className={styles.likeCnt}>{loadedChallenge!.likeNum}</div>
               </div>
               <div className={styles.commentCnt}>
-                <div>댓글 </div><div>{reviews.length}</div>
+                <div>댓글 </div>
+                <div>{reviews.length}</div>
               </div>
             </div>
 
@@ -349,10 +361,7 @@ const ChallengeDetail: React.FC = () => {
         )}
 
         {postFormModalOpen && (
-          <PostFormModal
-            open={postFormModalOpen}
-            close={closePostFormModal}
-          >
+          <PostFormModal open={postFormModalOpen} close={closePostFormModal}>
             <PostForm
               stageId={Number(stageId)}
               modalClose={closePostFormModal}

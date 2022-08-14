@@ -2,14 +2,14 @@ import type { RootState } from "../../store/store";
 import { useSelector } from "react-redux";
 
 import { Link, useParams } from "react-router-dom";
-import { useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 
 import { otherUserDetail } from "../../lib/generalApi";
 import {
+  fetchMyChallengeList,
   followApi,
-  MyChallengeList,
-  myPageChallenge,
   myPagePost,
+  userTryChallenge,
 } from "../../lib/withTokenApi";
 
 import MypageFollow from "../../components/accounts/MypageFollow";
@@ -36,6 +36,7 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import UserTabBox from "./UserTabBox";
 import { Box } from "@mui/material";
+import Loader from "../../components/ui/Loader";
 
 function UserPage() {
   const { postModalOpen, postUpdateFormOpen } = useSelector(
@@ -60,19 +61,84 @@ function UserPage() {
 
   const [challengeList, setChallengeList] = useState<UserChallengeType[]>([]);
   const [postList, setPostList] = useState<UserPostType[]>([]);
-  const [myChallengeList, setMyChallengeList] = useState<
-    ChallengeItemState[]
-  >([]);
+  const [myChallengeList, setMyChallengeList] = useState<ChallengeItemState[]>(
+    []
+  );
+  const [isLogging, setIsLogging] = useState(false);
+  const [currentMyChallengePage, setCurrentMyChallengePage] = useState(1);
+  const [currentChallengePage, setCurrentChallengePage] = useState(1);
+  const [currentPostPage, setCurrentPostPage] = useState(1);
 
-  let tabMenus = ["모두보기", "챌린지", "포스팅"];
+  let tabMenus = ["모두보기", "포스팅", "도전한 챌린지"];
   if (userId === loginId) {
-    tabMenus = ["모두보기", "도전 챌린지", "챌린지", "포스팅"];
+    tabMenus = ["모두보기", "포스팅", "도전한 챌린지", "만든 챌린지"];
   }
   const [value, setValue] = useState(0);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
+
+  const handleScroll = useCallback((): void => {
+    const { innerHeight } = window;
+    const { scrollHeight } = document.body;
+    const { scrollTop } = document.documentElement;
+
+    if (value !== 0 && Math.round(scrollTop + innerHeight) >= scrollHeight) {
+      setIsLogging(true);
+      switch (value) {
+        case 1: // 내 포스팅
+          myPagePost(userId, currentPostPage, 16)
+            .then((res) => {
+              console.log(userId, "post", res);
+              setPostList(postList.concat(res.content));
+            })
+            .catch((err) => console.log("post err", err));
+          setCurrentPostPage(currentPostPage + 1);
+          break;
+        case 2: // 도전한 챌린지
+          userTryChallenge(userId, currentChallengePage, 16)
+            .then((res) => {
+              console.log(userId, "ch", res);
+              setChallengeList(challengeList.concat(res.content));
+            })
+            .catch((err) => console.log("ch err", err));
+          setCurrentChallengePage(currentChallengePage + 1);
+          break;
+        case 3: // 만든 챌린지
+          if (userId === loginData.userInfo.id) {
+            // 작성한 챌린지
+            fetchMyChallengeList(currentMyChallengePage, 16)
+              .then((res) => {
+                console.log("call my recentrych");
+                setMyChallengeList(myChallengeList.concat(res.content));
+              })
+              .catch((err) => console.log("myrecentch err", err));
+          }
+          setCurrentMyChallengePage(currentMyChallengePage + 1);
+          break;
+      }
+      setTimeout(() => setIsLogging(false), 300);
+    }
+  }, [
+    currentPostPage,
+    currentChallengePage,
+    currentMyChallengePage,
+    challengeList,
+    myChallengeList,
+    postList,
+    userId,
+    value,
+    loginData.userInfo.id,
+  ]);
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll, true);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll, true);
+    };
+  }, [handleScroll]);
 
   useEffect(() => {
     console.log(userId, loginData.userInfo.id);
@@ -92,21 +158,23 @@ function UserPage() {
         } else {
           setImg(res.userImg);
         }
-
-        myPageChallenge(userId)
-          .then((res) => {
-            console.log(userId, "ch", res);
-            setChallengeList([...res.content]);
-          })
-          .catch((err) => console.log("ch err", err));
-        myPagePost(userId)
+        // 내 포스팅
+        myPagePost(userId, 0, 16)
           .then((res) => {
             console.log(userId, "post", res);
-            setPostList([...res.content]);
+            setPostList(res.content);
           })
           .catch((err) => console.log("post err", err));
+        // 도전한 챌린지
+        userTryChallenge(userId, 0, 16)
+          .then((res) => {
+            console.log(userId, "ch", res);
+            setChallengeList(res.content);
+          })
+          .catch((err) => console.log("ch err", err));
         if (userId === loginData.userInfo.id) {
-          MyChallengeList(0, 16)
+          // 작성한 챌린지
+          fetchMyChallengeList(0, 16)
             .then((res) => {
               console.log("call my recentrych");
               setMyChallengeList(res.content);
@@ -267,17 +335,17 @@ function UserPage() {
           {value === 1 && (
             <UserTabBox
               myChallenges={null}
-              challenges={challengeList}
+              challenges={null}
               nickname={nickname}
-              posts={null}
+              posts={postList}
             />
           )}
           {value === 2 && (
             <UserTabBox
               myChallenges={null}
-              challenges={null}
+              challenges={challengeList}
               nickname={nickname}
-              posts={postList}
+              posts={null}
             />
           )}
         </>
@@ -285,7 +353,7 @@ function UserPage() {
         <>
           {value === 0 && (
             <UserTabBox
-              myChallenges={myChallengeList.slice(0,4)}
+              myChallenges={myChallengeList.slice(0, 8)}
               challenges={challengeList.slice(0, 8)}
               nickname={nickname}
               posts={postList.slice(0, 8)}
@@ -293,10 +361,10 @@ function UserPage() {
           )}
           {value === 1 && (
             <UserTabBox
-              myChallenges={myChallengeList}
+              myChallenges={null}
               challenges={null}
               nickname={nickname}
-              posts={null}
+              posts={postList}
             />
           )}
           {value === 2 && (
@@ -309,10 +377,10 @@ function UserPage() {
           )}
           {value === 3 && (
             <UserTabBox
-              myChallenges={null}
+              myChallenges={myChallengeList}
               challenges={null}
               nickname={nickname}
-              posts={postList}
+              posts={null}
             />
           )}
         </>
@@ -326,6 +394,7 @@ function UserPage() {
           </PostModal>
         )}
       </div>
+      {isLogging && <Loader />}
     </div>
   );
 }
