@@ -25,7 +25,7 @@ const PostRandomList: React.FC<{}> = () => {
     const { scrollTop } = document.documentElement;
 
     if (Math.round(scrollTop + innerHeight) > scrollHeight) {
-      postRandomRead(16).then((res) => {
+      postRandomRead(9).then((res) => {
         console.log("infinite call ver1");
         setIsLogging(true);
         dispatch(setPostStageList(res));
