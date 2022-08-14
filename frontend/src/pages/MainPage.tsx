@@ -25,8 +25,6 @@ import MainPopChallengeList from "../components/challenge/MainPopChallengeList";
 import AutoPlaySlider from "../components/ui/AutoPlaySlider";
 import { PostData } from "../store/post";
 import { Grid } from "@mui/material";
-import PostingPageItem from "../components/post/PostingPageItem";
-import PostItem from "../components/post/PostItem";
 import MainPageItem from "../components/post/MainPageItem";
 
 const MainPage: React.FC = () => {
