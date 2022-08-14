@@ -107,6 +107,22 @@ export const isLoginFetchChallengeRankList = async (
   );
   return data;
 };
+
+export const isLoginFetchRecentChallengeList = async (
+  page: number,
+  size: number
+) => {
+  const { data } = await withTokenApi.get(
+    `/challenge/getRecentChallenge?page=${page}&size=${size}`
+  );
+  return data;
+};
+
+export const isLoginFetchRecommendChallengeList = async () => {
+  const { data } = await withTokenApi.get("/challenge/recommendation");
+  return data;
+};
+
 export const recentTryChallengeList = async (page: number, size: number) => {
   const { data } = await withTokenApi.get(
     `/challenge/recentCh?page=${page}&size=${size}`

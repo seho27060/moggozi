@@ -30,15 +30,6 @@ const Challenges: React.FC = () => {
           console.log(err);
           setRankIsLoading(false);
         });
-      // MyChallengeList(0, 2)
-      //   .then((res) => {
-      //     setLoadedMyChallengeList(res.content);
-      //     setRecentIsLoading(false);
-      //   })
-      //   .catch((err) => {
-      //     console.log(err);
-      //     setRecentIsLoading(false);
-      //   });
     } else {
       // 로그인 안 한 경우
       fetchChallengeRankList(0, 3)
