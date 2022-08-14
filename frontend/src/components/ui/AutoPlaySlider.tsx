@@ -2,15 +2,19 @@ import React from "react";
 import Slider from "react-slick";
 import { Props } from "./Slider";
 
-const AutoPlaySlider = (props: Props) => {
+interface autoProps extends Props{
+  rtl:number
+}
+const AutoPlaySlider = (props: autoProps) => {
   const settings = {
     infinite: true,
     slidesToShow: 3,
     slidesToScroll: 1,
     autoplay: true,
-    speed: 2500,
-    autoplaySpeed: 2500,
+    speed: 4000,
+    autoplaySpeed: 4000,
     cssEase: "linear",
+    rtl:(props.rtl === 0 ? true : false)
   };
 
   return (
