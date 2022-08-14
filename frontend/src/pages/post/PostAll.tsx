@@ -31,7 +31,7 @@ const PostAll: React.FC<{}> = () => {
   }
 
   useEffect((): void => {
-    postRandomRead(16)
+    postRandomRead(9)
       .then((res: PostData[]) => {
         console.log("fisrt call", res);
         const filteredRes = res.filter((post) => post.writer!.id !== user.id);

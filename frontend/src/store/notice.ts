@@ -1,10 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 export interface Notice {
-  id:number|null,
+  noticeId:number|null,
   title: string | null;
   content: string | null;
-  updatedDate : Date |null
+  modifiedDate : Date |null
   createdDate : Date |null
 }
 interface NoticeState {
@@ -13,10 +13,10 @@ interface NoticeState {
 }
 const initialNoticeState: NoticeState = {
   notice: {
-    id:null,
+    noticeId:null,
     content: null,
     title: null,
-    updatedDate: null,
+    modifiedDate: null,
     createdDate : null
   },
   noticeList: [],

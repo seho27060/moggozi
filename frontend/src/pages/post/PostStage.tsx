@@ -65,7 +65,7 @@ const PostStage = () => {
     postListRead(Number(stageId))
       .then((res) => {
         console.log("포스팅 불러오기 성공", res);
-        dispatch(postSet(res));
+        dispatch(postSet(res.content));
         dispatch(setPostFormButtonState(true));
       })
       .catch((err) => {
