@@ -219,11 +219,11 @@ const MainPage: React.FC = () => {
           [9, 13],
         ].map((start) => (
           <div style={{ minHeight: "13rem" }}>
-            <AutoPlaySlider>
+            <AutoPlaySlider rtl={start[1]-start[0]-4}>
               {recentPostList.slice(start[0], start[1]).map(
-                (post) => (
-                  console.log(post),
-                  (
+                (post) => {
+                  console.log(post);
+                  return(
                     <div key={post.id}>
                       <img
                         src={
@@ -236,7 +236,7 @@ const MainPage: React.FC = () => {
                       ></img>
                     </div>
                   )
-                )
+                }
               )}
             </AutoPlaySlider>
           </div>
