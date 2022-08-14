@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
 import {
   fetchPostLikeList,
   fetchPostRecentList,
@@ -161,9 +160,6 @@ const MainPage: React.FC = () => {
   console.log(loadedChallengeRankList);
   return (
     <div className={styles.container}>
-      <Link to={`/challenge/new`}>
-        <button>챌린지 생성</button>
-      </Link>
       <div className={styles.mainPage}>
         <MainSlider />
         {/* 최신 챌린지*/}
