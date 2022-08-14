@@ -26,8 +26,15 @@ import AutoPlaySlider from "../components/ui/AutoPlaySlider";
 import { PostData } from "../store/post";
 import { Grid } from "@mui/material";
 import MainPageItem from "../components/post/MainPageItem";
+import PostModal from "../components/ui/PostModal";
+import { setPostModalOpen, setPostUpdateFormState } from "../store/postModal";
+import { useDispatch } from "react-redux";
+import PostDetailItem from "../components/post/PostDetailItem";
+import PostUpdateForm from "../components/post/PostUpdateForm";
 
 const MainPage: React.FC = () => {
+  const dispatch = useDispatch()
+
   const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
   const [rankIsLoading, setRankIsLoading] = useState(true);
   const [recentTryIsLoading, setRecentTryIsLoading] = useState(true);
@@ -47,6 +54,14 @@ const MainPage: React.FC = () => {
     ChallengeItemState[]
   >([]);
 
+  const { postModalOpen, postFormModalOpen,postUpdateFormOpen} = useSelector(
+    (state: RootState) => state.postModal
+  );
+
+  const closePostModal = () => {
+    dispatch(setPostModalOpen(false));
+    dispatch(setPostUpdateFormState(false));
+  };
   useEffect(() => {
     setRankIsLoading(true);
     setRecentTryIsLoading(true);
@@ -219,25 +234,23 @@ const MainPage: React.FC = () => {
           [9, 13],
         ].map((start) => (
           <div style={{ minHeight: "13rem" }}>
-            <AutoPlaySlider rtl={start[1]-start[0]-4}>
-              {recentPostList.slice(start[0], start[1]).map(
-                (post) => {
-                  console.log(post);
-                  return(
-                    <div key={post.id}>
-                      <img
-                        src={
-                          post.postImg!.length !== 0
-                            ? post.postImg[0].path!
-                            : "https://blog.kakaocdn.net/dn/vckff/btqCjeJmBHM/tMVpe4aUIMfH4nKS4aO3tK/img.jpg"
-                        }
-                        alt=""
-                        style={{ minWidth: "300px" }}
-                      ></img>
-                    </div>
-                  )
-                }
-              )}
+            <AutoPlaySlider rtl={start[1] - start[0] - 4}>
+              {recentPostList.slice(start[0], start[1]).map((post) => {
+                console.log(post);
+                return (
+                  <div key={post.id}>
+                    <img
+                      src={
+                        post.postImg!.length !== 0
+                          ? post.postImg[0].path!
+                          : "https://blog.kakaocdn.net/dn/vckff/btqCjeJmBHM/tMVpe4aUIMfH4nKS4aO3tK/img.jpg"
+                      }
+                      alt=""
+                      style={{ minWidth: "300px" }}
+                    ></img>
+                  </div>
+                );
+              })}
             </AutoPlaySlider>
           </div>
         ))}
@@ -250,6 +263,14 @@ const MainPage: React.FC = () => {
             </Grid>
           ))}
         </Grid>
+      </div>
+      <div>
+        {postModalOpen && (
+          <PostModal open={postModalOpen} close={closePostModal}>
+            {!postUpdateFormOpen && <PostDetailItem />}
+            {postUpdateFormOpen && <PostUpdateForm />}
+          </PostModal>
+        )}
       </div>
     </div>
   );
