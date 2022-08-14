@@ -587,4 +587,49 @@ public class ChallengeServiceImpl implements ChallengeService{
         Challenge challenge = challengeRepository.findById(challenge_id).get();
         challenge.imgUpdate(img);
     }
+
+    @Override
+    public ChallengePageDto getRecentChallenge(Long member_id, Pageable pageable) {
+        Page<Challenge> challengeList = challengeRepository.findAllByOrderByCreatedDateDesc(pageable);
+        if(challengeList.hasContent())
+        {
+            List<ChallengeListResponseDto> challengeListResponseDtoList = new ArrayList<>();
+            challengeListResponseDtoList = challengeIntoListDto(challengeList.toList(), challengeListResponseDtoList,
+                    member_id);
+            // 전체 페이지 개수, 조회한 데이터, 현재 페이지 번호, 혀재 데이터의 사이즈, 전체 데이터 갯수
+            ChallengePageDto challengePageDto = ChallengePageDto.builder()
+                    .content(challengeListResponseDtoList)
+                    .pageNum(challengeList.getNumber())
+                    .totalPages(challengeList.getTotalPages())
+                    .size(challengeList.getSize())
+                    .totalElements(challengeList.getTotalElements())
+                    .hasNext(challengeList.hasNext())
+                    .build();
+
+            return challengePageDto;
+        }
+        else return null;
+    }
+
+    @Override
+    public ChallengePageDto getRecentChallenge(Pageable pageable) {
+        Page<Challenge> challengeList = challengeRepository.findAllByOrderByCreatedDateDesc(pageable);
+        if(challengeList.hasContent())
+        {
+            List<ChallengeListResponseDto> challengeListResponseDtoList = new ArrayList<>();
+            challengeListResponseDtoList = challengeIntoListDto(challengeList.toList(), challengeListResponseDtoList);
+            // 전체 페이지 개수, 조회한 데이터, 현재 페이지 번호, 혀재 데이터의 사이즈, 전체 데이터 갯수
+            ChallengePageDto challengePageDto = ChallengePageDto.builder()
+                    .content(challengeListResponseDtoList)
+                    .pageNum(challengeList.getNumber())
+                    .totalPages(challengeList.getTotalPages())
+                    .size(challengeList.getSize())
+                    .totalElements(challengeList.getTotalElements())
+                    .hasNext(challengeList.hasNext())
+                    .build();
+
+            return challengePageDto;
+        }
+        else return null;
+    }
 }

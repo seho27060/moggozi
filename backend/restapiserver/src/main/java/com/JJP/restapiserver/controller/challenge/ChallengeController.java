@@ -250,6 +250,26 @@ public class ChallengeController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
+    @Operation(summary = "최근 생성된 챌린지 리스트", description = "페이지네이션 적용")
+    @GetMapping("/getRecentChallenge")
+    public ResponseEntity getRecentChallengeList(HttpServletRequest request, Pageable pageable){
+        Optional<Long> member_id = getMember_id(request);
+        ChallengePageDto challengePageDto = null;
+        if(member_id.isPresent()){
+            challengePageDto = challengeService.getRecentChallenge(member_id.get(), pageable);
+            if(challengePageDto == null){
+                return new ResponseEntity("현재 생성된 챌린지가 없습니다.", HttpStatus.INSUFFICIENT_STORAGE);
+            }
+        }else {
+            challengePageDto = challengeService.getRecentChallenge(pageable);
+            if(challengePageDto == null){
+                return new ResponseEntity("현재 생성된 챌린지가 없습니다.", HttpStatus.INSUFFICIENT_STORAGE);
+            }
+        }
+        return new ResponseEntity(challengePageDto, HttpStatus.OK);
+    }
+
+
     public Optional<Long> getMember_id(HttpServletRequest request){
         if(request.getHeader("Authorization") == null){
             return Optional.ofNullable(null);
