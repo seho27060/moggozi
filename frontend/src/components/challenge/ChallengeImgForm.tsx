@@ -82,7 +82,7 @@ const ChallengeImgForm: React.FC<{
                 />
               </div>
             )}
-
+          </form>
             <button
               className={styles.uploadButton}
               type="button"
@@ -90,7 +90,6 @@ const ChallengeImgForm: React.FC<{
             >
               업로드
             </button>
-          </form>
         </div>
       ) : (
         <div>
