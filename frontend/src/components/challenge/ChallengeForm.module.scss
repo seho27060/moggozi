@@ -28,6 +28,7 @@
       font-family: "Noto Sans";
       font-size: 16px;
       font-weight: 500;
+      font-family: pretendard;
 
       &:focus {
         outline: none;
@@ -56,10 +57,17 @@
 
     select {
       width: 120px;
-      height: 30px;
+      height: 35px;
       padding: 0 0 0 10px;
       border-radius: 5px;
       border: 1px solid mixin.$cloudLine;
+      font-family: pretendard;
+      font-size: 16px;
+      option {
+        font-family: pretendard;
+        font-size: 16px;
+        margin: 10px 0 10px 0;
+      }
     }
   }
 
@@ -73,6 +81,7 @@
       padding: 10px 10px 10px 15px;
       font-weight: 600;
       font-size: 40px;
+      font-family: pretendard;
 
       &:focus {
         outline: none;
@@ -81,6 +90,7 @@
       &::placeholder {
         font-weight: 400;
         font-size: 40px;
+        font-family: pretendard;
         line-height: 48px;
       }
     }
@@ -93,7 +103,7 @@
       width: 97%;
       height: 500px;
       border: 0;
-      font-family: "Noto Sans";
+      font-family: "pretendard";
       resize: none;
 
       &:focus {
@@ -103,6 +113,7 @@
       &::placeholder {
         font-weight: 400;
         font-size: 20px;
+        font-family: "pretendard";
         line-height: 24px;
       }
     }
@@ -123,6 +134,8 @@
     button {
       font-size: 20px;
       font-weight: 700;
+      font-family: pretendard;
+      cursor: pointer;
       letter-spacing: 0.02em;
       border: 0;
       color: #fff;

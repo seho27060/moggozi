@@ -296,7 +296,7 @@ const ChallengeDetail: React.FC = () => {
                   loadedChallenge!.content!.toString()
                 ),
               }}
-              className="view ql-editor"
+              className={`view ql-editor ${styles.cont}`}
             ></div>
 
             <div className={styles.writer} onClick={() => {navigate(`/user/${loadedChallenge!.writer.id!}`)}} >
