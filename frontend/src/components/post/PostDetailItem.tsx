@@ -55,7 +55,7 @@ const PostDetailItem: React.FC<{}> = () => {
           <div
             className={styles.writerInfo}
             onClick={() => {
-              navigate(`/user/${post.postModalState.writer!.id}`);
+              navigate(`/user/${post.postModalState.writer!.id!}`);
               dispatch(setPostModalOpen(false));
             }}
           >
@@ -71,7 +71,7 @@ const PostDetailItem: React.FC<{}> = () => {
 
             <div>{post.postModalState!.writer?.nickname}</div>
           </div>
-          {user.id === post.postModalState!.writer!.id && (
+          {user.id === post.postModalState!.writer!.id! && (
             <div>
               <PostOptionBtn />
             </div>
