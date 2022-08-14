@@ -1,5 +1,6 @@
 package com.JJP.restapiserver.controller.stage;
 
+import com.JJP.restapiserver.domain.dto.SliceListDto;
 import com.JJP.restapiserver.domain.dto.post.*;
 import com.JJP.restapiserver.domain.entity.stage.Post;
 import com.JJP.restapiserver.repository.stage.PostRepository;
@@ -79,10 +80,12 @@ public class PostController {
     }
 
     // stage에 따른 post리스트
-    @Operation(summary = "stage에 따른 post리스트")
+    @Operation(summary = "stage에 따른 최신순 post리스트")
     @GetMapping("/{stage_id}")
-    private List<PostResponseDto> stagePostList(@PathVariable Long stage_id){
-        return postService.getStagePost(stage_id);
+    private ResponseEntity stagePostList(@PathVariable Long stage_id, Pageable pageable){
+        SliceListDto sliceListDto = postService.getStagePost(stage_id, pageable);
+
+        return new ResponseEntity(sliceListDto, HttpStatus.OK);
     }
 
     @Operation(summary = "랜덤 갯수 post리스트")
