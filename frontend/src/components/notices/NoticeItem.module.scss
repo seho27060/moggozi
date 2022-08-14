@@ -2,17 +2,25 @@
 .container {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   margin: 1.6rem 1rem;
   font-size: 1.5rem;
+  text-decoration: none;
 
-  .noticeTitle {
-    text-decoration: none;
-    padding: 0rem 2.3rem;
+  div:nth-child(1) {
+    margin: 0 0 0 20px;
   }
+
   .noticeDate {
     font-size: 1.1rem;
     padding: 0rem 1.9rem;
     color: mixin.$cloudGray;
+    display: flex;
+    align-items: center;
+
+    svg {
+      margin-top: 3px;
+    }
     
   }
 }
