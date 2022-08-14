@@ -48,7 +48,7 @@ const NoticePage: React.FC = () => {
             }
             className={styles.navigateBtn}
           >
-            이전페이지
+            이전
           </Link>
           <Link
             to={
@@ -58,7 +58,7 @@ const NoticePage: React.FC = () => {
             }
             className={styles.navigateBtn}
           >
-            다음페이지
+            다음
           </Link>
         </div>
       </div>
