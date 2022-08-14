@@ -6,9 +6,8 @@ import StageAddBtn from "../../components/stage/StageAddBtn";
 import StageDeleteBtn from "../../components/stage/StageDeleteBtn";
 import StageEditItem from "../../components/stage/StageEditItem";
 import StageUpdateBtn from "../../components/stage/StageUpdateBtn";
-import { stageImgFetchAPI } from "../../lib/imgApi";
 import { fetchStages } from "../../lib/withTokenApi";
-import { stageFetch, StageState } from "../../store/stage";
+import { stageFetch } from "../../store/stage";
 import { RootState } from "../../store/store";
 
 const StageEdit: React.FC = () => {
@@ -18,30 +17,12 @@ const StageEdit: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const dispatch = useDispatch();
 
-  async function fetchStagesImg(stages: StageState[]) {
-    await stages.reduce(async (acc, stage) => {
-      await acc.then();
-      await stageImgFetchAPI(stage.id!)
-        .then((res) => {
-          stage.img = res;
-        })
-        .catch((err) => {
-          stage.img = [];
-        });
-      return acc;
-    }, Promise.resolve());
-    return stages;
-  }
-
   useEffect(() => {
     setIsLoading(true);
     fetchStages(Number(challengeId))
       .then((res) => {
-        fetchStagesImg(res).then((res) => {
-          console.log(res);
-          dispatch(stageFetch(res));
-          setIsLoading(false);
-        });
+        dispatch(stageFetch(res));
+        setIsLoading(false);
       })
       .catch((err) => {
         console.log(err);
