@@ -1,0 +1,148 @@
+@use "../../styles/mixin.scss" as mixin;
+
+@include mixin.desktop {
+  .container {
+    overflow: auto;
+  }
+
+  .form {
+    cursor: default;
+    .image {
+      display: flex;
+      justify-content: center;
+      label {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        border: 0;
+        border-radius: 5px;
+        width: 350px;
+        height: 250px;
+        cursor: pointer;
+        background: RGB(236, 236, 236);
+
+        div {
+          margin: 10px 0 0 0;
+        }
+        div:nth-child(1) {
+          font-size: 18px;
+          font-weight: 500;
+          color: mixin.$cloudGray;
+        }
+        div:nth-child(2) {
+          font-size: 18px;
+          font-weight: 700;
+          color: rgb(100, 100, 100);
+        }
+        div:nth-child(3) {
+          font-size: 18px;
+          font-weight: 700;
+          color: rgb(100, 100, 100);
+        }
+        button:nth-child(4) {
+          width: 100px;
+          height: 40px;
+          border: 0;
+          border-radius: 5px;
+          background: rgb(101, 101, 101);
+          font-size: 18px;
+          font-weight: 600;
+          color: #fff;
+        }
+      }
+    }
+
+    input {
+      display: none;
+    }
+
+    .explain {
+      text-align: center;
+      margin: 20px 0 10px 0;
+      font-size: 18px;
+    }
+  }
+
+  .middle {
+    display: flex;
+    justify-content: space-between;
+    cursor: default;
+    margin: 50px 0 0 0;
+
+    .preview {
+      div:nth-child(1) {
+        font-size: 22px;
+        font-weight: 700;
+        margin: 0 0 10px 0;
+      }
+      div:nth-child(2) {
+        // font-size: 22px;
+        // font-weight: 700;
+        margin: 15px 0 10px 10px;
+      }
+    }
+
+    button {
+      width: 80px;
+      height: 40px;
+      border: 1px solid mixin.$mainColor;
+      border-radius: 5px;
+      color: mixin.$mainColor;
+      background: #fff;
+      font-weight: 600;
+      transition: all 0.5s;
+      &:hover {
+        color: #fff;
+        background-color: mixin.$mainColor;
+      }
+    }
+  }
+
+  .upload {
+    cursor: default;
+    .title {
+      font-size: 22px;
+      font-weight: 700;
+      margin: 20px 0 10px 0;
+    }
+
+    .photos {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      img {
+        object-fit: fill;
+      }
+      button {
+        font-size: 16px;
+        position: relative;
+        right: 40px;
+        bottom: 5px;
+      }
+    }
+
+    .buttons {
+      cursor: default;
+      display: flex;
+      justify-content: flex-end;
+
+      button {
+        width: 120px;
+        height: 50px;
+        font-size: 16px;
+        font-weight: 600;
+        border-radius: 5px;
+        border: 1px solid mixin.$mainColor;
+        color: mixin.$mainColor;
+        background: #fff;
+        transition: all 0.5s;
+
+        &:hover {
+          background: mixin.$mainColor;
+          color: #fff;
+        }
+
+      }
+    }
+  }
+}

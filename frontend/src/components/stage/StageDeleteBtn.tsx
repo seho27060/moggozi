@@ -4,6 +4,9 @@ import { useParams } from "react-router-dom";
 import { fetchStages, stageDelete } from "../../lib/withTokenApi";
 import { stageFetch } from "../../store/stage";
 
+import styles from "./StageDeleteBtn.module.scss"
+import CloseIcon from '@mui/icons-material/Close';
+
 const StageDeleteBtn: React.FC<{ id: number }> = ({ id }) => {
   const dispatch = useDispatch();
   const { challengeId } = useParams();
@@ -27,7 +30,7 @@ const StageDeleteBtn: React.FC<{ id: number }> = ({ id }) => {
   };
   return (
     <div>
-      <button onClick={deleteHandler}>삭제</button>
+      <div className={styles.delete} onClick={deleteHandler}><CloseIcon /></div>
     </div>
   );
 };
