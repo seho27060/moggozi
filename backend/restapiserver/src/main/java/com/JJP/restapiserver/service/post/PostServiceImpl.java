@@ -154,17 +154,24 @@ public class PostServiceImpl implements PostService {
     @Override
     public PostDetailDto detailPost(Long post_id, Long member_id){
         Post post = postRepository.getById(post_id);
+        boolean like;
 
         Writer writer = new Writer(post.getMember().getId(), post.getMember().getNickname(), post.getMember().getUser_img());
+
+        if(member_id == null){
+            like = false;
+        } else{
+            like = postLikeRepository.findByPost_idAndMember_id(post_id, member_id).isPresent();
+        }
 
         return PostDetailDto.builder()
                 .id(post_id)
                 .title(post.getTitle())
                 .content(post.getContent())
                 .createdTime(post.getCreatedDate())
-                .isLiked(postLikeRepository.findByPost_idAndMember_id(post_id, member_id).isPresent())
+                .isLiked(like)
                 .modifiedTime(post.getModifiedDate())
-                .postImg(post.getPostImgList())
+                .postImg(post.getPostImg())
                 .likeNum(post.getPostLikeList().size())
                 .writer(writer)
                 .build();
@@ -187,7 +194,7 @@ public class PostServiceImpl implements PostService {
                 .createdTime(post.getCreatedDate())
                 .isLiked(postLikeRepository.findByPost_idAndMember_id(post.getId(), member_id).isPresent())
                 .modifiedTime(post.getModifiedDate())
-                .postImg(post.getPostImgList())
+                .postImg(post.getPostImg())
                 .likeNum(post.getPostLikeList().size())
                 .writer(writer)
                 .build();
