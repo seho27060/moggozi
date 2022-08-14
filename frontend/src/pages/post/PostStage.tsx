@@ -107,6 +107,8 @@ const PostStage = () => {
             <PostForm
               stageId={Number(stageId)}
               modalClose={closePostFormModal}
+              // 값이 비면 안되서 아무거나 넣었음.
+              challenge={"123"}
             />
           </Modal>
         )}

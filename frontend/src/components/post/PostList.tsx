@@ -1,8 +1,14 @@
 import { MouseEvent } from "react";
 import { useDispatch } from "react-redux";
 import PostItem from "./PostItem";
-import { setModalPostState, setPostModalStageId, setPostModalOpen } from "../../store/postModal";
+import {
+  setModalPostState,
+  setPostModalStageId,
+  setPostModalOpen,
+} from "../../store/postModal";
 import { PostData } from "../../store/post";
+
+import styles from "./PostList.module.scss";
 
 const PostList: React.FC<{
   posts: PostData[] | null;
@@ -14,22 +20,25 @@ const PostList: React.FC<{
   // console.log("postlist", postList);
 
   return (
-    <div>
+    <div className={styles.postList}>
       {/* PostList */}
+
+      {!postList.length && <div className={styles.none}>아직 등록된 포스트가 없어요!</div> }
+
       {postList!.map((post) => (
-        <div key={post.id}>
-          <PostItem post={post} />
-          <button
-            onClick={(event: MouseEvent) => {
-              event.preventDefault();
-              dispatch(setModalPostState(post));
-              dispatch(setPostModalOpen(true))
-              dispatch(setPostModalStageId)
-            }}
-          >
-            해당 포스팅 열기
-          </button>
-          <hr />
+        <div
+          key={post.id}
+          className={styles.postItem}
+          onClick={(event: MouseEvent) => {
+            event.preventDefault();
+            dispatch(setModalPostState(post));
+            dispatch(setPostModalOpen(true));
+            dispatch(setPostModalStageId);
+          }}
+        >
+          <div>
+            <PostItem post={post} />
+          </div>
         </div>
       ))}
     </div>

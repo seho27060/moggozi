@@ -8,7 +8,7 @@ import SearchForm from "../components/search/SearchForm";
 import SearchModal from "../components/ui/SearchModal";
 
 import style from "./NavigationBar.module.scss";
-import logo from "../asset/moggo.png";
+import logo from "../asset/moggozi.png";
 import AlertOnair from "../components/alert/AlertOnair";
 
 const NavigationBar: React.FC = () => {
@@ -31,6 +31,9 @@ const NavigationBar: React.FC = () => {
             </NavLink>
           </li>
           <div className={style.div}>
+          <li>
+              <NavLink to="/notice/0">공지사항</NavLink>
+            </li>
             <li>
               <NavLink to="/search">챌린지</NavLink>
             </li>

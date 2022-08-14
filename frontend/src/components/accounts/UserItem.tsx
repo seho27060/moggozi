@@ -1,14 +1,21 @@
 import { Link } from "react-router-dom";
 import { UserInfo } from "../../store/auth";
 
-import styles from "./UserItem.module.scss"
+import styles from "./UserItem.module.scss";
+import PortraitIcon from '@mui/icons-material/Portrait';
 
-const UserItem: React.FC<{ user: UserInfo, close: () => void }> = ({ user, close }) => {
+const UserItem: React.FC<{ user: UserInfo; close: () => void }> = ({
+  user,
+  close,
+}) => {
   console.log(user);
   return (
     <div className={styles.items}>
-      ㅁ <Link to={`/user/${user.id}`} onClick={close}>{user.nickname}</Link>
-      {/* {!!user.img && <img src={user.img} alt="user Img"></img>} */}
+      <PortraitIcon />
+       {/* {!!user.img && <img src={user.img} alt="user Img"></img>} */}
+      <Link to={`/user/${user.id}`} onClick={close}>
+        {user.nickname}
+      </Link>
     </div>
   );
 };

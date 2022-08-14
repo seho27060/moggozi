@@ -1,7 +1,5 @@
 import axios from "axios";
 import { apiConfig } from "../config";
-import { ChallengeItemState } from "../store/challenge";
-import { addChallengeImg, addUserImg, profileImgFetchAPI } from "./imgApi";
 
 // 토큰이 필요없는 axios
 const generalApi = axios.create({
@@ -40,19 +38,15 @@ export const otherUserDetail = async (
   loginId: number | null
 ) => {
   const { data } = await generalApi.get(`/user/profile/${userId}/${loginId}`);
-  return profileImgFetchAPI(userId).then((res) => {
-    return { ...data, img: res };
-  });
+  return data;
 };
 
 // 챌린지
-
-export const fetchChallengeRankList = async () => {
-  const { data } = await generalApi.get("/challenge/rank");
-  const newData: ChallengeItemState[] = [];
-  return addChallengeImg(data, newData).then(() => {
-    return newData;
-  });
+export const fetchChallengeRankList = async (page: number, size: number) => {
+  const { data } = await generalApi.get(
+    `/challenge/rank?page=${page}&size=${size}`
+  );
+  return data;
 };
 
 export const fetchChallenge = async (id: number) => {
@@ -61,14 +55,11 @@ export const fetchChallenge = async (id: number) => {
 };
 
 // 검색
-
 export const searchUserApi = async (q: string, page: number, size: number) => {
   const { data } = await generalApi.get(
     `/user/search/pagination/?keyword=${q}&page=${page}&size=${size}`
   );
-  return addUserImg(data.content).then((res) => {
-    return { ...data, content: res };
-  });
+  return data;
 };
 
 export const searchChallengeApi = async (
@@ -79,10 +70,7 @@ export const searchChallengeApi = async (
   const { data } = await generalApi.get(
     `/challenge/search/?keyword=${q}&page=${page}&size=${size}`
   );
-  const newData: ChallengeItemState[] = [];
-  return addChallengeImg(data.content, newData).then(() => {
-    return { ...data, content: newData };
-  });
+  return data;
 };
 
 export const searchChallengeHobbyApi = async (
@@ -93,10 +81,12 @@ export const searchChallengeHobbyApi = async (
   const { data } = await generalApi.get(
     `/challenge/tag/search/?keyword=${q}&page=${page}&size=${size}`
   );
-  const newData: ChallengeItemState[] = [];
-  return addChallengeImg(data.content, newData).then(() => {
-    return { ...data, content: newData };
-  });
+  return data;
+};
+
+export const stageDetail = async (stageId: number) => {
+  const { data } = await generalApi.get(`/stage/detail/${stageId}`);
+  return data;
 };
 // 사용법 - 토큰이 필요없는 일반 axios 요청을 사용할 때 이용
 // 위에서 기본 generalApi를 이용하여 사용하고자 하는 axios를 loginApi와 같이

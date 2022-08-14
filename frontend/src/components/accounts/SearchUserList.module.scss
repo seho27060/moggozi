@@ -1,7 +1,16 @@
 @use "../../styles/mixin.scss" as mixin;
 
 @include mixin.desktop {
-
+  .noUserList {
+      height: 400px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      div:nth-child(1) {
+        font-size: 20px;
+        color: mixin.$cloudGray;
+      }
+    }
 }
 
 @include mixin.mobile {

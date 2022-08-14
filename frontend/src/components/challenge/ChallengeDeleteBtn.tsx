@@ -19,7 +19,7 @@ const ChallengeDeleteBtn: React.FC = () => {
         });
     }
   };
-  return <button onClick={deleteHandler}>챌린지 삭제</button>;
+  return <div onClick={deleteHandler}>챌린지 삭제</div>;
 };
 
 export default ChallengeDeleteBtn;

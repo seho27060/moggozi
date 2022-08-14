@@ -1,13 +1,14 @@
-import { MouseEvent, useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import PostItem from "./PostItem";
-import { setModalPostState, setPostModalOpen } from "../../store/postModal";
+import PostingPageItem from "./PostingPageItem";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import { setPostStageList } from "../../store/postStage";
 import { postRandomRead } from "../../lib/withTokenApi";
 import Loader from "../ui/Loader";
 import { PostData } from "../../store/post";
+
+import styles from "./PostRandomListVer1.module.scss"
 
 const PostRandomList: React.FC<{}> = () => {
   const dispatch = useDispatch();
@@ -44,29 +45,23 @@ const PostRandomList: React.FC<{}> = () => {
     postCountStart += 1;
   };
   return (
-    <div>
-      <hr />
-      PostList
-      {postStageList!.map((post: PostData) => {
-        addPostCount();
-        return(<div key={postCountStart}>
-          <>
-            <PostItem post={post} />
-            <button
-              onClick={(event: MouseEvent) => {
-                event.preventDefault();
-                dispatch(setModalPostState(post));
-                dispatch(setPostModalOpen(true));
-              }}
-            >
-              해당 포스팅 열기
-            </button>
-          </>
-
-          <hr />
-        </div>)
-      })}
-      {isLogging && <Loader />}
+    <div className={styles.display}>
+      <div>
+        <div className={styles.postingTitle}>포스팅</div>
+        <div className={styles.container}>
+          {postStageList!.map((post: PostData) => {
+            addPostCount();
+            return(<div key={postCountStart}>
+              <div>
+              <>
+                <PostingPageItem post={post}/>
+              </>
+              </div>
+            </div>)
+          })}
+          {isLogging && <Loader />}
+        </div>
+      </div>
     </div>
   );
 };

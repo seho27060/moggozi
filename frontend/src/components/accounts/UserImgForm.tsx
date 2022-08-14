@@ -1,13 +1,18 @@
 import React, { ChangeEvent, useState } from "react";
 import { storageService } from "../../fbase/fbase";
-import { ref, uploadBytes, deleteObject } from "firebase/storage";
+import {
+  ref,
+  uploadBytes,
+  deleteObject,
+  getDownloadURL,
+} from "firebase/storage";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
-import { profileImgFetchAPI } from "../../lib/imgApi";
 import { userImgFetch } from "../../store/auth";
 import { useDispatch } from "react-redux";
 
 import styles from "./UserImgForm.module.scss";
+import { userImgApi } from "../../lib/withTokenApi";
 
 const UserImgForm: React.FC = () => {
   const [file, setFile] = useState<File>();
@@ -30,12 +35,15 @@ const UserImgForm: React.FC = () => {
     }
   };
 
-  // 이미지 서버에 업로드
+  // 이미지 업로드
   const uploadHandler = (event: React.MouseEvent, target: string) => {
     event.preventDefault();
     const imgRef = ref(storageService, target);
-    uploadBytes(imgRef, file!).then(() => {
-      profileImgFetchAPI(userId!).then((res) => dispatch(userImgFetch(res)));
+    uploadBytes(imgRef, file!).then((res) => {
+      getDownloadURL(res.ref).then((res) => {
+        dispatch(userImgFetch(res));
+        userImgApi(res);
+      });
       setPreviewImage("");
     });
   };
@@ -46,7 +54,8 @@ const UserImgForm: React.FC = () => {
     const imgRef = ref(storageService, target);
     deleteObject(imgRef);
 
-    profileImgFetchAPI(userId!).then((res) => dispatch(userImgFetch(res)));
+    dispatch(userImgFetch(""));
+    userImgApi("");
   };
 
   return (
@@ -81,10 +90,10 @@ const UserImgForm: React.FC = () => {
         <div className={styles.deleteButton}>
           <img src={userImg} alt="img" />
           <div>
-            <button onClick={(e) => deleteHandler(e, `user/${userId}`)} >
+            <button onClick={(e) => deleteHandler(e, `user/${userId}`)}>
               프로필 사진 삭제
             </button>
-            </div>
+          </div>
         </div>
       )}
     </div>

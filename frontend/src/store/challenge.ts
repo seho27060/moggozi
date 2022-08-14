@@ -8,7 +8,7 @@ import { StageState } from "./stage";
 export interface ChallengeItemState {
   id: number | null;
   name: string | null;
-  img: string | null;
+  img: string | undefined | null;
   description: string | null;
   hobbyList: Hobby[];
   writer: UserInfo;

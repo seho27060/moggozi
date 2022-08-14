@@ -25,7 +25,7 @@ const AlertList: React.FC<{
   console.log("loadAlertlist", loadedAlertList);
 
   return (
-    <div className={styles.dropdownContent} style={{height:"20rem"}}>
+    <div className={styles.dropdownContent} style={{maxHeight:"20rem"}}>
       <>
         {loadedAlertList &&
           loadedAlertList.map((alert: Alert) => (

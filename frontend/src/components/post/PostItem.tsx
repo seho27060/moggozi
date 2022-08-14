@@ -1,19 +1,32 @@
 import { PostData } from "../../store/post";
 // import PostForm from "./PostForm";
 
-const PostItem: React.FC<{post: PostData}> = ({post}) =>{
-  return(
-    <div style={{ border: "solid", margin: "1rem", padding: "1rem" }}>
-      <p>포스팅 작성자 : {post.writer?.nickname}</p>
-      <p>포스팅 id : {post.id}</p>
-      <p>포스팅 제목 : {post.title}</p>
-      <p>포스팅 좋아요 수 : {post.likeNum}</p>
-      <p>포스팅 이미지 : {post.postImg}</p>
-      <div>
-      {/* <p>포스팅 작성자 이름 : {post.writer.nickname}</p> */}
+import styles from "./PostItem.module.scss";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+
+const PostItem: React.FC<{ post: PostData }> = ({ post }) => {
+  console.log(post.writer?.path);
+
+  return (
+    <div className={styles.postItem}>
+      {/* <img src={post.writer?.path} alt="" /> */}
+      {post.postImg.length !== 0 ? (
+        <img src={post.postImg[0].path!} alt="" />
+      ) : (
+        <img src="" alt="" />
+      )}
+      <div className={styles.title}>
+        {post.title!.length > 18 ? (
+          <div>{post.title?.slice(0, 18) + "..."}</div>
+        ) : (
+          <div>{post.title}</div>
+        )}
+        <div className={styles.name}>
+          <FavoriteIcon /> <div>{post.likeNum}</div>
+        </div>
       </div>
+      <div className={styles.writer}>{post.writer?.nickname}</div>
     </div>
-   
-  ) 
-}
+  );
+};
 export default PostItem;

@@ -1,0 +1,26 @@
+@use "../../styles/mixin.scss" as mixin;
+
+@include mixin.desktop {
+  .container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .width {
+      width: 992px;
+  
+      .title {
+        font-weight: 700;
+        font-size: 30px;
+        line-height: 54px;
+        text-align: start;
+      }
+      
+    }
+
+  }
+}
+
+@include mixin.mobile {
+
+}

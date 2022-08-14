@@ -8,7 +8,6 @@ import PostLayout from "./layout/PostLayout";
 import StageLayout from "./layout/StageLayout";
 import UserLayout from "./layout/UserLayout";
 import SearchLayout from "./layout/SearchLayout";
-
 // Accounts
 import Login from "./pages/accounts/Login";
 import CompleteSignUp from "./pages/accounts/CompleteSignUp";
@@ -29,7 +28,6 @@ import Challenges from "./pages/challenge/Challenges";
 import ChallengeUpdate from "./pages/challenge/ChallengeUpdate";
 
 // Post
-import PostCommentTestPage from "./pages/PostCommentTestPage";
 import PostStage from "./pages/post/PostStage";
 import PostAll from "./pages/post/PostAll";
 
@@ -42,9 +40,10 @@ import UserPage from "./pages/user/UserPage";
 import MainPage from "./pages/MainPage";
 import SearchPage from "./pages/SearchPage";
 import UnknownPage from "./pages/UnknownPage";
-import WebsocketPage from "./pages/WebsocketTest";
 import StageEdit from "./pages/stage/StageEdit";
-
+import NoticePage from "./pages/notice/NoticePage";
+import NoticeDetailPage from "./pages/notice/NoticeDetailPage";
+// import NoticeDetailPage from ""
 export default function Router() {
   return useRoutes([
     {
@@ -54,6 +53,14 @@ export default function Router() {
         {
           path: "",
           element: <MainPage />,
+        },
+        {
+          path: "/notice/:noticePageNum",
+          element: <NoticePage/>,
+        },
+        {
+          path: "/notice/detail/:noticeId",
+          element: <NoticeDetailPage/>,
         },
       ],
     },
@@ -160,14 +167,7 @@ export default function Router() {
       element: <UserLayout />,
       children: [{ path: ":id", element: <UserPage /> }],
     },
-    {
-      path: "/websocketTest",
-      element: <WebsocketPage />,
-    },
-    {
-      path: "/postcommentTest",
-      element: <PostCommentTestPage />,
-    },
+
     {
       path: "/*",
       element: <UnknownPage />,
