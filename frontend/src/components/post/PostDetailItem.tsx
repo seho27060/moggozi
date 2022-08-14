@@ -24,8 +24,7 @@ const PostDetailItem: React.FC<{}> = () => {
   const commentState = useSelector(
     (state: RootState) => state.comment.comments
   );
-
-  console.log("postDetail", post.postModalState);
+  console.log(post.postModalState);
   useEffect(() => {
     commentRead(post.postModalState!.id)
       .then((res) => {
@@ -39,7 +38,7 @@ const PostDetailItem: React.FC<{}> = () => {
 
   return (
     <div className={styles.postDetail}>
-      <div style={{height:"550px",width:"550px"}}>
+      <div style={{ height: "550px", width: "550px" }}>
         <img
           className={styles.img}
           src={
@@ -48,7 +47,6 @@ const PostDetailItem: React.FC<{}> = () => {
               : "https://blog.kakaocdn.net/dn/vckff/btqCjeJmBHM/tMVpe4aUIMfH4nKS4aO3tK/img.jpg"
           }
           alt="포스팅이미지"
-          
         />
         {/* 수정 버튼 */}
       </div>
@@ -67,7 +65,7 @@ const PostDetailItem: React.FC<{}> = () => {
               <img
                 src="https://blog.kakaocdn.net/dn/vckff/btqCjeJmBHM/tMVpe4aUIMfH4nKS4aO3tK/img.jpg"
                 alt=""
-                style={{height:"50px",width:"50px"}}
+                style={{ height: "50px", width: "50px" }}
               />
             )}
 

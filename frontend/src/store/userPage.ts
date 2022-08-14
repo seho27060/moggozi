@@ -1,4 +1,5 @@
 import { Value } from "react-quill";
+import { PostImgData } from "./post";
 
 export interface UserChallengeType {
   id: number | null;
@@ -14,7 +15,7 @@ export interface UserPostType {
   content: Value | string | null;
   createdDate: Date | null;
   modifiedDate: Date | null;
-  postImg: string | null;
+  postImg: PostImgData[];
   state: number | null;
   postLikeList: {
     id: number | null;
@@ -28,5 +29,4 @@ export interface UserPostType {
     commentOrder: number | null;
     state: number | null;
   }[];
-  postImgList: string[];
 }
