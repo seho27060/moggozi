@@ -1,0 +1,230 @@
+@use "../../styles/mixin.scss" as mixin;
+
+@include mixin.desktop {
+
+  .link {
+    text-decoration: none;
+  }
+  
+  .rank {
+    display: flex;
+    margin: 0 0 10px 0;
+
+    .circle {
+      display: flex;
+      align-items: center;
+      padding: 2px 10px 2px 10px;
+      border: 1px solid RGB(255, 206, 92);
+      border-radius: 50px;
+      
+      svg {
+        font-size: 20px;
+        color: RGB(255, 206, 92);
+  
+        &:hover {
+          color: RGB(255, 206, 92) !important;
+        }
+      }
+
+      & > div {
+        font-size: 15px;
+        font-weight: 700;
+        margin: 0 0 0 5px;
+        color: mixin.$cloudGray
+      }
+    }
+
+
+
+  }
+  .challengeItem {
+    display: flex;
+    padding: 0px 0 40px 0;
+
+    a {
+      width: 426px;
+      height: 240px;
+      overflow: hidden;
+      border-radius: 5px;;
+
+      img {
+        width: 426px;
+        height: 240px;
+        object-fit: cover;
+        transition: all 0.7s;
+        border-radius: 5px;;
+        
+        &:hover {
+          transform: scale(1.1)
+        }
+      }
+    }
+
+    .badge0 {
+      display: none;
+    }
+
+    .badge1 {
+      width: 0px;
+      height: 0px;
+
+      &::before {
+        display: inline-block;
+        position: relative;
+        border-radius: 0px 0px 5px 5px;
+        right: 55px;
+        bottom: 4px;
+        width: 40px;
+        height: 20px;
+        background: mixin.$mainColor;
+        color: #fff;
+        text-align: center;
+        font-size: 14px;
+        font-weight: 600;
+        font-family: pretendard;
+        line-height: 22px;
+        content: "진행";
+      }
+    }
+
+    .badge2 {
+      width: 0px;
+      height: 0px;
+
+      &::before {
+        display: inline-block;
+        position: relative;
+        border-radius: 0px 0px 5px 5px;
+        right: 55px;
+        bottom: 4px;
+        width: 40px;
+        height: 20px;
+        background: linear-gradient(90deg, #FF9921 -1.06%, #FFC337 101.51%);
+        color: #fff;
+        text-align: center;
+        font-size: 14px;
+        font-weight: 700;
+        font-family: pretendard;
+        line-height: 19px;
+        content:"완료"
+      }
+    }
+    
+    .challengeInfo {
+      display: flex;
+      margin: 0 0 0 30px;
+      align-items: center;
+      // max-width: 687px;
+      // width: auto;
+      & > div {
+        width: 535px !important;
+      }
+
+      .header {
+        display: flex;
+        justify-content:space-between;
+
+        .profile {
+          display: flex;
+          align-items:center;
+          cursor: pointer;
+          img {
+            width: 35px;
+            height: 35px;
+            object-fit: cover;
+            border-radius: 100%;
+            margin: 0 10px 0 0;
+          }
+          & > div {
+            font-size: 18px;
+            font-weight: 700;
+
+          }
+
+        }
+      }
+
+      .title {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        div:nth-child(1) {
+          font-size: 35px;
+          font-weight: 700;
+          line-height: 25px;
+          margin-right: 10px;
+        }
+
+        .level1 {
+          width: 40px;
+          height: 20px;
+          background: #F0D300;;
+          text-align: center;
+          line-height:20px;
+          // font-size:
+          font-weight: 600;
+          color: #fff;
+          border-radius: 5px;
+        }
+        .level2 {
+          width: 40px;
+          height: 20px;
+          background: #5AAE33;
+          text-align: center;
+          line-height:20px;
+          // font-size:
+          font-weight: 600;
+          color: #fff;
+          border-radius: 5px;
+
+        }
+        .level3 {
+          width: 40px;
+          height: 20px;
+          background: #E2195A;
+          text-align: center;
+          line-height:20px;
+          // font-size:
+          font-weight: 600;
+          color: #fff;
+          border-radius: 5px;
+        }
+      }
+
+      // 작성일 / 좋아요.
+      .writer {
+        display: flex;
+        justify-content: end;
+        margin : 5px 0 10px 0;
+        div:nth-child(1) {
+          margin: 0 10px 0 0;
+          font-weight: 400;
+          font-size: 15px;
+          line-height: 18px;
+          color: mixin.$cloudGray
+        }
+
+        div:nth-child(2) {
+          margin: 0 10px 0 0;
+          font-weight: 400;
+          font-size: 15px;
+          line-height: 18px;
+          color: mixin.$cloudGray
+        }
+      }
+
+      // 한줄 소개
+      .description {
+        font-weight: 400;
+        font-size: 18px;
+        line-height: 24px;
+        margin-bottom: 30px;
+        padding: 20px 10px 10px 10px;
+      }
+    }
+  }
+}
+
+@include mixin.mobile {
+
+}

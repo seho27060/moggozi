@@ -1,0 +1,196 @@
+@use "../../styles/mixin.scss" as mixin;
+
+@include mixin.desktop {
+
+  .sort {
+    display: flex;
+    justify-content: center;
+    text-decoration: none;
+    // border: 1px solid mixin.$cloudLine;
+    border: 0;
+    border-radius: 5px;
+    box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.15);
+    margin: 50px 96px 50px 96px;
+  }
+
+  .challengeItem {
+    // padding: 40px 0 40px 0;
+
+      // 작성일 / 작성자
+    .writer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 15px 30px 15px 30px;
+
+      .profile {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        div:nth-child(2) {
+          margin: 0 0 0 20px;
+          font-size: 22px;
+          font-weight: 600;
+        }
+
+        img {
+          width: 60px;
+          height: 60px;
+          border-radius: 100%;
+          object-fit: cover;
+        }
+      }
+      
+      .date {
+        color: mixin.$cloudGray;
+        font-weight: 500;
+      }
+    }
+
+
+
+    .img {
+      width: 800px;
+      height: 480px;
+      object-fit: cover;
+      border-radius: 5px 5px 0 0;
+    }
+
+    .badge0 {
+      display: none;
+    }
+
+    .badge1 {
+      width: 0px;
+      height: 0px;
+
+      &::before {
+        display: inline-block;
+        position: relative;
+        border-radius: 0px 0px 5px 5px;
+        left: 740px;
+        bottom: 486px;
+        width: 40px;
+        height: 20px;
+        background: mixin.$mainColor;
+        color: #fff;
+        text-align: center;
+        font-size: 14px;
+        font-weight: 600;
+        font-family: pretendard;
+        line-height: 22px;
+        content: "진행";
+      }
+    }
+
+    .badge2 {
+      width: 0px;
+      height: 0px;
+
+      &::before {
+        display: inline-block;
+        position: relative;
+        border-radius: 0px 0px 5px 5px;
+        right: 55px;
+        bottom: 4px;
+        width: 40px;
+        height: 20px;
+        background: linear-gradient(90deg, #FF9921 -1.06%, #FFC337 101.51%);
+        color: #fff;
+        text-align: center;
+        font-size: 14px;
+        font-weight: 700;
+        font-family: pretendard;
+        line-height: 19px;
+        content:"완료"
+      }
+    }
+    
+    .challengeInfo {
+
+      .title {
+        display: flex;
+        align-items: center;
+        margin: 20px 20px 15px 30px;
+
+        div:nth-child(1) {
+          font-weight: 600;
+          font-size: 25px;
+          line-height: 25px;
+          margin-right: 10px;
+        }
+
+        .level1 {
+          width: 40px;
+          height: 20px;
+          background: #F0D300;;
+          text-align: center;
+          line-height:20px;
+          // font-size:
+          font-weight: 600;
+          color: #fff;
+          border-radius: 5px;
+        }
+        .level2 {
+          width: 40px;
+          height: 20px;
+          background: #5AAE33;
+          text-align: center;
+          line-height:20px;
+          // font-size:
+          font-weight: 600;
+          color: #fff;
+          border-radius: 5px;
+
+        }
+        .level3 {
+          width: 40px;
+          height: 20px;
+          background: #E2195A;
+          text-align: center;
+          line-height:20px;
+          // font-size:
+          font-weight: 600;
+          color: #fff;
+          border-radius: 5px;
+        }
+      }
+
+      // 한줄 소개
+      .description {
+        font-weight: 400;
+        font-size: 20px;
+        line-height: 24px;
+        margin: 5px 30px 10px 30px;
+      }
+
+      .tags {
+        margin: 10px 30px 20px 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        div {
+          font-size: 16px;
+          font-weight: 600;
+          color: mixin.$cloudGray
+        }
+
+        .favorite {
+          display: flex;
+          align-items: center;
+          svg {
+            margin: 0 5px 0 0;
+            font-size: 20px;
+            color: red;
+          }
+        } 
+      }
+    }
+  }
+}
+
+@include mixin.mobile {
+
+}
