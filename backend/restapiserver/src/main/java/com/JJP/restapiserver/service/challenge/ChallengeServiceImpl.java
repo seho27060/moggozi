@@ -110,7 +110,7 @@ public class ChallengeServiceImpl implements ChallengeService{
 
     @Override
     public ChallengePageDto getChallengeListByLike(Long member_id, Pageable pageable) {
-        Page<Challenge> list = challengeRepository.findAllByOrderByLikeNumDesc(pageable);
+        Page<Challenge> list = challengeRepository.findByStateOrderByLikeNumDesc(1,pageable);
         List<Challenge> challengeList = list.toList();
 
         List<ChallengeListResponseDto> responseDtoList = new ArrayList<>();
@@ -126,7 +126,7 @@ public class ChallengeServiceImpl implements ChallengeService{
         return challengePageDto;
     }
     public ChallengePageDto getChallengeListByLikeWithoutLogin(Pageable pageable) {
-        Page<Challenge> list = challengeRepository.findAllByOrderByLikeNumDesc(pageable);
+        Page<Challenge> list = challengeRepository.findByStateOrderByLikeNumDesc(1, pageable);
         List<Challenge> challengeList = list.toList();
 
         List<ChallengeListResponseDto> responseDtoList = new ArrayList<>();
@@ -348,7 +348,7 @@ public class ChallengeServiceImpl implements ChallengeService{
         // joinedchallenge -> challenge_index -> challenge
         List<Long> challenge_ids = challengeSlice.stream().map(o -> o.getChallenge().getId()).collect(Collectors.toList());
         // challenge_index -> challenge
-        List<Challenge> challengeList = challengeRepository.findByIdIn(challenge_ids);
+        List<Challenge> challengeList = challengeRepository.findByStateAndIdIn(1, challenge_ids);
         List<ChallengeSimpleResponseDto> challengeSimpleResponseDtoList = new ArrayList<>();
         for(Challenge challenge : challengeList){
             int state = 0;
@@ -528,7 +528,7 @@ public class ChallengeServiceImpl implements ChallengeService{
         logger.debug("------------------서비스 로직 시작------------");
         List<ChallengeTag> challengeTagList = challengeTagService.getChallengeTagContainingTag(keyword);
         List<Long> ids = challengeTagList.stream().map(o -> o.getChallenge().getId()).collect(Collectors.toList());
-        Page<Challenge> challengeList = challengeRepository.findByIdIn(ids, pageable);
+        Page<Challenge> challengeList = challengeRepository.findByStateAndIdIn(1, ids, pageable);
         List<ChallengeListResponseDto> challengeListResponseDtoList = new ArrayList<>();
         challengeListResponseDtoList = challengeIntoListDto(challengeList.toList(), challengeListResponseDtoList, member_id);
         logger.debug("-------------------서비스 로직 종료-----------");
@@ -548,7 +548,7 @@ public class ChallengeServiceImpl implements ChallengeService{
         logger.debug("------------------서비스 로직 시작------------");
         List<ChallengeTag> challengeTagList = challengeTagService.getChallengeTagContainingTag(keyword);
         List<Long> ids = challengeTagList.stream().map(o -> o.getChallenge().getId()).collect(Collectors.toList());
-        Page<Challenge> challengeList = challengeRepository.findByIdIn(ids, pageable);
+        Page<Challenge> challengeList = challengeRepository.findByStateAndIdIn(1, ids, pageable);
         List<ChallengeListResponseDto> challengeListResponseDtoList = new ArrayList<>();
         challengeListResponseDtoList = challengeIntoListDto(challengeList.toList(), challengeListResponseDtoList);
         logger.debug("-------------------서비스 로직 종료-----------");
