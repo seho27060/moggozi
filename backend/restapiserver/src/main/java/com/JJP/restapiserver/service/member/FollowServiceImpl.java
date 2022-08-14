@@ -71,11 +71,12 @@ public class FollowServiceImpl implements FollowService {
 
     @Override
     public ResponseEntity<?> followedList(Long toMemberId, Long loginId) {
+        if(loginId == null)
+            loginId = 0L;
         List<Followed> memberList = followRepository.findAllByTo_member(toMemberId, loginId);
         FollowedListResponse followedListResponse = FollowedListResponse.builder()
                 .totalCount(memberList.size())
                 .memberInfoList(memberList).build();
         return ResponseEntity.ok(followedListResponse);
     }
-
 }
