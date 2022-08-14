@@ -1,7 +1,101 @@
-<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
-<!--index.js 추가-->
-<!--<script src="/js/app/index.js"></script>-->
+</div> <!-- <div class=container> from header.mustache finishes here -->
 </body>
+
+<footer>
+    <div class="text-center" style="background-color: rgba(0, 0, 0, 0.025);">
+        © 2022 Moggozi, All right reserved.
+    </div>
+</footer>
+
+<script>
+    let main = {
+        init: function() {
+            let _this = this;
+            $('#saveBtn').on('click', function() {
+                _this.saveNotice();
+            });
+            $('#updateBtn').on('click', function() {
+               _this.updateNotice();
+            });
+        },
+        saveNotice: function() {
+            let data = {
+                title: $('#title').val(),
+                content: $('#content').val()
+            };
+            $.ajax({
+                type: 'POST',
+                url: '/api/notice/register',
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify(data)
+            }).done(function() {
+                alert('글등록이 완료되었습니다.');
+                window.location.href = '/api/admin_notice';
+            }).fail(function(error) {
+                alert("글등록에 실패했습니다.");
+            });
+        },
+    };
+
+    main.init();
+
+
+    function invalidate() {
+        let memberId = $('#memberId').text();
+        $.ajax({
+            type: 'POST',
+            url: '/api/admin/update/' + memberId,
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+        }).done(function() {
+            alert('휴면처리되었습니다.');
+            window.location.href = '/api/member';
+        }).fail(function(error) {
+            alert("관리자만이 휴면처리할 수 있습니다.");
+        });
+    }
+
+    function deleteNotice() {
+        let noticeId = $('#noticeId').text();
+        $.ajax({
+            type: 'POST',
+            url: '/api/notice/delete/' + noticeId,
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+        }).done(function() {
+            alert('공지사항이 삭제되었습니다.');
+            window.location.href = '/api/admin_notice';
+        }).fail(function(error) {
+            alert("관리자만이 삭제할 수 있습니다.");
+        });
+    }
+
+    function updateNotice() {
+        let data = {
+            title: $('#title').val(),
+            content: $('#content').val()
+        };
+
+        let noticeId = $('#noticeId').val();
+        console.log(noticeId);
+
+        $.ajax({
+            type: 'POST',
+            url: '/api/notice/update/'+noticeId,
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify(data)
+        }).done(function() {
+            alert('글수정이 완료되었습니다.');
+            window.location.href = '/api/admin_notice';
+        }).fail(function(error) {
+            alert("글수정에 실패했습니다.");
+            window.location.href = '/api/admin_notice';
+        });
+    }
+
+</script>
+
 </html>

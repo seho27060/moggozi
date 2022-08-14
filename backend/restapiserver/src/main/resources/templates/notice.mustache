@@ -1,0 +1,41 @@
+{{>layout/header}}
+
+    <div class="row mb-5" style="font-size: 2.2rem; font-weight: 1000; display: flex; justify-content: center;">
+        <h2>공지사항</h2>
+    </div>
+
+    <div class="row m-2" style="display: flex; justify-content: right;">
+        <a href="/api/noticeRegister" type="button" class="btn btn-link">공지사항 등록</a>
+    </div>
+
+    <div class = "row">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col" style="display: none">Id</th>
+                    <th scope="col">Title</th>
+                    <th scope="col">생성일</th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {{#notices}}
+                    <tr>
+                        <td style="display: none" id="noticeId">{{noticeId}}</td>
+                        <td>{{title}}</td>
+                        <td>{{createdDate}}</td>
+                        <td>
+                            <a href="/api/noticeUpdate/{{noticeId}}" type="button" class="btn btn-warning" >수정</a>
+                        </td>
+                        <td onclick="deleteNotice()">
+                            <button type="button" class="btn btn-danger" id="deleteBtn">삭제</button>
+                        </td>
+                    </tr>
+                {{/notices}}
+            </tbody>
+        </table>
+    </div>
+
+{{>layout/footer}}
