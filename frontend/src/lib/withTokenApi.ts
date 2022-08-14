@@ -257,6 +257,11 @@ export const reviewDelete = async (id: number) => {
 };
 
 // 스테이지 관련
+export const stageDetailRead = async (stageId: number) => {
+  const { data } = await withTokenApi.get(`/stage/detail/${stageId}`);
+  return data;
+};
+
 export const stageAdd = async (
   stageAddData: StageSaveState,
   challengeId: number
