@@ -22,7 +22,7 @@ export interface PostItem {
   id: number | null;
   title: string | null;
   likeCount: number | null;
-  img: PostImgData[];
+  postImg: PostImgData[];
   writer: UserInfo;
 }
 

@@ -141,11 +141,22 @@ const StageItem: React.FC<{
         </div>
       </div>
       <div className={styles.btnPosition}>
-        {postFormButtonOpen && isLoggedIn && postingStageId && (
-          <button onClick={() => dispatch(setPostFormModalOpen(true))}>
-            완료 / 포스팅하기
-          </button>
-        )}
+        {/* 챌린지를 도전해야 포스팅 CRUD 가능 */}
+        {challengeProgress !== 0 &&
+          postFormButtonOpen &&
+          isLoggedIn &&
+          postingStageId && (
+            <div>
+              {postedCheck ? (
+                // 포스팅 모달 연결해야한다.
+                <button>내 포스팅 보기</button>
+              ) : (
+                <button onClick={() => dispatch(setPostFormModalOpen(true))}>
+                  포스팅하기
+                </button>
+              )}
+            </div>
+          )}
       </div>
 
       <div className={styles.horizon}></div>

@@ -8,11 +8,14 @@ import { UserPostType } from "../../store/userPage";
 const UserPostItem: React.FC<{
   userPost: UserPostType;
 }> = ({ userPost }) => {
-  const dispatch = useDispatch()
-  let postData:PostData|null = null
-  postRead(userPost.id).then((res)=>{
-    postData = res
-  }).catch((err)=>console.log("err post",userPost.id,err))
+  const dispatch = useDispatch();
+  let postData: PostData | null = null;
+  postRead(userPost.id)
+    .then((res) => {
+      console.log(res);
+      postData = res;
+    })
+    .catch((err) => console.log("err post", userPost.id, err));
   return (
     <div
       style={{
@@ -20,7 +23,7 @@ const UserPostItem: React.FC<{
         width: "15rem",
         height: "15rem",
         margin: "2rem",
-        borderRadius:"5px"
+        borderRadius: "5px",
       }}
       onClick={(event: MouseEvent) => {
         event.preventDefault();
@@ -29,7 +32,7 @@ const UserPostItem: React.FC<{
       }}
     >
       <img
-        src={userPost.postImg!}
+        src={userPost.postImg.length !== 0 ? userPost.postImg[0].path! : ""}
         alt="challengeImg"
         style={{
           width: "15rem",
