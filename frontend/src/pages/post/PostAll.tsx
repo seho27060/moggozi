@@ -15,7 +15,7 @@ import { RootState } from "../../store/store";
 
 import styles from "./PostAll.module.scss";
 
-const PostAll: React.FC<{}> = () => {
+const PostAll: React.FC = () => {
   const dispatch = useDispatch();
   const [likePostList, setLikePostList] = useState<PostData[]>([]);
   const [recentPostList, setRecentPostList] = useState<PostData[]>([]);
@@ -26,7 +26,7 @@ const PostAll: React.FC<{}> = () => {
   const { postModalOpen } = useSelector((state: RootState) => state.postModal);
 
   const closePostModal = () => {
-    dispatch(setPostModalOpen(true));
+    dispatch(setPostModalOpen(false));
   };
 
   if (postModalOpen) {
