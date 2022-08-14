@@ -36,4 +36,11 @@ public interface PostService {
 
     // 포스트 사용자와 스테이지 정보로 받아오기
     Object detailMemberPost(Long stage_id, Long member_id);
+
+    // 최근 작성 순서에 따른 리스트
+    SliceListDto latestPostList(Pageable pageable);
+
+    // 좋아요 순에 따른 리스트
+    SliceListDto likePostList(Pageable pageable);
+
 }

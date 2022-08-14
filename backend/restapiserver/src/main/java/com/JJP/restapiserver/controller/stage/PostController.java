@@ -99,13 +99,17 @@ public class PostController {
 
     @Operation(summary = "최근 작성순서에 따른 post리스트")
     @GetMapping("/list/latest")
-    private Page<Post> postLatestList(Pageable pageable){
-        return postRepository.findAllByOrderByCreatedDateDesc(pageable);
+    private ResponseEntity<SliceListDto> postLatestList(Pageable pageable){
+        SliceListDto sliceListDto = postService.latestPostList(pageable);
+
+        return new ResponseEntity<>(sliceListDto, HttpStatus.OK);
     }
 
     @Operation(summary = "좋아요에 따른 post리스트")
     @GetMapping("/list/like")
-    private Page<Post> postLikeList(Pageable pageable){
-        return postRepository.findAllByOrderByLikeNumDesc(pageable);
+    private ResponseEntity<SliceListDto> postLikeList(Pageable pageable){
+        SliceListDto sliceListDto = postService.likePostList(pageable);
+
+        return new ResponseEntity<>(sliceListDto, HttpStatus.OK);
     }
 }

@@ -130,6 +130,7 @@ public class PostServiceImpl implements PostService {
 
         return SliceListDto.builder()
                 .totalPages(postList.getTotalPages())
+                .totalElements(postList.getTotalElements())
                 .pageNum(postList.getNumber())
                 .content(postResponseDtoList)
                 .size(postList.getNumberOfElements())
@@ -198,5 +199,19 @@ public class PostServiceImpl implements PostService {
                 .likeNum(post.getPostLikeList().size())
                 .writer(writer)
                 .build();
+    }
+
+    @Override
+    public SliceListDto latestPostList(Pageable pageable){
+        Page<Post> postList = postRepository.findAllByOrderByCreatedDateDesc(pageable);
+
+        return getSliceListDto(postList);
+    }
+
+    @Override
+    public SliceListDto likePostList(Pageable pageable){
+        Page<Post> postList = postRepository.findAllByOrderByLikeNumDesc(pageable);
+
+        return getSliceListDto(postList);
     }
 }
