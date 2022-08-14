@@ -8,12 +8,13 @@ import StageImgForm from "./StageImgForm";
 import EditorComponent from "../ui/Editor";
 import ReactQuill from "react-quill";
 
-import styles from "./StageUpdateForm.module.scss"
+import styles from "./StageUpdateForm.module.scss";
 // 수정하기가 글쓴이가 수정할 수 있도록 해야함.
 
 const StageUpdateForm: React.FC<{
   stage: StageState;
-}> = ({ stage }) => {
+  closeModal: () => void;
+}> = ({ stage, closeModal }) => {
   const [isImgUpdate, setIsImgUpdate] = useState(false);
   const dispatch = useDispatch();
   const contentInputRef = useRef<ReactQuill>();
@@ -29,10 +30,11 @@ const StageUpdateForm: React.FC<{
     };
     stageUpdate(stageUpdateData, stage.id!) // DB 값 변경
       .then((res) => {
-        alert("스테이지 수정이 완료되었습니다.");
         fetchStages(Number(challengeId!))
           .then((res) => {
+            alert("스테이지 수정이 완료되었습니다.");
             dispatch(stageFetch(res));
+            closeModal();
           })
           .catch((err) => {
             alert(err.response);
@@ -70,7 +72,10 @@ const StageUpdateForm: React.FC<{
               />
             </div>
             <div>
-            <EditorComponent QuillRef={contentInputRef} value={stage.content!}/>
+              <EditorComponent
+                QuillRef={contentInputRef}
+                value={stage.content!}
+              />
             </div>
             <button onClick={stateUpdateHandler}>수정</button>
           </form>

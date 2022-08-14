@@ -1,0 +1,8 @@
+@use "../../styles/mixin.scss" as mixin;
+
+@include mixin.desktop {
+  .container {
+    display: flex;
+    justify-content: center;
+  }
+}
