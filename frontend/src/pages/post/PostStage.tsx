@@ -41,29 +41,32 @@ const PostStage: React.FC = () => {
   const [checkedPost, setCheckedPost] = useState<PostData | number>(-1);
   const [stageState, setStageState] = useState<StageState | null>(null);
 
-  const [isLogging, setIsLogging] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const [hasNext, setHasNext] = useState(0);
 
   const handleScroll = useCallback((): void => {
     const { innerHeight } = window;
     const { scrollHeight } = document.body;
     const { scrollTop } = document.documentElement;
 
-    if (Math.round(scrollTop + innerHeight) >= scrollHeight) {
-      setIsLogging(true);
-      postListRead(Number(stageId), currentPage, 9)
+    if (hasNext && Math.round(scrollTop + innerHeight) >= scrollHeight - 100) {
+      setIsLoading(true);
+      postListRead(Number(stageId), currentPage + 1, 18)
         .then((res) => {
           console.log("포스팅 불러오기 성공", res.content);
           dispatch(postSet(postListState.concat(res.content)));
           dispatch(setPostFormButtonState(true));
-          setIsLogging(false);
+          setCurrentPage(res.pageNum);
+          setHasNext(res.hasNext);
+          setIsLoading(false);
         })
         .catch((err) => {
           console.log("ERR", err);
+          setIsLoading(false);
         });
-      setCurrentPage(currentPage + 1);
     }
-  }, [currentPage, dispatch, stageId, postListState]);
+  }, [currentPage, dispatch, stageId, postListState, hasNext]);
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll, true);
@@ -82,14 +85,15 @@ const PostStage: React.FC = () => {
   };
 
   useEffect(() => {
-    setIsLogging(true);
+    setIsLoading(true);
     console.log(stageId, "번 스테이지의 포스팅을 불러옵니다.");
-    postListRead(Number(stageId), 0, 9)
+    postListRead(Number(stageId), 0, 18)
       .then((res) => {
         console.log("포스팅 불러오기 성공", res.content);
         dispatch(postSet(res.content));
         dispatch(setPostFormButtonState(true));
-        setIsLogging(false);
+        setHasNext(res.hasNext);
+        setIsLoading(false);
       })
       .catch((err) => {
         console.log("ERR", err);
@@ -162,7 +166,7 @@ const PostStage: React.FC = () => {
           )}
         </div>
       </div>
-      {isLogging && <Loader />}
+      {isLoading && <Loader />}
     </div>
   );
 };
