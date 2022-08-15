@@ -2,6 +2,9 @@ import { useState } from "react";
 import Modal from "../ui/Modal";
 import StageForm from "./StageForm";
 
+import styles from "../../pages/stage/StageEdit.module.scss"
+import AddIcon from '@mui/icons-material/Add';
+
 const StageAddBtn: React.FC = () => {
   const [modalOpen, setModalOpen] = useState(false);
 
@@ -14,7 +17,7 @@ const StageAddBtn: React.FC = () => {
 
   return (
     <div>
-      <button onClick={openModal}>생성</button>
+      <div className={styles.box} onClick={openModal}><div className={styles.addIcon}><AddIcon /></div></div>
       <Modal open={modalOpen} close={closeModal} header="스테이지 생성">
         <StageForm closeModal={closeModal} />
       </Modal>

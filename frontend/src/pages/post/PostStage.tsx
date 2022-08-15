@@ -4,7 +4,6 @@ import { useSelector } from "react-redux";
 import { PostData, postSet } from "../../store/post";
 import PostDetailItem from "../../components/post/PostDetailItem";
 import PostForm from "../../components/post/PostForm";
-import PostList from "../../components/post/PostList";
 import Modal from "../../components/ui/Modal";
 import {
   postListRead,
@@ -26,8 +25,9 @@ import PostModal from "../../components/ui/PostModal";
 import styles from "./PostStage.module.scss";
 import { StageState } from "../../store/stage";
 import PostPageList from "../../components/post/PostPageList";
+import Loader from "../../components/ui/Loader";
 
-const PostStage = () => {
+const PostStage: React.FC = () => {
   document.body.style.overflow = "auto"; //모달때문에 이상하게 스크롤이 안되서 강제로 스크롤 바 생성함
   document.body.style.height = "auto";
   const { stageId } = useParams();
@@ -41,16 +41,30 @@ const PostStage = () => {
   const [checkedPost, setCheckedPost] = useState<PostData | number>(-1);
   const [stageState, setStageState] = useState<StageState | null>(null);
 
-  // const [isLogging, setIsLogging] = useState(false)
+  const [isLogging, setIsLogging] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const handleScroll = useCallback((): void => {
     const { innerHeight } = window;
     const { scrollHeight } = document.body;
     const { scrollTop } = document.documentElement;
 
-    if (Math.round(scrollTop + innerHeight) > scrollHeight) {
+    if (Math.round(scrollTop + innerHeight) >= scrollHeight) {
+      setIsLogging(true);
+      postListRead(Number(stageId), currentPage, 9)
+        .then((res) => {
+          console.log("포스팅 불러오기 성공", res.content);
+          dispatch(postSet(postListState.concat(res.content)));
+          dispatch(setPostFormButtonState(true));
+          setIsLogging(false);
+        })
+        .catch((err) => {
+          console.log("ERR", err);
+        });
+      setCurrentPage(currentPage + 1);
     }
-  }, []);
+  }, [currentPage, dispatch, stageId, postListState]);
+
   useEffect(() => {
     window.addEventListener("scroll", handleScroll, true);
     console.log("infinite call ver1");
@@ -58,6 +72,7 @@ const PostStage = () => {
       window.removeEventListener("scroll", handleScroll, true);
     };
   }, [handleScroll]);
+
   const closePostModal = () => {
     dispatch(setPostModalOpen(false));
     dispatch(setPostUpdateFormState(false));
@@ -67,12 +82,14 @@ const PostStage = () => {
   };
 
   useEffect(() => {
+    setIsLogging(true);
     console.log(stageId, "번 스테이지의 포스팅을 불러옵니다.");
-    postListRead(Number(stageId))
+    postListRead(Number(stageId), 0, 9)
       .then((res) => {
-        console.log("포스팅 불러오기 성공", res);
+        console.log("포스팅 불러오기 성공", res.content);
         dispatch(postSet(res.content));
         dispatch(setPostFormButtonState(true));
+        setIsLogging(false);
       })
       .catch((err) => {
         console.log("ERR", err);
@@ -92,57 +109,60 @@ const PostStage = () => {
   }, [dispatch, stageId]);
 
   return (
-    <div className={styles.display}>
-      <div className={styles.container}>
-        {stageState && <h1>{stageState!.name} 스테이지의 포스팅</h1>}
-        {checkedPost === -1 ? (
-          <button
-            onClick={() => dispatch(setPostFormModalOpen(true))}
-            className={styles.postBtn}
-          >
-            포스팅 생성
-          </button>
-        ) : (
-          <button
-            onClick={() => {
-              dispatch(setModalPostState(checkedPost));
-              dispatch(setPostModalOpen(true));
-            }}
-            className={styles.postBtn}
-          >
-            내 포스팅 보기
-          </button>
-        )}
-        {postListState && (
-          <>
-            <PostPageList postList={postListState} />
-          </>
-        )}
-      </div>
+    <div>
+      <div className={styles.display}>
+        <div className={styles.container}>
+          {stageState && <h1>{stageState!.name} 스테이지의 포스팅</h1>}
+          {checkedPost === -1 ? (
+            <button
+              onClick={() => dispatch(setPostFormModalOpen(true))}
+              className={styles.postBtn}
+            >
+              포스팅 생성
+            </button>
+          ) : (
+            <button
+              onClick={() => {
+                dispatch(setModalPostState(checkedPost));
+                dispatch(setPostModalOpen(true));
+              }}
+              className={styles.postBtn}
+            >
+              내 포스팅 보기
+            </button>
+          )}
+          {postListState && (
+            <>
+              <PostPageList postList={postListState} />
+            </>
+          )}
+        </div>
 
-      <div>
-        {postModalOpen && (
-          <PostModal open={postModalOpen} close={closePostModal}>
-            {!postUpdateFormOpen && <PostDetailItem />}
-            {postUpdateFormOpen && <PostUpdateForm />}
-          </PostModal>
-        )}
-        {postFormModalOpen && (
-          <Modal
-            open={postFormModalOpen}
-            close={closePostFormModal}
-            header="Modal heading"
-          >
-            "생성폼"
-            <PostForm
-              stageId={Number(stageId)}
-              modalClose={closePostFormModal}
-              // 값이 비면 안되서 아무거나 넣었음.
-              challenge={"123"}
-            />
-          </Modal>
-        )}
+        <div>
+          {postModalOpen && (
+            <PostModal open={postModalOpen} close={closePostModal}>
+              {!postUpdateFormOpen && <PostDetailItem />}
+              {postUpdateFormOpen && <PostUpdateForm />}
+            </PostModal>
+          )}
+          {postFormModalOpen && (
+            <Modal
+              open={postFormModalOpen}
+              close={closePostFormModal}
+              header="Modal heading"
+            >
+              "생성폼"
+              <PostForm
+                stageId={Number(stageId)}
+                modalClose={closePostFormModal}
+                // 값이 비면 안되서 아무거나 넣었음.
+                challenge={"123"}
+              />
+            </Modal>
+          )}
+        </div>
       </div>
+      {isLogging && <Loader />}
     </div>
   );
 };

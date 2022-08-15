@@ -194,7 +194,7 @@
       // 작성일 / 좋아요.
       .writer {
         display: flex;
-        justify-content: end;
+        justify-content: flex-end;
         margin : 5px 0 10px 0;
         div:nth-child(1) {
           margin: 0 10px 0 0;

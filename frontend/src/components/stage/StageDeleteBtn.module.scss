@@ -1,0 +1,20 @@
+@use "../../styles/mixin.scss" as mixin;
+
+@include mixin.desktop {
+  .delete {
+    display: block;
+    position: relative;
+    left: 265px;
+    bottom: 870px;
+    z-index: 51;
+    color: #fff;
+    cursor: pointer;
+    svg {
+      font-size: 25px;
+
+      &:hover {
+        color: rgb(0, 0, 0) !important;
+      }
+    }
+  }
+}

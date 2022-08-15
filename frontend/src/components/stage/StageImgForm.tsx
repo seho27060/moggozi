@@ -7,6 +7,8 @@ import { stageImgFetchAPI } from "../../lib/imgApi";
 import { imgState, stageFetch, StageState } from "../../store/stage";
 import { RootState } from "../../store/store";
 
+import styles from "./StageImgForm.module.scss";
+
 const StageImgForm: React.FC<{
   stage: StageState;
 }> = ({ stage }) => {
@@ -96,34 +98,53 @@ const StageImgForm: React.FC<{
       });
   };
   return (
-    <div>
+    <div className={styles.container}>
       <div>
-        <form>
-          <label htmlFor="img">img 생성</label>
-          <input
-            type="file"
-            accept="image/*"
-            id="img"
-            onChange={onLoadHandler}
-          />
+        <form className={styles.form}>
+          <div className={styles.image}>
+            <label htmlFor="img">
+              <div>포스팅 사진을 업로드해주세요.</div>
+              <div>*권장 사이즈: 1920 x 1920,</div>
+              <div> 최소 640 x 640 비율 (1 : 1)</div>
+              <button>등록하기</button>
+            </label>
+            <input
+              type="file"
+              accept="image/*"
+              id="img"
+              onChange={onLoadHandler}
+            />
+          </div>
+          <div className={styles.explain}>
+            등록하기 버튼을 눌러 이미지를 등록한 후, 업로드 버튼을 눌러주세요!
+          </div>
+        </form>
+
+        <div className={styles.middle}>
+          <div className={styles.preview}>
+            <div>이미지 미리보기</div>
+            {previewImage ? (
+              <img src={previewImage} alt="img" />
+            ) : (
+              <div>아직 등록된 이미지가 없습니다.</div>
+            )}
+          </div>
           <button
             type="button"
             onClick={(e) => uploadHandler(e, `stage/${Number(stage.id!)}`)}
           >
             업로드
           </button>
-        </form>
-        <p>이미지 미리보기</p>
-        <img src={previewImage} alt="img" />
+        </div>
       </div>
 
-      <div>
-        <p>스테이지 이미지들</p>
-        <ul>
+      <div className={styles.upload}>
+        <div className={styles.title}>업로드된 이미지들</div>
+        <div className={styles.photos}>
           {Array.isArray(images) &&
             images.map((img: imgState) => {
               return (
-                <li key={img.id}>
+                <div key={img.id}>
                   <img src={img.url!} alt="img" />
                   <button
                     onClick={(e) =>
@@ -132,15 +153,17 @@ const StageImgForm: React.FC<{
                   >
                     삭제
                   </button>
-                </li>
+                </div>
               );
             })}
-        </ul>
-        <button
-          onClick={(e) => deleteAllHandler(e, `stage/${Number(stage.id!)}`)}
-        >
-          사진 모두 삭제
-        </button>
+        </div>
+        <div className={styles.buttons}>
+          <button
+            onClick={(e) => deleteAllHandler(e, `stage/${Number(stage.id!)}`)}
+          >
+            사진 모두 삭제
+          </button>
+        </div>
       </div>
     </div>
   );

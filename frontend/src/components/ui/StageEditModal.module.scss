@@ -1,0 +1,98 @@
+@use '../../styles/mixin.scss';
+
+@include mixin.desktop {
+  .modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 99;
+    background-color: rgba(0, 0, 0, 0.6);
+
+    button {
+      outline: none;
+      cursor: pointer;
+      border: 0;
+    }
+
+    > section {
+      width: 800px;
+      max-width: 800px;
+      margin: 0 auto;
+      border-radius: 0.3rem;
+      background-color: #fff;
+      animation: modal-show 0.3s;
+      overflow: hidden;
+
+      > {
+        header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          height: 30px;
+          position: relative;
+          color: #fff;
+          padding: 16px 64px 16px 16px;
+          background-color: RGB(195, 174, 255);
+          font-weight: 700;
+          font-size: 20px;
+          cursor: default;
+
+          button {
+            position: absolute;
+            top: 8px;
+            right: 15px;
+            width: 30px;
+            font-size: 21px;
+            font-weight: 700;
+            text-align: center;
+            color: rgb(255, 255, 255);
+            background-color: transparent;
+          }
+        }
+
+        main {
+          padding: 16px;
+          border-top: 1px solid #dee2e6;
+          max-height: 600px;
+          overflow: auto;
+          p {
+            margin: 15px 0 15px 0;
+            font-size: 16px;
+            font-weight: 400;
+          }
+        }
+      }
+    }
+
+    &.openModal {
+      display: flex;
+      align-items: center;
+      animation: modal-bg-show 0.3s;
+    }
+  }
+
+  @keyframes modal-show {
+    from {
+      opacity: 0;
+      margin-top: -50px;
+    }
+
+    to {
+      opacity: 1;
+      margin-top: 0;
+    }
+  }
+
+  @keyframes modal-bg-show {
+    from {
+      opacity: 0;
+    }
+
+    to {
+      opacity: 1;
+    }
+  }
+}

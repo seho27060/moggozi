@@ -69,14 +69,10 @@ const StageItem: React.FC<{
 
   // 포스트 리스트
   useEffect(() => {
-    postListRead(Number(stage.id))
+    postListRead(Number(stage.id), 0, 3)
       .then((res) => {
         console.log("포스팅 불러오기 성공", res.content);
-        res.content.sort((a: PostData, b: PostData) =>
-          a.likeNum! >= b.likeNum! ? 1 : -1
-        );
-        const loadedPostStageList = res.content.slice(0, 3);
-        setPostStageListState(loadedPostStageList);
+        setPostStageListState(res.content);
         dispatch(setPostFormButtonState(true));
       })
       .catch((err) => {
@@ -132,6 +128,15 @@ const StageItem: React.FC<{
                   }}
                 >
                   포스팅하기
+                </button>
+              ) : (
+                <button
+                  onClick={() => {
+                    dispatch(setModalPostState(checkedPost));
+                    dispatch(setPostModalOpen(true));
+                  }}
+                >
+                  내 포스팅 보기
                 </button>
               ) : (
                 <button

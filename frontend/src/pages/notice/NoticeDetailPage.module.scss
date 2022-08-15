@@ -3,29 +3,37 @@
 .container {
   display: flex;
   justify-content: center;
+
   .noticeDetail {
-    min-height: 550px;
-    border: solid mixin.$mainColor;
-    border-radius: 10px;
     width: 992px;
+    min-height: 550px;
+    // border: solid mixin.$mainColor;
+    border-radius: 10px;
     margin: 2rem;
   }
+
   .noticeTitle {
     font-size: 3rem;
     font-weight: 700;
-    font-family: "Noto Sans KR";
+    font-family: "pretendard";
     padding: 1rem 0.5rem;
     border-bottom: solid mixin.$cloudLine;
     margin: 1rem;
   }
+
   .noticeContentSection {
+    display: flex;
     padding: 2rem;
-    flex-direction: column;
-    height: 25rem;
+    // flex-direction: column;
+    // height: 25rem;
     .noticeContent {
-      height: 24rem;
+      width: 992px;
+      min-height: 39rem;
       font-size: 1.4rem;
+      word-break: break-all;
+      line-height: 36px;
     }
+    
     .noticeBottom {
       display: flex;
       justify-content: space-between;
@@ -35,7 +43,8 @@
         border-radius: 5px;
         border: none;
         color: mixin.$mainColor;
-        font-size: 1rem;
+        font-size: 1.2rem;
+        cursor: pointer;
       }
       .noticeDate {
         text-align: end;
