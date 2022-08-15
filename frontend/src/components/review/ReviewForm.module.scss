@@ -1,0 +1,60 @@
+@use "../../styles/mixin.scss" as mixin;
+
+@include mixin.desktop {
+  .reviewForm {
+    display: flex;
+
+    img {
+      width: 50px;
+      height: 50px;
+      object-fit: cover;
+      border-radius: 100%;
+      margin: 20px 20px 0 0;
+    }
+
+    form {
+      flex-direction: column;
+      width: 100%;
+      // border-bottom: 1px solid mixin.$cloudLine;
+      // align-items: center;
+      justify-content: center;
+      .input {
+        display: flex;
+        // width: 100%;
+        justify-content: space-between;
+      border-bottom: 1px solid mixin.$cloudLine;
+
+
+        input {
+          border: 0;
+          padding: 0 15px 5px 10px;
+          width: 850px;
+          font-size: 15px;
+          font-family: pretendard;
+
+          &::placeholder {
+            font-weight: 500;
+            font-size: 15px;
+            line-height: 0px;
+            color: mixin.$cloudGray;
+            font-family: pretendard;
+          }
+
+          &:focus {
+            outline: none;
+          }
+        }
+      }
+
+      .reviewSubmit {
+        cursor: pointer;
+        font-weight: 500;
+        font-size: 15px;
+        line-height: 27px;
+        color: mixin.$cloudGray;
+        margin: 0 15px 8px 0;
+        // margin-right: 10px;
+      }
+    }
+  }
+}

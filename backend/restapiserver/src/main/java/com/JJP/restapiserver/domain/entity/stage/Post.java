@@ -1,6 +1,7 @@
 package com.JJP.restapiserver.domain.entity.stage;
 
 import com.JJP.restapiserver.domain.entity.BaseTimeEntity;
+import com.JJP.restapiserver.domain.entity.file.PostImg;
 import com.JJP.restapiserver.domain.entity.member.Member;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -40,12 +41,22 @@ public class Post extends BaseTimeEntity {
     @Column(length = 300)
     private String postImg;
 
+    @Column()
+    private int state;
+
+    @Column(columnDefinition = "INTEGER default 0")
+    private int likeNum = 0;
 
     // 포스트 좋아요와 다대일 양방향 관계
-    @OneToMany(mappedBy = "post")
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<PostLike> postLikeList = new ArrayList<>();
 
+    @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
+    private List<Comment> postComment = new ArrayList<>();
+
+    @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
+    private List<PostImg> postImgList = new ArrayList<>();
     @Builder
     public Post(Long id, Member member, Stage stage, String title, String content, String post_img) {
         this.id = id;
@@ -56,9 +67,12 @@ public class Post extends BaseTimeEntity {
         this.postImg = post_img;
     }
 
-    public void update(String title, String content, String post_img) {
+    public void update(String title, String content) {
         this.title = title;
         this.content = content;
-        this.postImg = post_img;
+    }
+
+    public void addLikeNum() {
+        this.likeNum++;
     }
 }

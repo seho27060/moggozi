@@ -1,0 +1,101 @@
+@use "../styles/mixin.scss" as mixin;
+
+@include mixin.desktop {
+  .layout {
+    display: flex;
+    justify-content: center;
+
+    .title {
+      margin: 80px 0 50px 0;
+      font-weight: 400;
+      font-size: 35px;
+      line-height: 41px;
+      text-align: center;
+    }
+
+    .form {
+      margin-bottom: 70px;
+      border-bottom: 1px solid mixin.$cloudLine;
+
+      input {
+        width: 900px;
+        height: 30px;
+        border: 0;
+        padding: 0 20px 0 15px;
+        margin: 0 0 10px 0;
+        font-size: 20px;
+        font-weight: 600;
+
+        &::placeholder {
+          font-weight: 600;
+          font-size: 20px;
+          font-family: pretendard;
+          line-height: 20px;
+          color: mixin.$cloudGray
+        }
+
+        &:focus {
+          outline: none;
+        }
+      }
+      
+      button {
+        cursor: pointer;
+        border: 0;
+        background: #fff;
+        color: mixin.$cloudGray;
+        font-size: 16px;
+        font-weight: 600;
+        font-family: pretendard;
+        margin: 0 5px 0 0;
+      }
+    }
+
+    .tabs {
+      display: flex;
+      border-bottom: 2px solid mixin.$cloudLine;
+      padding: 0 0 7px 0;
+      
+      button {
+        margin: 0 20px 0 20px;
+        background: #fff;
+        border: 0;
+        font-weight: 600;
+        font-size: 17px;
+        line-height: 20px;
+        color: mixin.$cloudGray;
+        transition: all 0.7s;
+        font-family: pretendard;
+
+
+        &:disabled {
+          color: black;
+          z-index: 5;
+          background: linear-gradient(to top, #aeff5d 35%, transparent 35%);
+          transition: all 0.7s;
+
+        }
+
+        &:hover {
+          color: black;
+          transition: all 0.7s;
+        }
+      }      
+    }
+
+    .cnt {
+      // margin: 20px 15px 20px 15px;
+      font-weight: 400;
+      font-size: 15px;
+      line-height: 18px;
+      color: mixin.$cloudGray;
+      padding: 20px 15px 20px 15px;
+      border-bottom: 1px solid mixin.$cloudLine;
+    }
+
+  }
+}
+
+@include mixin.mobile {
+  
+}

@@ -1,10 +1,14 @@
 package com.JJP.restapiserver.domain.entity.challenge;
 
+import com.JJP.restapiserver.domain.entity.BaseTimeEntity;
 import com.JJP.restapiserver.domain.entity.member.Member;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Getter
 @Entity
@@ -12,7 +16,7 @@ import javax.persistence.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class JoinedChallenge {
+public class JoinedChallenge  {
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -30,4 +34,13 @@ public class JoinedChallenge {
 
     private int state;
 
+    @CreatedDate
+    private LocalDateTime createdDate;
+
+    @LastModifiedDate
+    private LocalDateTime modifiedDate;
+
+    public void complete(){
+        this.state = 2;
+    }
 }

@@ -1,0 +1,15 @@
+@use '../../styles/mixin.scss';
+
+@include mixin.desktop {
+  svg {
+    &:hover {
+      color: mixin.$mainColor !important;
+      transition: all 0.5s;
+    }
+
+    &:not(:hover) {
+      transition: all 0.5s;
+    }
+  }
+
+}

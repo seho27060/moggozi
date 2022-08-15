@@ -1,0 +1,10 @@
+@use "../../styles/mixin.scss" as mixin;
+
+@include mixin.desktop {
+  .starButton {
+    margin: 0 0 10 0;
+    border: 0px;
+    margin-right: 0px;
+    background: #fff;
+  }
+}

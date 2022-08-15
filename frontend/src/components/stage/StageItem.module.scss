@@ -1,0 +1,115 @@
+@use "../../styles/mixin.scss" as mixin;
+
+@include mixin.desktop {
+
+  .stageInfo {
+    display: flex;
+    margin: 30px 0 0 0;
+    // align-items: center;
+    // align-items: flex-end
+    
+    img {
+      width: 500px;
+      height: 350px;
+      object-fit: cover;
+    }
+
+    .carouesl {
+      display: flex;
+      margin-bottom: 30px;
+      button {
+        // background: black;
+        // color: red; 
+        
+      }
+
+    }
+    .content {
+      display: flex;
+      flex-direction: column;
+      margin: 0 0 0 20px;
+      justify-content: center;
+
+      div:nth-child(1) {
+        font-family: "pretendard";
+        font-weight: 700;
+        font-size: 30px;
+        line-height: 30px;
+        margin: 10px 0 10px 0;
+      }
+
+      div:nth-child(2) {
+        font-weight: 700;
+        font-size: 30px;
+        line-height: 30px;
+        margin: 5px 0 10px 0;
+      }
+
+      div:nth-child(3) {
+        font-family: "pretendard";
+        font-weight: 400;
+        font-size: 18px;
+        line-height: 24px;
+        margin: 10px 0 10px 0;
+      }
+
+    }
+  }
+  .btnPosition {
+    display: flex;
+    justify-content: flex-end;
+
+    button {
+      font-family: "pretendard";
+      width: 192px;
+      height: 50px;
+      font-size: 16px;
+      font-weight: 700;
+      color: #fff;
+      background: linear-gradient(90deg, #FF9B25 -6.15%, #FF9415 -6.14%, #FFD362 106.15%);
+      border: 0;
+      border-radius: 5px;
+      cursor: pointer;
+  
+      &:hover {
+        font-size: 18px;
+        transition: all 0.5s;
+      }
+  
+      &:not(:hover) {
+        transition: all 0.5s;
+      }
+    }
+  }
+
+
+  .horizon::before {
+    display: inline-block;
+    position: relative;
+    background-color: mixin.$cloudLine;
+    content:"";
+    width: 400px;
+    height: 1px;
+    left: 300px;
+    margin: 80px 0 80px 0;
+  }
+
+  .postTitle {
+    display: flex;
+    justify-content: space-between;
+
+    :nth-child(1) {
+      font-weight: 700;
+      font-size: 35px;
+    }
+
+    a {
+      vertical-align: bottom;
+      text-decoration: none;
+      font-weight: 400;
+      font-size: 20px;
+      line-height: 50px;
+      color: mixin.$mainColor;
+    }
+  }
+}

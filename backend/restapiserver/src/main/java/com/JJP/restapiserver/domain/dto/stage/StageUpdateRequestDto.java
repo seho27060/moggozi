@@ -9,12 +9,12 @@ import lombok.NoArgsConstructor;
 public class StageUpdateRequestDto {
     private String name;
     private String content;
-    private String stageImg;
+    private String img;
 
     @Builder
-    public StageUpdateRequestDto(String name, String content, String stage_img){
+    public StageUpdateRequestDto(String name, String content, String img){
         this.name = name;
         this.content = content;
-        this.stageImg = stage_img;
+        this.img = img;
     }
 }

@@ -1,0 +1,150 @@
+@use "../../styles/mixin.scss" as mixin;
+
+// 검색 모달창 위치
+// @media screen and (max-height: 520px) {
+//   .modal {
+//     top: 0;
+//   }
+// }
+
+// @media screen and (max-height: 768px) {
+//   .modal {
+//     top: -10vh
+//   }
+// }
+
+// @media screen and (min-height: 768px) {
+//   .modal {
+//     top: -50vh
+//   }
+// }
+
+.modal {
+  display: none;
+  position: fixed;
+  // top: -60vh;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 99;
+  background-color: rgba(0, 0, 0, 0.6);
+
+  > section {
+    width: 90%;
+    max-width: 800px;
+    min-height: 370px;
+    margin: 0 auto;
+    top: 90px;
+    left: 0;
+    right: 0;
+    position: fixed;
+    border-radius: 0.3rem;
+    background-color: #fff;
+    animation: modal-show 0.3s;
+    overflow: hidden;
+
+    > div {
+      header {
+        display: flex;
+        justify-content: space-between;
+        padding: 16px 16px 16px 16px;
+        background-color: #fff;
+        font-weight: 700;
+        color: rgb(0, 0, 0);
+        border-bottom: 1px solid mixin.$cloudLine;
+        
+        // 검색 내용
+        input {
+          border: 0;
+          padding: 0 10px 0px 10px;
+          width: 90%;
+          font-size: 16px;
+          font-family: pretendard;
+    
+          &::placeholder {
+            font-weight: 600;
+            font-size: 15px;
+            line-height: 18px;
+          }
+
+          &:focus {
+            outline: 0;
+          }
+
+        }
+        
+        button {
+          width: 70px;
+          color: mixin.$cloudGray;
+          border: 0;
+          background: #fff;
+          font-size: 15px;
+          font-weight: 700;
+          margin: 0 10px 0 0;
+        }
+      }
+      // &::after {
+      //   display: inline-block;
+      //   position: relative;
+      //   background-color: mixin.$cloudLine;
+      //   top: -265px;
+      //   left: 20px;
+      //   content:"";
+      //   width: 760px;
+      //   height: 1px;
+      // }
+
+      // main {
+      //   padding: 20px 15px 20px 15px;
+      //   border-bottom: 1px solid #dee2e6;
+      //   border-top: 1px solid #dee2e6;
+
+      //   h1 {
+      //     font-weight: 600;
+      //     font-size: 16px;
+      //     line-height: 17px;
+      //     color: mixin.$cloudGray
+      //   }
+
+      //   h2 {
+      //     // display: inline-block;
+      //     font-size: 16px;
+      //     margin: 10px 15px 10px 10px;
+      //   }
+      // }
+
+      footer {
+
+      }
+    }
+  }
+
+  &.openModal {
+    display: flex;
+    align-items: center;
+    animation: modal-bg-show 0.3s;
+  }
+}
+
+@keyframes modal-show {
+  from {
+    opacity: 0;
+    margin-top: -50px;
+  }
+
+  to {
+    opacity: 1;
+    margin-top: 0;
+  }
+}
+
+@keyframes modal-bg-show {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}

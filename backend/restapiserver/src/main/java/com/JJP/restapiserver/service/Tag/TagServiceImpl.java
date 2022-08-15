@@ -4,17 +4,21 @@ import com.JJP.restapiserver.domain.dto.tag.TagResponseDto;
 import com.JJP.restapiserver.domain.entity.Tag.Tag;
 import com.JJP.restapiserver.repository.Tag.TagRepository;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class TagServiceImpl implements TagService{
 
+    private Logger logger = LoggerFactory.getLogger(TagServiceImpl.class);
     private final TagRepository tagRepository;
 
     @Override
@@ -35,6 +39,17 @@ public class TagServiceImpl implements TagService{
     public TagResponseDto getTagByName(String keyword) {
         Tag tag = tagRepository.getByTag(keyword);
         return new TagResponseDto(tag.getId(), tag.getTag());
+    }
+
+    @Override
+    public List<TagResponseDto> findTagContaining(String keyword) {
+        List<Tag> tagList = tagRepository.findByTagContaining(keyword);
+        List<TagResponseDto> tagResponseDtoList = tagList.stream().map(
+                o -> new TagResponseDto(o.getId(), o.getTag())).collect(Collectors.toList());
+        logger.debug("--------------태그 찾기---------");
+        logger.debug(tagList.toString());
+        logger.debug("--------------태그 찾기 종료---------");
+        return tagResponseDtoList;
     }
 
     @Override

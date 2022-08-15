@@ -1,0 +1,67 @@
+@use "../../styles/mixin.scss" as mixin;
+
+@include mixin.desktop {
+
+  .searchBtn {
+    margin: 0 5px 0 0;
+    padding: 5px 0 0 0; 
+  }
+
+  main {
+    padding: 20px 15px 10px 15px;
+    border-bottom: 1px solid #dee2e6;
+    border-top: 1px solid #dee2e6;
+
+    h1 {
+      font-weight: 600;
+      font-size: 16px;
+      line-height: 17px;
+      color: mixin.$cloudGray
+    }
+
+    h2 {
+      // display: inline-block;
+      font-size: 16px;
+      margin: 10px 15px 10px 10px;
+    }
+
+    div ul {
+      margin: 0;
+    }
+
+  }
+  .tag {
+    // display: flex;
+    
+    .noUser {
+      // display:block !important;
+      font-size: 18px;
+      font-weight: 700;
+      margin: 15px 0 0 17px !important;
+    }
+
+  }
+  .challenge {
+    font-size: 18px;
+    font-weight: 700;
+    margin: 15px 0 20px 17px !important;
+  }
+
+  .tagPart {
+    margin: 0 0 10px 0;
+    // padding: 10px 10px 10px 10px;
+  }
+  .tagg {
+    font-size: 18px;
+    font-weight: 700;
+    margin: 15px 0 20px 17px !important;
+  }
+
+  .hobbyTag {
+    margin: 10px 0 10px 20px;
+  }
+}
+
+@include mixin.mobile {
+
+}

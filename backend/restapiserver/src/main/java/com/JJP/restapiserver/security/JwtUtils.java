@@ -1,5 +1,7 @@
 package com.JJP.restapiserver.security;
 
+import com.JJP.restapiserver.domain.entity.member.ERole;
+import com.JJP.restapiserver.domain.entity.member.Member;
 import com.JJP.restapiserver.repository.member.MemberRepository;
 import io.jsonwebtoken.*;
 import org.slf4j.Logger;
@@ -11,6 +13,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
+import java.util.Optional;
 
 @Component
 public class JwtUtils {
@@ -75,7 +78,36 @@ public class JwtUtils {
     public Long getUserIdFromJwtToken(String token) {
         token = token.substring(7);
         String username = getUserNameFromJwtToken(token);
-        return memberRepository.findByUsername(username).get().getId();
+        try {
+            Optional<Member> member = memberRepository.findByUsername(username);
+
+            /** 해당 토큰을 가진 사용자가 없거나, 사용자가 휴면처리된 사용자의 경우 null 값을 반환하여,
+            접근하려는 API나 사용하려고 하는 Method를 사용할 수 없도록 합니다. */
+
+            if(member.get().getRole().getName().equals(ERole.ROLE_INVALIDATED_USER))
+                throw new Exception();
+            else
+                return member.get().getId();
+        } catch (Exception e) {
+            return null;
+        }
     }
 
+    public String getRoleFromJwtToken(String token) {
+        token = token.substring(7);
+        String username = getUserNameFromJwtToken(token);
+        try {
+            Optional<Member> member = memberRepository.findByUsername(username);
+
+            /** 해당 토큰을 가진 사용자가 없거나, 사용자가 휴면처리된 사용자의 경우 null 값을 반환하여,
+             접근하려는 API나 사용하려고 하는 Method를 사용할 수 없도록 합니다. */
+
+            if(member.get().getRole().getName().equals(ERole.ROLE_INVALIDATED_USER))
+                throw new Exception();
+            else
+                return member.get().getRole().getName().toString();
+        } catch (Exception e) {
+            return null;
+        }
+    }
 }

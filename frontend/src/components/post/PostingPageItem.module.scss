@@ -1,0 +1,81 @@
+@use "../../styles/mixin.scss" as mixin;
+
+@include mixin.desktop {
+  .postItem {
+    margin: 0 0 80px 0;
+    width: 320px;
+    
+    .postImg {
+      width: 320px;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 0 0 10px 0;
+      img {
+        width: 50px;
+        height: 50px;
+        border-radius: 100%;
+      }
+
+      .userInfo {
+        margin: 0px 0 0 10px;
+        cursor: pointer;
+
+        div:nth-child(1) {
+          font-size: 18px;
+          font-weight: 700;
+          margin: 5px 0 5px 0;
+        }
+
+        div:nth-child(2) {
+          font-size: 15px;
+          font-weight: 500;
+          color: mixin.$cloudGray
+        }
+      }
+
+      .shared {
+        margin: 0 10px 0 0;
+
+        svg {
+          cursor: pointer;
+          font-size: 20px;
+        }
+      }
+    }
+
+
+    // 좋아요 표시
+    .name {
+      display: flex;
+      align-items: center;
+      margin: 10px 0 0 0;
+
+      svg {
+        color: red;
+        font-size: 18px;
+        &:hover {
+          color: rgb(255, 85, 85) !important;
+        }
+      }
+
+      div:nth-child(2) {
+        font-weight: 700;
+        font-size: 16px;
+        line-height: 18px;
+        margin: 0 0 0 3px;
+        color: mixin.$cloudGray
+      }
+    }
+  }
+}
+
+@include mixin.mobile {
+}

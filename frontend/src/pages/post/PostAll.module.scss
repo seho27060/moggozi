@@ -1,0 +1,20 @@
+@use "../../styles/mixin.scss" as mixin;
+
+@include mixin.desktop {
+  .display {
+    display: flex;
+    justify-content: center;
+  }
+  .container {
+    margin: 60px 0 0 0;
+    width: 992px;
+  }
+  .postingTitle {
+    // display: inline;
+    text-align: start;
+    font-size: 40px;
+    font-weight: 700;
+    // margin: 60px 0 0 0;
+    // padding: 40px 0 0 0;
+  }
+}

@@ -1,0 +1,85 @@
+@use "../../styles/mixin.scss" as mixin;
+
+@include mixin.desktop {
+  .postDetail {
+    display: flex;
+  }
+  .img {
+    width: 550px;
+    height: 550px;
+    object-fit: cover;
+    border-radius: 5px 0px 0px 5px;
+  }
+
+  .container {
+    width: 350px;
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    .writer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 15px 15px 5px 15px;
+
+      .writerInfo {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        img {
+          width: 45px;
+          height: 45px;
+          object-fit: cover;
+          border-radius: 100%;
+        }
+
+        div:nth-child(2) {
+          margin: 0 0 0 10px;
+          font-weight: 700;
+          font-size: 16px;
+          line-height: 19px;
+        }
+      }
+
+      .menuMargin {
+        margin: 0 10px 0 0;
+      }
+    }
+  }
+
+  .horizon::before {
+    display: inline-block;
+    position: relative;
+    content: "";
+    height: 1px;
+    width: 320px;
+    bottom: 7px;
+    left: 15px;
+    background: mixin.$cloudLine;
+  } 
+
+  .content {
+    margin: 0 15px 10px 15px;
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 24px;
+  }
+
+  .Btn_N_Date {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 15px 0 15px;
+    font-size: 12px;
+    color: mixin.$cloudGray;
+  }
+
+  .like {
+    display: flex;
+    font-size: 16px;
+    line-height: 20px;
+    font-weight: 700;
+    color: mixin.$cloudGray
+    // margin: 0 0 0 15px;
+  }
+}

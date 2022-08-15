@@ -1,0 +1,207 @@
+@use "../../styles/mixin.scss" as mixin;
+
+@include mixin.desktop {
+  .form {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+
+    .title {
+      width: 300px;
+      font-size: 20px;
+      font-weight: 700;
+      text-align: left;
+    }
+  }
+
+  .email {
+    // display: flex;
+    margin: 20px 0 40px 0;
+    align-items: start;
+
+    .label {
+      margin-bottom: 13px;
+      font-weight: 700;
+      font-size: 15px;
+    }
+
+    input {
+      width: 274px;
+      height: 30px;
+      border: 1px solid mixin.$cloudLine;
+      border-radius: 5px;
+      padding: 0 10px 0 15px;
+      margin-bottom: 10px;
+
+      & ::placeholder {
+        color: mixin.$cloudGray;
+        font-size: 12px;
+        font-weight: 400;
+      }
+    }
+
+    .emailbutton {
+      width: 300px;
+      height: 40px;
+      border: 1px solid mixin.$mainColor;
+      border-radius: 5px;
+      background-color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+      color: mixin.$mainColor;
+      cursor: pointer;
+    }
+  }
+
+  .name {
+    margin: 0px 0 30px 0;
+
+    .label {
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .explain {
+      margin: 10px 0 10px 0;
+      font-weight: 400;
+      font-size: 12px;
+      color: mixin.$cloudGray;
+    }
+
+    input {
+      border: 1px solid mixin.$cloudLine;
+      border-radius: 5px;
+      width: 274px;
+      height: 30px;
+      padding: 0 15px 0 10px;
+
+      &::placeholder {
+        color: mixin.$cloudGray;
+        font-weight: 400;
+        font-size: 12px;
+      }
+    }
+  }
+
+  .password {
+    margin: 4px 0 0 0;
+
+    .label {
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .explain {
+      margin: 10px 0 10px 0;
+      font-weight: 400;
+      font-size: 12px;
+      color: mixin.$cloudGray
+    }
+
+    input {
+      border: 1px solid mixin.$cloudLine;
+      border-radius: 5px;
+      width: 274px;
+      height: 30px;
+      padding: 0 15px 0 10px;
+
+      &::placeholder {
+        color: mixin.$cloudGray;
+        font-weight: 400;
+        font-size: 12px;
+      }
+    }
+
+  }
+
+  .repassword {
+    margin: 33px 0 29px 0;
+
+    .label {
+      margin-bottom: 10px;
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    input {
+      margin-top: 3px;
+      border: 1px solid mixin.$cloudLine;
+      border-radius: 5px;
+      width: 274px;
+      height: 30px;
+      padding: 0 15px 0 10px;
+
+      &::placeholder {
+        color: mixin.$cloudGray;
+        font-weight: 400;
+        font-size: 12px;
+      }
+    }
+
+    .caution {
+      margin: 5px 0 5px 0;
+      text-align: end;
+      font-size: 10px;
+      color: red;
+    }
+  }
+
+  .nickname {
+    margin: 4px 0 30px 0;
+
+    .label {
+      margin-bottom: 10px;
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .nicknameCheck {
+      display: flex;
+
+      input {
+        border: 1px solid mixin.$cloudLine;
+        border-radius: 5px;
+        width: 183px;
+        height: 30px;
+        padding: 0 15px 0 10px;
+        margin: 0 10px 0 0;
+  
+        &::placeholder {
+          color: mixin.$cloudGray;
+          font-weight: 400;
+          font-size: 12px;
+        }
+      }
+  
+      .nicknameButton {
+        margin: 0;
+        cursor: pointer;
+        width: 80px;
+        height: 32px;
+        border: 1px solid mixin.$mainColor;
+        border-radius: 5px;
+        background-color: #fff;
+        font-size: 12px;
+        font-weight: 700;
+        color: mixin.$mainColor
+      }
+    }
+    
+  }
+
+  .submit {
+    width: 300px;
+    height: 40px;
+    background-color: mixin.$mainColor;
+    color: #fff;
+    border: 0;
+    border-radius: 5px;
+    font-size: 12px;
+    font-weight: 700;
+  }
+}
+
+@include mixin.mobile {
+}

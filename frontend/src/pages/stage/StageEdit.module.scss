@@ -1,0 +1,116 @@
+@use "../../styles/mixin.scss" as mixin;
+
+@include mixin.desktop {
+  
+  .center {
+    display: flex;
+    justify-content: center;
+  }
+
+  .container {
+    width: 992px;
+
+    .title {
+      font-size: 35px;
+      font-weight: 700;
+      margin: 50px 0 30px 0;
+    }
+
+    .stageBox {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      
+      .box {
+        // border: 1px solid black;
+        width: 290px;
+        height: 300px;
+        overflow: hidden;
+        box-shadow: 0px 3px 7px rgba(0, 0, 0, 0.25);
+        border-radius: 5px;
+        margin: 20px 5px 20px 5px;
+        padding: 15px 15px 15px 15px;
+        cursor: pointer;
+
+        .addIcon {
+          display: inline-block;
+          position: relative;
+          left: 105px;
+          top: 120px;
+          cursor: pointer;
+
+          svg {
+            font-size: 70px;
+            font-weight: 700;
+            color: mixin.$cloudGray;
+            
+            &:hover {
+              color: black !important;
+            }
+          }
+        }
+      }
+    }
+
+    .orderBtn {
+      display: flex;
+      justify-content: flex-end;
+      
+      button {
+        width: 120px;
+        height: 50px;
+        margin: 10px 10px 10px 10px;
+        border: 0;
+        border-radius: 5px;
+        font-size: 16px;
+        font-weight: 700;
+        color: #FFF;
+        background: linear-gradient(90deg, #FF9921 -1.06%, #FFC337 101.51%);
+        cursor: pointer;
+        transition: all 0.5s;
+
+        &:hover {
+          font-size: 18px;
+        }
+      }
+    }
+
+    .horizon {
+      width: 0px;
+      height: 0px;
+      margin: 30px 0 30px 0;
+      
+      &::after {
+        display: inline-block;
+        position: relative;
+        content: "";
+        width: 900px;
+        height: 1px;
+        background: mixin.$cloudLine;
+        left: 40px;
+      }
+    }
+
+    .explain {
+      margin: 50px 0 0 0;
+      div:nth-child(1) {
+        font-size: 30px;
+        font-weight: 700;
+      }
+      div:nth-child(2) {
+        font-size: 20px;
+        margin: 25px 0 0 10px;
+        color: mixin.$cloudGray;
+      }
+      div:nth-child(3) {
+        font-size: 20px;
+        margin: 20px 0 0 10px;
+        color: mixin.$cloudGray;
+      }
+      div:nth-child(4) {
+        font-size: 20px;
+        margin: 20px 0 200px 10px;
+        color: mixin.$cloudGray;
+      }
+    }
+  }
+}

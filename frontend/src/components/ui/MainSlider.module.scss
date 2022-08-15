@@ -1,0 +1,37 @@
+@use '../../styles/mixin.scss';
+
+@include mixin.desktop {
+  .img {
+    // border-radius: 5px;
+    div {
+      // border-radius: 10px;
+      img{
+        width: 980px;
+        height: 450px;
+        object-fit: cover;
+        border-radius: 10px;
+        border: 1.5px solid mixin.$cloudGray;
+      }
+    }
+  }
+
+  .counter {
+    width: 0px;
+    height: 0px;
+    &::before {
+      display: inline-block;
+      position: relative;
+      left: 62px;
+      top: 421px;
+      width: 40px;
+      height: 20px;
+      color: mixin.$cloudGray;
+      text-align: center;
+      font-size: 18px;
+      font-weight: 600;
+      line-height: 19px;
+      z-index: 999;
+      content: attr(data-content),
+    }
+  }
+}

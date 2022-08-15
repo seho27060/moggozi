@@ -1,0 +1,65 @@
+@use "../../styles/mixin.scss" as mixin;
+
+@include mixin.desktop {
+
+  .link {
+    text-decoration: none;
+  }
+
+  .items {
+    // margin: 40px 0 40px 0;
+    padding: 40px 0 40px 0;
+    display: flex;
+    max-width: 992px;
+    border-bottom: 1px solid mixin.$cloudLine;
+
+    &:hover {
+      background: rgba(197, 197, 197, 0.359);
+      transition: all 0.5s;
+    }
+
+    img {
+      width: 150px;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 100%;
+    }
+
+    .info {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      margin: 0 20px 0 20px;
+
+      .title {
+        display: flex;
+        align-items: flex-end;
+        margin-bottom: 15px;
+
+        div:nth-child(1) {
+          font-weight: 700;
+          font-size: 30px;
+          line-height: 36px;
+          margin: 0 10px 0 0;
+        }
+
+        div:nth-child(2) {
+          font-weight: 400;
+          font-size: 15px;
+          line-height: 25px;
+          color: mixin.$cloudGray;
+        }
+      }
+
+      .introduce {
+        font-weight: 500;
+        font-size: 16px;
+        line-height: 24px;
+      }
+    }
+  }
+}
+
+@include mixin.mobile {
+
+}

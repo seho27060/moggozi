@@ -1,0 +1,71 @@
+@use "../../styles/mixin.scss" as mixin;
+
+@include mixin.desktop {
+  .stageUpdateForm {
+    cursor: default;
+
+    .input {
+      padding: 0px 20px 10px 10px;
+      margin: 10px 0px 10px 0px;
+      width: 96%;
+      height: 30px;
+      font-size: 20px;
+      font-weight: 600;
+      border: 0;
+      border-bottom: 1px solid mixin.$cloudLine;
+
+      &:focus {
+        outline: none;
+      }
+
+      &::placeholder {
+        color: mixin.$cloudGray;
+      }
+    }
+  }
+
+  .buttons {
+    display: flex;
+    justify-content: flex-end;
+    cursor: default;
+    button {
+      margin: 20px 15px 0 0;
+      width: 120px;
+      height: 50px;
+      border-radius: 5px;
+      background: linear-gradient(90deg, #FF9921 -1.06%, #FFC337 101.51%);
+      color: #fff;
+      font-size: 16px;
+      font-weight: 700;
+      transition: all 0.5s;
+
+      &:hover {
+        font-size: 18px;
+      }
+    }
+  }
+
+  .completeEdit {
+    display: flex;
+    justify-content: flex-end;
+    cursor: default;
+    button {
+      width: 120px;
+      height: 50px;
+      font-size: 16px;
+      font-weight: 600;
+      border-radius: 5px;
+      border: 1px solid mixin.$mainColor;
+      color: mixin.$mainColor;
+      background: #fff;
+      transition: all 0.5s;
+
+      &:hover {
+        background: mixin.$mainColor;
+        color: #fff;
+      }
+
+    }
+
+  }
+}

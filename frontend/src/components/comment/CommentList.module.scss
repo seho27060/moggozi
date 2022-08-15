@@ -1,0 +1,12 @@
+@use "../../styles/mixin.scss" as mixin;
+
+@include mixin.desktop {
+  .commentForm {
+    border-top: 1px solid mixin.$cloudLine;
+    padding: 10px 15px 10px 15px;
+    position: sticky;
+    bottom: -1px;
+    background: #fff;
+    height: 90px;
+  }
+}

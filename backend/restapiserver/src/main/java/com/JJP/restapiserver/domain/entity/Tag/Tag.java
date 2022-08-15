@@ -19,7 +19,7 @@ public class Tag {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany(mappedBy = "tag")
+    @OneToMany(mappedBy = "tag", cascade = CascadeType.ALL)
     @JsonManagedReference
     @JsonIgnore
     private List<ChallengeTag> challengeTagList = new ArrayList<>();

@@ -29,36 +29,44 @@ public class ChallengeResponseDto {
     private List<TagResponseDto> hobbyList;
     private int userProgress;
 
+    private int state;
+
     private LocalDateTime createdTime;
 
     private LocalDateTime modifiedTime;
 
     private String description;
 
+    private boolean isLiked;
+
     public ChallengeResponseDto(Challenge challenge){
         this.id = challenge.getId();
-        this.writer = new Writer(challenge.getMember().getId(), challenge.getMember().getFullname());
+        this.writer = new Writer(challenge.getMember().getId(), challenge.getMember().getNickname(), challenge.getMember().getUser_img());
         this.name = challenge.getName();
         this.img = challenge.getChallenge_img();
         this.content = challenge.getContent();
         this.level = challenge.getLevel();
         this.stageList = new ArrayList<>();
-        for(int i = 0; i < challenge.getStageList().size(); i++){
-            Stage stage = challenge.getStageList().get(i);
-            StageResponseDto stageResponseDto = new StageResponseDto(stage);
-            this.stageList.add(stageResponseDto);
-        }
-        this.likeNum = challenge.getChallengeLikeList().size();
+        this.state = challenge.getState();
+        if(challenge.getStageList() != null)
+            for(int i = 0; i < challenge.getStageList().size(); i++){
+                Stage stage = challenge.getStageList().get(i);
+                StageResponseDto stageResponseDto = new StageResponseDto(stage);
+                this.stageList.add(stageResponseDto);
+            }
+        this.likeNum = challenge.getLikeNum();
         this.reviewList = new ArrayList<>();
-        for(int i = 0; i < challenge.getReviewList().size(); i++){
-            Review review = challenge.getReviewList().get(i);
-            ReviewResponseDto reviewResponseDto = new ReviewResponseDto(review);
-            this.reviewList.add(reviewResponseDto);
-        }
+        if(challenge.getReviewList() != null)
+            for(int i = 0; i < challenge.getReviewList().size(); i++){
+                Review review = challenge.getReviewList().get(i);
+                ReviewResponseDto reviewResponseDto = new ReviewResponseDto(review);
+                this.reviewList.add(reviewResponseDto);
+            }
         this.hobbyList = new ArrayList<>();
         this.userProgress = 0;
         this.description = challenge.getDescription();
-        this.createdTime = challenge.getCreated_date();
-        this.modifiedTime = challenge.getModified_date();
+        this.createdTime = challenge.getCreatedDate();
+        this.modifiedTime = challenge.getModifiedDate();
+        this.isLiked = false;
     }
 }
