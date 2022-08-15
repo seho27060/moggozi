@@ -104,6 +104,8 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
             Member newMember = Member.builder().username(username)
                     .fullname(fullname).nickname("User" + randomNo).password(password).is_social(1).role(role).build();
 
+            /**InvalidDataAccessApiUsageException: detached entity passed to persist, while saving through JPA repository
+             Tried but failed: Remove CASCADE.PERSIST, EntityManager...*/
             memberRepository.saveAndFlush(newMember);
             newMember = memberRepository.findByUsername(username).get();
 
