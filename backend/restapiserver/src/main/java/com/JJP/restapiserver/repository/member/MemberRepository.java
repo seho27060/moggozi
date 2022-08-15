@@ -46,7 +46,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     Page<MemberInfo> findByUsernameContaining(@Param("username") String username, Pageable pageable);
 
     @Query("SELECT m.id AS memberId, m.username AS username, m.fullname AS fullname " +
-            ", m.nickname AS nickname, m.introduce AS introduce, m.role.name as role FROM Member m " +
+            ", m.nickname AS nickname, m.role.name as role FROM Member m " +
             "WHERE m.role.name = 'ROLE_USER'")
-    List<MemberInfo> findAllDesc();
+    List<MemberInfo> findMembersByRole();
 }
