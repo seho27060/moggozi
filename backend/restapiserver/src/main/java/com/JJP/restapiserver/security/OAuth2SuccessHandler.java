@@ -94,11 +94,12 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
 
             Role role = roleRepository.findById(1L).get();
 
-            /** TODO: Role의 값이 1로 매칭되지 않는 문제 - 권한 부여 시 잘 체크되는지 필요) */
+            /** TODO (DONE): Role의 값이 1로 매칭되지 않는 문제 - 권한 부여 시 잘 체크되는지 필요) - check 완료 */
             Member newMember = Member.builder().username(username)
                     .fullname(fullname).nickname("User" + randomNo).password(password).is_social(1).role(role).build();
 
-            memberRepository.saveAndFlush(newMember);
+            memberRepository.save(newMember);
+
             member = memberRepository.findByUsername(username);
 
             // 새로 등록된 유저를 MemberScore 테이블에 등록한다.
