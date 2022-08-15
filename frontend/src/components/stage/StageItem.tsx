@@ -120,8 +120,16 @@ const StageItem: React.FC<{
           isLoggedIn &&
           postingStageId && (
             <div>
-              {checkedPost !== -1 ? (
+              {checkedPost === -1 ? (
                 // 포스팅 모달 연결해야한다.
+                <button
+                  onClick={() => {
+                    dispatch(setPostFormModalOpen(true));
+                  }}
+                >
+                  포스팅하기
+                </button>
+              ) : (
                 <button
                   onClick={() => {
                     dispatch(setModalPostState(checkedPost));
@@ -129,14 +137,6 @@ const StageItem: React.FC<{
                   }}
                 >
                   내 포스팅 보기
-                </button>
-              ) : (
-                <button
-                  onClick={() => {
-                    dispatch(setPostFormModalOpen(true));
-                  }}
-                >
-                  포스팅하기
                 </button>
               )}
             </div>
