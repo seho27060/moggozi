@@ -100,6 +100,8 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
 
             memberRepository.saveAndFlush(newMember);
 
+            System.out.println("newMemberId++++++++++++++++++++++++" + newMember.getId());
+
             MemberScore memberScore = MemberScore.builder()
                     .id(newMember.getId())
                     .score(0L)
