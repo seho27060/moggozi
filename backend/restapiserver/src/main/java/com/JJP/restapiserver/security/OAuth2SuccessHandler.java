@@ -103,13 +103,13 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
                     .fullname(fullname).nickname("User" + randomNo).password(password).is_social(1).role(role).build();
 
             memberRepository.saveAndFlush(newMember);
-            member = memberRepository.findById(newMember.getId());
-            em.detach(member.get());
+            newMember = memberRepository.findByUsername(username).get();
 
             MemberScore memberScore = MemberScore.builder()
-                    .member(member.get())
+                    .member(newMember)
                     .score(0L)
                     .build();
+
             memberScoreRepository.save(memberScore);
 
 
