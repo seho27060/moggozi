@@ -55,7 +55,7 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public List<MemberInfo> getUsers(){
-        return memberRepository.findAllDesc();
+        return memberRepository.findMembersByRole();
     }
 
 
