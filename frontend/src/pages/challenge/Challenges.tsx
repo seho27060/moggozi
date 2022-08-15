@@ -25,7 +25,7 @@ const Challenges: React.FC = () => {
   const [loadedChallengeRankList, setLoadedChallengeRankList] = useState<
     ChallengeItemState[]
   >([]);
-  const [maxPage, setMaxPage] = useState(0);
+  const [hasNext, setHasNext] = useState(0);
   const [recentIsLoading, setRecentIsLoading] = useState(true);
   const [loadedRecentChallengeList, setLoadedRecentChallengeList] = useState<
     ChallengeItemState[]
@@ -38,10 +38,7 @@ const Challenges: React.FC = () => {
     const { scrollHeight } = document.body;
     const { scrollTop } = document.documentElement;
 
-    if (
-      maxPage > currentPage + 1 &&
-      Math.round(scrollTop + innerHeight) >= scrollHeight
-    ) {
+    if (hasNext && Math.round(scrollTop + innerHeight) >= scrollHeight) {
       console.log(currentPage);
       setPageIsLoading(true);
       if (isLoggedIn) {
@@ -50,8 +47,9 @@ const Challenges: React.FC = () => {
             setLoadedRecentChallengeList(
               loadedRecentChallengeList.concat(res.content)
             );
-            setTimeout(() => setPageIsLoading(false), 300);
             setCurrentPage(res.pageNum);
+            setHasNext(res.hasNext);
+            setTimeout(() => setPageIsLoading(false), 300);
           })
           .catch((err) => {
             console.log(err);
@@ -63,9 +61,9 @@ const Challenges: React.FC = () => {
             setLoadedRecentChallengeList(
               loadedRecentChallengeList.concat(res.content)
             );
-            setRecentIsLoading(false);
-            setTimeout(() => setPageIsLoading(false), 300);
             setCurrentPage(res.pageNum);
+            setHasNext(res.hasNext);
+            setTimeout(() => setPageIsLoading(false), 300);
           })
           .catch((err) => {
             console.log(err);
@@ -73,7 +71,7 @@ const Challenges: React.FC = () => {
           });
       }
     }
-  }, [isLoggedIn, loadedRecentChallengeList, currentPage, maxPage]);
+  }, [isLoggedIn, loadedRecentChallengeList, currentPage, hasNext]);
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll, true);
@@ -101,7 +99,7 @@ const Challenges: React.FC = () => {
       isLoginFetchRecentChallengeList(0, 5)
         .then((res) => {
           setLoadedRecentChallengeList(res.content);
-          setMaxPage(res.totalPages);
+          setHasNext(res.hasNext);
           setRecentIsLoading(false);
         })
         .catch((err) => {
@@ -124,8 +122,8 @@ const Challenges: React.FC = () => {
       fetchRecentChallengeList(0, 5)
         .then((res) => {
           setLoadedRecentChallengeList(res.content);
+          setHasNext(res.hasNext);
           setRecentIsLoading(false);
-          setMaxPage(res.totalPages);
         })
         // console.log(res)
         .catch((err) => {

@@ -19,8 +19,9 @@ const PostAll: React.FC = () => {
   const dispatch = useDispatch();
   const [likePostList, setLikePostList] = useState<PostData[]>([]);
   const [recentPostList, setRecentPostList] = useState<PostData[]>([]);
-  const [isLogging, setIsLogging] = useState(false);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [hasNext, setHasNext] = useState(0);
 
   const user = useSelector((state: RootState) => state.auth.userInfo);
   const { postModalOpen } = useSelector((state: RootState) => state.postModal);
@@ -39,20 +40,20 @@ const PostAll: React.FC = () => {
     const { scrollHeight } = document.body;
     const { scrollTop } = document.documentElement;
 
-    if (Math.round(scrollTop + innerHeight) >= scrollHeight) {
+    if (hasNext && Math.round(scrollTop + innerHeight) >= scrollHeight) {
       console.log(currentPage);
-      setIsLogging(true);
+      setIsLoading(true);
 
-      fetchPostRecentList(currentPage, 15)
+      fetchPostRecentList(currentPage + 1, 15)
         .then((res) => {
-          console.log(1);
           setRecentPostList(recentPostList.concat(res.content));
-          setTimeout(() => setIsLogging(false), 300);
+          setTimeout(() => setIsLoading(false), 300);
+          setCurrentPage(res.pageNum);
+          setHasNext(res.hasNext);
         })
         .catch((err) => console.log(err));
-      setCurrentPage(currentPage + 1);
     }
-  }, [currentPage, recentPostList]);
+  }, [currentPage, recentPostList, hasNext]);
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll, true);
@@ -63,7 +64,7 @@ const PostAll: React.FC = () => {
   }, [handleScroll]);
 
   useEffect((): void => {
-    setIsLogging(true);
+    setIsLoading(true);
     fetchPostLikeList(0, 3)
       .then((res) => {
         console.log("postlikelist", res);
@@ -74,11 +75,12 @@ const PostAll: React.FC = () => {
       .then((res) => {
         console.log("fisrt call", res);
         setRecentPostList(res.content);
-        setIsLogging(false);
+        setHasNext(res.hasNext);
+        setIsLoading(false);
       })
       .catch((err) => {
         console.log("err", err);
-        setIsLogging(false);
+        setIsLoading(false);
       });
   }, [dispatch, user.id]);
 
@@ -100,7 +102,7 @@ const PostAll: React.FC = () => {
           )}
         </div>
       </div>
-      {isLogging && <Loader />}
+      {isLoading && <Loader />}
     </div>
   );
 };

@@ -14,8 +14,6 @@ const PostingPageItem: React.FC<{ post: PostData }> = ({ post }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  console.log(post.writer?.path);
-
   const [openModal, setOpenModal] = useState(false);
 
   useEffect(() => {
@@ -78,12 +76,16 @@ const PostingPageItem: React.FC<{ post: PostData }> = ({ post }) => {
           alt=""
         />
       ) : (
-        <img className={styles.postImg} src="" alt="" 
-        onClick={(event: React.MouseEvent) => {
-          event.preventDefault();
-          dispatch(setModalPostState(post));
-          dispatch(setPostModalOpen(true));
-        }}/>
+        <img
+          className={styles.postImg}
+          src=""
+          alt=""
+          onClick={(event: React.MouseEvent) => {
+            event.preventDefault();
+            dispatch(setModalPostState(post));
+            dispatch(setPostModalOpen(true));
+          }}
+        />
       )}
 
       <div className={styles.title}>
