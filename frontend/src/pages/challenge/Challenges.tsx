@@ -16,7 +16,7 @@ import { ChallengeItemState } from "../../store/challenge";
 import { RootState } from "../../store/store";
 
 import styles from "./Challenges.module.scss";
-import LocalFireDepartmentIcon from '@mui/icons-material/LocalFireDepartment';
+import LocalFireDepartmentIcon from "@mui/icons-material/LocalFireDepartment";
 
 const Challenges: React.FC = () => {
   const navigate = useNavigate();
@@ -25,42 +25,55 @@ const Challenges: React.FC = () => {
   const [loadedChallengeRankList, setLoadedChallengeRankList] = useState<
     ChallengeItemState[]
   >([]);
+  const [maxPage, setMaxPage] = useState(0);
   const [recentIsLoading, setRecentIsLoading] = useState(true);
   const [loadedRecentChallengeList, setLoadedRecentChallengeList] = useState<
     ChallengeItemState[]
   >([]);
-  const [isLogging, setIsLogging] = useState(false);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [pageIsLoading, setPageIsLoading] = useState(false);
+  const [currentPage, setCurrentPage] = useState(0);
 
   const handleScroll = useCallback((): void => {
     const { innerHeight } = window;
     const { scrollHeight } = document.body;
     const { scrollTop } = document.documentElement;
 
-    if (Math.round(scrollTop + innerHeight) >= scrollHeight) {
+    if (
+      maxPage > currentPage + 1 &&
+      Math.round(scrollTop + innerHeight) >= scrollHeight
+    ) {
       console.log(currentPage);
+      setPageIsLoading(true);
       if (isLoggedIn) {
-        isLoginFetchRecentChallengeList(currentPage, 9).then((res) => {
-          setIsLogging(true);
-          setLoadedRecentChallengeList(
-            loadedRecentChallengeList.concat(res.content)
-          );
-          console.log(loadedRecentChallengeList);
-          setTimeout(() => setIsLogging(false), 300);
-        });
+        isLoginFetchRecentChallengeList(currentPage + 1, 5)
+          .then((res) => {
+            setLoadedRecentChallengeList(
+              loadedRecentChallengeList.concat(res.content)
+            );
+            setTimeout(() => setPageIsLoading(false), 300);
+            setCurrentPage(res.pageNum);
+          })
+          .catch((err) => {
+            console.log(err);
+            setPageIsLoading(false);
+          });
       } else {
-        fetchRecentChallengeList(currentPage, 9).then((res) => {
-          setIsLogging(true);
-          setLoadedRecentChallengeList(
-            loadedRecentChallengeList.concat(res.content)
-          );
-          setRecentIsLoading(false);
-          setTimeout(() => setIsLogging(false), 300);
-        });
+        fetchRecentChallengeList(currentPage + 1, 5)
+          .then((res) => {
+            setLoadedRecentChallengeList(
+              loadedRecentChallengeList.concat(res.content)
+            );
+            setRecentIsLoading(false);
+            setTimeout(() => setPageIsLoading(false), 300);
+            setCurrentPage(res.pageNum);
+          })
+          .catch((err) => {
+            console.log(err);
+            setPageIsLoading(false);
+          });
       }
-      setCurrentPage(currentPage + 1);
     }
-  }, [isLoggedIn, loadedRecentChallengeList, currentPage]);
+  }, [isLoggedIn, loadedRecentChallengeList, currentPage, maxPage]);
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll, true);
@@ -85,9 +98,10 @@ const Challenges: React.FC = () => {
           setRankIsLoading(false);
         });
 
-      isLoginFetchRecentChallengeList(0, 9)
+      isLoginFetchRecentChallengeList(0, 5)
         .then((res) => {
           setLoadedRecentChallengeList(res.content);
+          setMaxPage(res.totalPages);
           setRecentIsLoading(false);
         })
         .catch((err) => {
@@ -107,10 +121,11 @@ const Challenges: React.FC = () => {
           setRankIsLoading(false);
         });
 
-      fetchRecentChallengeList(0, 9)
+      fetchRecentChallengeList(0, 5)
         .then((res) => {
           setLoadedRecentChallengeList(res.content);
           setRecentIsLoading(false);
+          setMaxPage(res.totalPages);
         })
         // console.log(res)
         .catch((err) => {
@@ -119,15 +134,11 @@ const Challenges: React.FC = () => {
         });
     }
   }, [isLoggedIn]);
+
   return (
     <div className={styles.container}>
       <div>
-        {rankIsLoading === true && (
-          <section>
-            <p>RankList Loading...</p>
-          </section>
-        )}
-
+        {rankIsLoading === true && <Loader />}
         {rankIsLoading === false && (
           <div>
             <div className={styles.popularChallengeTitle}>
@@ -146,11 +157,7 @@ const Challenges: React.FC = () => {
           </div>
         )}
 
-        {recentIsLoading === true && (
-          <section>
-            <p>RecentList Loading...</p>
-          </section>
-        )}
+        {recentIsLoading === true && <Loader />}
 
         {recentIsLoading === false && (
           <div className={styles.newChallenge}>
@@ -169,10 +176,9 @@ const Challenges: React.FC = () => {
             <div>
               <NewChallengeList challenges={loadedRecentChallengeList} />
             </div>
-
           </div>
         )}
-        {isLogging && <Loader />}
+        {pageIsLoading && <Loader />}
       </div>
     </div>
   );

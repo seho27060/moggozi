@@ -9,7 +9,8 @@ import { RootState } from "../../store/store";
 import ChallengeImgForm from "../../components/challenge/ChallengeImgForm";
 import ChallengeUpdateForm from "../../components/challenge/ChallengeUpdateForm";
 
-import styles from "./ChallengeUpdate.module.scss"
+import styles from "./ChallengeUpdate.module.scss";
+import Loader from "../../components/ui/Loader";
 
 const ChallengeUpdate: React.FC = () => {
   const { id } = useParams();
@@ -64,11 +65,7 @@ const ChallengeUpdate: React.FC = () => {
 
   return (
     <div className={styles.container}>
-      {isLoading === true && (
-        <section>
-          <p>Loading...</p>
-        </section>
-      )}
+      {isLoading === true && <Loader />}
       {isLoading === false && (
         <div className={styles.width}>
           <div className={styles.title}>챌린지</div>

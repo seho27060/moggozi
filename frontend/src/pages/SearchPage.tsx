@@ -188,8 +188,8 @@ const SearchPage: React.FC = () => {
             태그로 챌린지 검색
           </button>
         </div>
-        {isLoading == true && <Loader />}
-        {isLoading == false && (
+        {isLoading === true && <Loader />}
+        {isLoading === false && (
           <div>
             <div className={styles.cnt}>검색결과 {totalElements}개</div>
 
