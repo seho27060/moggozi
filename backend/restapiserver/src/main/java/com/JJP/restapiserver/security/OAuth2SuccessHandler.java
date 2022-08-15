@@ -98,8 +98,9 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
             Member newMember = Member.builder().username(username)
                     .fullname(fullname).nickname("User" + randomNo).password(password).is_social(1).role(role).build();
 
-            memberRepository.save(newMember);
+            memberRepository.saveAndFlush(newMember);
 
+            System.out.println("memberId++++++++++++++" + memberRepository.findByUsername(username).get().getId());
             member = memberRepository.findByUsername(username);
 
             // 새로 등록된 유저를 MemberScore 테이블에 등록한다.
@@ -107,7 +108,7 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
                     .id(member.get().getId())
                     .score(0L)
                     .build();
-            memberScoreRepository.saveAndFlush(memberScore);
+            memberScoreRepository.save(memberScore);
 
 
         } else {
