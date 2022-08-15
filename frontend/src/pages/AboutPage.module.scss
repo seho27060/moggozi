@@ -1,0 +1,62 @@
+@use "../styles/mixin.scss" as mixin;
+
+@include mixin.desktop {
+  .container {
+    display: flex;
+    justify-content: center;
+    .width {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      margin: 200px 0 500px 0;
+      width: 992px;
+      height: 3000px;
+
+      .sentence_L {
+        display: flex;
+        margin: 0px 20px 0px 20px;
+        justify-content: flex-start;
+        & > div{
+          div:nth-child(1) {
+            font-size: 35px;
+            font-weight: bold;
+            margin: 0 0 30px 0;
+          }
+        }
+
+        div {
+          font-size: 20px;
+          padding: 10px 0 10px 0;
+          font-weight: 500;
+        }
+      }
+      .sentence_R {
+        display: flex;
+        justify-content: flex-end;
+        margin: 0px 20px 0px 20px;
+        text-align: right;
+        & > div{
+          div:nth-child(1) {
+            font-size: 35px;
+            font-weight: bold;
+            margin: 0 0 30px 0;
+          }
+        }
+
+        div {
+          font-size: 20px;
+          padding: 10px 0 10px 0;
+          font-weight: 500;
+        }
+      }
+
+      .header {
+        font-size: 40px;
+        font-weight: bold;
+        margin: 0 0 0 30px;
+      }
+    }
+
+
+  }
+}

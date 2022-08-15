@@ -41,7 +41,7 @@ const NavigationBar: React.FC = () => {
               <NavLink to="/post/all">포스팅</NavLink>
             </li>
             <li>
-              <NavLink to="/search">about</NavLink>
+              <NavLink to="/about">about</NavLink>
             </li>
             <li>
               <button
