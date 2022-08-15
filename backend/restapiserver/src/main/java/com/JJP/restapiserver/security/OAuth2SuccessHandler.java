@@ -102,12 +102,12 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
 
             System.out.println("memberId++++++++++++++" + memberRepository.findByUsername(username).get().getId());
             member = memberRepository.findByUsername(username);
-
-            // 새로 등록된 유저를 MemberScore 테이블에 등록한다.
+            System.out.println("memberId++++++++++++++2222222222" + member.get().getId());
             MemberScore memberScore = MemberScore.builder()
                     .id(member.get().getId())
                     .score(0L)
                     .build();
+            System.out.println("generatedMemberScore++++++++++++++++++++++++++++++"  + memberScore.getId());
             memberScoreRepository.save(memberScore);
 
 
