@@ -32,13 +32,14 @@ const NoticePage: React.FC = () => {
     <div className={styles.container}>
       <div className={styles.noticeList}>
         <div className={styles.noticeBanner}>공지사항</div>
-        <hr />
-        {noticeList!.map((notice) => (
-          <div key={notice.noticeId}>
-            <NoticeItem notice={notice} />
-            <hr />
-          </div>
-        ))}
+        <div className={styles.horizon}></div>
+        <div className={styles.minHeight}>
+          {noticeList!.map((notice) => (
+            <div key={notice.noticeId}>
+              <NoticeItem notice={notice} />
+            </div>
+          ))}
+        </div>
         <div className={styles.navigateBtnContainer}>
           <Link
             to={
@@ -52,7 +53,7 @@ const NoticePage: React.FC = () => {
           </Link>
           <Link
             to={
-              Number(noticePageNum) < totalPages-1
+              Number(noticePageNum) < totalPages - 1
                 ? `/notice/${Number(noticePageNum) + 1}`
                 : "#"
             }

@@ -108,7 +108,7 @@ const CommentForm: React.FC<{
         ></textarea>
         {/* <input type="text" id="comment" ref={enteredText} required placeholder="댓글달기"/> */}
         <div>
-          <button onClick={commentSubmitHandler}>게시</button>
+          <button onClick={commentSubmitHandler}>등록</button>
         </div>
       </form>
     </>

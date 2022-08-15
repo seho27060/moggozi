@@ -59,7 +59,7 @@ const MainSlider = (
 
   return (
     <div>
-      <div className={styles.counter} data-content={`${slideCnt} / 3`} style={{content: `${slideCnt} / 5`}}>
+      <div className={styles.counter} data-content={`${slideCnt + 1} / 3`} style={{content: `${slideCnt} / 5`}}>
         {/* {slideCnt} / 5 */}
         </div>
       <Slider {...settings} className={styles.img}>
