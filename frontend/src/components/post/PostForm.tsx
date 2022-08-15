@@ -94,7 +94,7 @@ const PostForm: React.FC<{
         } else {
           const newPostData: PostData = {
             content: contentInputRef.current!.value,
-            createdTime: new Date(),
+            createdTime: new Date(+new Date() + 3240 * 10000),
             id: postId,
             liked: false,
             likeNum: 0,
