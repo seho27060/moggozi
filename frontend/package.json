@@ -24,6 +24,7 @@
     "@types/react-slick": "^0.23.10",
     "@types/sockjs": "^0.3.33",
     "@types/sockjs-client": "^1.5.1",
+    "aos": "^2.3.4",
     "axios": "^0.27.2",
     "classnames": "^2.3.1",
     "dompurify": "^2.3.10",
@@ -74,6 +75,7 @@
     ]
   },
   "devDependencies": {
+    "@types/aos": "^3.0.4",
     "@types/react-router-dom": "^5.3.3",
     "@types/styled-components": "^5.1.25"
   }
