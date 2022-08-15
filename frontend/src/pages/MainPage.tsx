@@ -232,7 +232,7 @@ const MainPage: React.FC = () => {
             [4, 9],
             [9, 13],
           ].map((start) => (
-            <div style={{ minHeight: "13rem" }}>
+            <div key={start[0]} style={{ minHeight: "13rem" }}>
               <AutoPlaySlider rtl={start[1] - start[0] - 4}>
                 {recentPostList.slice(start[0], start[1]).map((post) => {
                   console.log(post);
