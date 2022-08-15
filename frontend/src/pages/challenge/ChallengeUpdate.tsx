@@ -72,6 +72,7 @@ const ChallengeUpdate: React.FC = () => {
           <ChallengeImgForm
             challengeImg={loadedChallenge!.img || ""}
             imgHandler={imgHandler}
+            challengeId={loadedChallenge!.id!}
           />
           <ChallengeUpdateForm challenge={loadedChallenge!} />
         </div>
