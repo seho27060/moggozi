@@ -13,7 +13,9 @@ const StageDeleteBtn: React.FC<{ id: number }> = ({ id }) => {
 
   const deleteHandler = (event: React.MouseEvent) => {
     event.preventDefault();
-    stageDelete(id)
+    
+    if (window.confirm("정말로 삭제하시겠습니까?")) {
+      stageDelete(id)
       .then((res) => {
         alert("삭제가 완료되었습니다.");
         fetchStages(Number(challengeId!))
@@ -27,6 +29,7 @@ const StageDeleteBtn: React.FC<{ id: number }> = ({ id }) => {
       .catch((err) => {
         alert(err.response);
       });
+    }
   };
   return (
     <div>

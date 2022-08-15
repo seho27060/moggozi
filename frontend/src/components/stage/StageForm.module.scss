@@ -2,6 +2,38 @@
 
 @include mixin.desktop {
   .stageForm {
-    width : auto
+    input {
+      width: 736px;
+      height: 30px;
+      font-size:25px;
+      font-weight:500;
+      padding: 5px 15px 6px 15px;
+      margin: 0px 0 10px 0;
+      border-bottom: 1px solid mixin.$cloudLine;
+      
+      &:focus {
+        outline: none;
+      }
+    }
+  }
+
+  .buttons {
+    display: flex;
+    justify-content: flex-end;
+
+    button {
+      font-size: 16px;
+      font-weight: 700;
+      color: #fff;
+      width: 100px;
+      height: 45px;
+      border-radius: 5px;
+      background: linear-gradient(90deg, #FF9921 -1.06%, #FFC337 101.51%);
+      transition: all 0.5s;
+      margin: 15px 0 0 0;
+      &:hover {
+        font-size: 18px;
+      }
+    }
   }
 }

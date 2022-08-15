@@ -54,6 +54,7 @@
     .orderBtn {
       display: flex;
       justify-content: flex-end;
+      margin: 0 0 50px 0;
       
       button {
         width: 120px;
@@ -68,6 +69,10 @@
         cursor: pointer;
         transition: all 0.5s;
 
+        a {
+          text-decoration: none;
+          color: #fff;
+        }
         &:hover {
           font-size: 18px;
         }
@@ -91,7 +96,7 @@
     }
 
     .explain {
-      margin: 50px 0 0 0;
+      margin: 100px 0 0 0;
       div:nth-child(1) {
         font-size: 30px;
         font-weight: 700;
@@ -108,7 +113,7 @@
       }
       div:nth-child(4) {
         font-size: 20px;
-        margin: 20px 0 200px 10px;
+        margin: 20px 0 100px 10px;
         color: mixin.$cloudGray;
       }
     }

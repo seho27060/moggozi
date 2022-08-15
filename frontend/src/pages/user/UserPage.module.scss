@@ -54,6 +54,9 @@
     }
 
     .followButton {
+      display: flex;
+      justify-content: center;
+      align-items: center;
       margin: 20px 0 20px 0;
       width: 175px;
       height: 60px;
@@ -64,7 +67,34 @@
       font-size: 22px;
       line-height: 27px;
       color: #ff6262;
+      transition: all 0.5s;
+      cursor: pointer;
+      svg {
+        margin: 0 5px 0 0;
+      }
     }
+
+    .unfollowButton {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 20px 0 20px 0;
+      width: 175px;
+      height: 60px;
+      background: #ff6262;
+      border: 2px solid #ff6262;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 22px;
+      line-height: 27px;
+      color: #ffffff;
+      transition: all 0.5s;
+      cursor: pointer;
+      svg {
+        margin: 0 5px 0 0;
+      }
+    }
+
   }
 
   .container {

@@ -94,7 +94,7 @@ const OverCommentForm: React.FC<{
       <form className={styles.commentForm}>
         <textarea name="comment" id="comment" ref={enteredText} placeholder="댓글달기"></textarea>
         {/* <input type="text" id="comment" ref={enteredText} required placeholder="댓글달기"/> */}
-        <div><button onClick={commentSubmitHandler}>게시</button></div>
+        <div><button onClick={commentSubmitHandler}>등록</button></div>
       </form>
     </>
   );

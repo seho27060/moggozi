@@ -9,7 +9,7 @@
     font-weight: 700;
     font-family: "pretendard";
     // padding: 2rem 0.5rem;
-    margin: 60px 0 30px 0;
+    margin: 80px 0 80px 0;
   }
   .noticeList {
     width: 992px;
@@ -30,7 +30,25 @@
 
     &:hover {
       color: mixin.$mainColor;
-
     }
+  }
+
+  .horizon {
+    width: 0px;
+    height: 0px;
+
+    &:after {
+      display: inline-block;
+      position: relative;
+      content: "";
+      background: mixin.$cloudLine;
+      width: 992px;
+      height: 1px;
+      bottom: 12px;
+    }
+  }
+
+  .minHeight {
+    min-height: 520px;
   }
 }

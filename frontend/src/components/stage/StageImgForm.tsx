@@ -140,7 +140,7 @@ const StageImgForm: React.FC<{
               <div>포스팅 사진을 업로드해주세요.</div>
               <div>*권장 사이즈: 1920 x 1920,</div>
               <div> 최소 640 x 640 비율 (1 : 1)</div>
-              <button type="button">등록하기</button>
+              <div>등록하기</div>
             </label>
             <input
               type="file"

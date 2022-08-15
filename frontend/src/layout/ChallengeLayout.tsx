@@ -5,8 +5,6 @@ const ChallengeLayout = () => {
   return (
     <div>
       <NavigationBar />
-      배경 들어갈 곳.
-      challenge Layout
       <Outlet />
     </div>
   );

@@ -27,34 +27,32 @@ const NoticeDetailPage: React.FC = () => {
 
   return (
     <div className={styles.container}>
-
       <div className={styles.noticeDetail}>
+      <div className={styles.title}>공지사항</div>
         {/* <div>{notice.noticeId}</div> */}
         <div>
-        <div className={styles.noticeTitle}>{notice.title}</div>
-        <div className={styles.noticeContentSection}>
-          <div>
-            <div className={styles.noticeContent}>{notice.content}</div>
-            {/* <div>{notice.updatedDate!.toString()}</div>/ */}
-            
-            <div className={styles.noticeBottom}>
-              <button onClick={() => navigate(-1)} className={styles.navigateBtn}>
-                뒤로가기
-              </button>
-              <div className={styles.noticeDate}>
-                {new Date(notice.createdDate!).toLocaleDateString("ko-Kr", {
-                  weekday: "long",
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric",
-                })}
-              </div>
+          <div className={styles.noticeTitle}>
+            <div>{notice.title}</div>
+            <div>
+              {new Date(notice.createdDate!).toLocaleDateString("ko-Kr", {
+                weekday: "long",
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              })}
             </div>
           </div>
-        </div>
+          <div className={styles.noticeContent}>{notice.content}</div>
+          <div className={styles.noticeBottom}>
+            <button
+              onClick={() => navigate(-1)}
+              className={styles.navigateBtn}
+            >
+              뒤로가기
+            </button>
+          </div>
         </div>
       </div>
-
     </div>
   );
 };

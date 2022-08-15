@@ -9,7 +9,7 @@ import {
   setModalPostState,
   setPostModalOpen,
 } from "../../store/postModal";
-import styles from "./AlertOnair.module.scss";
+import styles from "./AlertItem.module.scss";
 const AlertItem: React.FC<{ alertData: Alert }> = ({ alertData }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -88,12 +88,7 @@ const AlertItem: React.FC<{ alertData: Alert }> = ({ alertData }) => {
     <div>
       <button
         onClick={alertCheckHandler}
-        style={{
-          background: "white",
-          margin: "0.5rem 0",
-          fontSize: "0.7rem",
-          padding: "1rem 0.7rem 0rem 1.7rem",
-        }}
+        className={styles.btnHover}
       >
         {/* 확인한 알림/ 안한 알림에 따라 다르게 출력 */}
         {/* type 별로 라우터 다르게 navigate */}
