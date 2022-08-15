@@ -65,9 +65,12 @@ function UserPage() {
     []
   );
   const [isLogging, setIsLogging] = useState(false);
-  const [currentMyChallengePage, setCurrentMyChallengePage] = useState(1);
-  const [currentChallengePage, setCurrentChallengePage] = useState(1);
-  const [currentPostPage, setCurrentPostPage] = useState(1);
+  const [currentMyChallengePage, setCurrentMyChallengePage] = useState(0);
+  const [currentChallengePage, setCurrentChallengePage] = useState(0);
+  const [currentPostPage, setCurrentPostPage] = useState(0);
+  const [myChallengeHasNext, setMyChallengeHasNext] = useState(false);
+  const [challengeHasNext, setChallengeHasNext] = useState(false);
+  const [postHasNext, setPostHasNext] = useState(false);
 
   let tabMenus = ["모두보기", "포스팅", "도전한 챌린지"];
   if (userId === loginId) {
@@ -84,38 +87,53 @@ function UserPage() {
     const { scrollHeight } = document.body;
     const { scrollTop } = document.documentElement;
 
-    if (value !== 0 && Math.round(scrollTop + innerHeight) >= scrollHeight) {
+    if (
+      value !== 0 &&
+      Math.round(scrollTop + innerHeight) >= scrollHeight - 100
+    ) {
       setIsLogging(true);
       switch (value) {
         case 1: // 내 포스팅
-          myPagePost(userId, currentPostPage, 16)
+          if (!postHasNext) {
+            break;
+          }
+          myPagePost(userId, currentPostPage + 1, 16)
             .then((res) => {
               console.log(userId, "post", res);
               setPostList(postList.concat(res.content));
+              setCurrentPostPage(res.pageNum);
+              setPostHasNext(res.hasNext);
             })
             .catch((err) => console.log("post err", err));
-          setCurrentPostPage(currentPostPage + 1);
           break;
         case 2: // 도전한 챌린지
-          userTryChallenge(userId, currentChallengePage, 16)
+          if (!challengeHasNext) {
+            break;
+          }
+          userTryChallenge(userId, currentChallengePage + 1, 16)
             .then((res) => {
               console.log(userId, "ch", res);
               setChallengeList(challengeList.concat(res.content));
+              setCurrentChallengePage(res.pageNum);
+              setChallengeHasNext(res.hasNext);
             })
             .catch((err) => console.log("ch err", err));
-          setCurrentChallengePage(currentChallengePage + 1);
           break;
         case 3: // 만든 챌린지
+          if (!myChallengeHasNext) {
+            break;
+          }
           if (userId === loginData.userInfo.id) {
             // 작성한 챌린지
-            fetchMyChallengeList(currentMyChallengePage, 16)
+            fetchMyChallengeList(currentMyChallengePage + 1, 16)
               .then((res) => {
                 console.log("call my recentrych");
                 setMyChallengeList(myChallengeList.concat(res.content));
+                setCurrentMyChallengePage(res.pageNum);
+                setMyChallengeHasNext(res.hasNext);
               })
               .catch((err) => console.log("myrecentch err", err));
           }
-          setCurrentMyChallengePage(currentMyChallengePage + 1);
           break;
       }
       setTimeout(() => setIsLogging(false), 300);
@@ -130,6 +148,9 @@ function UserPage() {
     userId,
     value,
     loginData.userInfo.id,
+    challengeHasNext,
+    myChallengeHasNext,
+    postHasNext,
   ]);
 
   useEffect(() => {
@@ -163,6 +184,7 @@ function UserPage() {
           .then((res) => {
             console.log(userId, "post", res);
             setPostList(res.content);
+            setPostHasNext(res.hasNext);
           })
           .catch((err) => console.log("post err", err));
         // 도전한 챌린지
@@ -170,6 +192,7 @@ function UserPage() {
           .then((res) => {
             console.log(userId, "ch", res);
             setChallengeList(res.content);
+            setChallengeHasNext(res.hasNext);
           })
           .catch((err) => console.log("ch err", err));
         if (userId === loginData.userInfo.id) {
@@ -178,6 +201,7 @@ function UserPage() {
             .then((res) => {
               console.log("call my recentrych");
               setMyChallengeList(res.content);
+              setMyChallengeHasNext(res.hasNext);
             })
             .catch((err) => console.log("myrecentch err", err));
         }

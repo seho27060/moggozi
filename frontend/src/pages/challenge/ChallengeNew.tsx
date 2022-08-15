@@ -1,19 +1,12 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import ChallengeForm from "../../components/challenge/ChallengeForm";
 import ChallengeImgForm from "../../components/challenge/ChallengeImgForm";
 import { ChallengeSaveState } from "../../store/challenge";
 
-import styles from "./ChallengeNew.module.scss"
+import styles from "./ChallengeNew.module.scss";
 
 const ChallengeNew: React.FC = () => {
-  const [isLoading, setIsLoading] = useState(true);
-  const [Challenge, setLoadedChallenge] =
-    useState<ChallengeSaveState>();
-
-  useEffect(() => {
-    setIsLoading(true);
-    
-  }, []);
+  const [Challenge, setLoadedChallenge] = useState<ChallengeSaveState>();
 
   const imgHandler = (url: string) => {
     setLoadedChallenge({
@@ -24,18 +17,14 @@ const ChallengeNew: React.FC = () => {
 
   return (
     <div className={styles.container}>
-      { isLoading && <></>}
-      {/* isloading ~~ */}
-
-
-    <div className={styles.width}>
-      <div className={styles.title}>챌린지 생성</div>
+      <div className={styles.width}>
+        <div className={styles.title}>챌린지 생성</div>
         <ChallengeImgForm
           challengeImg={Challenge?.img || ""}
           imgHandler={imgHandler}
         />
         <ChallengeForm></ChallengeForm>
-    </div>
+      </div>
     </div>
   );
 };
