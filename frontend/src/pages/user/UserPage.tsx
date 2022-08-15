@@ -91,12 +91,12 @@ function UserPage() {
       value !== 0 &&
       Math.round(scrollTop + innerHeight) >= scrollHeight - 100
     ) {
-      setIsLogging(true);
       switch (value) {
         case 1: // 내 포스팅
           if (!postHasNext) {
             break;
           }
+          setIsLogging(true);
           myPagePost(userId, currentPostPage + 1, 16)
             .then((res) => {
               console.log(userId, "post", res);
@@ -110,6 +110,7 @@ function UserPage() {
           if (!challengeHasNext) {
             break;
           }
+          setIsLogging(true);
           userTryChallenge(userId, currentChallengePage + 1, 16)
             .then((res) => {
               console.log(userId, "ch", res);
@@ -123,6 +124,7 @@ function UserPage() {
           if (!myChallengeHasNext) {
             break;
           }
+          setIsLogging(true);
           if (userId === loginData.userInfo.id) {
             // 작성한 챌린지
             fetchMyChallengeList(currentMyChallengePage + 1, 16)
