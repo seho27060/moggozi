@@ -369,13 +369,16 @@ const ChallengeDetail: React.FC = () => {
       )}
 
       <div>
-        {postModalOpen && (
+        {(postModalOpen && !postUpdateFormOpen) &&(
           <PostModal open={postModalOpen} close={closePostModal}>
-            {!postUpdateFormOpen && <PostDetailItem />}
-            {postUpdateFormOpen && <PostUpdateForm />}
+            <PostDetailItem />
           </PostModal>
         )}
-
+        {(postModalOpen && postUpdateFormOpen) && (
+          <PostFormModal open={postModalOpen} close={closePostModal}>
+            <PostUpdateForm />
+          </PostFormModal>
+        )}
         {postFormModalOpen && (
           <PostFormModal open={postFormModalOpen} close={closePostFormModal}>
             <PostForm

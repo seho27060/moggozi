@@ -8,6 +8,9 @@ import CommentOptionBtn from "./CommentOptionBtn";
 import { BsFillPersonFill } from "react-icons/bs"
 import { useState } from "react";
 import CommentUpdateForm from "./CommentUpdateForm";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setPostModalOpen } from "../../store/postModal";
 const CommentChild: React.FC<{ child: Comment }> = ({ child }) => {
   
   const postId = useSelector(
@@ -15,6 +18,12 @@ const CommentChild: React.FC<{ child: Comment }> = ({ child }) => {
   );
   const [commentUpdateFormToggle, setCommentUpdateFormToggle] = useState(false);
 
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+  const toUserPageHandler = () => {
+    navigate(`/user/${child.writer!.id}`)
+    dispatch(setPostModalOpen(false))
+  }
   return (
     <div className={styles.container}>
       <div className={styles.writer}>
@@ -25,13 +34,12 @@ const CommentChild: React.FC<{ child: Comment }> = ({ child }) => {
               src={child.writer?.path}
               alt=""
               style={{ height: "43px", width: "43px" }}
+              onClick={toUserPageHandler}
             />
           ) : (
             <BsFillPersonFill
-              // className={styles.img}
-              // src="https://blog.kakaocdn.net/dn/vckff/btqCjeJmBHM/tMVpe4aUIMfH4nKS4aO3tK/img.jpg"
-              // alt=""
               style={{ height: "43px", width: "43px" }}
+              onClick={toUserPageHandler}
             />
           )}
           {/* <p>{child.order}</p> */}

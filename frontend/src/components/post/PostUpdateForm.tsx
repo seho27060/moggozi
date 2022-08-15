@@ -22,9 +22,6 @@ const PostUpdateForm: React.FC<{}> = () => {
   const { postModalState: PostModalState } = useSelector(
     (state: RootState) => state.postModal
   );
-  const checkedPost = useSelector(
-    (state: RootState) => state.post.checkedPost
-  );
   console.log(PostModalState);
 
   const dispatch = useDispatch();
@@ -32,6 +29,7 @@ const PostUpdateForm: React.FC<{}> = () => {
   const titleInputRef = useRef<HTMLInputElement>(null);
   const contentInputRef = useRef<ReactQuill>();
 
+  const [titleCnt, setTitleCnt] = useState("");
   const [file, setFile] = useState<File>();
   const [previewImage, setPreviewImage] = useState("");
   const [fileName, setFileName] = useState("");
@@ -73,7 +71,7 @@ const PostUpdateForm: React.FC<{}> = () => {
                       dispatch(postModify(modifiedModalPost));
                       dispatch(setPostUpdateFormState(false));
                       dispatch(setModalPostState(modifiedModalPost));
-                      dispatch(setCheckedPost(modifiedModalPost))
+                      dispatch(setCheckedPost(modifiedModalPost));
                     })
                     .catch((err) => console.log("이미지 db에 저장 실패", err));
                 })
@@ -86,7 +84,7 @@ const PostUpdateForm: React.FC<{}> = () => {
           dispatch(postModify(modifiedModalPost));
           dispatch(setPostUpdateFormState(false));
           dispatch(setModalPostState(modifiedModalPost));
-          dispatch(setCheckedPost(modifiedModalPost))
+          dispatch(setCheckedPost(modifiedModalPost));
         }
       })
       .catch((err) => {
@@ -108,38 +106,68 @@ const PostUpdateForm: React.FC<{}> = () => {
   };
 
   return (
-    <div>
-      <form className={styles.postUpdateForm}>
-        <div>
+    <div className={styles.container}>
+      <form className={styles.form}>
+        <div className={styles.inputTitle}>
           <label htmlFor="title">제목</label>
-          <input
-            type="text"
-            id="title"
-            ref={titleInputRef}
-            defaultValue={PostModalState!.title!}
-          />
+          <div className={styles.titleCnt}>
+            <input
+              type="text"
+              id="title"
+              ref={titleInputRef}
+              defaultValue={PostModalState!.title!}
+              onChange={(event) => {
+                setTitleCnt(event.target.value);
+              }}
+            />
+            <div>{titleCnt.length} / 30</div>
+          </div>
         </div>
         <div>
           <input
             defaultValue={fileName ? fileName : "첨부파일"}
             placeholder="첨부파일"
           />
-          <label htmlFor="img">파일 찾기</label>
-          <input
-            type="file"
-            accept="image/*"
-            id="img"
-            onChange={onLoadHandler}
-          />
+          <div className={styles.photo}>
+            <div>사진 첨부 (선택)</div>
+            
+          </div>
+
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              margin: "20px 0 20px 0",
+            }}
+          >
+            <div>사진을 첨부해주세요.</div>
+            {/* <label htmlFor="img">파일 찾기</label> */}
+            <input
+              type="file"
+              accept="image/*"
+              id="img"
+              onChange={onLoadHandler}
+            />
+          </div>
         </div>
-        {previewImage && <img src={previewImage} alt="img" />}
+        {previewImage ? (
+          <img src={previewImage} alt="img" />
+        ) : (
+          <img
+            className={styles.img}
+            src="https://via.placeholder.com/400x250.png/"
+            alt=""
+          />
+        )}
         <div>
           <EditorComponent
             QuillRef={contentInputRef}
             value={PostModalState!.content!}
           />
         </div>
-        <button onClick={postingUpdateHandler}>등록하기</button>
+        <div style={{ display: "flex", justifyContent: "end" }}>
+          <button onClick={postingUpdateHandler}>등록하기</button>
+        </div>
       </form>
     </div>
   );

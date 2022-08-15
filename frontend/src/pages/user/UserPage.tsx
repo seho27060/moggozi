@@ -37,6 +37,7 @@ import Tab from "@mui/material/Tab";
 import UserTabBox from "./UserTabBox";
 import { Box } from "@mui/material";
 import Loader from "../../components/ui/Loader";
+import PostFormModal from "../../components/ui/PostFormModal";
 
 function UserPage() {
   const { postModalOpen, postUpdateFormOpen } = useSelector(
@@ -411,11 +412,15 @@ function UserPage() {
       )}
 
       <div>
-        {postModalOpen && (
+        {postModalOpen && !postUpdateFormOpen && (
           <PostModal open={postModalOpen} close={closePostModal}>
-            {!postUpdateFormOpen && <PostDetailItem />}
-            {postUpdateFormOpen && <PostUpdateForm />}
+            <PostDetailItem />
           </PostModal>
+        )}
+        {postModalOpen && postUpdateFormOpen && (
+          <PostFormModal open={postModalOpen} close={closePostModal}>
+            <PostUpdateForm />
+          </PostFormModal>
         )}
       </div>
       {isLogging && <Loader />}
