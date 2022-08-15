@@ -138,15 +138,6 @@ const StageItem: React.FC<{
                 >
                   내 포스팅 보기
                 </button>
-              ) : (
-                <button
-                  onClick={() => {
-                    dispatch(setModalPostState(checkedPost));
-                    dispatch(setPostModalOpen(true));
-                  }}
-                >
-                  내 포스팅 보기
-                </button>
               )}
             </div>
           )}

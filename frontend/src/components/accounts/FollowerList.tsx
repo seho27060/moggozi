@@ -16,9 +16,8 @@ interface Props {
 
 const FollowerList = (props: Props): ReactElement => {
   const navigate = useNavigate();
-  const userId = Number(
-    useSelector((state: RootState) => state.auth.userInfo.id)
-  );
+  const user = useSelector((state: RootState) => state.auth);
+
   const { id, img, loginFollowState, nickname, close } = props;
 
   const [followState, setFollowState] = useState(!!loginFollowState);
@@ -43,17 +42,27 @@ const FollowerList = (props: Props): ReactElement => {
   return (
     <div className={styles.container}>
       <div className={styles.followers}>
-        { img ? <img src={`${img}`} alt="profile_image" onClick={moveHandler} /> : <img src="https://img1.daumcdn.net/thumb/C176x176/?fname=https://k.kakaocdn.net/dn/GHYFr/btrsSwcSDQV/UQZxkayGyAXrPACyf0MaV1/img.jpg" alt="" />}
-        
+        {img ? (
+          <img src={`${img}`} alt="profile_image" onClick={moveHandler} />
+        ) : (
+          <img
+            src="https://img1.daumcdn.net/thumb/C176x176/?fname=https://k.kakaocdn.net/dn/GHYFr/btrsSwcSDQV/UQZxkayGyAXrPACyf0MaV1/img.jpg"
+            alt=""
+          />
+        )}
+
         <div onClick={moveHandler}>{nickname}</div>
       </div>
-
-      {userId === id ? (
-        <div>&nbsp;</div>
-      ) : (
-        <button onClick={followHandler}>
-          {followState ? "unfollow" : "follow"}
-        </button>
+      {user.isLoggedIn && (
+        <div>
+          {user.userInfo.id === id ? (
+            <div>&nbsp;</div>
+          ) : (
+            <button onClick={followHandler}>
+              {followState ? "unfollow" : "follow"}
+            </button>
+          )}
+        </div>
       )}
     </div>
   );
