@@ -6,9 +6,9 @@
     div {
       // border-radius: 10px;
       img{
-        width: 980px;
+        width: 989px;
         height: 450px;
-        object-fit: cover;
+        object-fit: fill;
         border-radius: 10px;
         border: 1.5px solid mixin.$cloudGray;
       }
@@ -21,8 +21,8 @@
     &::before {
       display: inline-block;
       position: relative;
-      left: 62px;
-      top: 421px;
+      left: 63px;
+      top: 422px;
       width: 40px;
       height: 20px;
       color: mixin.$cloudGray;

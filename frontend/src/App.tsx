@@ -9,6 +9,8 @@ import { useSelector } from "react-redux";
 import { RootState } from "./store/store";
 import WebSocketProvider from "./lib/WebSocketProvider";
 
+import backgroundImg from "./asset/mainbackground.png";
+
 function App() {
   const dispatch = useDispatch();
 
@@ -26,8 +28,9 @@ function App() {
     }
   }, [dispatch, user.id]);
 
+  // style={{backgroundImage: `url(${backgroundImg})`, backgroundSize: "100%"}}
   return (
-    <div style={{height: "100%"}}>
+    <div style={{height: "100%", backgroundImage: `url(${backgroundImg})`, backgroundSize: "100%"}} >
       <WebSocketProvider>
         <Router />
       </WebSocketProvider>
