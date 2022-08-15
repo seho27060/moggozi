@@ -56,9 +56,14 @@ export const commentSlice = createSlice({
         (comment) => comment.id !== action.payload
       );
     },
+
   },
 });
 
-export const { commentSet, commentRegister, commentModify, commentRemove } =
-  commentSlice.actions;
+export const {
+  commentSet,
+  commentRegister,
+  commentModify,
+  commentRemove,
+} = commentSlice.actions;
 export default commentSlice.reducer;

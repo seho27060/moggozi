@@ -10,7 +10,8 @@ import CommentOptionBtn from "./CommentOptionBtn";
 import styles from "./CommentItem.module.scss";
 import { useState } from "react";
 
-import { BsFillPersonFill } from "react-icons/bs"
+import { BsFillPersonFill } from "react-icons/bs";
+import CommentUpdateForm from "./CommentUpdateForm";
 
 // 댓글 컴포넌트
 // 현재 스테이트에 불러들인 comment 리스트 가져오기
@@ -22,6 +23,10 @@ const CommentItem: React.FC<{
     (state: RootState) => state.postModal.postModalState
   );
   const comments = useSelector((state: RootState) => state.comment.comments);
+  // const commentUpdateFormToggle = useSelector(
+  //   (state: RootState) => state.comment.commentUpdateFormToggle
+  // );
+  const [commentUpdateFormToggle, setCommentUpdateFormToggle] = useState(false);
   const parentId = comment.id;
 
   const [toggle, setToggle] = useState(false);
@@ -60,11 +65,26 @@ const CommentItem: React.FC<{
           <div>{comment.writer?.nickname}</div>
         </div>
         <div className={styles.option}>
-          <CommentOptionBtn comment={comment} postId={postModalState.id} />
+          <CommentOptionBtn
+            comment={comment}
+            postId={postModalState.id}
+            setCommentUpdateFormToggle={setCommentUpdateFormToggle}
+          />
         </div>
       </div>
       <div>
-        <div className={styles.context}>{comment.text}</div>
+        <div className={styles.context}>
+          {!commentUpdateFormToggle ? (
+            comment.text
+          ) : (
+            <CommentUpdateForm
+              comment={comment}
+              postId={postModalState.id}
+              setCommentUpdateFormToggle={setCommentUpdateFormToggle}
+            />
+          )}
+          {/* 댓글나오고 조건부로 수정폼나오도록 */}
+        </div>
         <div className={styles.comment_date}>
           <div
             onClick={() => {
