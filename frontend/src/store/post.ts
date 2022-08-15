@@ -29,10 +29,12 @@ export interface PostItem {
 interface PostState {
   posts: PostData[];
   postingStageId: number | null;
+  checkedPost:PostData|number
 }
 const initialPostState: PostState = {
   posts: [],
   postingStageId: null,
+  checkedPost:-1
 };
 
 export const postSlice = createSlice({
@@ -68,6 +70,10 @@ export const postSlice = createSlice({
       console.log("setPostingStageId", action);
       state.postingStageId = action.payload;
     },
+    setCheckedPost: (state,action) => {
+      console.log("setCheckedPost",action)
+      state.checkedPost = action.payload
+    }
   },
 });
 
@@ -77,6 +83,7 @@ export const {
   postRegister,
   postRemove,
   setPostingStageId,
+  setCheckedPost
 } = postSlice.actions;
 
 export default postSlice.reducer;

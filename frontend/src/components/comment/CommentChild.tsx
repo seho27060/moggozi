@@ -5,6 +5,7 @@ import { RootState } from "../../store/store";
 import styles from "./CommentChild.module.scss";
 import CommentOptionBtn from "./CommentOptionBtn";
 
+import { BsFillPersonFill } from "react-icons/bs"
 const CommentChild: React.FC<{ child: Comment }> = ({ child }) => {
   const postId = useSelector(
     (state: RootState) => state.postModal.postModalState!.id
@@ -13,7 +14,21 @@ const CommentChild: React.FC<{ child: Comment }> = ({ child }) => {
     <div className={styles.container}>
       <div className={styles.writer}>
         <div className={styles.profile}>
-          <img src={child.writer?.path} alt="" style={{height:"43px",width:"43px"}}/>
+          {child.writer?.path ? (
+            <img
+              className={styles.img}
+              src={child.writer?.path}
+              alt=""
+              style={{ height: "43px", width: "43px" }}
+            />
+          ) : (
+            <BsFillPersonFill
+              // className={styles.img}
+              // src="https://blog.kakaocdn.net/dn/vckff/btqCjeJmBHM/tMVpe4aUIMfH4nKS4aO3tK/img.jpg"
+              // alt=""
+              style={{ height: "43px", width: "43px" }}
+            />
+          )}
           {/* <p>{child.order}</p> */}
           <div>{child.writer?.nickname}</div>
         </div>

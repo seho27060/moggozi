@@ -30,7 +30,7 @@ const initialPostModalState: PostModal = {
     createdTime: null,
     modifiedTime: null,
     postImg: [],
-    liked: null,
+    liked: false,
     likeNum: null,
     writer: null,
   },

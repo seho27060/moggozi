@@ -1,8 +1,8 @@
 import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react";
 import { PostSend } from "../../store/postModal";
 import { postAdd, postImgApi } from "../../lib/withTokenApi";
-import { postRegister } from "../../store/post";
-import { useDispatch } from "react-redux";
+import { PostData, postRegister, setCheckedPost } from "../../store/post";
+import { useDispatch, useSelector } from "react-redux";
 import { StageState } from "../../store/stage";
 
 import styles from "./PostForm.module.scss";
@@ -12,7 +12,8 @@ import ReactQuill from "react-quill";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { storageService } from "../../fbase/fbase";
 import { stageDetail } from "../../lib/generalApi";
-import { style } from "@mui/system";
+import { RootState } from "../../store/store";
+// import { style } from "@mui/system";
 
 const PostForm: React.FC<{
   stageId: number;
@@ -21,6 +22,7 @@ const PostForm: React.FC<{
 }> = ({ stageId, modalClose, challenge }) => {
   const dispatch = useDispatch();
 
+  const user = useSelector((state: RootState) => state.auth);
   const titleInputRef = useRef<HTMLInputElement>(null);
   const contentInputRef = useRef<ReactQuill>();
 
@@ -37,12 +39,11 @@ const PostForm: React.FC<{
   };
 
   const [titleCnt, setTitleCnt] = useState("");
-
   const postingSubmitHandler = (event: FormEvent) => {
     event.preventDefault();
     PostData.title = titleInputRef.current!.value;
     PostData.content = contentInputRef.current!.value;
-    console.log(PostData);
+    console.log("입력된 포스트 데이터", PostData);
     postAdd(PostData)
       .then((res) => {
         const postId = Number(res);
@@ -56,21 +57,56 @@ const PostForm: React.FC<{
                   postImgApi(postId, res)
                     .then((res) => {
                       console.log(res);
+                      const newPostData: PostData = {
+                        content: contentInputRef.current!.value,
+                        createdTime: new Date(),
+                        id: postId,
+                        liked: false,
+                        likeNum: 0,
+                        modifiedTime: new Date(),
+                        postImg: [],
+                        title: titleInputRef.current!.value,
+                        writer: user.userInfo,
+                      };
                       dispatch(
                         postRegister({ ...PostData, postImg: [{ path: res }] })
                       );
+                      dispatch(
+                        setCheckedPost({
+                          ...newPostData,
+                          postImg: [{ path: res }],
+                        })
+                      );
+
+                      dispatch(
+                        setCheckedPost({
+                          ...PostData,
+                          postImg: [{ path: res }],
+                        })
+                      );
                     })
                     .catch((err) => console.log("이미지 db에 저장 실패", err));
-                  modalClose();
                 })
                 .catch((err) => console.log("이미지 url 가져오기 실패", err));
               setPreviewImage("");
             })
             .catch((err) => console.log("이미지 firestore에 업로드 실패", err));
         } else {
-          dispatch(postRegister(PostData));
-          modalClose();
+          const newPostData: PostData = {
+            content: contentInputRef.current!.value,
+            createdTime: new Date(+new Date() + 3240 * 10000),
+            id: postId,
+            liked: false,
+            likeNum: 0,
+            modifiedTime: new Date(),
+            postImg: [],
+            title: titleInputRef.current!.value,
+            writer: user.userInfo,
+          };
+          dispatch(postRegister({ ...newPostData, postImg: [{ path: [] }] }));
+          dispatch(setCheckedPost({ ...newPostData, postImg: [{ path: [] }] }));
         }
+        modalClose();
       })
       .catch((err) => console.log("포스팅 실패", err));
   };
@@ -131,7 +167,7 @@ const PostForm: React.FC<{
           </div>
         </div>
         <input
-          value={fileName ? fileName : "첨부파일"}
+          defaultValue={fileName ? fileName : "첨부파일"}
           placeholder="첨부파일"
         />
         <div className={styles.photo}>
