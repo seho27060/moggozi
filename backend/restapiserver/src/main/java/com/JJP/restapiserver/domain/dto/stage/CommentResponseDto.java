@@ -30,7 +30,7 @@ public class CommentResponseDto {
     public CommentResponseDto(Comment comment){
         this.id = comment.getId();
         this.writer = new Writer(comment.getMember().getId(),
-                comment.getMember().getNickname(), comment.getMember().getUser_img());
+                comment.getMember().getNickname(), comment.getMember().getUser_img(), comment.getMember().getMemberScore().getScore());
         this.parentId = comment.getParent();
         this.text = comment.getText();
         this.order = comment.getCommentOrder();
