@@ -5,7 +5,6 @@ import {
   uploadBytes,
 } from "firebase/storage";
 import { useState } from "react";
-import { useParams } from "react-router-dom";
 import { storageService } from "../../fbase/fbase";
 import { challengeImgApi } from "../../lib/withTokenApi";
 
@@ -14,10 +13,10 @@ import styles from "./ChallengeImgForm.module.scss";
 const ChallengeImgForm: React.FC<{
   challengeImg: string;
   imgHandler: (url: string) => void;
-}> = ({ challengeImg, imgHandler }) => {
+  challengeId: number;
+}> = ({ challengeImg, imgHandler, challengeId }) => {
   const [file, setFile] = useState<File>();
   const [previewImage, setPreviewImage] = useState("");
-  const challengeId = Number(useParams().id);
 
   // 이미지 로드
   const onLoadHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -83,13 +82,13 @@ const ChallengeImgForm: React.FC<{
               </div>
             )}
           </form>
-            <button
-              className={styles.uploadButton}
-              type="button"
-              onClick={(e) => uploadHandler(e, `challenge/${challengeId}`)}
-            >
-              업로드
-            </button>
+          <button
+            className={styles.uploadButton}
+            type="button"
+            onClick={(e) => uploadHandler(e, `challenge/${challengeId}`)}
+          >
+            업로드
+          </button>
         </div>
       ) : (
         <div>
