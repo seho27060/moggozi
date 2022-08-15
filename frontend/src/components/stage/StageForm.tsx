@@ -58,20 +58,22 @@ const StageForm: React.FC<{ closeModal: () => void }> = ({ closeModal }) => {
   }
   return (
     <div>
-      <h3>Stage Form</h3>
       <div>
         <form className={styles.stageForm}>
           <div>
-            <label htmlFor="name">name :</label>
-            <input type="text" required id="name" ref={nameInputRef} />
+            <input type="text" required id="name" ref={nameInputRef} placeholder="스테이지 제목을 입력해주세요."
+            autoComplete="off"
+            />
           </div>
           <div>
             <EditorComponent QuillRef={contentInputRef} value={""} />
           </div>
-          <button type="button" onClick={stageSubmitHandler}>
-            Register
-          </button>
         </form>
+        <div className={styles.buttons}>
+          <button type="button" onClick={stageSubmitHandler}>
+            등록
+          </button>
+        </div>
       </div>
     </div>
   );

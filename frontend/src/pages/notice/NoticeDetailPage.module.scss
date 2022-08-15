@@ -4,53 +4,58 @@
   display: flex;
   justify-content: center;
 
+  .title {
+    font-size: 35px;
+    font-weight: 700;
+    margin: 80px 0 60px 0;
+  }
+
   .noticeDetail {
     width: 992px;
     min-height: 550px;
-    // border: solid mixin.$mainColor;
-    border-radius: 10px;
-    margin: 2rem;
   }
 
   .noticeTitle {
-    font-size: 3rem;
-    font-weight: 700;
-    font-family: "pretendard";
-    padding: 1rem 0.5rem;
-    border-bottom: solid mixin.$cloudLine;
-    margin: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 10px 10px 15px;
+    border-bottom: 1px solid mixin.$cloudLine;
+    margin: 20px 0 0 0;
+
+    div:nth-child(1) {
+      font-size: 25px;
+      font-weight: 600;
+      font-family: "pretendard";
+    }
+
+    div:nth-child(2) {
+      color: mixin.$cloudGray;
+    }
   }
 
-  .noticeContentSection {
+  .noticeContent {
+    padding: 10px 10px 10px 15px;
+    width: 992px;
+    min-height: 40rem;
+    font-size: 18px;
+    font-weight: 500;
+    word-break: break-all;
+    line-height: 36px;
+  }
+
+  .noticeBottom {
     display: flex;
-    padding: 2rem;
-    // flex-direction: column;
-    // height: 25rem;
-    .noticeContent {
-      width: 992px;
-      min-height: 39rem;
-      font-size: 1.4rem;
-      word-break: break-all;
-      line-height: 36px;
-    }
-    
-    .noticeBottom {
-      display: flex;
-      justify-content: space-between;
-      .navigateBtn {
-        background: transparent;
-        border: mixin.$cloudGray solid;
-        border-radius: 5px;
-        border: none;
-        color: mixin.$mainColor;
-        font-size: 1.2rem;
-        cursor: pointer;
-      }
-      .noticeDate {
-        text-align: end;
-        color: mixin.$cloudGray;
-        margin: 12px 0 10px 0;
-      }
+    justify-content: flex-end;
+    margin: 0 0 50px 0;
+    .navigateBtn {
+      // background: transparent;
+      border: mixin.$cloudGray solid;
+      border-radius: 5px;
+      border: none;
+      color: mixin.$mainColor;
+      font-size: 1.2rem;
+      cursor: pointer;
     }
   }
 }
