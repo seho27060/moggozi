@@ -14,7 +14,7 @@ const UserPostItem: React.FC<{
   let postData: PostData | null = null;
   postRead(userPost.id)
     .then((res) => {
-      console.log(res);
+      // console.log(res);
       postData = res;
     })
     .catch((err) => console.log("err post", userPost.id, err));

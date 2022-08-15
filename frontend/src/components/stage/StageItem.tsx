@@ -30,7 +30,7 @@ const StageItem: React.FC<{
   const dispatch = useDispatch();
   const [postStageListState, setPostStageListState] = useState<PostData[]>([]);
   const [getStageImg, setStageImg] = useState<imgState[]>([]);
-  const [checkedPost, setCheckedPost] = useState<PostData|number>(-1)
+  const [checkedPost, setCheckedPost] = useState<PostData | number>(-1);
 
   // const [getStageProgress, setStageProgress] = useState(0);
   const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
@@ -57,7 +57,6 @@ const StageItem: React.FC<{
 
   // 스테이지 사진
 
-
   useEffect(() => {
     stageImgFetchAPI(stage.id!)
       .then((res) => {
@@ -83,10 +82,10 @@ const StageItem: React.FC<{
       .catch((err) => {
         console.log("ERR", err);
       });
-      stageMyPostRead(Number(stage.id)).then((res)=>{
-        console.log("사용자 스테이지 포스팅유무",res)
-        setCheckedPost(res)
-      })
+    stageMyPostRead(Number(stage.id)).then((res) => {
+      console.log("사용자 스테이지 포스팅유무", res);
+      setCheckedPost(res);
+    });
   }, [dispatch, stage.id]);
 
   return (
@@ -125,17 +124,23 @@ const StageItem: React.FC<{
           isLoggedIn &&
           postingStageId && (
             <div>
-              {(checkedPost !== -1)? (
+              {checkedPost === -1 ? (
                 // 포스팅 모달 연결해야한다.
-                <button onClick={()=>{
-                  dispatch(setModalPostState(checkedPost));
-                  dispatch(setPostModalOpen(true));
-                }}>내 포스팅 보기</button>
-              ) : (
-                <button onClick={() => {
-                  dispatch(setPostFormModalOpen(true))
-                  }}>
+                <button
+                  onClick={() => {
+                    dispatch(setPostFormModalOpen(true));
+                  }}
+                >
                   포스팅하기
+                </button>
+              ) : (
+                <button
+                  onClick={() => {
+                    dispatch(setModalPostState(checkedPost));
+                    dispatch(setPostModalOpen(true));
+                  }}
+                >
+                  내 포스팅 보기
                 </button>
               )}
             </div>

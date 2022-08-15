@@ -325,7 +325,8 @@ const ChallengeDetail: React.FC = () => {
                     <FavoriteIcon />
                   </div>
                   // 챌린지좋아요 취소
-                )}{" "}
+                )}
+                {" "}
                 좋아요{" "}
                 <div className={styles.likeCnt}>{loadedChallenge!.likeNum}</div>
               </div>

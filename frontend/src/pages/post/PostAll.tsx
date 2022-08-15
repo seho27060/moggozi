@@ -26,7 +26,7 @@ const PostAll: React.FC<{}> = () => {
   const { postModalOpen } = useSelector((state: RootState) => state.postModal);
 
   const closePostModal = () => {
-    dispatch(setPostModalOpen(true));
+    dispatch(setPostModalOpen(false));
   };
 
   if (postModalOpen) {
