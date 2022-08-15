@@ -37,9 +37,7 @@ const Challenges: React.FC = () => {
     const { innerHeight } = window;
     const { scrollHeight } = document.body;
     const { scrollTop } = document.documentElement;
-    console.log(hasNext);
-    console.log(Math.round(scrollTop + innerHeight));
-    console.log(scrollHeight);
+
     if (hasNext && Math.round(scrollTop + innerHeight) >= scrollHeight - 100) {
       console.log(currentPage);
       setPageIsLoading(true);

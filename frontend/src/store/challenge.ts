@@ -36,7 +36,7 @@ export interface ChallengeSaveState {
   name: string | null;
   description: string | null;
   img: string | null;
-  content: Value|string | null;
+  content: Value | string | null;
   hobbyList: Hobby[];
   level: number | null;
 }
@@ -74,9 +74,15 @@ export const hobbySlice = createSlice({
       state.hobbyList = action.payload;
       state.hobbyCnt = state.hobbyList.length;
     },
+    resetHobby(state) {
+      console.log(1);
+      state.hobbyList = [];
+      state.hobbyCnt = 0;
+    },
   },
 });
 
-export const { addHobby, deleteHobby, fetchHobby } = hobbySlice.actions;
+export const { addHobby, deleteHobby, fetchHobby, resetHobby } =
+  hobbySlice.actions;
 
 export default hobbySlice.reducer;
