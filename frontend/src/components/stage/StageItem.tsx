@@ -83,8 +83,8 @@ const StageItem: React.FC<{
     stageMyPostRead(Number(stage.id)).then((res) => {
       console.log("사용자 스테이지 포스팅유무", res);
       dispatch(setCheckedPost(res))
-    });
-  }, [dispatch, stage.id]);
+    }).catch((err) => console.log("err",err))
+  }, [dispatch, stage.id,setCheckedPost]);
 
   return (
     <div>
@@ -134,6 +134,7 @@ const StageItem: React.FC<{
               ) : (
                 <button
                   onClick={() => {
+                    console.log("checkedpost",checkedPost)
                     dispatch(setModalPostState(checkedPost));
                     dispatch(setPostModalOpen(true));
                   }}

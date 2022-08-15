@@ -4,7 +4,7 @@ import {
   setPostUpdateFormState,
   setModalPostState,
 } from "../../store/postModal";
-import { postModify, PostData } from "../../store/post";
+import { postModify, PostData, setCheckedPost } from "../../store/post";
 import { useDispatch, useSelector } from "react-redux";
 import { postImgApi, postUpdate } from "../../lib/withTokenApi";
 import { RootState } from "../../store/store";
@@ -21,6 +21,9 @@ import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 const PostUpdateForm: React.FC<{}> = () => {
   const { postModalState: PostModalState } = useSelector(
     (state: RootState) => state.postModal
+  );
+  const checkedPost = useSelector(
+    (state: RootState) => state.post.checkedPost
   );
   console.log(PostModalState);
 
@@ -70,6 +73,7 @@ const PostUpdateForm: React.FC<{}> = () => {
                       dispatch(postModify(modifiedModalPost));
                       dispatch(setPostUpdateFormState(false));
                       dispatch(setModalPostState(modifiedModalPost));
+                      dispatch(setCheckedPost(modifiedModalPost))
                     })
                     .catch((err) => console.log("이미지 db에 저장 실패", err));
                 })
@@ -82,6 +86,7 @@ const PostUpdateForm: React.FC<{}> = () => {
           dispatch(postModify(modifiedModalPost));
           dispatch(setPostUpdateFormState(false));
           dispatch(setModalPostState(modifiedModalPost));
+          dispatch(setCheckedPost(modifiedModalPost))
         }
       })
       .catch((err) => {
@@ -116,7 +121,7 @@ const PostUpdateForm: React.FC<{}> = () => {
         </div>
         <div>
           <input
-            value={fileName ? fileName : "첨부파일"}
+            defaultValue={fileName ? fileName : "첨부파일"}
             placeholder="첨부파일"
           />
           <label htmlFor="img">파일 찾기</label>
