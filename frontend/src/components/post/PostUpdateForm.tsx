@@ -126,47 +126,60 @@ const PostUpdateForm: React.FC<{}> = () => {
         <div>
           <input
             defaultValue={fileName ? fileName : "첨부파일"}
-            placeholder="첨부파일"
+            placeholder="첨부파일을 추가해주세요"
           />
-          <div className={styles.photo}>
+          {/* <div className={styles.photo}>
             <div>사진 첨부 (선택)</div>
-            
-          </div>
-
+          </div> */}
           <div
             style={{
               display: "flex",
-              justifyContent: "center",
-              margin: "20px 0 20px 0",
+              justifyContent: "flex-end",
+              margin: "10px 20px",
             }}
           >
-            <div>사진을 첨부해주세요.</div>
-            {/* <label htmlFor="img">파일 찾기</label> */}
+            {/* <div>
+              사진 첨부
+              
+            </div> */}
+            <label htmlFor="img" />
             <input
               type="file"
               accept="image/*"
               id="img"
               onChange={onLoadHandler}
+              style={{ width: "11rem" }}
             />
           </div>
         </div>
-        {previewImage ? (
-          <img src={previewImage} alt="img" />
-        ) : (
-          <img
-            className={styles.img}
-            src="https://via.placeholder.com/400x250.png/"
-            alt=""
-          />
-        )}
-        <div>
-          <EditorComponent
-            QuillRef={contentInputRef}
-            value={PostModalState!.content!}
-          />
+        <div className={styles.editorSection}>
+          {previewImage ? (
+            <img src={previewImage} alt="img" />
+          ) : (
+            <img
+              className={styles.img}
+              src="https://via.placeholder.com/400x360.png/"
+              alt=""
+            />
+          )}
+          <div style={{ height: "340px" }}>
+            <EditorComponent
+              QuillRef={contentInputRef}
+              value={PostModalState!.content!}
+            />
+          </div>
         </div>
-        <div style={{ display: "flex", justifyContent: "end" }}>
-          <button onClick={postingUpdateHandler}>등록하기</button>
+        <div
+          style={{
+            width: "auto",
+            display: "flex",
+            justifyContent: "flex-end",
+            margin: "0.3rem 1rem 0 0",
+          }}
+        >
+          <button onClick={postingUpdateHandler} style={{ width: "4rem" }}>
+            수정하기
+          </button>
         </div>
       </form>
     </div>
