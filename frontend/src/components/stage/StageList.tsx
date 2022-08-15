@@ -12,7 +12,8 @@ import { setPostingStageId } from "../../store/post";
 const StageList: React.FC<{
   stages: StageState[];
   challengeProgress: number;
-}> = ({ stages, challengeProgress }) => {
+  challengeState: number;
+}> = ({ stages, challengeProgress, challengeState }) => {
   const [value, setValue] = useState(0);
   const [choice, setChoice] = useState(0);
 
@@ -35,7 +36,7 @@ const StageList: React.FC<{
     dispatch(setPostingStageId(id));
   };
 
-  console.log(stages)
+  console.log(stages);
 
   return (
     <Box className={styles.tabs}>
@@ -72,7 +73,7 @@ const StageList: React.FC<{
           <Tab
             key={stage.id}
             onClick={(event: MouseEvent) => {
-              // 탭클릭에 따라 포스팅하기 버튼 갱신해주기 
+              // 탭클릭에 따라 포스팅하기 버튼 갱신해주기
               stageSelectHandler(event, stage.id!, index);
             }}
             // disabled={value === stage.id}
@@ -89,21 +90,22 @@ const StageList: React.FC<{
           />
         ))}
       </Tabs>
-        <div 
-        // style={{ height: "1000px" }}
-        >
-          {stages.map((stage, index) => (
-            <div key={stage.id}>
-              {choice === index && (
-                <StageItem
-                  stage={stage}
-                  index={index}
-                  challengeProgress={challengeProgress}
-                />
-              )}
-            </div>
-          ))}
-        </div>
+      <div
+      // style={{ height: "1000px" }}
+      >
+        {stages.map((stage, index) => (
+          <div key={stage.id}>
+            {choice === index && (
+              <StageItem
+                stage={stage}
+                index={index}
+                challengeProgress={challengeProgress}
+                challengeState={challengeState}
+              />
+            )}
+          </div>
+        ))}
+      </div>
     </Box>
   );
 };

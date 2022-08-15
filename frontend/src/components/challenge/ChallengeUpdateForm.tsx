@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { challengeUpdate } from "../../lib/withTokenApi";
@@ -12,7 +12,6 @@ import styles from "./ChallengeUpdateForm.module.scss";
 
 import EditorComponent from "../ui/Editor";
 import ReactQuill from "react-quill";
-
 
 const ChallengeUpdateForm: React.FC<{ challenge: ChallengeDetailState }> = (
   props
@@ -73,13 +72,15 @@ const ChallengeUpdateForm: React.FC<{ challenge: ChallengeDetailState }> = (
     <div>
       <div className={styles.shortIntroduce}>
         <label htmlFor="description">짧은 소개 </label>
-        <textarea name="description" id="description"             
-        ref={descriptionInputRef}
-        defaultValue={props.challenge.description || ""}
-        placeholder="짧은 소개를 입력해주세요."
+        <textarea
+          name="description"
+          id="description"
+          ref={descriptionInputRef}
+          defaultValue={props.challenge.description || ""}
+          placeholder="짧은 소개를 입력해주세요."
         ></textarea>
       </div>
-      
+
       <div className={styles.level}>
         <label htmlFor="level">난이도</label>
         <select
@@ -120,11 +121,14 @@ const ChallengeUpdateForm: React.FC<{ challenge: ChallengeDetailState }> = (
         />
       </div> */}
       <div>
-          <EditorComponent QuillRef={contentInputRef} value={props.challenge.content!}/>
+        <EditorComponent
+          QuillRef={contentInputRef}
+          value={props.challenge.content!}
+        />
       </div>
       {/* <div className={styles.checker}>{contentInput.length} / 500</div> */}
       <div className={styles.done}>
-        <button  type="button" onClick={submitHandler}>
+        <button type="button" onClick={submitHandler}>
           변경하기
         </button>
       </div>
