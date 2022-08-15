@@ -101,13 +101,13 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
             memberRepository.saveAndFlush(newMember);
 
             System.out.println("newMemberId++++++++++++++++++++++++" + newMember.getId());
-
+            Long id = newMember.getId();
             MemberScore memberScore = MemberScore.builder()
-                    .id(newMember.getId())
+                    .id(id)
                     .score(0L)
                     .build();
 
-            memberScoreRepository.saveAndFlush(memberScore);
+            memberScoreRepository.save(memberScore);
         } else {
             nickname = member.get().getNickname(); /** TODO: 추후 리팩토링 시 삭제 필요 */
         }
