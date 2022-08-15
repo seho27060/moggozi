@@ -50,7 +50,6 @@ const ChallengeDetail: React.FC = () => {
   const userInfo = useSelector((state: RootState) => state.auth.userInfo);
   const stageId = useSelector((state: RootState) => state.post.postingStageId);
   const userImg = useSelector((state: RootState) => state.auth.userInfo.img);
-
   const [isLoading, setIsLoading] = useState(true);
   const [loadedChallenge, setLoadedChallenge] =
     useState<ChallengeDetailState>();
@@ -324,8 +323,7 @@ const ChallengeDetail: React.FC = () => {
                     <FavoriteIcon />
                   </div>
                   // 챌린지좋아요 취소
-                )}
-                {" "}
+                )}{" "}
                 좋아요{" "}
                 <div className={styles.likeCnt}>{loadedChallenge!.likeNum}</div>
               </div>
