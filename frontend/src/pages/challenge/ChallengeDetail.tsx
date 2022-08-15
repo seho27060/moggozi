@@ -36,6 +36,7 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import PostModal from "../../components/ui/PostModal";
 import PostFormModal from "../../components/ui/PostFormModal";
 import ChallengeOptionBtn from "../../components/ui/ChallengeOptionBtn";
+import Loader from "../../components/ui/Loader";
 
 const ChallengeDetail: React.FC = () => {
   const navigate = useNavigate();
@@ -168,11 +169,7 @@ const ChallengeDetail: React.FC = () => {
 
   return (
     <div className={styles.main}>
-      {isLoading === true && (
-        <section>
-          <p>Loading...</p>
-        </section>
-      )}
+      {isLoading === true && <Loader />}
       {isLoading === false && (
         <div className={styles.container}>
           <div className={styles.C_article}>
@@ -325,7 +322,8 @@ const ChallengeDetail: React.FC = () => {
                     <FavoriteIcon />
                   </div>
                   // 챌린지좋아요 취소
-                )}{" "}
+                )}
+                {" "}
                 좋아요{" "}
                 <div className={styles.likeCnt}>{loadedChallenge!.likeNum}</div>
               </div>

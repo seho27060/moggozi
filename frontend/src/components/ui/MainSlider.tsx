@@ -1,13 +1,18 @@
+import { useNavigate } from "react-router-dom";
 import React, { useState } from "react";
 import Slider from "react-slick";
 
+
+
+import banner1 from "../../asset/banner1.png"
+import banner2 from "../../asset/banner2.png"
+import banner3 from "../../asset/banner3.png"
 import styles from "./MainSlider.module.scss"
 
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
-import { useNavigate } from "react-router-dom";
 
 // interface Props {
 //   children: React.ReactNode;
@@ -20,7 +25,7 @@ interface NextArrowProps {
 }
 
 function NextArrow({ onClick }: NextArrowProps) {
-  return (<div style={{ display: 'inline-block', position: "relative", bottom: "58px", left: "110px" }} onClick={onClick}><ArrowForwardIosIcon style={{cursor: "pointer", color: "RGB(204, 204, 204)"}} className={styles.hover} /></div>);
+  return (<div style={{ display: 'inline-block', position: "relative", bottom: "63px", left: "110px" }} onClick={onClick}><ArrowForwardIosIcon style={{cursor: "pointer", color: "RGB(204, 204, 204)"}} className={styles.hover} /></div>);
 }
 
 
@@ -54,29 +59,23 @@ const MainSlider = (
 
   return (
     <div>
-      <div className={styles.counter} data-content={`${slideCnt} / 5`} style={{content: `${slideCnt} / 5`}}>
+      <div className={styles.counter} data-content={`${slideCnt} / 3`} style={{content: `${slideCnt} / 5`}}>
         {/* {slideCnt} / 5 */}
         </div>
       <Slider {...settings} className={styles.img}>
         {/* 메인 배너 들어갈 자리 */}
         <div onClick={() => {navigate("/user/4")}}>
-          <img src="https://c.tenor.com/LlGsQPi_zsYAAAAd/kurzgesagt-gamma-ray.gif" alt="" />
+          <img src={banner1} alt="" />
         </div>
         <div>
-          <img src="https://c.tenor.com/LlGsQPi_zsYAAAAd/kurzgesagt-gamma-ray.gif" alt="" />
+          <img src={banner2} alt="" />
         </div>
         <div>
-          <img src="https://c.tenor.com/LlGsQPi_zsYAAAAd/kurzgesagt-gamma-ray.gif" alt="" />
+          <img src={banner3} alt="" />
         </div>
-        <div>
+        {/* <div>
           <img src="https://c.tenor.com/LlGsQPi_zsYAAAAd/kurzgesagt-gamma-ray.gif" alt="" />
-        </div>
-        <div>
-          <img src="https://c.tenor.com/LlGsQPi_zsYAAAAd/kurzgesagt-gamma-ray.gif" alt="" />
-        </div>
-        <div>
-          <img src="https://c.tenor.com/LlGsQPi_zsYAAAAd/kurzgesagt-gamma-ray.gif" alt="" />
-        </div>
+        </div> */}
       </Slider>
     </div>
   )

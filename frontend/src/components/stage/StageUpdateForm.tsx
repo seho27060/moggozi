@@ -52,23 +52,26 @@ const StageUpdateForm: React.FC<{
 
   return (
     <div>
-      StageUpdateForm
       {isImgUpdate ? (
         <div>
           <StageImgForm stage={stage} />
-          <button onClick={imgHandler}>내용 수정</button>
+          <div className={styles.completeEdit}>
+            <button onClick={imgHandler}>수정 완료</button>
+          </div>
         </div>
       ) : (
         <div>
           <form className={styles.stageUpdateForm}>
             <div>
-              <label htmlFor="name">스테이지 이름 :</label>
               <input
+                className={styles.input}
                 type="text"
                 required
                 id="name"
                 defaultValue={stage.name || ""}
                 ref={nameInputRef}
+                placeholder="스테이지 제목을 입력해주세요."
+                autoComplete="off"
               />
             </div>
             <div>
@@ -77,9 +80,11 @@ const StageUpdateForm: React.FC<{
                 value={stage.content!}
               />
             </div>
-            <button onClick={stateUpdateHandler}>수정</button>
           </form>
-          <button onClick={imgHandler}>이미지 수정</button>
+          <div className={styles.buttons}>
+            <button onClick={imgHandler}>이미지 수정</button>
+            <button onClick={stateUpdateHandler}>수정 완료</button>
+          </div>
         </div>
       )}
     </div>

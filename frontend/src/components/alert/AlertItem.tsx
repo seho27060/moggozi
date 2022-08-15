@@ -73,14 +73,14 @@ const AlertItem: React.FC<{ alertData: Alert }> = ({ alertData }) => {
 
   const Item = (text: string) => {
     return (
-      <p>
-        {text.split("a").map((txt) => (
-          <>
+      <div>
+        {text.split("a").map((txt,index) => (
+          <div key={index}>
             {txt}
             <br />
-          </>
+          </div>
         ))}
-      </p>
+      </div>
     );
   };
   // type하고 index 이용해서 api요청후 이동할 라우터 정하기

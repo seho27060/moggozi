@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
-import ChallengeList from "../../components/challenge/ChallengeList";
+import { useNavigate } from "react-router-dom";
+import NewChallengeList from "../../components/challenge/NewChallengeList";
+import PopChallengeList from "../../components/challenge/PopChallengeList";
 import Loader from "../../components/ui/Loader";
 import {
   fetchChallengeRankList,
@@ -14,7 +15,11 @@ import {
 import { ChallengeItemState } from "../../store/challenge";
 import { RootState } from "../../store/store";
 
+import styles from "./Challenges.module.scss";
+import LocalFireDepartmentIcon from "@mui/icons-material/LocalFireDepartment";
+
 const Challenges: React.FC = () => {
+  const navigate = useNavigate();
   const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
   const [rankIsLoading, setRankIsLoading] = useState(true);
   const [loadedChallengeRankList, setLoadedChallengeRankList] = useState<
@@ -24,38 +29,51 @@ const Challenges: React.FC = () => {
   const [loadedRecentChallengeList, setLoadedRecentChallengeList] = useState<
     ChallengeItemState[]
   >([]);
-  const [isLogging, setIsLogging] = useState(false);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [pageIsLoading, setPageIsLoading] = useState(false);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [hasNext, setHasNext] = useState(false);
 
   const handleScroll = useCallback((): void => {
     const { innerHeight } = window;
     const { scrollHeight } = document.body;
     const { scrollTop } = document.documentElement;
-
-    if (Math.round(scrollTop + innerHeight) >= scrollHeight) {
+    console.log(hasNext);
+    console.log(Math.round(scrollTop + innerHeight));
+    console.log(scrollHeight);
+    if (hasNext && Math.round(scrollTop + innerHeight) >= scrollHeight - 100) {
       console.log(currentPage);
+      setPageIsLoading(true);
       if (isLoggedIn) {
-        isLoginFetchRecentChallengeList(currentPage, 9).then((res) => {
-          setIsLogging(true);
-          setLoadedRecentChallengeList(
-            loadedRecentChallengeList.concat(res.content)
-          );
-          console.log(loadedRecentChallengeList);
-          setTimeout(() => setIsLogging(false), 300);
-        });
+        isLoginFetchRecentChallengeList(currentPage + 1, 10)
+          .then((res) => {
+            setLoadedRecentChallengeList(
+              loadedRecentChallengeList.concat(res.content)
+            );
+            setCurrentPage(res.pageNum);
+            setHasNext(res.hasNext);
+            setTimeout(() => setPageIsLoading(false), 500);
+          })
+          .catch((err) => {
+            console.log(err);
+            setPageIsLoading(false);
+          });
       } else {
-        fetchRecentChallengeList(currentPage, 9).then((res) => {
-          setIsLogging(true);
-          setLoadedRecentChallengeList(
-            loadedRecentChallengeList.concat(res.content)
-          );
-          setRecentIsLoading(false);
-          setTimeout(() => setIsLogging(false), 300);
-        });
+        fetchRecentChallengeList(currentPage + 1, 10)
+          .then((res) => {
+            setLoadedRecentChallengeList(
+              loadedRecentChallengeList.concat(res.content)
+            );
+            setCurrentPage(res.pageNum);
+            setHasNext(res.hasNext);
+            setTimeout(() => setPageIsLoading(false), 500);
+          })
+          .catch((err) => {
+            console.log(err);
+            setPageIsLoading(false);
+          });
       }
-      setCurrentPage(currentPage + 1);
     }
-  }, [isLoggedIn, loadedRecentChallengeList, currentPage]);
+  }, [isLoggedIn, loadedRecentChallengeList, currentPage, hasNext]);
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll, true);
@@ -70,7 +88,7 @@ const Challenges: React.FC = () => {
     setRecentIsLoading(true);
     if (isLoggedIn) {
       // 로그인 한 경우
-      isLoginFetchChallengeRankList(0, 3)
+      isLoginFetchChallengeRankList(0, 5)
         .then((res) => {
           setLoadedChallengeRankList(res.content);
           setRankIsLoading(false);
@@ -80,9 +98,10 @@ const Challenges: React.FC = () => {
           setRankIsLoading(false);
         });
 
-      isLoginFetchRecentChallengeList(0, 9)
+      isLoginFetchRecentChallengeList(0, 10)
         .then((res) => {
           setLoadedRecentChallengeList(res.content);
+          setHasNext(res.hasNext);
           setRecentIsLoading(false);
         })
         .catch((err) => {
@@ -91,7 +110,7 @@ const Challenges: React.FC = () => {
         });
     } else {
       // 로그인 안 한 경우
-      fetchChallengeRankList(0, 3)
+      fetchChallengeRankList(0, 5)
         .then((res) => {
           setLoadedChallengeRankList(res.content);
           setRankIsLoading(false);
@@ -102,9 +121,10 @@ const Challenges: React.FC = () => {
           setRankIsLoading(false);
         });
 
-      fetchRecentChallengeList(0, 9)
+      fetchRecentChallengeList(0, 10)
         .then((res) => {
           setLoadedRecentChallengeList(res.content);
+          setHasNext(res.hasNext);
           setRecentIsLoading(false);
         })
         // console.log(res)
@@ -114,42 +134,52 @@ const Challenges: React.FC = () => {
         });
     }
   }, [isLoggedIn]);
+
   return (
-    <div>
-      <Link to={`/challenge/new`}>
-        <button>챌린지 생성</button>
-      </Link>
-
-      {rankIsLoading === true && (
-        <section>
-          <p>RankList Loading...</p>
-        </section>
-      )}
-
-      {rankIsLoading === false && (
-        <div>
-          <div>인기 챌린지</div>
+    <div className={styles.container}>
+      <div>
+        {rankIsLoading === true && <Loader />}
+        {rankIsLoading === false && (
           <div>
-            <ChallengeList challenges={loadedChallengeRankList} />
+            <div className={styles.popularChallengeTitle}>
+              <div>인기 챌린지</div>
+              <button
+                onClick={() => {
+                  navigate(`/challenge/new`);
+                }}
+              >
+                챌린지 만들기
+              </button>
+            </div>
+            <div>
+              <PopChallengeList challenges={loadedChallengeRankList} />
+            </div>
           </div>
-        </div>
-      )}
+        )}
 
-      {recentIsLoading === true && (
-        <section>
-          <p>RecentList Loading...</p>
-        </section>
-      )}
+        {recentIsLoading === true && <Loader />}
 
-      {recentIsLoading === false && (
-        <div>
-          <div>최신 챌린지</div>
-          <div>
-            <ChallengeList challenges={loadedRecentChallengeList} />
+        {recentIsLoading === false && (
+          <div className={styles.newChallenge}>
+            <div style={{ display: "flex", justifyContent: "center" }}>
+              <div className={styles.new}>
+                <div className={styles.sentence}>
+                  <div>방금 만들어진</div>
+                  <div>따끈따끈한 챌린지를 만나보세요!</div>
+                </div>
+                <div className={styles.icon}>
+                  <LocalFireDepartmentIcon />
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <NewChallengeList challenges={loadedRecentChallengeList} />
+            </div>
           </div>
-        </div>
-      )}
-      {isLogging && <Loader />}
+        )}
+        {pageIsLoading && <Loader />}
+      </div>
     </div>
   );
 };

@@ -15,6 +15,7 @@
       height: 40px;
       font-size: 14px;
       font-weight: 700;
+      margin : 19px 0;
 
       &:hover {
         color: #fff;
@@ -31,7 +32,7 @@
   .followers {
     display: flex;
     align-items: center;
-    
+    margin: 15px 0 15px 0;
     img {
       margin: 0 20px 0 0;
       width: 50px;

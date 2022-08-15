@@ -2,14 +2,15 @@
 
 @include mixin.desktop {
   .img {
-    border-radius: 5px;
+    // border-radius: 5px;
     div {
-      border-radius: 10px;
+      // border-radius: 10px;
       img{
-        width: 992px;
+        width: 980px;
         height: 450px;
-        object-fit: fill;
-        border-radius: 5px;
+        object-fit: cover;
+        border-radius: 10px;
+        border: 1.5px solid mixin.$cloudGray;
       }
     }
   }

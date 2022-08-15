@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { StageState } from "../../store/stage";
-import Modal from "../ui/Modal";
+import StageEditModal from "../ui/StageEditModal";
 import StageUpdateForm from "./StageUpdateForm";
 
+import styles from "./StageUpdateBtn.module.scss"
+
 const StageUpdateBtn: React.FC<{
-  stage: StageState;
-}> = ({ stage }) => {
+  stage: StageState; index: number;
+}> = ({ stage, index }) => {
   const [modalOpen, setModalOpen] = useState(false);
 
   const openModal = () => {
@@ -17,10 +19,11 @@ const StageUpdateBtn: React.FC<{
 
   return (
     <div>
-      <button onClick={openModal}>수정</button>
-      <Modal open={modalOpen} close={closeModal} header="스테이지 수정">
+      <div className={styles.index}>{index}</div>
+      <div className={styles.edit} onClick={openModal}>수정</div>
+      <StageEditModal open={modalOpen} close={closeModal} header="스테이지 수정">
         <StageUpdateForm stage={stage} closeModal={closeModal} />
-      </Modal>
+      </StageEditModal>
     </div>
   );
 };

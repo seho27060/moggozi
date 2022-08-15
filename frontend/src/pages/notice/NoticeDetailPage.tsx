@@ -27,25 +27,34 @@ const NoticeDetailPage: React.FC = () => {
 
   return (
     <div className={styles.container}>
+
       <div className={styles.noticeDetail}>
         {/* <div>{notice.noticeId}</div> */}
+        <div>
         <div className={styles.noticeTitle}>{notice.title}</div>
         <div className={styles.noticeContentSection}>
-          <p className={styles.noticeContent}>{notice.content}</p>
-          {/* <div>{notice.updatedDate!.toString()}</div>/ */}
-          <div className={styles.noticeBottom}>
-            <button onClick={() => navigate(-1)} className={styles.navigateBtn}>뒤로가기</button>
-            <div className={styles.noticeDate}>
-              {new Date(notice.createdDate!).toLocaleDateString("ko-Kr", {
-                weekday: "long",
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-              })}
+          <div>
+            <div className={styles.noticeContent}>{notice.content}</div>
+            {/* <div>{notice.updatedDate!.toString()}</div>/ */}
+            
+            <div className={styles.noticeBottom}>
+              <button onClick={() => navigate(-1)} className={styles.navigateBtn}>
+                뒤로가기
+              </button>
+              <div className={styles.noticeDate}>
+                {new Date(notice.createdDate!).toLocaleDateString("ko-Kr", {
+                  weekday: "long",
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })}
+              </div>
             </div>
           </div>
         </div>
+        </div>
       </div>
+
     </div>
   );
 };

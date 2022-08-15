@@ -1,0 +1,30 @@
+@use "../../styles/mixin.scss" as mixin;
+
+@include mixin.desktop {
+  .edit {
+      width: 0px;
+      height: 0px;
+
+      display: inline-block;
+      position: relative;
+      width: 500px;
+      height: 500px;
+      left: -100px;
+      bottom: 400px;
+      background: rgba(0, 0, 0, 0.23);
+      z-index: 50;
+
+    }
+
+    .index {
+      font-size: 70px;
+      font-weight: 700;
+      color: #fff;
+      position: relative;
+      display: inline-block;
+      z-index: 51;
+      left: 125px;
+      bottom: 175px;
+      cursor: default;
+    }
+}
