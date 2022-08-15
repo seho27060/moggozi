@@ -21,6 +21,8 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -46,6 +48,8 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
     private final MemberRepository memberRepository;
     private final RoleRepository roleRepository;
     private final MemberScoreRepository memberScoreRepository;
+
+    @PersistenceContext private EntityManager em;
 
     PasswordEncoder encoder = new BCryptPasswordEncoder();
 
@@ -98,11 +102,12 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
             Member newMember = Member.builder().username(username)
                     .fullname(fullname).nickname("User" + randomNo).password(password).is_social(1).role(role).build();
 
-            memberRepository.save(newMember);
-
+            memberRepository.saveAndFlush(newMember);
+            member = memberRepository.findById(newMember.getId());
+            em.detach(member.get());
 
             MemberScore memberScore = MemberScore.builder()
-                    .member(newMember)
+                    .member(member.get())
                     .score(0L)
                     .build();
             memberScoreRepository.save(memberScore);
