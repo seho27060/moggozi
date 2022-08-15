@@ -106,7 +106,7 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
                     .id(member.get().getId())
                     .score(0L)
                     .build();
-            memberScoreRepository.save(memberScore);
+            memberScoreRepository.saveAndFlush(memberScore);
 
 
         } else {
