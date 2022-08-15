@@ -13,7 +13,7 @@ const HobbyForm: React.FC = () => {
   const hobbyInputRef = useRef<HTMLInputElement>(null);
   const [dropDownList, setDropDownList] = useState<Hobby[]>([]); // 자동완성 기능을 위한 dropDownList
   const hobbyList = useSelector((state: RootState) => state.hobby.hobbyList);
-  const [content, setContent] = useState(<div></div>);
+  const [alertText, setAlertText] = useState(<div></div>);
   const [modalOpen, setModalOpen] = useState(false);
   const [inputText, setInputText] = useState("");
 
@@ -26,12 +26,12 @@ const HobbyForm: React.FC = () => {
     const enteredHobby = hobbyInputRef.current!.value;
     console.log(hobbyList);
     if (!enteredHobby) {
-      setContent(<div>태그를 입력해주세요!</div>);
+      setAlertText(<div>태그를 입력해주세요!</div>);
       setModalOpen(true);
       return;
     }
     if (hobbyList.length >= 5) {
-      setContent(<div>태그는 5개까지 등록 가능합니다.</div>);
+      setAlertText(<div>태그는 5개까지 등록 가능합니다.</div>);
       setModalOpen(true);
       return;
     }
@@ -53,7 +53,7 @@ const HobbyForm: React.FC = () => {
           setHobby({ name: enteredHobby }).then((res) => {
             // Form에서 등록한 취미인지 확인
             if (hobbyList.some((hobby) => hobby.id === res.id)) {
-              setContent(<div>이미 존재하는 취미입니다.</div>);
+              setAlertText(<div>이미 존재하는 취미입니다.</div>);
               setModalOpen(true);
             } else {
               dispatch(addHobby(res));
@@ -124,7 +124,7 @@ const HobbyForm: React.FC = () => {
         })}
       </div>
       <Modal open={modalOpen} close={closeModal} header="안내">
-        {content}
+        {alertText}
       </Modal>
     </div>
   );
