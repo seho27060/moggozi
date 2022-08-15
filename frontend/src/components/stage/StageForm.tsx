@@ -8,18 +8,38 @@ import EditorComponent from "../ui/Editor";
 import ReactQuill from "react-quill";
 
 import styles from "./StageForm.module.scss";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store/store";
+
 const StageForm: React.FC<{ closeModal: () => void }> = ({ closeModal }) => {
   const dispatch = useDispatch();
   const nameInputRef = useRef<HTMLInputElement>(null);
   const contentInputRef = useRef<ReactQuill>();
   const { challengeId } = useParams();
+  const stages = useSelector((state: RootState) => state.stages);
+
   function stageSubmitHandler(event: React.FormEvent) {
     event.preventDefault();
+
+    if (stages.length > 10) {
+      alert("스테이지의 개수는 10개까지 입니다.");
+      return;
+    }
+
     const stageData = {
       name: nameInputRef.current!.value,
       content: contentInputRef.current!.value,
       img: "",
     };
+    if (!stageData.name) {
+      alert("스테이지 제목이 필요합니다.");
+      return;
+    }
+    if (!stageData.content) {
+      alert("스테이지 본문이 필요합니다.");
+      return;
+    }
+
     stageAdd(stageData, Number(challengeId!))
       .then((res) => {
         fetchStages(Number(challengeId!))

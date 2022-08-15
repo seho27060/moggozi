@@ -4,6 +4,7 @@
   .layout {
     display: flex;
     justify-content: center;
+    
 
     .title {
       margin: 80px 0 50px 0;
@@ -25,6 +26,7 @@
         margin: 0 0 10px 0;
         font-size: 20px;
         font-weight: 600;
+        background: none;
 
         &::placeholder {
           font-weight: 600;
@@ -42,7 +44,8 @@
       button {
         cursor: pointer;
         border: 0;
-        background: #fff;
+        // background: #fff;
+        background: none;
         color: mixin.$cloudGray;
         font-size: 16px;
         font-weight: 600;
@@ -54,11 +57,14 @@
     .tabs {
       display: flex;
       border-bottom: 2px solid mixin.$cloudLine;
-      padding: 0 0 7px 0;
+      padding: 20px 0 7px 0;
+      // background: #fff;
       
       button {
         margin: 0 20px 0 20px;
-        background: #fff;
+        // background: #fff;
+        background: none;
+
         border: 0;
         font-weight: 600;
         font-size: 17px;
@@ -82,6 +88,7 @@
         }
       }      
     }
+
 
     .cnt {
       // margin: 20px 15px 20px 15px;

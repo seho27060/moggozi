@@ -23,21 +23,24 @@ const PostList: React.FC<{
     <div className={styles.postList}>
       {/* PostList */}
 
-      {!postList.length && <div className={styles.none}>아직 등록된 포스트가 없어요!</div> }
+      {!postList.length && (
+        <div className={styles.none}>아직 등록된 포스트가 없어요!</div>
+      )}
 
       {postList!.map((post) => (
-        <div
-          key={post.id}
-          className={styles.postItem}
-          onClick={(event: MouseEvent) => {
-            event.preventDefault();
-            dispatch(setModalPostState(post));
-            dispatch(setPostModalOpen(true));
-            dispatch(setPostModalStageId);
-          }}
-        >
-          <div>
-            <PostItem post={post} />
+        <div key={post.id}>
+          <div
+            className={styles.postItem}
+            onClick={(event: MouseEvent) => {
+              event.preventDefault();
+              dispatch(setModalPostState(post));
+              dispatch(setPostModalOpen(true));
+              dispatch(setPostModalStageId);
+            }}
+          >
+            <div>
+              <PostItem post={post} />
+            </div>
           </div>
         </div>
       ))}

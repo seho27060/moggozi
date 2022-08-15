@@ -4,15 +4,21 @@
   .container {
     display: flex;
     justify-content: center;
+
     
     .mainPage {
       width: 992px;
+
+      .mainSlider {
+        margin: 80px 0 100px 0;
+      }
     }
 
+    // 내가 만든 챌린지
     .myChallenge {
       display: flex;
       justify-content: space-around;
-      margin: 90px 0 90px 0;
+      padding: 50px 0 50px 0;
 
       .myTitle {
         display: flex;
@@ -35,6 +41,19 @@
       }
     }
 
+    // 추천 챌린지
+    .recommendChallenge {
+      // margin: 200px 0 200px 0;
+      padding: 100px 0 100px 0;
+      .myTitle {
+        font-size: 30px;
+        font-weight: 700;
+        margin: 10px 0px 40px 0;
+      }
+
+    }
+
+    // 인기 챌린지
     .popChallenge{
       .title {
         font-size: 30px;
@@ -43,6 +62,31 @@
       }
     }
   }
+
+  .sliderTitle {
+    text-align: center;
+    font-size: 35px;
+    font-weight: 700;
+    padding: 60px 0 20px 0;
+    background: #f5f2ff;
+  }
+
+  .postingSlider {
+    height: 900px;
+    width: 2560px;
+    background: #f5f2ff;
+  }
+
+  .popPosting {
+    padding: 20px 0 40px 0;
+    & > div {
+      font-size: 35px;
+      font-weight: 700;
+      text-align: center;
+      padding: 30px 0 55px 0;
+    }
+
+    }
 }
 
 @include mixin.mobile {

@@ -6,6 +6,7 @@ import { storageService } from "../../fbase/fbase";
 import { stageImgFetchAPI } from "../../lib/imgApi";
 import { imgState, stageFetch, StageState } from "../../store/stage";
 import { RootState } from "../../store/store";
+import Loader from "../ui/Loader";
 
 import styles from "./StageImgForm.module.scss";
 
@@ -16,12 +17,15 @@ const StageImgForm: React.FC<{
   const [file, setFile] = useState<File>();
   const [previewImage, setPreviewImage] = useState("");
   const [images, setImages] = useState<imgState[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const stages = useSelector((state: RootState) => state.stages);
   const dispatch = useDispatch();
 
   useEffect(() => {
+    setIsLoading(true);
     stageImgFetchAPI(stage.id!).then((res) => {
       setImages(res);
+      setIsLoading(false);
     });
   }, [stage.id]);
 
@@ -41,6 +45,15 @@ const StageImgForm: React.FC<{
   // 이미지 서버에 업로드
   const uploadHandler = (event: React.MouseEvent, target: string) => {
     event.preventDefault();
+    if (!file) {
+      alert("사진을 넣어주세요");
+      return;
+    }
+    if (images.length >= 5) {
+      alert("스테이지 이미지는 5장까지 가능합니다.");
+      return;
+    }
+    setIsLoading(true);
     const listRef = ref(storageService, target);
     listAll(listRef)
       .then((res) => {
@@ -51,51 +64,72 @@ const StageImgForm: React.FC<{
         uploadBytes(imgRef, file!).then(() => {
           stageImgFetchAPI(stage.id!).then((res) => {
             setImages(res);
+            setIsLoading(false);
           });
         });
         setPreviewImage("");
+      })
+      .catch((err) => {
+        setIsLoading(false);
       });
   };
 
   const deleteHandler = (event: React.MouseEvent, target: string) => {
     event.preventDefault();
-    const imgRef = ref(storageService, target);
-    deleteObject(imgRef);
-
-    stageImgFetchAPI(stage.id!)
-      .then((res) => {
-        setImages(res);
-      })
-      .catch((err) => {
-        setImages([]);
-      });
+    if (window.confirm("정말 삭제하시겠습니까?")) {
+      setIsLoading(true);
+      const imgRef = ref(storageService, target);
+      deleteObject(imgRef);
+      stageImgFetchAPI(stage.id!)
+        .then((res) => {
+          setImages(res);
+          setIsLoading(false);
+        })
+        .catch((err) => {
+          setImages([]);
+          setIsLoading(false);
+        });
+      alert("삭제되었습니다.");
+    } else {
+      alert("취소되었습니다.");
+    }
   };
 
   // 사진 몽땅 제거
   const deleteAllHandler = (event: React.MouseEvent, target: string) => {
     event.preventDefault();
-
-    const listRef = ref(storageService, target);
-    listAll(listRef).then((res) => {
-      // id 폴더 안의 이미지들 모두 읽어오기
-      res.items.forEach((itemRef) => {
-        deleteObject(itemRef);
+    if (!images) {
+      alert("이미지가 존재하지 않습니다.");
+    }
+    if (window.confirm("정말 삭제하시겠습니까?")) {
+      setIsLoading(true);
+      const listRef = ref(storageService, target);
+      listAll(listRef).then((res) => {
+        // id 폴더 안의 이미지들 모두 읽어오기
+        res.items.forEach((itemRef) => {
+          deleteObject(itemRef);
+        });
       });
-    });
 
-    stageImgFetchAPI(stage.id!)
-      .then((res) => {
-        const newStages = stages.map((item) =>
-          item.id === stage.id ? { ...item, img: res } : item
-        );
-        dispatch(stageFetch(newStages));
-      })
-      .catch((err) => {
-        const newStages = stages.map((item) =>
-          item.id === stage.id ? { ...item, img: [] } : item
-        );
-        dispatch(stageFetch(newStages));
-      });
+      stageImgFetchAPI(stage.id!)
+        .then((res) => {
+          const newStages = stages.map((item) =>
+            item.id === stage.id ? { ...item, img: res } : item
+          );
+          dispatch(stageFetch(newStages));
+          setIsLoading(true);
+        })
+        .catch((err) => {
+          const newStages = stages.map((item) =>
+            item.id === stage.id ? { ...item, img: [] } : item
+          );
+          dispatch(stageFetch(newStages));
+          setIsLoading(true);
+        });
+      alert("삭제되었습니다.");
+    } else {
+      alert("취소되었습니다.");
+    }
   };
   return (
     <div className={styles.container}>
@@ -106,7 +140,7 @@ const StageImgForm: React.FC<{
               <div>포스팅 사진을 업로드해주세요.</div>
               <div>*권장 사이즈: 1920 x 1920,</div>
               <div> 최소 640 x 640 비율 (1 : 1)</div>
-              <button>등록하기</button>
+              <button type="button">등록하기</button>
             </label>
             <input
               type="file"
@@ -137,34 +171,36 @@ const StageImgForm: React.FC<{
           </button>
         </div>
       </div>
-
-      <div className={styles.upload}>
-        <div className={styles.title}>업로드된 이미지들</div>
-        <div className={styles.photos}>
-          {Array.isArray(images) &&
-            images.map((img: imgState) => {
-              return (
-                <div key={img.id}>
-                  <img src={img.url!} alt="img" />
-                  <button
-                    onClick={(e) =>
-                      deleteHandler(e, `stage/${Number(stage.id!)}/${img.id}`)
-                    }
-                  >
-                    삭제
-                  </button>
-                </div>
-              );
-            })}
+      {isLoading && <Loader />}
+      {!isLoading && (
+        <div className={styles.upload}>
+          <div className={styles.title}>업로드된 이미지들</div>
+          <div className={styles.photos}>
+            {Array.isArray(images) &&
+              images.map((img: imgState) => {
+                return (
+                  <div key={img.id}>
+                    <img src={img.url!} alt="img" />
+                    <button
+                      onClick={(e) =>
+                        deleteHandler(e, `stage/${Number(stage.id!)}/${img.id}`)
+                      }
+                    >
+                      삭제
+                    </button>
+                  </div>
+                );
+              })}
+          </div>
+          <div className={styles.buttons}>
+            <button
+              onClick={(e) => deleteAllHandler(e, `stage/${Number(stage.id!)}`)}
+            >
+              사진 모두 삭제
+            </button>
+          </div>
         </div>
-        <div className={styles.buttons}>
-          <button
-            onClick={(e) => deleteAllHandler(e, `stage/${Number(stage.id!)}`)}
-          >
-            사진 모두 삭제
-          </button>
-        </div>
-      </div>
+      )}
     </div>
   );
 };

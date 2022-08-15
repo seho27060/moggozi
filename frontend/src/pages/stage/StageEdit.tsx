@@ -18,6 +18,7 @@ import {
 } from "@thaddeusjiang/react-sortable-list";
 import DOMPurify from "dompurify";
 import Loader from "../../components/ui/Loader";
+import { Link } from "react-router-dom";
 
 const StageEdit: React.FC = () => {
   const { challengeId } = useParams();
@@ -28,6 +29,8 @@ const StageEdit: React.FC = () => {
   const [items, setItems] = useState<SortableItemProps[]>([]);
   const [isOrderEdit, setIsOrderEdit] = useState(false);
 
+  document.body.style.overflow = "auto"; //모달때문에 이상하게 스크롤이 안되서 강제로 스크롤 바 생성함
+  document.body.style.height = "auto";
   useEffect(() => {
     setIsLoading(true);
     fetchStages(Number(challengeId))
@@ -110,7 +113,9 @@ const StageEdit: React.FC = () => {
                 </div>
                 <div className={styles.orderBtn}>
                   <button onClick={orderFormHandler}>순서 변경</button>
-                  <button>완료</button>
+                  <button>
+                    <Link to={`/challenge/${challengeId}`}>완료</Link>
+                  </button>
                 </div>
               </div>
             )}

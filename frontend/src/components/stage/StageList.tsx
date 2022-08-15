@@ -21,9 +21,9 @@ const StageList: React.FC<{
   };
 
   const dispatch = useDispatch();
-  const [showStageId, setShowStageId] = useState(
-    stages.length !== 0 ? stages[0].id : null
-  );
+  // const [showStageId, setShowStageId] = useState(
+  //   stages.length !== 0 ? stages[0].id : null
+  // );
 
   const stageSelectHandler = (
     event: React.MouseEvent,
@@ -72,6 +72,7 @@ const StageList: React.FC<{
           <Tab
             key={stage.id}
             onClick={(event: MouseEvent) => {
+              // 탭클릭에 따라 포스팅하기 버튼 갱신해주기 
               stageSelectHandler(event, stage.id!, index);
             }}
             // disabled={value === stage.id}
