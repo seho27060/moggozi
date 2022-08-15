@@ -19,8 +19,7 @@ public class MemberScore {
     @Column(name = "member_id", nullable = false)
     private Long id;
 
-//    @OneToOne(cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
-    @OneToOne
+    @OneToOne(cascade = {CascadeType.PERSIST ,CascadeType.MERGE})
     @MapsId //@MapsId 는 @id로 지정한 컬럼에 @OneToOne 이나 @ManyToOne 관계를 매핑시키는 역할
     @JoinColumn(name = "member_id")
     private Member member;
