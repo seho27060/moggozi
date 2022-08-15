@@ -17,6 +17,8 @@ import com.JJP.restapiserver.repository.stage.StageRepository;
 import com.JJP.restapiserver.repository.stage.StageUserRepository;
 import com.JJP.restapiserver.service.stage.StageJoinService;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
@@ -34,6 +36,7 @@ import java.util.stream.Collectors;
 @Service
 public class PostServiceImpl implements PostService {
 
+    private final Logger logger = LoggerFactory.getLogger(PostServiceImpl.class);
     private final PostRepository postRepository;
     private final MemberRepository memberRepository;
     private final StageRepository stageRepository;
@@ -64,6 +67,8 @@ public class PostServiceImpl implements PostService {
         if(post_num + 1 == stage_num){
             joinedChallenge.setState(2);
         }
+        logger.debug("----------------------현재 포스트 개수 "+ (post_num+1) + " --------------" );
+        logger.debug("----------------------현재 스테이지 개수 "+ (stage_num) + " --------------" );
         if(post != null){
             return (long) -1;
         }
