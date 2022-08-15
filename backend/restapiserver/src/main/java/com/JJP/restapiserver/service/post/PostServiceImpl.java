@@ -191,7 +191,7 @@ public class PostServiceImpl implements PostService {
         Post post = postRepository.getById(post_id);
         boolean like;
 
-        Writer writer = new Writer(post.getMember().getId(), post.getMember().getNickname(), post.getMember().getUser_img());
+        Writer writer = new Writer(post.getMember().getId(), post.getMember().getNickname(), post.getMember().getUser_img(), post.getMember().getMemberScore().getScore());
 
         if(member_id == null){
             like = false;
@@ -220,7 +220,7 @@ public class PostServiceImpl implements PostService {
             return -1;
         }
 
-        Writer writer = new Writer(member_id, post.getMember().getNickname(), post.getMember().getUser_img());
+        Writer writer = new Writer(member_id, post.getMember().getNickname(), post.getMember().getUser_img(), post.getMember().getMemberScore().getScore());
 
         return PostDetailDto.builder()
                 .id(post.getId())

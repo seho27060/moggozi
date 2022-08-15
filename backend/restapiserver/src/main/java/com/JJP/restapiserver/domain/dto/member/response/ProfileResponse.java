@@ -21,5 +21,6 @@ public class ProfileResponse {
     private int followingCnt;
 
     private int isFollowing;
+    private Long score;
 
 }

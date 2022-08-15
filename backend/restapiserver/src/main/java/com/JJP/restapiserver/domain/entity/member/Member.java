@@ -110,6 +110,9 @@ public class Member {
     @JsonManagedReference
     private List<MemberTag> memberTagList = new ArrayList<>();
 
+    @OneToOne(mappedBy = "member", cascade = CascadeType.ALL)
+    private MemberScore memberScore;
+
     public void updateRole(Role role) {
         this.role = role;
     }

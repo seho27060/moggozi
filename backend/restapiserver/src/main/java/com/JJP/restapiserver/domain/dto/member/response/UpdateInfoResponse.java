@@ -15,5 +15,5 @@ public class UpdateInfoResponse {
     private String userImg;
     private int isPrivate;
     private int isSocial;
-
+    private Long score;
 }

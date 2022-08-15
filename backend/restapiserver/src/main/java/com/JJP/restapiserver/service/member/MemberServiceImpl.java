@@ -280,6 +280,7 @@ public class MemberServiceImpl implements MemberService {
                 .userImg(member.getUser_img())
                 .isPrivate(member.getIs_private())
                 .isSocial(member.getIs_social())
+                .score(member.getMemberScore().getScore())
                 .build();
 
         return ResponseEntity.ok(updateInfoResponse);
@@ -317,6 +318,7 @@ public class MemberServiceImpl implements MemberService {
                 .followedCnt(followedCnt)
                 .followingCnt(followingCnt)
                 .isFollowing(followStatus)
+                .score(member.getMemberScore().getScore())
                 .build();
     }
 
@@ -357,7 +359,7 @@ public class MemberServiceImpl implements MemberService {
 
         if (user_id == -1L) {
             MemberScore memberScore = MemberScore.builder()
-                    .id(member.getId())
+                    .member(member)
                     .score(0L)
                     .build();
             memberScoreRepository.save(memberScore);
