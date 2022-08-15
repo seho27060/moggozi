@@ -25,45 +25,47 @@ const Challenges: React.FC = () => {
   const [loadedChallengeRankList, setLoadedChallengeRankList] = useState<
     ChallengeItemState[]
   >([]);
-  const [hasNext, setHasNext] = useState(0);
   const [recentIsLoading, setRecentIsLoading] = useState(true);
   const [loadedRecentChallengeList, setLoadedRecentChallengeList] = useState<
     ChallengeItemState[]
   >([]);
   const [pageIsLoading, setPageIsLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
+  const [hasNext, setHasNext] = useState(false);
 
   const handleScroll = useCallback((): void => {
     const { innerHeight } = window;
     const { scrollHeight } = document.body;
     const { scrollTop } = document.documentElement;
-
-    if (hasNext && Math.round(scrollTop + innerHeight) >= scrollHeight) {
+    console.log(hasNext);
+    console.log(Math.round(scrollTop + innerHeight));
+    console.log(scrollHeight);
+    if (hasNext && Math.round(scrollTop + innerHeight) >= scrollHeight - 100) {
       console.log(currentPage);
       setPageIsLoading(true);
       if (isLoggedIn) {
-        isLoginFetchRecentChallengeList(currentPage + 1, 5)
+        isLoginFetchRecentChallengeList(currentPage + 1, 10)
           .then((res) => {
             setLoadedRecentChallengeList(
               loadedRecentChallengeList.concat(res.content)
             );
             setCurrentPage(res.pageNum);
             setHasNext(res.hasNext);
-            setTimeout(() => setPageIsLoading(false), 300);
+            setTimeout(() => setPageIsLoading(false), 500);
           })
           .catch((err) => {
             console.log(err);
             setPageIsLoading(false);
           });
       } else {
-        fetchRecentChallengeList(currentPage + 1, 5)
+        fetchRecentChallengeList(currentPage + 1, 10)
           .then((res) => {
             setLoadedRecentChallengeList(
               loadedRecentChallengeList.concat(res.content)
             );
             setCurrentPage(res.pageNum);
             setHasNext(res.hasNext);
-            setTimeout(() => setPageIsLoading(false), 300);
+            setTimeout(() => setPageIsLoading(false), 500);
           })
           .catch((err) => {
             console.log(err);
@@ -96,7 +98,7 @@ const Challenges: React.FC = () => {
           setRankIsLoading(false);
         });
 
-      isLoginFetchRecentChallengeList(0, 5)
+      isLoginFetchRecentChallengeList(0, 10)
         .then((res) => {
           setLoadedRecentChallengeList(res.content);
           setHasNext(res.hasNext);
@@ -119,7 +121,7 @@ const Challenges: React.FC = () => {
           setRankIsLoading(false);
         });
 
-      fetchRecentChallengeList(0, 5)
+      fetchRecentChallengeList(0, 10)
         .then((res) => {
           setLoadedRecentChallengeList(res.content);
           setHasNext(res.hasNext);

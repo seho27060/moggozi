@@ -50,9 +50,9 @@ const PostStage: React.FC = () => {
     const { scrollHeight } = document.body;
     const { scrollTop } = document.documentElement;
 
-    if (hasNext && Math.round(scrollTop + innerHeight) >= scrollHeight) {
+    if (hasNext && Math.round(scrollTop + innerHeight) >= scrollHeight - 100) {
       setIsLoading(true);
-      postListRead(Number(stageId), currentPage + 1, 9)
+      postListRead(Number(stageId), currentPage + 1, 18)
         .then((res) => {
           console.log("포스팅 불러오기 성공", res.content);
           dispatch(postSet(postListState.concat(res.content)));
@@ -66,7 +66,7 @@ const PostStage: React.FC = () => {
           setIsLoading(false);
         });
     }
-  }, [currentPage, dispatch, stageId, postListState]);
+  }, [currentPage, dispatch, stageId, postListState, hasNext]);
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll, true);
@@ -87,7 +87,7 @@ const PostStage: React.FC = () => {
   useEffect(() => {
     setIsLoading(true);
     console.log(stageId, "번 스테이지의 포스팅을 불러옵니다.");
-    postListRead(Number(stageId), 0, 9)
+    postListRead(Number(stageId), 0, 18)
       .then((res) => {
         console.log("포스팅 불러오기 성공", res.content);
         dispatch(postSet(res.content));

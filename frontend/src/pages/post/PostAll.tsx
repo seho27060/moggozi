@@ -21,7 +21,7 @@ const PostAll: React.FC = () => {
   const [recentPostList, setRecentPostList] = useState<PostData[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
-  const [hasNext, setHasNext] = useState(0);
+  const [hasNext, setHasNext] = useState(false);
 
   const user = useSelector((state: RootState) => state.auth.userInfo);
   const { postModalOpen } = useSelector((state: RootState) => state.postModal);
@@ -40,7 +40,7 @@ const PostAll: React.FC = () => {
     const { scrollHeight } = document.body;
     const { scrollTop } = document.documentElement;
 
-    if (hasNext && Math.round(scrollTop + innerHeight) >= scrollHeight) {
+    if (hasNext && Math.round(scrollTop + innerHeight) >= scrollHeight - 100) {
       console.log(currentPage);
       setIsLoading(true);
 
