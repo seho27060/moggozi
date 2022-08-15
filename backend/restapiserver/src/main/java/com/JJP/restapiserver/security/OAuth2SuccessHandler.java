@@ -19,6 +19,7 @@ import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.persistence.EntityManager;
@@ -33,6 +34,7 @@ import java.util.Random;
 
 @Component
 @RequiredArgsConstructor
+@Transactional
 public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
 
     static final Logger logger = LoggerFactory.getLogger(OAuth2SuccessHandler.class);
