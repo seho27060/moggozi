@@ -28,6 +28,8 @@ const StageEdit: React.FC = () => {
   const [items, setItems] = useState<SortableItemProps[]>([]);
   const [isOrderEdit, setIsOrderEdit] = useState(false);
 
+  document.body.style.overflow = "auto"; //모달때문에 이상하게 스크롤이 안되서 강제로 스크롤 바 생성함
+  document.body.style.height = "auto";
   useEffect(() => {
     setIsLoading(true);
     fetchStages(Number(challengeId))
