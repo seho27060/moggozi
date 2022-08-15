@@ -9,8 +9,9 @@ import {
   commentModify,
   commentRemove,
   CommentSend,
+  // setCommentUpdateFormToggle,
 } from "../../store/comment";
-import { useRef, useState } from "react";
+import { Dispatch, MouseEvent, SetStateAction, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import { useDispatch } from "react-redux";
@@ -19,10 +20,11 @@ import { commentDelete, commentUpdate } from "../../lib/withTokenApi";
 interface Props {
   comment: Comment;
   postId: number | null;
+  setCommentUpdateFormToggle :Dispatch<SetStateAction<boolean>>
 }
 
 function CommentOptionBtn(props: Props): JSX.Element {
-  const { comment, postId } = props;
+  const { comment, postId,setCommentUpdateFormToggle } = props;
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -58,20 +60,10 @@ function CommentOptionBtn(props: Props): JSX.Element {
     writer: comment.writer,
     modifiedTime: comment.modifiedTime,
   };
-  const commentModifyHandler = (event: MouseEvent) => {
-    event.preventDefault();
-    commentSend.text = enteredComment.current!.value;
-    commentState.text = enteredComment.current!.value;
-    commentUpdate(comment.id, commentSend).then((res) => {
-      console.log("comment 수정완료", res);
-      dispatch(commentModify(commentState));
-    });
-    setIsFormToggle(!isFormToggle);
-    setIsToggle(!isToggle);
-  };
 
   const commentRemoveHandler = (event: MouseEvent) => {
     event.preventDefault();
+    console.log("remove comment",comment.id)
     commentDelete(comment.id).then((res) => {
       console.log(`${comment.id} 삭제 완료`, res);
       dispatch(commentRemove(comment.id));
@@ -117,8 +109,8 @@ function CommentOptionBtn(props: Props): JSX.Element {
         )} */}
         {userId === comment.writer!.id && (
           <MenuItem
-            onClick={() => {
-              return commentRemoveHandler;
+            onClick={(event:MouseEvent) => {
+               commentRemoveHandler(event)
             }}
           >
             삭제
@@ -128,17 +120,18 @@ function CommentOptionBtn(props: Props): JSX.Element {
           <div>
             <MenuItem
               onClick={() => {
-                setIsFormToggle(!isFormToggle);
+                // setIsFormToggle(!isFormToggle);
+                setCommentUpdateFormToggle(true)
+                handleClose()
               }}
             >
-              {!isFormToggle && "수정"}
+              {/* {!isFormToggle && "수정"} */}
+              수정
             </MenuItem>
-            {isFormToggle && (
+            {/* {isFormToggle && (
               <form>
                 <button
-                  onClick={() => {
-                    return commentModifyHandler;
-                  }}
+                  onClick={commentModifyHandler}
                 >
                   수정완료
                 </button>
@@ -150,7 +143,7 @@ function CommentOptionBtn(props: Props): JSX.Element {
                   defaultValue={comment.text!}
                 />
               </form>
-            )}
+            )} */}
           </div>
         )}
       </Menu>

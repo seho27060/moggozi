@@ -6,10 +6,15 @@ import styles from "./CommentChild.module.scss";
 import CommentOptionBtn from "./CommentOptionBtn";
 
 import { BsFillPersonFill } from "react-icons/bs"
+import { useState } from "react";
+import CommentUpdateForm from "./CommentUpdateForm";
 const CommentChild: React.FC<{ child: Comment }> = ({ child }) => {
+  
   const postId = useSelector(
     (state: RootState) => state.postModal.postModalState!.id
   );
+  const [commentUpdateFormToggle, setCommentUpdateFormToggle] = useState(false);
+
   return (
     <div className={styles.container}>
       <div className={styles.writer}>
@@ -33,11 +38,22 @@ const CommentChild: React.FC<{ child: Comment }> = ({ child }) => {
           <div>{child.writer?.nickname}</div>
         </div>
         <div className={styles.option}>
-          <CommentOptionBtn comment={child} postId={postId} />
+          <CommentOptionBtn comment={child} postId={postId} setCommentUpdateFormToggle={setCommentUpdateFormToggle}/>
         </div>
       </div>
       <div>
-        <div className={styles.comment}>{child.text}</div>
+        <div className={styles.comment}>
+          {/* {child.text} */}
+          {!commentUpdateFormToggle ? (
+            child.text
+          ) : (
+            <CommentUpdateForm
+              comment={child}
+              postId={postId}
+              setCommentUpdateFormToggle={setCommentUpdateFormToggle}
+            />
+          )}
+          </div>
         <div className={styles.date}>
           {child.modifiedTime?.toString().slice(0, 4)}년{" "}
           {child.modifiedTime?.toString().slice(6, 7)}월{" "}
