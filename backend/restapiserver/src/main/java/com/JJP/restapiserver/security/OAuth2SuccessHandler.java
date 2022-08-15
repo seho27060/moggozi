@@ -114,7 +114,6 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
 
         String jwtToken = jwtUtils.generateTokenFromUsername(username);
 
-
         String uri = UriComponentsBuilder.fromUriString(url)
                 .queryParam("accessToken", jwtToken)
                 .queryParam("isFirst", isFirst)
