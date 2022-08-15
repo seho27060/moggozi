@@ -100,15 +100,15 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
 
             memberRepository.saveAndFlush(newMember);
 
-            System.out.println("memberId++++++++++++++" + memberRepository.findByUsername(username).get().getId());
-            member = memberRepository.findByUsername(username);
-            System.out.println("memberId++++++++++++++2222222222" + member.get().getId());
+//            System.out.println("memberId++++++++++++++" + memberRepository.findByUsername(username).get().getId());
+//            member = memberRepository.findByUsername(username);
+//            System.out.println("memberId++++++++++++++2222222222" + member.get().getId());
             MemberScore memberScore = MemberScore.builder()
-                    .id(member.get().getId())
+                    .id(newMember.getId())
                     .score(0L)
                     .build();
-            System.out.println("generatedMemberScore++++++++++++++++++++++++++++++"  + memberScore.getId());
-            memberScoreRepository.save(memberScore);
+
+            memberScoreRepository.saveAndFlush(memberScore);
 
 
         } else {
