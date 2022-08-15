@@ -19,6 +19,7 @@ import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.persistence.EntityManager;
@@ -33,6 +34,7 @@ import java.util.Random;
 
 @Component
 @RequiredArgsConstructor
+@Transactional
 public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
 
     static final Logger logger = LoggerFactory.getLogger(OAuth2SuccessHandler.class);
@@ -102,14 +104,16 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
             Member newMember = Member.builder().username(username)
                     .fullname(fullname).nickname("User" + randomNo).password(password).is_social(1).role(role).build();
 
+            /**InvalidDataAccessApiUsageException: detached entity passed to persist, while saving through JPA repository
+             Tried but failed: Remove CASCADE.PERSIST, EntityManager...*/
             memberRepository.saveAndFlush(newMember);
-            member = memberRepository.findById(newMember.getId());
-            em.detach(member.get());
+            newMember = memberRepository.findByUsername(username).get();
 
             MemberScore memberScore = MemberScore.builder()
-                    .member(member.get())
+                    .member(newMember)
                     .score(0L)
                     .build();
+
             memberScoreRepository.save(memberScore);
 
 
