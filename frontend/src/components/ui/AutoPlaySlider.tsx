@@ -8,13 +8,13 @@ interface autoProps extends Props{
 const AutoPlaySlider = (props: autoProps) => {
   const settings = {
     infinite: true,
-    slidesToShow: 3,
+    slidesToShow: 8,
     slidesToScroll: 1,
     autoplay: true,
-    speed: 4000,
-    autoplaySpeed: 4000,
+    speed: 6000,
+    autoplaySpeed: 0,
     cssEase: "linear",
-    rtl:(props.rtl === 0 ? true : false)
+    rtl:(props.rtl % 2 === 1 ? true : false)
   };
 
   return (
