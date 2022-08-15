@@ -98,18 +98,19 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
             Member newMember = Member.builder().username(username)
                     .fullname(fullname).nickname("User" + randomNo).password(password).is_social(1).role(role).build();
 
-            Member savedMember = memberRepository.save(newMember);
+            Member savedMember = memberRepository.saveAndFlush(newMember);
 
             System.out.println("newMemberId++++++++++++++++++++++++" + savedMember.getId());
 
-            Long id = newMember.getId();
+            memberScoreRepository.save(new MemberScore(savedMember.getId(), 0L));
 
-            MemberScore memberScore = MemberScore.builder()
-                    .id(savedMember.getId())
-                    .score(0L)
-                    .build();
+//            MemberScore memberScore = MemberScore.builder()
+//                    .id(savedMember.getId())
+//                    .score(0L)
+//                    .build();
 
-            memberScoreRepository.save(memberScore);
+//            if(memberScoreRepository.findById(savedMember.getId()).isEmpty())
+//                memberScoreRepository.save(memberScore);
 
         } else {
             nickname = member.get().getNickname(); /** TODO: 추후 리팩토링 시 삭제 필요 */
