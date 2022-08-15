@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { stageImgFetchAPI } from "../../lib/imgApi";
 import { postListRead, stageMyPostRead } from "../../lib/withTokenApi";
-import { postSet,setCheckedPost } from "../../store/post";
+import { postSet, setCheckedPost } from "../../store/post";
 import {
   setModalPostState,
   setPostFormButtonState,
@@ -24,12 +24,15 @@ const StageItem: React.FC<{
   stage: StageState;
   index: number;
   challengeProgress: number;
-}> = ({ stage, index, challengeProgress }) => {
+  challengeState: number;
+}> = ({ stage, index, challengeProgress, challengeState }) => {
   document.body.style.overflow = "auto"; //모달때문에 이상하게 스크롤이 안되서 강제로 스크롤 바 생성함
 
   const dispatch = useDispatch();
   // const [postStageListState, setPostStageListState] = useState<PostData[]>([]);
-  const postStageListState = useSelector((state: RootState) => state.post.posts);
+  const postStageListState = useSelector(
+    (state: RootState) => state.post.posts
+  );
   const [getStageImg, setStageImg] = useState<imgState[]>([]);
   const checkedPost = useSelector((state: RootState) => state.post.checkedPost);
 
@@ -80,11 +83,13 @@ const StageItem: React.FC<{
       .catch((err) => {
         console.log("ERR", err);
       });
-    stageMyPostRead(Number(stage.id)).then((res) => {
-      console.log("사용자 스테이지 포스팅유무", res);
-      dispatch(setCheckedPost(res))
-    }).catch((err) => console.log("err",err))
-  }, [dispatch, stage.id,setCheckedPost]);
+    stageMyPostRead(Number(stage.id))
+      .then((res) => {
+        console.log("사용자 스테이지 포스팅유무", res);
+        dispatch(setCheckedPost(res));
+      })
+      .catch((err) => console.log("err", err));
+  }, [dispatch, stage.id, setCheckedPost]);
 
   return (
     <div>
@@ -134,7 +139,7 @@ const StageItem: React.FC<{
               ) : (
                 <button
                   onClick={() => {
-                    console.log("checkedpost",checkedPost)
+                    console.log("checkedpost", checkedPost);
                     dispatch(setModalPostState(checkedPost));
                     dispatch(setPostModalOpen(true));
                   }}
@@ -145,15 +150,20 @@ const StageItem: React.FC<{
             </div>
           )}
       </div>
+      {challengeState === 1 && (
+        <div>
+          <div className={styles.horizon}></div>
 
-      <div className={styles.horizon}></div>
+          <div className={styles.postTitle}>
+            <div>포스트</div>
+            <Link to={`/post/${stage.id}`}>더보기</Link>
+          </div>
 
-      <div className={styles.postTitle}>
-        <div>포스트</div>
-        <Link to={`/post/${stage.id}`}>더보기</Link>
-      </div>
-
-      <div>{postStageListState && <PostList posts={postStageListState} />}</div>
+          <div>
+            {postStageListState && <PostList posts={postStageListState} />}
+          </div>
+        </div>
+      )}
     </div>
   );
 };
