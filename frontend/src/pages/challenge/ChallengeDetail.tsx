@@ -39,6 +39,8 @@ import ChallengeOptionBtn from "../../components/ui/ChallengeOptionBtn";
 import Loader from "../../components/ui/Loader";
 
 const ChallengeDetail: React.FC = () => {
+  document.body.style.overflow = "auto"; //모달때문에 이상하게 스크롤이 안되서 강제로 스크롤 바 생성함
+  document.body.style.height = "auto";
   const navigate = useNavigate();
 
   const { id } = useParams();

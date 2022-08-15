@@ -12,7 +12,7 @@ import ReactQuill from "react-quill";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { storageService } from "../../fbase/fbase";
 import { stageDetail } from "../../lib/generalApi";
-import { style } from "@mui/system";
+// import { style } from "@mui/system";
 
 const PostForm: React.FC<{
   stageId: number;
@@ -42,7 +42,7 @@ const PostForm: React.FC<{
     event.preventDefault();
     PostData.title = titleInputRef.current!.value;
     PostData.content = contentInputRef.current!.value;
-    console.log(PostData);
+    console.log("입력된 포스트 데이터", PostData);
     postAdd(PostData)
       .then((res) => {
         const postId = Number(res);
@@ -61,16 +61,15 @@ const PostForm: React.FC<{
                       );
                     })
                     .catch((err) => console.log("이미지 db에 저장 실패", err));
-                  modalClose();
                 })
                 .catch((err) => console.log("이미지 url 가져오기 실패", err));
               setPreviewImage("");
             })
             .catch((err) => console.log("이미지 firestore에 업로드 실패", err));
         } else {
-          dispatch(postRegister(PostData));
-          modalClose();
+          dispatch(postRegister({ ...PostData, postImg: [{ path: [] }] }));
         }
+        modalClose();
       })
       .catch((err) => console.log("포스팅 실패", err));
   };

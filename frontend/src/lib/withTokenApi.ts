@@ -367,9 +367,9 @@ export const postRandomRead = async (size: number) => {
   return data;
 };
 
-export const postLike = async (postId: number) => {
+export const postLike = async (post_Id: number) => {
   const { data } = await withTokenApi.post(`/postlike/like`, {
-    postId: postId,
+    postId: post_Id,
   });
   return data;
 };

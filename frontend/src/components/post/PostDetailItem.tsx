@@ -15,6 +15,7 @@ import PostOptionBtn from "./PostOptionBtn";
 import Dompurify from "dompurify";
 import styles from "./PostDetailItem.module.scss";
 import "react-quill/dist/quill.snow.css";
+import { BsFillPersonFill } from "react-icons/bs"
 
 const PostDetailItem: React.FC<{}> = () => {
   const dispatch = useDispatch();
@@ -62,9 +63,9 @@ const PostDetailItem: React.FC<{}> = () => {
             {post.postModalState!.writer?.img ? (
               <img src={post.postModalState!.writer?.img} alt="" />
             ) : (
-              <img
-                src="https://blog.kakaocdn.net/dn/vckff/btqCjeJmBHM/tMVpe4aUIMfH4nKS4aO3tK/img.jpg"
-                alt=""
+              <BsFillPersonFill
+                // src="https://blog.kakaocdn.net/dn/vckff/btqCjeJmBHM/tMVpe4aUIMfH4nKS4aO3tK/img.jpg"
+                // alt=""
                 style={{ height: "50px", width: "50px" }}
               />
             )}

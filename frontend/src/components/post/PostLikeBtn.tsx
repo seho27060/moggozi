@@ -8,28 +8,27 @@ import { PostData, postModify } from "../../store/post";
 import { Alert } from "../../store/alert";
 import { WebSocketContext } from "../../lib/WebSocketProvider";
 
-import styles from "./PostLikeBtn.module.scss"
-import FavoriteIcon from '@mui/icons-material/Favorite';
+import styles from "./PostLikeBtn.module.scss";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import { useNavigate } from "react-router-dom";
 
 const PostLikeBtn = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const ws = useContext(WebSocketContext);
   const postModal = useSelector((state: RootState) => state.postModal);
-  const liked = postModal.postModalState.liked;
-  const userInfo = useSelector((state: RootState) => state.auth.userInfo);
-  let likeNum = postModal.postModalState.likeNum!;
+  const user = useSelector((state: RootState) => state.auth);
 
   const postLikeHandler = (event: MouseEvent) => {
-    if (userInfo.id) {
-      if (liked) {
-        likeNum -= 1;
-      } else {
-        likeNum += 1;
-      }
-      event.preventDefault();
+    event.preventDefault();
+    if (user.isLoggedIn && !postModal.postModalState.liked) {
       console.log(postModal);
       postLike(postModal.postModalState.id).then((res) => {
-        console.log(postModal.postModalState.id, `${!liked} 완료`, res);
+        console.log(
+          postModal.postModalState.id,
+          `${!postModal.postModalState.liked} 완료`,
+          res
+        );
         const modifiedModalPost: PostData = {
           id: postModal.postModalState!.id!,
           title: postModal.postModalState!.title,
@@ -38,8 +37,8 @@ const PostLikeBtn = () => {
           createdTime: postModal.postModalState!.createdTime,
           modifiedTime: postModal.postModalState!.modifiedTime,
           writer: postModal.postModalState!.writer,
-          liked: !liked,
-          likeNum: likeNum,
+          liked: !postModal.postModalState.liked,
+          likeNum: postModal.postModalState!.likeNum! + 1,
         };
         dispatch(postModify(modifiedModalPost));
         dispatch(setModalPostState(modifiedModalPost));
@@ -52,20 +51,37 @@ const PostLikeBtn = () => {
           message: "post",
           receiverId: postModal.postModalState!.writer!.id!.toString(),
           receiverName: postModal.postModalState!.writer!.nickname!.toString(),
-          senderId: userInfo.id!.toString(),
-          senderName: userInfo.nickname!.toString(),
+          senderId: user.userInfo.id!.toString(),
+          senderName: user.userInfo.nickname!.toString(),
           type: "post",
         };
-        if (postModal.postModalState!.writer!.id! !== userInfo.id! && !liked) {
+        if (postModal.postModalState!.writer!.id! !== user.userInfo.id!) {
           ws.current.send(JSON.stringify(jsonSend));
         }
       });
+    } else {
+      if (!user.isLoggedIn) {
+        alert("로그인 후 이용 가능합니다.");
+        navigate("/");
+      } else {
+        alert("이미 좋아요한 포스팅입니다.")
+      }
     }
   };
 
   return (
     <div>
-      <div onClick={postLikeHandler}>{liked ? <div className={styles.like}><FavoriteIcon /></div> : <div className={styles.unlike}><FavoriteIcon /></div>}</div>
+      <div >
+        {postModal.postModalState.liked ? (
+          <div className={styles.like} onClick={postLikeHandler}>
+            <FavoriteIcon />
+          </div>
+        ) : (
+          <div className={styles.unlike} onClick={postLikeHandler}>
+            <FavoriteIcon />
+          </div>
+        )}
+      </div>
     </div>
   );
 };

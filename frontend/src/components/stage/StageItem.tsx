@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { stageImgFetchAPI } from "../../lib/imgApi";
 import { postListRead, stageMyPostRead } from "../../lib/withTokenApi";
-import { PostData } from "../../store/post";
+import { postSet,setCheckedPost } from "../../store/post";
 import {
   setModalPostState,
   setPostFormButtonState,
@@ -28,9 +28,10 @@ const StageItem: React.FC<{
   document.body.style.overflow = "auto"; //모달때문에 이상하게 스크롤이 안되서 강제로 스크롤 바 생성함
 
   const dispatch = useDispatch();
-  const [postStageListState, setPostStageListState] = useState<PostData[]>([]);
+  // const [postStageListState, setPostStageListState] = useState<PostData[]>([]);
+  const postStageListState = useSelector((state: RootState) => state.post.posts);
   const [getStageImg, setStageImg] = useState<imgState[]>([]);
-  const [checkedPost, setCheckedPost] = useState<PostData | number>(-1);
+  const checkedPost = useSelector((state: RootState) => state.post.checkedPost);
 
   // const [getStageProgress, setStageProgress] = useState(0);
   const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
@@ -72,7 +73,8 @@ const StageItem: React.FC<{
     postListRead(Number(stage.id), 0, 3)
       .then((res) => {
         console.log("포스팅 불러오기 성공", res.content);
-        setPostStageListState(res.content);
+        // setPostStageListState(res.content);
+        dispatch(postSet(res.content));
         dispatch(setPostFormButtonState(true));
       })
       .catch((err) => {
@@ -80,7 +82,7 @@ const StageItem: React.FC<{
       });
     stageMyPostRead(Number(stage.id)).then((res) => {
       console.log("사용자 스테이지 포스팅유무", res);
-      setCheckedPost(res);
+      dispatch(setCheckedPost(res))
     });
   }, [dispatch, stage.id]);
 

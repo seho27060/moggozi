@@ -9,6 +9,9 @@ import CommentOptionBtn from "./CommentOptionBtn";
 
 import styles from "./CommentItem.module.scss";
 import { useState } from "react";
+
+import { BsFillPersonFill } from "react-icons/bs"
+
 // 댓글 컴포넌트
 // 현재 스테이트에 불러들인 comment 리스트 가져오기
 
@@ -47,10 +50,10 @@ const CommentItem: React.FC<{
               style={{ height: "50px", width: "50px" }}
             />
           ) : (
-            <img
+            <BsFillPersonFill
               className={styles.img}
-              src="https://blog.kakaocdn.net/dn/vckff/btqCjeJmBHM/tMVpe4aUIMfH4nKS4aO3tK/img.jpg"
-              alt=""
+              // src="https://blog.kakaocdn.net/dn/vckff/btqCjeJmBHM/tMVpe4aUIMfH4nKS4aO3tK/img.jpg"
+              // alt=""
               style={{ height: "50px", width: "50px" }}
             />
           )}
