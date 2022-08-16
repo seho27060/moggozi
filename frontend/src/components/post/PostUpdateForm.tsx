@@ -33,6 +33,7 @@ const PostUpdateForm: React.FC<{}> = () => {
   const [file, setFile] = useState<File>();
   const [previewImage, setPreviewImage] = useState("");
   const [fileName, setFileName] = useState("");
+  const [checkModifyToggle, setCheckModifyToggle] = useState(false);
 
   const postingUpdateHandler = (event: MouseEvent) => {
     event.preventDefault();
@@ -90,6 +91,8 @@ const PostUpdateForm: React.FC<{}> = () => {
       .catch((err) => {
         console.log("err", err);
       });
+
+  setCheckModifyToggle(false)
   };
 
   // 이미지 로드
@@ -177,9 +180,24 @@ const PostUpdateForm: React.FC<{}> = () => {
             margin: "0.3rem 1rem 0 0",
           }}
         >
-          <button onClick={postingUpdateHandler} style={{ width: "4rem" }}>
-            수정하기
-          </button>
+          {!checkModifyToggle && (
+            <button
+              onClick={() => {
+                setCheckModifyToggle(true);
+              }}
+              style={{ width: "4rem", margin:"10px 2rem"}}
+            >
+              수정하기
+            </button>
+          )}
+          {checkModifyToggle && (
+            <div>
+              <button onClick={postingUpdateHandler} style={{ width: "4rem", margin:"10px 5px 10px 5px" }}>
+                수정완료
+              </button>
+              <button onClick={() => {setCheckModifyToggle(false); }} style={{ width: "4rem" }}>취소</button>
+            </div>
+          )}
         </div>
       </form>
     </div>

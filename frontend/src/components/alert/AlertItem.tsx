@@ -4,7 +4,7 @@ import { alertRead, postRead } from "../../lib/withTokenApi";
 import { Alert } from "../../store/alert";
 import { PostData } from "../../store/post";
 import {
-  setAlertModalPostState,
+  // setAlertModalPostState,/
   setAlertPostModalOpen,
   setModalPostState,
   setPostModalOpen,

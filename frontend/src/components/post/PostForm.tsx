@@ -77,13 +77,13 @@ const PostForm: React.FC<{
                           postImg: [{ path: res }],
                         })
                       );
-
-                      dispatch(
-                        setCheckedPost({
-                          ...PostData,
-                          postImg: [{ path: res }],
-                        })
-                      );
+                      alert("포스팅이 등록되었습니다.")
+                      // dispatch(
+                      //   setCheckedPost({
+                      //     ...PostData,
+                      //     postImg: [{ path: res }],
+                      //   })
+                      // );
                     })
                     .catch((err) => console.log("이미지 db에 저장 실패", err));
                 })
@@ -106,6 +106,7 @@ const PostForm: React.FC<{
           dispatch(postRegister({ ...newPostData, postImg: [{ path: [] }] }));
           dispatch(setCheckedPost({ ...newPostData, postImg: [{ path: [] }] }));
         }
+        alert("포스팅이 등록되었습니다.")
         modalClose();
       })
       .catch((err) => console.log("포스팅 실패", err));
