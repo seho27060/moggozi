@@ -31,9 +31,9 @@ public class ReviewController {
     }
 
     @GetMapping("/{challenge_id}")
-    public ResponseEntity getReviewList(@PathVariable Long challenge_id, Pageable pageable)
+    public ResponseEntity getReviewList(@PathVariable Long challenge_id)
     {
-        ReviewResponsePageDto reviewList = reviewService.getReviewList(challenge_id, pageable);
+        List<ReviewResponseDto> reviewList = reviewService.getReviewList(challenge_id);
         return new ResponseEntity(reviewList, HttpStatus.OK);
     }
 

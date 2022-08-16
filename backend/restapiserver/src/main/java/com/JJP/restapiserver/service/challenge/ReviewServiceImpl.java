@@ -4,6 +4,7 @@ import com.JJP.restapiserver.domain.dto.challenge.ReviewRequestDto;
 import com.JJP.restapiserver.domain.dto.challenge.ReviewResponseDto;
 import com.JJP.restapiserver.domain.dto.challenge.ReviewResponsePageDto;
 import com.JJP.restapiserver.domain.dto.challenge.ReviewUpdateRequestDto;
+import com.JJP.restapiserver.domain.entity.challenge.Challenge;
 import com.JJP.restapiserver.domain.entity.challenge.Review;
 import com.JJP.restapiserver.repository.challenge.ChallengeRepository;
 import com.JJP.restapiserver.repository.member.MemberRepository;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -63,6 +65,15 @@ public class ReviewServiceImpl implements ReviewService{
                 .hasNext(result.hasNext())
                 .build();
         return reviewResponsePageDto;
+    }
+
+    @Override
+    public List<ReviewResponseDto> getReviewList(Long challenge_id) {
+        Challenge challenge = challengeRepository.getById(challenge_id);
+        List<Review> reviewList = challenge.getReviewList();
+        List<ReviewResponseDto> reviewResponseDtoList = reviewList.stream().map(o -> new ReviewResponseDto(o)).collect(Collectors.toList());
+
+        return reviewResponseDtoList;
     }
 
     @Override
