@@ -9,6 +9,7 @@ import banner2 from "../../asset/banner/002.png"
 import banner3 from "../../asset/banner/003.png"
 import banner4 from "../../asset/banner/004.png"
 import banner5 from "../../asset/banner/005.png"
+import banner6 from "../../asset/banner/006.png"
 import styles from "./MainSlider.module.scss"
 
 import "slick-carousel/slick/slick.css";
@@ -66,10 +67,10 @@ const MainSlider = (
         </div>
       <Slider {...settings} className={styles.img}>
         {/* 메인 배너 들어갈 자리 */}
-        <div onClick={() => {navigate("/user/4")}}>
+        <div onClick={() => {navigate("/about")}}>
           <img src={banner1} alt="" />
         </div>
-        <div>
+        <div onClick={() => {navigate("/mainnotice")}}>
           <img src={banner2} alt="" />
         </div>
         <div>
@@ -80,6 +81,9 @@ const MainSlider = (
         </a>
         <div>
           <img src={banner5} alt="" />
+        </div>
+        <div>
+          <img src={banner6} alt="" />
         </div>
       </Slider>
     </div>

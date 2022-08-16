@@ -1,0 +1,339 @@
+@use "../styles/mixin.scss" as mixin;
+
+@include mixin.desktop {
+  .container {
+    display: flex;
+    justify-content: center;
+
+
+    .notice {
+      width: 992px;
+
+      .odd {
+        display: flex;
+        justify-content: flex-end;
+        div {
+          text-align: right;
+        }
+      }
+
+
+      .image1 {
+        display: flex;
+        justify-content: center;
+        margin: 100px 0 0 0;
+
+        img {
+          width: 650px;
+          height: auto;
+        }
+      }
+
+
+      .sentence1 {
+        margin: 100px 0 0 0;
+        div:nth-child(1) {
+          font-size: 35px;
+          font-weight: 700;
+          margin: 0 0 60px 0;
+        }
+        div:nth-child(2) {
+          font-size: 23px;
+          font-weight: 500;
+          margin: 0 0 60px 0;
+
+        }
+        div:nth-child(3) {
+          font-size: 23px;
+          font-weight: 500;
+          margin: 0 0 0px 0;
+        }
+      }
+
+      .image2 {
+        display: flex;
+        justify-content: center;
+        margin: 200px 0 0 0;
+
+        img {
+          width: 550px;
+          height: auto;
+        }
+      }
+
+      .sentence2 {
+        margin: 50px 0 0 0;
+        div:nth-child(1) {
+          font-size: 35px;
+          font-weight: 700;
+          margin: 0 0 30px 0;
+        }
+        div:nth-child(2) {
+          font-size: 23px;
+          font-weight: 500;
+          margin: 0 0 30px 0;
+
+        }
+        div:nth-child(3) {
+          font-size: 23px;
+          font-weight: 500;
+          margin: 0 0 30px 0;
+        }
+        div:nth-child(4) {
+          font-size: 23px;
+          font-weight: 500;
+          margin: 0 0 30px 0;
+        }
+        div:nth-child(5) {
+          font-size: 23px;
+          font-weight: 500;
+          margin: 0 0 300px 0;
+        }
+      }
+
+
+      .image3 {
+        display: flex;
+        justify-content: center;
+        margin: 200px 0 0 0;
+
+        img {
+          width: 550px;
+          height: auto;
+        }
+      }
+
+      .sentence3 {
+        margin: 50px 0 0 0;
+        div:nth-child(1) {
+          font-size: 35px;
+          font-weight: 700;
+          margin: 0 0 30px 0;
+        }
+        div:nth-child(2) {
+          font-size: 23px;
+          font-weight: 500;
+          margin: 0 0 30px 0;
+
+        }
+        div:nth-child(3) {
+          font-size: 23px;
+          font-weight: 500;
+          margin: 0 0 30px 0;
+        }
+        div:nth-child(4) {
+          font-size: 23px;
+          font-weight: 500;
+          margin: 0 0 30px 0;
+        }
+        div:nth-child(5) {
+          font-size: 23px;
+          font-weight: 500;
+          margin: 0 0 250px 0;
+        }
+      }
+
+
+      .image4 {
+        display: flex;
+        justify-content: center;
+        margin: 200px 0 0 0;
+
+        img {
+          width: 550px;
+          height: auto;
+        }
+      }
+
+      .sentence4 {
+        margin: 50px 0 0 0;
+        div:nth-child(1) {
+          font-size: 35px;
+          font-weight: 700;
+          margin: 0 0 30px 0;
+        }
+        div:nth-child(2) {
+          font-size: 23px;
+          font-weight: 500;
+          margin: 0 0 30px 0;
+
+        }
+        div:nth-child(3) {
+          font-size: 23px;
+          font-weight: 500;
+          margin: 0 0 30px 0;
+        }
+        div:nth-child(4) {
+          font-size: 23px;
+          font-weight: 500;
+          margin: 0 0 250px 0;
+        }
+      }
+
+      .image5 {
+        display: flex;
+        justify-content: center;
+        margin: 200px 0 0 0;
+
+        img {
+          width: 550px;
+          height: auto;
+        }
+      }
+
+      .sentence5 {
+        margin: 50px 0 0 0;
+        div:nth-child(1) {
+          font-size: 35px;
+          font-weight: 700;
+          margin: 0 0 30px 0;
+        }
+        div:nth-child(2) {
+          font-size: 23px;
+          font-weight: 500;
+          margin: 0 0 30px 0;
+
+        }
+        div:nth-child(3) {
+          font-size: 23px;
+          font-weight: 500;
+          margin: 0 0 30px 0;
+        }
+        div:nth-child(4) {
+          font-size: 23px;
+          font-weight: 500;
+          margin: 0 0 250px 0;
+        }
+      }
+
+
+      .image6 {
+        display: flex;
+        justify-content: center;
+        margin: 200px 0 0 0;
+
+        img {
+          width: 550px;
+          height: auto;
+        }
+      }
+
+      .sentence6 {
+        margin: 50px 0 0 0;
+        div:nth-child(1) {
+          font-size: 35px;
+          font-weight: 700;
+          margin: 0 0 30px 0;
+        }
+        div:nth-child(2) {
+          font-size: 23px;
+          font-weight: 500;
+          margin: 0 0 30px 0;
+
+        }
+        div:nth-child(3) {
+          font-size: 23px;
+          font-weight: 500;
+          margin: 0 0 30px 0;
+        }
+        div:nth-child(4) {
+          font-size: 23px;
+          font-weight: 500;
+          margin: 0 0 250px 0;
+        }
+      }
+
+
+
+      .image7 {
+        display: flex;
+        justify-content: center;
+        margin: 200px 0 0 0;
+
+        img {
+          width: 550px;
+          height: auto;
+        }
+      }
+
+      .sentence7 {
+        margin: 50px 0 0 0;
+        div:nth-child(1) {
+          font-size: 35px;
+          font-weight: 700;
+          margin: 0 0 30px 0;
+        }
+        div:nth-child(2) {
+          font-size: 23px;
+          font-weight: 500;
+          margin: 0 0 30px 0;
+
+        }
+        div:nth-child(3) {
+          font-size: 23px;
+          font-weight: 500;
+          margin: 0 0 30px 0;
+        }
+        div:nth-child(4) {
+          font-size: 23px;
+          font-weight: 500;
+          margin: 0 0 30px 0;
+        }
+        div:nth-child(5) {
+          font-size: 23px;
+          font-weight: 500;
+          margin: 0 0 250px 0;
+        }
+      }
+
+
+      .image8 {
+        display: flex;
+        justify-content: center;
+        margin: 200px 0 0 0;
+
+        img {
+          width: 550px;
+          height: auto;
+        }
+      }
+
+      .sentence8 {
+        margin: 50px 0 0 0;
+        div:nth-child(1) {
+          font-size: 35px;
+          font-weight: 700;
+          margin: 0 0 30px 0;
+        }
+        div:nth-child(2) {
+          font-size: 23px;
+          font-weight: 500;
+          margin: 0 0 30px 0;
+
+        }
+        div:nth-child(3) {
+          font-size: 23px;
+          font-weight: 500;
+          margin: 0 0 30px 0;
+        }
+        div:nth-child(4) {
+          font-size: 23px;
+          font-weight: 500;
+          margin: 0 0 500px 0;
+        }
+      }
+    }
+  }
+
+  .top {
+    display: inline-block;
+    position: fixed;
+    bottom: 40px;
+    right: 40px;
+    svg {
+      font-size: 70px;
+      cursor: pointer;
+    }
+
+  }
+}
