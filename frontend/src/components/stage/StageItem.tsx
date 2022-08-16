@@ -17,8 +17,9 @@ import Carousel from "../ui/Slider";
 import styles from "./StageItem.module.scss";
 import "./Carousel.module.scss";
 import PostList from "../post/PostList";
-import no_image from "../../asset/no_image.png"
+import no_image from "../../asset/no_image.png";
 import Dompurify from "dompurify";
+import Loader from "../ui/Loader";
 
 const StageItem: React.FC<{
   stage: StageState;
@@ -42,12 +43,15 @@ const StageItem: React.FC<{
   const { postFormButtonOpen } = useSelector(
     (state: RootState) => state.postModal
   );
+  const [isLoading, setIsLoading] = useState(true);
 
   // 스테이지 사진
   useEffect(() => {
+    setIsLoading(true);
     stageImgFetchAPI(stage.id!)
       .then((res) => {
         setStageImg(res);
+        setIsLoading(false);
       })
       .catch((err) => {
         console.log(err);
@@ -75,19 +79,19 @@ const StageItem: React.FC<{
     <div>
       <div className={styles.stageInfo}>
         <div className={styles.carousel}>
-          <Carousel>
-            {/* 여기서 map으로 div태그 안에 이미지 출력하면 된다. 밑의 3개는 임시 사진.*/}
-            {Array.isArray(getStageImg) && getStageImg.length !== 0 ? (
-              getStageImg.map((img) => {
-                return <img key={img.id!} src={img.url!} alt="" />;
-              })
-            ) : (
-              <img
-                src={no_image}
-                alt=""
-              />
-            )}
-          </Carousel>
+          {isLoading ? (
+            <Loader />
+          ) : (
+            <Carousel>
+              {Array.isArray(getStageImg) && getStageImg.length !== 0 ? (
+                getStageImg.map((img) => {
+                  return <img key={img.id!} src={img.url!} alt="" />;
+                })
+              ) : (
+                <img src={no_image} alt="" />
+              )}
+            </Carousel>
+          )}
         </div>
         <div className={styles.content}>
           <div>{index + 1}단계</div>
