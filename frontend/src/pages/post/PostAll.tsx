@@ -10,7 +10,8 @@ import { fetchPostLikeList, fetchPostRecentList } from "../../lib/withTokenApi";
 import { PostData } from "../../store/post";
 import {
   // setPostFormModalOpen,
-  setPostModalOpen, setPostUpdateFormState,
+  setPostModalOpen,
+  setPostUpdateFormState,
   // setPostUpdateFormState,
 } from "../../store/postModal";
 import { RootState } from "../../store/store";
@@ -26,7 +27,9 @@ const PostAll: React.FC = () => {
   const [hasNext, setHasNext] = useState(false);
 
   const user = useSelector((state: RootState) => state.auth.userInfo);
-  const { postModalOpen,postUpdateFormOpen } = useSelector((state: RootState) => state.postModal);
+  const { postModalOpen, postUpdateFormOpen } = useSelector(
+    (state: RootState) => state.postModal
+  );
 
   const closePostModal = () => {
     dispatch(setPostModalOpen(false));
@@ -103,16 +106,16 @@ const PostAll: React.FC = () => {
               <PostDetailItem />
             </PostModal>
           )} */}
-          {(postModalOpen && !postUpdateFormOpen) &&(
-          <PostModal open={postModalOpen} close={closePostModal}>
-            <PostDetailItem />
-          </PostModal>
-        )}
-        {(postModalOpen && postUpdateFormOpen) && (
-          <PostFormModal open={postModalOpen} close={closePostModal}>
-            <PostUpdateForm />
-          </PostFormModal>
-        )}
+          {postModalOpen && !postUpdateFormOpen && (
+            <PostModal open={postModalOpen} close={closePostModal}>
+              <PostDetailItem />
+            </PostModal>
+          )}
+          {postModalOpen && postUpdateFormOpen && (
+            <PostFormModal open={postModalOpen} close={closePostModal}>
+              <PostUpdateForm />
+            </PostFormModal>
+          )}
         </div>
       </div>
       {isLoading && <Loader />}
