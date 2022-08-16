@@ -124,6 +124,10 @@ public class MemberServiceImpl implements MemberService {
         if (member.isEmpty()) {
             return ResponseEntity.badRequest().body(new MessageResponse("Error: User doesn't exist."));
         }
+
+        if(updateUserRequest.getIntroduce().length() > 150)
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: Introduce is too long"));
+
         String username = updateUserRequest.getUsername();
         String fullname = updateUserRequest.getFullname();
         String nickname = updateUserRequest.getNickname();
@@ -132,7 +136,7 @@ public class MemberServiceImpl implements MemberService {
         int is_private = updateUserRequest.getIsPrivate();
         int is_social = member.get().getIs_social();
 
-        if (memberRepository.existsByNickname(nickname) && !nickname.equals(member.get().getNickname())) {
+        if (memberRepository.existsByNickname(nickname)) {
             return ResponseEntity.badRequest().body(new MessageResponse("Error: Written Nickname already exists."));
         }
 
