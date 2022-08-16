@@ -15,6 +15,7 @@ import ReactQuill from "react-quill";
 import styles from "./PostUpdateForm.module.scss";
 import { storageService } from "../../fbase/fbase";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { modifyUserPagePostList } from "../../store/userPage";
 // 생성폼 -> <PostUpdateForm post = {null}/>
 // 수정폼 -> <PostForm post = {수정할려는 포스트 데이터}/>
 
@@ -67,6 +68,8 @@ const PostUpdateForm: React.FC<{}> = () => {
               postImgApi(PostUpdateData.postId!, res).then((res) => {
                 console.log("post 수정완료", res);
                 dispatch(postModify(modifiedModalPost));
+                // 
+                dispatch(modifyUserPagePostList(modifiedModalPost))
                 dispatch(setPostUpdateFormState(false));
                 dispatch(setModalPostState(modifiedModalPost));
                 dispatch(setCheckedPost(modifiedModalPost));
@@ -77,6 +80,8 @@ const PostUpdateForm: React.FC<{}> = () => {
         } else {
           console.log("post 수정완료", res);
           dispatch(postModify(modifiedModalPost));
+          dispatch(modifyUserPagePostList(modifiedModalPost))
+
           dispatch(setPostUpdateFormState(false));
           dispatch(setModalPostState(modifiedModalPost));
           dispatch(setCheckedPost(modifiedModalPost));
