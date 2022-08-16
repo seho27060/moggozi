@@ -194,6 +194,7 @@
         height: 42px;
         font-weight: 400;
         font-size: 12px;
+        cursor: pointer;
       }
 
       .explain {
@@ -277,8 +278,9 @@
     }
 
     .submit {
+      cursor: pointer;
       margin: 0px;
-      margin-left: 134px;
+      margin-left: 129px;
       border: 1px solid mixin.$mainColor;
       border-radius: 5px;
       font-weight: 500;
@@ -288,6 +290,12 @@
       background-color: #fff;;
       width: 297px;
       height: 40px;
+      transition: all 0.5s;
+
+      &:hover {
+        color: #fff;
+        background: mixin.$mainColor;
+      }
     }
 
   }
