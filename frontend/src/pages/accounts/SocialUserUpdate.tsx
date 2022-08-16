@@ -60,9 +60,13 @@ const SocialUserUpdate: React.FC = () => {
       setOpenModal(true)
       return
     } else {
-      updateUserApi(userId, option);
-      setContent("회원정보 수정이 완료되었습니다.")
-      setOpenCompleteModal(true)
+      updateUserApi(userId, option).then((res) => {
+        setContent("회원정보 수정이 완료되었습니다.")
+        setOpenCompleteModal(true)
+      }).catch((err) => {
+        setContent("닉네임 중복을 확인해주세요!")
+        setOpenModal(true)
+      })
     }
   }
 
@@ -82,6 +86,8 @@ const SocialUserUpdate: React.FC = () => {
   }
 
   useEffect(() => {
+    document.body.style.overflow = 'unset';
+
     if (isLoggedIn) {
       userDetail().then((res) => {
         console.log(res)
