@@ -2,6 +2,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { ChallengeItemState } from "../../store/challenge";
 import HobbyList from "./HobbyList";
 
+import no_image from "../../asset/no_image.png"
+import default_profile from "../../asset/default_profile.png"
 import StarsIcon from '@mui/icons-material/Stars';
 import styles from "./PopChallengeItem.module.scss";
 
@@ -19,7 +21,7 @@ const PopChallengeItem: React.FC<{ challenge: ChallengeItemState, index: number;
               <img src={challenge.img} alt="challenge Img"></img>
             ) : (
               <img
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS2vD3MC0-zWEcZYdaZg3s-1fC0q9p5IMwOmA&usqp=CAU"
+                src={no_image}
                 alt=""
               ></img>
             )}
@@ -55,7 +57,7 @@ const PopChallengeItem: React.FC<{ challenge: ChallengeItemState, index: number;
                   </div>
               </div>
               <div className={styles.profile} onClick={() => {navigate(`/user/${challenge.writer.id}`)}}>
-                <img src={challenge.writer.path} alt="" />
+                {challenge.writer.path !== "" && challenge.writer.path ? <img src={challenge.writer.path} alt="" /> : <img src={default_profile} alt="" /> }
                 <div>{challenge.writer.nickname}</div>
               </div>     
             </div>

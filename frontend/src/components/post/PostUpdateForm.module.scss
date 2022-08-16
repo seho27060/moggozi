@@ -1,90 +1,48 @@
 @use "../../styles/mixin.scss" as mixin;
 
 @include mixin.desktop {
-  .postUpdateForm {
-    width: auto;
-  }
   .container {
-    width: 900px;
-    height: 550px;
-  }
-  .title {
-    text-align: center;
-    font-weight: 700;
-    font-size: 30px;
-    line-height: 48px;
-    margin: 25px 0 0 0;
-  }
+    display: flex;
 
-  .head {
-    // 챌린지
-    div:nth-child(1) {
-      margin: 30px 0 10px 0;
+    .posting {
+      font-size: 25px;
       font-weight: 700;
-      font-size: 22px;
-      line-height: 30px;
-    }
-    // 챌린지 제목
-    div:nth-child(2) {
-      margin: 0 0 20px 0;
-      font-weight: 500;
-      font-size: 20px;
-      line-height: 24px;
-    }
-    // 스테이지
-    div:nth-child(3) {
-      margin: 0 0 20px 0;
-      font-weight: 700;
-      font-size: 22px;
-      line-height: 24px;
-    }
-    // 스테이지 제목
-    div:nth-child(4) {
-      margin: 0 0 20px 0;
-      font-weight: 500;
-      font-size: 20px;
-      line-height: 24px;
     }
   }
 
   .form {
-    margin: 0 10px;
+    margin: 50px 0 50px 0;
+
     .inputTitle {
-      border-bottom: 1px solid mixin.$cloudLine;
-
-      label {
-        display: block;
-        font-weight: 700;
-        font-size: 20px;
-        line-height: 30px;
-        margin: 5px 0;
-      }
-      input {
-        height: 40px;
-        width: 90%;
-        padding: 0 0 0 10px;
-        font-size: 16px;
-        font-weight: 700;
-        border: 0;
-        border-bottom: 1px solid mixin.$cloudLine;
-
-        &:focus {
-          outline: none;
-        }
-
-        &::placeholder {
-          font-size: 16px;
-          font-weight: 700;
-          color: mixin.$cloudGray;
-        }
-      }
+      // display: flex;
+      margin: 30px 0 10px 0;
 
       .titleCnt {
         display: flex;
         align-items: flex-end;
-        justify-content: center;
+
+        input {
+          height: 40px;
+          width: 90%;
+          padding: 0 0 0 10px;
+          font-size: 16px;
+          font-weight: 700;
+          border: 0;
+          border-bottom: 1px solid mixin.$cloudLine;
+
+          &:focus {
+            outline: none;
+          }
+
+          &::placeholder {
+            font-size: 16px;
+            font-weight: 700;
+            color: mixin.$cloudGray;
+          }
+        }
+
         div:nth-child(2) {
-          margin: 0 0 7px 0;
+          margin: 0 0 7px 10px;
           font-size: 14px;
           font-weight: 700;
           color: mixin.$cloudGray;
@@ -92,43 +50,66 @@
       }
     }
 
-    .photo {
-      div:nth-child(1) {
-        margin: 20px 0 10px 0;
-        font-weight: 700;
-        font-size: 22px;
-        line-height: 30px;
+    .fileselect {
+      label {
+        display: block;
+        cursor: pointer;
+        margin: 0 0 5px 0;
+        font-size: 13px;
+      }
+      .labelbutton {
+        width: 70px;
+        height: 25px;
+        border: 1px solid mixin.$mainColor;
+        border-radius: 5px;
+        color: #fff;
+        background: mixin.$mainColor;
+        transition: all 0.5s;
+        text-align: center;
+        line-height: 25px;
+
+        &:hover {
+          color: mixin.$mainColor;
+          background: #fff;
+          border: 1px solid mixin.$mainColor;
+        }
       }
 
-      div:nth-child(2) {
-        margin: 0 0 20px 0;
-        font-weight: 400;
-        font-size: 16px;
-        line-height: 24px;
+      input {
+        display: none;
       }
-    }
-
-    .img {
-      width: 400px;
-      height: 360px;
-      cursor: pointer;
-    }
-
-    .submitt {
-      width: 110px !important;
-      height: 50px !important;
-      color: #fff !important;
-      font-size: 16px !important;
-      font-weight: 700;
-      background: mixin.$mainColor !important;
-      border-radius: 5px;
-      margin: 15px 0 40px 0;
     }
 
     .editorSection {
       display: flex;
-      height: 360px;
       justify-content: space-around;
     }
+
+    .img {
+      width: 360px;
+      height: 360px;
+      margin: 0 10px 0 0;
+      object-fit: contain;
+    }
+
+    .finishBtn {
+      margin: 5px 0 0 0;
+      display: flex;
+      justify-content: flex-end;
+      .button {
+        width: 100px;
+        height: 40px;
+        font-size: 14px;
+        border-radius: 5px;
+        color: #fff;
+        background: mixin.$mainColor;
+        transition: all 0.5s;
+
+        &:hover {
+          font-size: 16px;
+        }
+      }
+    }
+
   }
 }

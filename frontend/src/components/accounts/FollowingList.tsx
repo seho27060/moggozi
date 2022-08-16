@@ -1,6 +1,7 @@
 import { ReactElement } from "react";
 import { useNavigate } from "react-router-dom";
 
+import default_profile from "../../asset/default_profile.png"
 import styles from "./FollowingList.module.scss";
 
 interface Props {
@@ -22,11 +23,11 @@ const FollowingList = (props: Props): ReactElement => {
   return (
     <div className={styles.container}>
       <div className={styles.followers}>
-        {img ? (
+        {img && img !== "" ? (
           <img src={`${img}`} alt="profile_image" onClick={moveHandler} />
         ) : (
           <img
-            src="https://img1.daumcdn.net/thumb/C176x176/?fname=https://k.kakaocdn.net/dn/GHYFr/btrsSwcSDQV/UQZxkayGyAXrPACyf0MaV1/img.jpg"
+            src={default_profile}
             alt=""
           />
         )}
