@@ -38,6 +38,9 @@ import PostFormModal from "../../components/ui/PostFormModal";
 import ChallengeOptionBtn from "../../components/ui/ChallengeOptionBtn";
 import Loader from "../../components/ui/Loader";
 import Modal from "../../components/ui/Modal";
+import no_image from "../../asset/no_image.png"
+import default_profile from "../../asset/default_profile.png"
+
 
 const ChallengeDetail: React.FC = () => {
   document.body.style.overflow = "auto"; //모달때문에 이상하게 스크롤이 안되서 강제로 스크롤 바 생성함
@@ -247,7 +250,8 @@ const ChallengeDetail: React.FC = () => {
                         navigate(`/user/${loadedChallenge!.writer.id}`);
                       }}
                     >
-                      <img src={loadedChallenge!.writer.path} alt="" />
+                      { loadedChallenge!.writer.path !== "" && loadedChallenge!.writer.path ? <img src={loadedChallenge!.writer.path} alt="" /> : <img src={default_profile} alt="" />}
+                      
                       <div>
                         <div className={styles.user}>
                           {loadedChallenge!.writer.nickname}
@@ -271,11 +275,11 @@ const ChallengeDetail: React.FC = () => {
                 )}
               </div>
             </div>
-
+                          
             {loadedChallenge!.img === '""' ? (
               <img
                 className={styles.challengeImg}
-                src="https://via.placeholder.com/1000x450.png/"
+                src={no_image}
                 alt=""
               />
             ) : (

@@ -12,6 +12,7 @@ const MainChallengeItem: React.FC<{ challenge: ChallengeItemState }> = ({
   return (
     <Link to={`/challenge/${challenge.id}`} className={styles.link}>
       <div className={styles.challengeItem}>
+        <div className={styles.overflow}>
         {challenge.img ? (
           <img src={challenge.img} alt="challenge Img"></img>
         ) : (
@@ -20,6 +21,7 @@ const MainChallengeItem: React.FC<{ challenge: ChallengeItemState }> = ({
             alt=""
           ></img>
         )}
+        </div>
         {/* 진행도 뱃지 */}
         <div
           className={(() => {
@@ -45,9 +47,7 @@ const MainChallengeItem: React.FC<{ challenge: ChallengeItemState }> = ({
                     if (challenge.level === 2) return styles.level2;
                     if (challenge.level === 3) return styles.level3;
                   })()}
-                >
-                  Lv.{challenge.level}
-                </div>
+                ></div>
               </div>
               <div className={styles.heart}><FavoriteIcon /><div className={styles.word}>{challenge.likeNum}</div></div>
             </div>

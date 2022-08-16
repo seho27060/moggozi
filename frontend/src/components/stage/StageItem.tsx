@@ -17,7 +17,7 @@ import Carousel from "../ui/Slider";
 import styles from "./StageItem.module.scss";
 import "./Carousel.module.scss";
 import PostList from "../post/PostList";
-
+import no_image from "../../asset/no_image.png"
 import Dompurify from "dompurify";
 
 const StageItem: React.FC<{
@@ -58,7 +58,6 @@ const StageItem: React.FC<{
   useEffect(() => {
     postListRead(Number(stage.id), 0, 3)
       .then((res) => {
-        // setPostStageListState(res.content);
         dispatch(postSet(res.content));
         dispatch(setPostFormButtonState(true));
       })
@@ -70,7 +69,7 @@ const StageItem: React.FC<{
         dispatch(setCheckedPost(res));
       })
       .catch((err) => console.log("err", err));
-  }, [dispatch, stage.id, setCheckedPost]);
+  }, [dispatch, stage.id]);
 
   return (
     <div>
@@ -84,7 +83,7 @@ const StageItem: React.FC<{
               })
             ) : (
               <img
-                src="https://img1.daumcdn.net/thumb/R800x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbgHC4M%2FbtqBVf8rCqB%2FZz5aJuALI4JSKV8ZKAm8YK%2Fimg.jpg"
+                src={no_image}
                 alt=""
               />
             )}

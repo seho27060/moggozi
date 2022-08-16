@@ -28,13 +28,13 @@ const Modal = (props: Props): ReactElement => {
         <section onClick={(event) => { event.stopPropagation(); }}>
           <header>
             {header}
-            <button className="close" onClick={close}>
+            <button className={styles.close} onClick={close}>
               &times;
             </button>
           </header>
           <main>{props.children}</main>
           <footer>
-            <button className="close" onClick={close}>
+            <button className={styles.close} onClick={close}>
               확인
             </button>
           </footer>

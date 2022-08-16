@@ -6,6 +6,7 @@ import ReviewDeleteBtn from "./ReviewDeleteBtn";
 import ReviewUpdateForm from "./ReviewUpdateForm";
 
 import styles from "./ReviewItem.module.scss";
+import default_profile from "../../asset/default_profile.png"
 import moment from "moment";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
@@ -34,7 +35,7 @@ const ReviewItem: React.FC<{ review: ReviewState }> = ({ review }) => {
             onClick={() => {
               navigate(`/user/${review.writer.id}`);
             }}
-            src="https://i1.daumcdn.net/thumb/C230x300/?fname=https://blog.kakaocdn.net/dn/CUI4O/btqIarIJfHs/LxRhxkC8CcQ19Dyy8Wf6bK/img.jpg"
+            src={default_profile}
             alt=""
           />
 
