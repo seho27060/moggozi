@@ -20,6 +20,7 @@ import com.JJP.restapiserver.repository.challenge.ChallengeRepository;
 import com.JJP.restapiserver.repository.challenge.JoinedChallengeRepository;
 import com.JJP.restapiserver.repository.member.MemberRepository;
 import com.JJP.restapiserver.service.Tag.ChallengeTagService;
+import com.JJP.restapiserver.service.post.PostService;
 import com.JJP.restapiserver.service.stage.StageJoinService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -56,6 +57,8 @@ public class ChallengeServiceImpl implements ChallengeService{
     private final MemberTagRepository memberTagRepository;
 
     private final ChallengeTagService challengeTagService;
+
+    private final PostService postService;
 
 //    @Override
 //    public List<ChallengeListResponseDto> getChallengeListByHobby(String hobby, Long member_id) {
@@ -323,7 +326,13 @@ public class ChallengeServiceImpl implements ChallengeService{
                 findByChallenge_idAndMember_id(challenge_id,
                         member_id);
         if(joinedChallenge.isPresent()){
+            //참여한 챌린지에서 지우고
+            Challenge challenge = joinedChallenge.get().getChallenge();
+            for(Stage stage : challenge.getStageList()){
+                postService.deletePostInJoinedChallenge(stage.getId(), member_id);
+            }
             joinedChallengeRepository.delete(joinedChallenge.get());
+            // 스테이지에 포스팅한 것들도 싹다 지워야함
         }
     }
 

@@ -14,6 +14,8 @@ public interface PostService {
     // 스테이지 포스트 수정
     int updatePost(PostUpdateRequestDto postUpdateRequestDto, Long member_id);
 
+    void deletePostInJoinedChallenge(Long stage_id, Long member_id);
+
     // 스테이지 포스트 삭제
     void deletePost(Long post_id);
 

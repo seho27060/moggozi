@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface PostRepository extends JpaRepository<Post, Long> {
 
@@ -30,4 +31,8 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     Page<Post> findAllByOrderByLikeNumDesc(Pageable pageable);
 
     int countByMember_idAndStage_id(Long member_id, Long stage_id);
+
+    void deleteByStage_idAndMember_id(Long stage_id, Long member_id);
+
+    Optional<Post> findByStage_idAndMember_id(Long stage_id, Long member_id);
 }
