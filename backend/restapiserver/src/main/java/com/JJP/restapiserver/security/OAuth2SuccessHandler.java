@@ -19,8 +19,11 @@ import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -31,6 +34,7 @@ import java.util.Random;
 
 @Component
 @RequiredArgsConstructor
+@Transactional
 public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
 
     static final Logger logger = LoggerFactory.getLogger(OAuth2SuccessHandler.class);
@@ -46,6 +50,8 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
     private final MemberRepository memberRepository;
     private final RoleRepository roleRepository;
     private final MemberScoreRepository memberScoreRepository;
+
+    @PersistenceContext private EntityManager em;
 
     PasswordEncoder encoder = new BCryptPasswordEncoder();
 
@@ -79,7 +85,7 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
 
         String password = encoder.encode(username.split("@")[0] + "1234");
 //        String url = "http://localhost:8080"; /** 추후 주소 변경 필요 **/
-        String url = "http://localhost:3000/oauth/callback";
+        String url = "https://i7c201.p.ssafy.io/oauth/callback";
 
         if (member.isEmpty()) {
             // 유저 객체 만들기
@@ -94,18 +100,19 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
 
             Role role = roleRepository.findById(1L).get();
 
-            /** TODO: Role의 값이 1로 매칭되지 않는 문제 - 권한 부여 시 잘 체크되는지 필요) */
+            /** TODO (DONE): Role의 값이 1로 매칭되지 않는 문제 - 권한 부여 시 잘 체크되는지 필요) - check 완료 */
             Member newMember = Member.builder().username(username)
                     .fullname(fullname).nickname("User" + randomNo).password(password).is_social(1).role(role).build();
 
-            memberRepository.saveAndFlush(newMember);
-            member = memberRepository.findByUsername(username);
 
-            // 새로 등록된 유저를 MemberScore 테이블에 등록한다.
+            memberRepository.saveAndFlush(newMember);
+            newMember = memberRepository.findByUsername(username).get();
+
             MemberScore memberScore = MemberScore.builder()
-                    .id(member.get().getId())
+                    .member(newMember)
                     .score(0L)
                     .build();
+
             memberScoreRepository.save(memberScore);
 
 
@@ -114,7 +121,6 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
         }
 
         String jwtToken = jwtUtils.generateTokenFromUsername(username);
-
 
         String uri = UriComponentsBuilder.fromUriString(url)
                 .queryParam("accessToken", jwtToken)

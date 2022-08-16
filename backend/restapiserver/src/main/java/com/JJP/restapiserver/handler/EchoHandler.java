@@ -63,12 +63,6 @@ public class EchoHandler extends TextWebSocketHandler {
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
         Long session_val = userSessionsMap.get(session);
-        if(session_val == -1L){
-            logger.debug("-----------메세지 처리 시작 ----------");
-        }
-        else {
-            logger.debug("-----------메세지 처리 시작 " + session_val + "  ----------");
-        }
         String strJson = message.getPayload();
         JSONObject jsonObj = new JSONObject(strJson);
 
@@ -80,6 +74,9 @@ public class EchoHandler extends TextWebSocketHandler {
             String receiverName = jsonObj.getString("receiverName");
             String type = jsonObj.getString("type");
             Long index = Long.parseLong(jsonObj.getString("index"));
+            logger.debug("------- " + senderName + "님이 보낸 메시지를 수신했습니다.---------");
+            logger.debug("------- 받는 이는 " + receiverName + " 입니다.-------------");
+            logger.debug("-------------타입은 " + type + " 입니다. ------------------------");
 
             if (session_val == -1L && type.equals("register")) {
                 userSessionsMap.put(session, senderId);
@@ -97,22 +94,23 @@ public class EchoHandler extends TextWebSocketHandler {
             String msg = "";
             if (receiver != null) {
                 if (type.equals("challenge")) {
-                    msg = senderName + "님이a등록하신 챌린지에a좋아요를 눌렀습니다.";
+                    msg = senderName + "님이\n등록하신 챌린지에\n좋아요를 눌렀습니다.";
                 }
                 else if(type.equals("post")){
-                    msg = senderName + "님이a등록하신 포스트에a좋아요를 눌렀습니다.";
+                    msg = senderName + "님이\n등록하신 포스트에\n좋아요를 눌렀습니다.";
                 }
                 else if(type.equals("comment")){
-                    msg = senderName + "님이a등록하신 포스트에a댓글을 달았습니다.";
+                    msg = senderName + "님이\n등록하신 포스트에\n댓글을 달았습니다.";
                 }
                 else if(type.equals("reply")){
-                    msg = senderName + "님이a등록하신 댓글에a대댓글을 달았습니다.";
+                    msg = senderName + "님이\n등록하신 댓글에\n대댓글을 달았습니다.";
                 }
                 else if(type.equals("follow")){
-                    msg = senderName + "님이a팔로우하기a시작했습니다.";
+                    msg = senderName + "님이\n팔로우하기\n시작했습니다.";
                 }
 
                 if(!msg.equals("")){
+                    logger.debug("알림을 디비에 저장하는 로직을 실행합니다.");
                     saveAndSend(senderId, receiverId, type, index, msg, receiver);
                 }
                 else{

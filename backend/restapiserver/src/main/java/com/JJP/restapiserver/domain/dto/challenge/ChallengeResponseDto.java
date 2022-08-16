@@ -12,6 +12,8 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 @Getter
@@ -41,19 +43,28 @@ public class ChallengeResponseDto {
 
     public ChallengeResponseDto(Challenge challenge){
         this.id = challenge.getId();
-        this.writer = new Writer(challenge.getMember().getId(), challenge.getMember().getNickname(), challenge.getMember().getUser_img());
+        this.writer = new Writer(challenge.getMember().getId(), challenge.getMember().getNickname(), challenge.getMember().getUser_img(), challenge.getMember().getMemberScore().getScore());
         this.name = challenge.getName();
         this.img = challenge.getChallenge_img();
         this.content = challenge.getContent();
         this.level = challenge.getLevel();
-        this.stageList = new ArrayList<>();
         this.state = challenge.getState();
+        this.stageList = new ArrayList<>();
         if(challenge.getStageList() != null)
             for(int i = 0; i < challenge.getStageList().size(); i++){
                 Stage stage = challenge.getStageList().get(i);
                 StageResponseDto stageResponseDto = new StageResponseDto(stage);
                 this.stageList.add(stageResponseDto);
             }
+        Collections.sort(this.stageList, new Comparator<StageResponseDto>() {
+            @Override
+            public int compare(StageResponseDto o1, StageResponseDto o2) {
+                if(o1.getOrder() < o2.getOrder())
+                    return -1;
+                else
+                    return 1;
+            }
+        });
         this.likeNum = challenge.getLikeNum();
         this.reviewList = new ArrayList<>();
         if(challenge.getReviewList() != null)

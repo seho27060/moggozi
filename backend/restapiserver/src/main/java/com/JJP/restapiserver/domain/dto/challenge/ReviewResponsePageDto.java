@@ -1,15 +1,17 @@
-package com.JJP.restapiserver.domain.dto.member.response;
+package com.JJP.restapiserver.domain.dto.challenge;
 
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.annotation.processing.Generated;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
 @Setter
 @Builder
-public class MyPagePostDto {
+public class ReviewResponsePageDto {
     private List content;
     // 더보기만 할꺼면 없어도 됨.
     private int totalPages;

@@ -1,7 +1,7 @@
 package com.JJP.restapiserver.service.stage;
 
 import com.JJP.restapiserver.domain.dto.MessageResponse;
-import com.JJP.restapiserver.domain.dto.member.response.MyPageStageDto;
+import com.JJP.restapiserver.domain.dto.SliceListDto;
 import com.JJP.restapiserver.domain.dto.stage.MyStageDto;
 import com.JJP.restapiserver.domain.dto.stage.StageCompleteDto;
 import com.JJP.restapiserver.domain.dto.stage.StageJoinRequestDto;
@@ -111,7 +111,7 @@ public class StageJoinServiceImpl implements StageJoinService{
     }
 
     @Override
-    public MyPageStageDto infiniteStageList(Long member_id, Pageable pageable) {
+    public SliceListDto infiniteStageList(Long member_id, Pageable pageable) {
         Slice<StageUser> stageUserSlice = stageUserRepository.findByMember_Id(member_id, pageable);
 
         // stageUser -> stage_id -> stage
@@ -135,7 +135,7 @@ public class StageJoinServiceImpl implements StageJoinService{
             myStageDtoList.add(myStageDto);
         }
 
-        MyPageStageDto myPageStageDto = MyPageStageDto.builder()
+        SliceListDto myPageStageDto = SliceListDto.builder()
                 .pageNum(stageUserSlice.getNumber())
                 .content(myStageDtoList)
                 .size(stageUserSlice.getSize())

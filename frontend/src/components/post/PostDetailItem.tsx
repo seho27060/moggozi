@@ -49,6 +49,7 @@ const PostDetailItem: React.FC<{}> = () => {
               : no_image
           }
           alt="포스팅이미지"
+          style={{ height: "550px", width: "550px" }}
         />
         {/* 수정 버튼 */}
       </div>

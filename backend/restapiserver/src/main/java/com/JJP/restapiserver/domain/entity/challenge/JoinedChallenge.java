@@ -32,6 +32,8 @@ public class JoinedChallenge  {
     @JsonBackReference
     private Challenge challenge;
 
+
+    // 1은 진행중, 2는 완료
     private int state;
 
     @CreatedDate

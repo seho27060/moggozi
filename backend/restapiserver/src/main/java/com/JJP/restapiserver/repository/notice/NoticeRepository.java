@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface NoticeRepository extends JpaRepository<Notice, Long> {
@@ -15,4 +16,8 @@ public interface NoticeRepository extends JpaRepository<Notice, Long> {
     @Query("SELECT n.id AS noticeId, n.title AS title, n.content AS content, n.createdDate AS createdDate" +
             ", n.modifiedDate AS modifiedDate FROM Notice n ORDER BY n.modifiedDate DESC")
     Page<NoticeListResponse> findAllByLatest(Pageable pageable);
+
+    @Query("SELECT n.id AS noticeId, n.title AS title, n.content AS content, n.createdDate AS createdDate" +
+            ", n.modifiedDate AS modifiedDate FROM Notice n ORDER BY n.modifiedDate DESC")
+    List<NoticeListResponse> findListByLatest();
 }

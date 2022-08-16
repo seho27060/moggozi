@@ -33,7 +33,7 @@ public interface ChallengeRepository extends JpaRepository<Challenge, Long> {
     Page<Challenge> findByStateAndNameContaining(int state, String keyword, Pageable pageable);
 
 
-    Page<Challenge> findAllByOrderByLikeNumDesc(Pageable pageable);
+    Page<Challenge> findByStateOrderByLikeNumDesc(int state, Pageable pageable);
 
     // 챌린지 번호로 상세정보 얻어오기
     @Override
@@ -42,13 +42,13 @@ public interface ChallengeRepository extends JpaRepository<Challenge, Long> {
 //    Page<Challenge> findByMember_id
     // save, update, delete 메소드는 이미 있음
 
-    Page<Challenge> findByIdIn(List<Long> ids, Pageable pageable);
+    Page<Challenge> findByStateAndIdIn(int state, List<Long> ids, Pageable pageable);
 
-    List<Challenge> findByIdIn(List<Long> ids);
+    List<Challenge> findByStateAndIdIn(int state, List<Long> ids);
 
     Page<Challenge> findByMember_idOrderByModifiedDate(Long member_id, Pageable pageable);
 
-    @Query(value = "SELECT * FROM challenge order by RAND() LIMIT :size", nativeQuery = true)
+    @Query(value = "SELECT * FROM challenge where state = 1 order by RAND() LIMIT :size", nativeQuery = true)
     List<Challenge> findRandomChallengeList(@Param("size") int size);
 
     // 참여하지 않은 챌린지 중에 좋아요가 가장 많은 api
@@ -56,10 +56,10 @@ public interface ChallengeRepository extends JpaRepository<Challenge, Long> {
             ,nativeQuery = true)
     List<Object[]> findUnJoinedChallenge(@Param("joined_ids") List<Long> joined_ids, @Param("tag_id") Long tag_id);
 
-    @Query(value = "select * from challenge c inner join challenge_tag t on c.id = t.challenge_id where t.tag_id = :tag_ids", nativeQuery = true)
+    @Query(value = "select * from challenge c inner join challenge_tag t on c.id = t.challenge_id where t.tag_id = :tag_ids and c.state = 1", nativeQuery = true)
     List<Challenge> findChallengeContainsTag(@Param("tag_ids") Long tag_ids);
 
     Optional<Challenge> findByMember_idAndId(Long member_id, Long challenge_id);
 
-    Page<Challenge> findAllByOrderByCreatedDateDesc(Pageable pageable);
+    Page<Challenge> findByStateOrderByCreatedDateDesc(int state, Pageable pageable);
 }

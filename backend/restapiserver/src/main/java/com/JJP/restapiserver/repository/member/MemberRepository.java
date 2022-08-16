@@ -45,4 +45,8 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
             "WHERE m.username LIKE :username")
     Page<MemberInfo> findByUsernameContaining(@Param("username") String username, Pageable pageable);
 
+    @Query("SELECT m.id AS memberId, m.username AS username, m.fullname AS fullname " +
+            ", m.nickname AS nickname, m.role.name as role FROM Member m " +
+            "WHERE m.role.name = 'ROLE_USER'")
+    List<MemberInfo> findMembersByRole();
 }

@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 @Tag(name = "NoticeController", description = "공지사항(Notice) API")
 @RequiredArgsConstructor
@@ -20,15 +20,21 @@ public class NoticeController {
 
     @Operation(summary = "공지사항 등록", description = "username과 password를 이용하여 로그인 하여 발행된 토큰을 검사하여 권한이 관리자일 경우에만 글을 등록할 수 있습니다.")
     @PostMapping("/register")
-    private ResponseEntity registerNotice(@RequestBody NoticeRequest noticeRequest) {
-        return noticeService.registerNotice(noticeRequest);
+    private ResponseEntity registerNotice(@RequestBody NoticeRequest noticeRequest, HttpSession session) {
+        String username = (String) session.getAttribute("username");
+        String userRole = (String) session.getAttribute("userRole");
+
+        return noticeService.registerNotice(noticeRequest, username, userRole);
     }
 
     @Operation(summary = "공지사항 등록", description = "수정하고자하는 글의 번호를 {noticeId}에 넣어주세요~" +
             "username과 password를 이용하여 로그인 하여 발행된 토큰을 검사하여 권한이 관리자일 경우에만 글을 수정할 수 있습니다.")
     @PostMapping("/update/{noticeId}")
-    private ResponseEntity updateNotice(@RequestBody NoticeRequest noticeRequest, @PathVariable("noticeId") Long noticeId){
-        return noticeService.updateNotice(noticeRequest, noticeId);
+    private ResponseEntity updateNotice(@RequestBody NoticeRequest noticeRequest, @PathVariable("noticeId") Long noticeId, HttpSession session) {
+        String username = (String) session.getAttribute("username");
+        String userRole = (String) session.getAttribute("userRole");
+
+        return noticeService.updateNotice(noticeRequest, noticeId, username, userRole);
     }
 
     @Operation(summary = "공지사항 상세보기", description = "{noticeId}의 자세한 내용을 반환합니다(상세보기). ")
@@ -39,8 +45,10 @@ public class NoticeController {
 
     @Operation(summary = "공지사항 삭제", description = "{noticeId}를 통해 공지사항을 지울 수 있습니다. 단, 관리자만 삭제 가능합니다.")
     @PostMapping("/delete/{noticeId}")
-    private ResponseEntity deleteNotice(@PathVariable("noticeId") Long noticeId, HttpServletRequest httpServletRequest) {
-        return noticeService.deleteNotice(noticeId, httpServletRequest);
+    private ResponseEntity deleteNotice(@PathVariable("noticeId") Long noticeId, HttpSession session) {
+        String username = (String) session.getAttribute("username");
+        String userRole = (String) session.getAttribute("userRole");
+        return noticeService.deleteNotice(noticeId, username, userRole);
     }
 
     @Operation(summary = "공지사항 리스트", description = "1 페이지를 확인하고자하는 경우 {page}에 0을 넣어주세요!" +

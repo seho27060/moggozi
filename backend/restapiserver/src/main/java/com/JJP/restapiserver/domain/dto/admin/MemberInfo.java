@@ -5,6 +5,5 @@ public interface MemberInfo {
     String getUsername();
     String getFullname();
     String getNickname();
-    String getIntroduce();
     String getRole();
 }

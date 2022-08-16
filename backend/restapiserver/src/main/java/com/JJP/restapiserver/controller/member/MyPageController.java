@@ -1,9 +1,8 @@
 package com.JJP.restapiserver.controller.member;
 
 import com.JJP.restapiserver.domain.dto.challenge.ChallengePageDto;
-import com.JJP.restapiserver.domain.dto.member.response.MyPagePostDto;
 import com.JJP.restapiserver.domain.dto.member.response.MyPageResponseDto;
-import com.JJP.restapiserver.domain.dto.member.response.MyPageStageDto;
+import com.JJP.restapiserver.domain.dto.SliceListDto;
 import com.JJP.restapiserver.security.JwtUtils;
 import com.JJP.restapiserver.service.challenge.ChallengeService;
 import com.JJP.restapiserver.service.post.PostService;
@@ -20,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 
 //@CrossOrigin("*")
 @RestController
@@ -55,14 +53,14 @@ public class MyPageController {
 
     @GetMapping("/stage/{member_id}")
     public ResponseEntity myStage(@PathVariable Long member_id, @PageableDefault(size = 2, sort = "joinTime", direction = Sort.Direction.DESC) Pageable pageable){
-        MyPageStageDto stageSlice = stageJoinService.infiniteStageList(member_id, pageable);
+        SliceListDto stageSlice = stageJoinService.infiniteStageList(member_id, pageable);
 
         return new ResponseEntity(stageSlice, HttpStatus.OK);
     }
 
     @GetMapping("/post/{member_id}")
     public ResponseEntity myPost(@PathVariable Long member_id, Pageable pageable) {
-        MyPagePostDto postSlice = postService.infinitePostList(member_id, pageable);
+        SliceListDto postSlice = postService.infinitePostList(member_id, pageable);
 
         return new ResponseEntity(postSlice, HttpStatus.OK);
     }
