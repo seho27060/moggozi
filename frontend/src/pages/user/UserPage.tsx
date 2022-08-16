@@ -11,7 +11,7 @@ import {
 } from "../../lib/withTokenApi";
 import MypageFollow from "../../components/accounts/MypageFollow";
 import styles from "./UserPage.module.scss";
-import big_default_profile from "../../asset/big_default_profile.jpg"
+import big_default_profile from "../../asset/big_default_profile.jpg";
 
 import { WebSocketContext } from "../../lib/WebSocketProvider";
 import { Alert } from "../../store/alert";
@@ -181,9 +181,7 @@ function UserPage() {
         setFollowingCnt(res.followingCnt);
         if (!!res.userImg === false) {
           // 기본 프로필 이미지
-          setImg(
-            big_default_profile
-          );
+          setImg(big_default_profile);
         } else {
           setImg(res.userImg);
         }

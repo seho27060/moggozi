@@ -36,19 +36,19 @@ const EditorComponent: React.FC<{
   );
 
   return (
-      <ReactQuill
-        ref={(element) => {
-          if (element !== null) {
-            QuillRef.current = element;
-          }
-        }}
-        value={contents}
-        onChange={setContents}
-        modules={modules}
-        theme="snow"
-        placeholder="내용을 입력해주세요."
-        className={styles.Editor}
-      />
+    <ReactQuill
+      ref={(element) => {
+        if (element !== null) {
+          QuillRef.current = element;
+        }
+      }}
+      value={contents}
+      onChange={setContents}
+      modules={modules}
+      theme="snow"
+      placeholder="내용을 입력해주세요."
+      className={styles.Editor}
+    />
   );
 };
 

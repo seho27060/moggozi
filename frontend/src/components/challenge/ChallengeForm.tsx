@@ -14,6 +14,7 @@ import styles from "./ChallengeForm.module.scss";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { storageService } from "../../fbase/fbase";
 import Modal from "../ui/Modal";
+import getTextLength from "../../lib/getTextLength";
 
 const ChallengeForm: React.FC<{ file: File | null }> = ({ file }) => {
   const nameInputRef = useRef<HTMLInputElement>(null);
@@ -22,6 +23,10 @@ const ChallengeForm: React.FC<{ file: File | null }> = ({ file }) => {
   const levelSelectRef = useRef<HTMLSelectElement>(null);
   const [alertText, setAlertText] = useState(<div></div>);
   const [modalOpen, setModalOpen] = useState(false);
+  const [titleCnt, setTitleCnt] = useState(0);
+  const [descriptionCnt, setDescriptionCnt] = useState(0);
+  const [descriptionText, setDescriptionText] = useState("");
+  const [titleText, setTitleText] = useState("");
 
   const closeModal = () => {
     document.body.style.overflow = "unset";
@@ -31,6 +36,28 @@ const ChallengeForm: React.FC<{ file: File | null }> = ({ file }) => {
   const hobbyList = useSelector((state: RootState) => state.hobby.hobbyList);
   const hobbyCnt = useSelector((state: RootState) => state.hobby.hobbyCnt);
   const navigate = useNavigate();
+
+  const descriptionChangeHandler = (
+    event: React.ChangeEvent<HTMLTextAreaElement>
+  ) => {
+    event.preventDefault();
+    const cnt = getTextLength(event.target.value);
+    if (cnt > 200 && event.target.value.length > descriptionText.length) {
+      return;
+    }
+    setDescriptionCnt(cnt);
+    setDescriptionText(event.target.value);
+  };
+
+  const titleChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    event.preventDefault();
+    const cnt = getTextLength(event.target.value);
+    if (cnt > 30 && event.target.value.length > titleText.length) {
+      return;
+    }
+    setTitleCnt(cnt);
+    setTitleText(event.target.value);
+  };
 
   function submitHandler(event: React.FormEvent) {
     event.preventDefault();
@@ -102,9 +129,12 @@ const ChallengeForm: React.FC<{ file: File | null }> = ({ file }) => {
           name="description"
           id="description"
           placeholder="짧은 소개를 입력해주세요."
-          ref={descriptionInputRef}
+          value={descriptionText}
+          style={{ height: 60 }}
           required
+          onChange={descriptionChangeHandler}
         ></textarea>
+        <span>{descriptionCnt}/200</span>
       </div>
 
       <div className={styles.level}>
@@ -127,7 +157,10 @@ const ChallengeForm: React.FC<{ file: File | null }> = ({ file }) => {
           placeholder="챌린지 제목을 입력하세요."
           autoComplete="off"
           required
+          value={titleText}
+          onChange={titleChangeHandler}
         />
+        <span>{titleCnt}/30</span>
       </div>
 
       {/* <div className={styles.challengeContent}>
