@@ -6,25 +6,22 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 
 import {
   Comment,
-  commentModify,
   commentRemove,
-  CommentSend,
   // setCommentUpdateFormToggle,
 } from "../../store/comment";
-import { Dispatch, MouseEvent, SetStateAction, useRef, useState } from "react";
+import { Dispatch, MouseEvent, SetStateAction, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import { useDispatch } from "react-redux";
-import { commentDelete, commentUpdate } from "../../lib/withTokenApi";
+import { commentDelete } from "../../lib/withTokenApi";
 
 interface Props {
   comment: Comment;
-  postId: number | null;
   setCommentUpdateFormToggle :Dispatch<SetStateAction<boolean>>
 }
 
 function CommentOptionBtn(props: Props): JSX.Element {
-  const { comment, postId,setCommentUpdateFormToggle } = props;
+  const { comment,setCommentUpdateFormToggle } = props;
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -34,32 +31,9 @@ function CommentOptionBtn(props: Props): JSX.Element {
     setAnchorEl(null);
   };
   ///////////////////////////////////////////////////////////////////////////////////
-
-  const [isToggle, setIsToggle] = useState(false);
-  const [isFormToggle, setIsFormToggle] = useState(false);
-
-  const enteredComment = useRef<HTMLInputElement>(null);
   const userId = useSelector((state: RootState) => state.auth.userInfo.id);
 
   const dispatch = useDispatch();
-  const state: number = userId === comment.writer!.id ? 1 : 0;
-  let commentSend: CommentSend = {
-    postId: postId,
-    text: null,
-    parent: comment.parentId,
-    order: comment.order,
-    state: state,
-  };
-  let commentState: Comment = {
-    createdTime: comment.createdTime,
-    id: comment.id,
-    state: comment.state,
-    order: comment.order,
-    parentId: comment.parentId,
-    text: comment.text,
-    writer: comment.writer,
-    modifiedTime: comment.modifiedTime,
-  };
 
   const commentRemoveHandler = (event: MouseEvent) => {
     event.preventDefault();
@@ -98,15 +72,6 @@ function CommentOptionBtn(props: Props): JSX.Element {
           },
         }}
       >
-        {/* {userId !== comment.writer!.id && (
-          <MenuItem
-            onClick={() => {
-              return commentModifyHandler;
-            }}
-          >
-            숨김
-          </MenuItem>
-        )} */}
         {userId === comment.writer!.id && (
           <MenuItem
             onClick={(event:MouseEvent) => {
@@ -120,42 +85,17 @@ function CommentOptionBtn(props: Props): JSX.Element {
           <div>
             <MenuItem
               onClick={() => {
-                // setIsFormToggle(!isFormToggle);
                 setCommentUpdateFormToggle(true)
                 handleClose()
               }}
             >
-              {/* {!isFormToggle && "수정"} */}
               수정
             </MenuItem>
-            {/* {isFormToggle && (
-              <form>
-                <button
-                  onClick={commentModifyHandler}
-                >
-                  수정완료
-                </button>
-                <label htmlFor="content"></label>
-                <input
-                  type="text"
-                  id="content"
-                  ref={enteredComment}
-                  defaultValue={comment.text!}
-                />
-              </form>
-            )} */}
           </div>
         )}
       </Menu>
     </div>
   );
 }
-
-// const CommentOptionBtn: React.FC<{
-//   comment: Comment;
-//   postId: number | null;
-// }> = ({ comment, postId }) => {
-
-// };
 
 export default CommentOptionBtn;

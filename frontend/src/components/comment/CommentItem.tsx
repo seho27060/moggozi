@@ -12,7 +12,7 @@ import { useState } from "react";
 
 import { BsFillPersonFill } from "react-icons/bs";
 import CommentUpdateForm from "./CommentUpdateForm";
-import { Link, useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setPostModalOpen } from "../../store/postModal";
 
@@ -79,7 +79,6 @@ const CommentItem: React.FC<{
         <div className={styles.option}>
           <CommentOptionBtn
             comment={comment}
-            postId={postModalState.id}
             setCommentUpdateFormToggle={setCommentUpdateFormToggle}
           />
         </div>
