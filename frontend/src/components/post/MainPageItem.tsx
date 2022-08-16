@@ -14,7 +14,7 @@ const MainPageItem: React.FC<{ post: PostData }> = ({ post }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  console.log(post.writer?.path);
+  // console.log(post.writer?.path);
 
   const [openModal, setOpenModal] = useState(false);
 

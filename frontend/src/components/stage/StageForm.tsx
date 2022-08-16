@@ -66,7 +66,7 @@ const StageForm: React.FC<{ closeModal: () => void }> = ({ closeModal }) => {
             />
           </div>
           <div>
-            <EditorComponent QuillRef={contentInputRef} value={""} />
+            <EditorComponent QuillRef={contentInputRef} value={""} maxlength={500}/>
           </div>
         </form>
         <div className={styles.buttons}>

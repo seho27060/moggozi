@@ -221,6 +221,7 @@ function UserPage() {
       .then((res) => {
         setFollowedCnt(followState ? followedCnt - 1 : followedCnt + 1);
         setFollowState(!followState);
+        console.log("follow",res)
         if (res.message === "Successfully followed.") {
           let jsonSend: Alert = {
             check: 0,
@@ -235,6 +236,7 @@ function UserPage() {
             type: "follow",
           };
           if (loginData.userInfo.id! !== userId!) {
+            console.log("send msg",jsonSend)///
             ws.current.send(JSON.stringify(jsonSend));
           }
         }

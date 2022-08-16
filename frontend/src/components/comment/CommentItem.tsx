@@ -41,7 +41,7 @@ const CommentItem: React.FC<{
   const childs = comments?.filter((comment) => comment.parentId === parentId);
   childs!.sort((a: Comment, b: Comment) => (a.id >= b.id ? 1 : -1));
   const order = Number(childs?.at(-1)?.order) + 1;
-  console.log(comment.writer?.img);
+  // console.log(comment.writer?.img);
   // console.log(`${comment.id}의 childs`, childs);
 
   const navigate = useNavigate()
@@ -120,7 +120,7 @@ const CommentItem: React.FC<{
             order={order}
             parentId={parentId}
             postId={postModalState.id}
-            receiver={postModalState.writer}
+            receiver={comment.writer}
             close={closeToggle}
           />
         ) : (

@@ -124,7 +124,7 @@ const ChallengeForm: React.FC<{ file: File | null }> = ({ file }) => {
       </div> */}
 
       <div>
-        <EditorComponent QuillRef={contentInputRef} value={""} />
+        <EditorComponent QuillRef={contentInputRef} value={""} maxlength={700}/>
       </div>
 
       <div className={styles.done}>

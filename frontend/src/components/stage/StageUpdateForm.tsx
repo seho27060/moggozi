@@ -78,6 +78,7 @@ const StageUpdateForm: React.FC<{
               <EditorComponent
                 QuillRef={contentInputRef}
                 value={stage.content!}
+                maxlength={500}
               />
             </div>
           </form>
