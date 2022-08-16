@@ -9,6 +9,8 @@ import EditorComponent from "../ui/Editor";
 import ReactQuill from "react-quill";
 
 import styles from "./StageUpdateForm.module.scss";
+import getTextLength from "../../lib/getTextLength";
+import Modal from "../ui/Modal";
 // 수정하기가 글쓴이가 수정할 수 있도록 해야함.
 
 const StageUpdateForm: React.FC<{
@@ -20,28 +22,56 @@ const StageUpdateForm: React.FC<{
   const contentInputRef = useRef<ReactQuill>();
   const nameInputRef = useRef<HTMLInputElement>(null);
   const { challengeId } = useParams();
+  const [alertText, setAlertText] = useState(<div></div>);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [titleCnt, setTitleCnt] = useState(stage.name!.length || "");
+  const [titleText, setTitleText] = useState(stage.name || "");
+
+  const closeAlertModal = () => {
+    document.body.style.overflow = "unset";
+    setModalOpen(false);
+  };
+
+  const titleChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    event.preventDefault();
+    const cnt = getTextLength(event.target.value);
+    if (cnt > 20 && event.target.value.length > titleText.length) {
+      return;
+    }
+    setTitleCnt(cnt);
+    setTitleText(event.target.value);
+  };
 
   function stateUpdateHandler(event: FormEvent) {
     event.preventDefault();
+
     const stageUpdateData = {
       name: nameInputRef.current!.value,
       content: contentInputRef.current!.value,
       img: "",
     };
+    if (!stageUpdateData.name) {
+      setAlertText(<div>스테이지 제목이 필요합니다.</div>);
+      setModalOpen(true);
+      return;
+    }
+    if (!stageUpdateData.content) {
+      setAlertText(<div>스테이지 본문이 필요합니다.</div>);
+      setModalOpen(true);
+      return;
+    }
+
     stageUpdate(stageUpdateData, stage.id!) // DB 값 변경
       .then((res) => {
-        fetchStages(Number(challengeId!))
-          .then((res) => {
-            alert("스테이지 수정이 완료되었습니다.");
-            dispatch(stageFetch(res));
-            closeModal();
-          })
-          .catch((err) => {
-            alert(err.response);
-          });
+        fetchStages(Number(challengeId!)).then((res) => {
+          setAlertText(<div>스테이지 수정이 완료되었습니다.</div>);
+          setModalOpen(true);
+          dispatch(stageFetch(res));
+          closeModal();
+        });
       })
       .catch((err) => {
-        alert(err.response);
+        console.log(err.response);
       });
   }
 
@@ -68,11 +98,13 @@ const StageUpdateForm: React.FC<{
                 type="text"
                 required
                 id="name"
-                defaultValue={stage.name || ""}
                 ref={nameInputRef}
                 placeholder="스테이지 제목을 입력해주세요."
                 autoComplete="off"
+                value={titleText}
+                onChange={titleChangeHandler}
               />
+              <span>{titleCnt}/20</span>
             </div>
             <div>
               <EditorComponent
@@ -87,6 +119,9 @@ const StageUpdateForm: React.FC<{
           </div>
         </div>
       )}
+      <Modal open={modalOpen} close={closeAlertModal} header="안내">
+        {alertText}
+      </Modal>
     </div>
   );
 };
