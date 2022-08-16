@@ -192,6 +192,7 @@ const ChallengeUpdateForm: React.FC<{ challenge: ChallengeDetailState }> = (
         <EditorComponent
           QuillRef={contentInputRef}
           value={props.challenge.content!}
+          maxlength = {700}
         />
       </div>
       {/* <div className={styles.checker}>{contentInput.length} / 500</div> */}

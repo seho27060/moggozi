@@ -25,7 +25,7 @@ export default ({ children }: { children: React.ReactNode }) => {
     index: "1",
     message: "message",
     receiverId: "1",
-    receiverName: "start",
+    receiverName: "server",
     senderId: "36",
     senderName: "seh",
     type: "register",
@@ -56,10 +56,10 @@ export default ({ children }: { children: React.ReactNode }) => {
         .catch((err) => console.log("web connect alert list err", err));
       
       setInterval(() => {
-        if (ws.current?.OPEN) {
+        if (ws!.current!.OPEN) {
           const time = new Date();
-          console.log(`30 sec,now: ${time}`);
-          ws.current!.send(JSON.stringify(jsonSend));
+          console.log(`30 sec,now: ${time}`,ws);
+          ws.current!.send(JSON.stringify(jsonSend))
           // console.log("persisting connection", isConnecting, connetSend);
         } else {
           clearInterval();
