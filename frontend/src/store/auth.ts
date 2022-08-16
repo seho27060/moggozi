@@ -81,10 +81,19 @@ export const authSlice = createSlice({
     userImgFetch: (state, action) => {
       state.userInfo.img = action.payload;
     },
+    userInfoEdit: (state, action) => {
+      state.userInfo.nickname = action.payload;
+    },
   },
 });
 
-export const { login, logout, authentication, kakaoLogin, userImgFetch } =
-  authSlice.actions;
+export const {
+  login,
+  logout,
+  authentication,
+  kakaoLogin,
+  userImgFetch,
+  userInfoEdit,
+} = authSlice.actions;
 
 export default authSlice.reducer;

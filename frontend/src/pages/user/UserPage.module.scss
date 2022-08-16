@@ -97,6 +97,11 @@
     }
 
   }
+  .blurEffect {
+    filter: blur(10px);
+    -webkit-filter: blur(10px);
+    pointer-events : none;
+  }
 
   .container {
     width:992px;
