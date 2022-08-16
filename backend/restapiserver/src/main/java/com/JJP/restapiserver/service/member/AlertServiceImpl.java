@@ -91,7 +91,7 @@ public class AlertServiceImpl implements AlertService {
         LocalDateTime now = LocalDateTime.now();
         List<Alert> recent_alerts = alertRepository.findDuplicatedMessage(receiverId, "follow",now);
         System.out.println(recent_alerts.toString());
-        if(!recent_alerts.isEmpty() && type == "follow"){
+        if(!recent_alerts.isEmpty() && type.equals("follow")){
             logger.debug("이전 팔로우 기록이 있어서 알림 생성을 안 합니다.");
             return null;
         }

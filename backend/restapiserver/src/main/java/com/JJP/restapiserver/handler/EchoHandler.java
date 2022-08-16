@@ -110,6 +110,7 @@ public class EchoHandler extends TextWebSocketHandler {
                 }
 
                 if(!msg.equals("")){
+                    logger.debug("알림을 디비에 저장하는 로직을 실행합니다.");
                     saveAndSend(senderId, receiverId, type, index, msg, receiver);
                 }
                 else{
