@@ -1,0 +1,19 @@
+@use "../../styles/mixin.scss" as mixin;
+
+@include mixin.desktop {
+  .horizon {
+    width: 0;
+    height: 0;
+
+    &::before {
+      display: inline-block;
+      position: relative;
+      content: "";
+      width: 300px;
+      bottom: 15px;
+      height: 1px;
+      background: mixin.$cloudLine;
+      left: 0;
+    }
+  }
+}

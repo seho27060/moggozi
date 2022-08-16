@@ -1,0 +1,49 @@
+@use "../../styles/mixin.scss";
+
+@include mixin.desktop {
+  .buttons {
+    display: flex;
+    align-items: center;
+    padding: 4px 0 0 0;
+  
+    .divTag {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 12px;
+      color: mixin.$mainColor;
+      cursor: pointer;
+      font-weight: 600;
+      margin: 0 5px 0 5px;
+      border: 1.5px solid mixin.$mainColor;
+      border-radius: 20px;
+      padding: 7px 7px 7px 7px;
+      transition: all 0.5s;
+
+      &:hover {
+        color: #fff;
+        background: mixin.$mainColor;
+      }
+    }
+
+    .aTag {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 12px;
+      color: mixin.$mainColor;
+      cursor: pointer;
+      font-weight: 600;
+      margin: 0 5px 0 5px;
+      border: 1.5px solid mixin.$mainColor;
+      border-radius: 20px;
+      padding: 7px 7px 7px 7px;
+      transition: all 0.5s;
+
+      &:hover {
+        color: #fff;
+        background: mixin.$mainColor;
+      }
+    }
+  }
+}

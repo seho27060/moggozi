@@ -22,9 +22,6 @@ const PostUpdateForm: React.FC<{}> = () => {
   const { postModalState: PostModalState } = useSelector(
     (state: RootState) => state.postModal
   );
-  const checkedPost = useSelector(
-    (state: RootState) => state.post.checkedPost
-  );
   console.log(PostModalState);
 
   const dispatch = useDispatch();
@@ -32,6 +29,7 @@ const PostUpdateForm: React.FC<{}> = () => {
   const titleInputRef = useRef<HTMLInputElement>(null);
   const contentInputRef = useRef<ReactQuill>();
 
+  const [titleCnt, setTitleCnt] = useState("");
   const [file, setFile] = useState<File>();
   const [previewImage, setPreviewImage] = useState("");
   const [fileName, setFileName] = useState("");
@@ -73,7 +71,7 @@ const PostUpdateForm: React.FC<{}> = () => {
                       dispatch(postModify(modifiedModalPost));
                       dispatch(setPostUpdateFormState(false));
                       dispatch(setModalPostState(modifiedModalPost));
-                      dispatch(setCheckedPost(modifiedModalPost))
+                      dispatch(setCheckedPost(modifiedModalPost));
                     })
                     .catch((err) => console.log("이미지 db에 저장 실패", err));
                 })
@@ -86,7 +84,7 @@ const PostUpdateForm: React.FC<{}> = () => {
           dispatch(postModify(modifiedModalPost));
           dispatch(setPostUpdateFormState(false));
           dispatch(setModalPostState(modifiedModalPost));
-          dispatch(setCheckedPost(modifiedModalPost))
+          dispatch(setCheckedPost(modifiedModalPost));
         }
       })
       .catch((err) => {
@@ -108,38 +106,81 @@ const PostUpdateForm: React.FC<{}> = () => {
   };
 
   return (
-    <div>
-      <form className={styles.postUpdateForm}>
-        <div>
+    <div className={styles.container}>
+      <form className={styles.form}>
+        <div className={styles.inputTitle}>
           <label htmlFor="title">제목</label>
-          <input
-            type="text"
-            id="title"
-            ref={titleInputRef}
-            defaultValue={PostModalState!.title!}
-          />
+          <div className={styles.titleCnt}>
+            <input
+              type="text"
+              id="title"
+              ref={titleInputRef}
+              defaultValue={PostModalState!.title!}
+              onChange={(event) => {
+                setTitleCnt(event.target.value);
+              }}
+            />
+            <div>{titleCnt.length} / 30</div>
+          </div>
         </div>
         <div>
           <input
             defaultValue={fileName ? fileName : "첨부파일"}
-            placeholder="첨부파일"
+            placeholder="첨부파일을 추가해주세요"
           />
-          <label htmlFor="img">파일 찾기</label>
-          <input
-            type="file"
-            accept="image/*"
-            id="img"
-            onChange={onLoadHandler}
-          />
+          {/* <div className={styles.photo}>
+            <div>사진 첨부 (선택)</div>
+          </div> */}
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "flex-end",
+              margin: "10px 20px",
+            }}
+          >
+            {/* <div>
+              사진 첨부
+              
+            </div> */}
+            <label htmlFor="img" />
+            <input
+              type="file"
+              accept="image/*"
+              id="img"
+              onChange={onLoadHandler}
+              style={{ width: "11rem" }}
+            />
+          </div>
         </div>
-        {previewImage && <img src={previewImage} alt="img" />}
-        <div>
-          <EditorComponent
-            QuillRef={contentInputRef}
-            value={PostModalState!.content!}
-          />
+        <div className={styles.editorSection}>
+          {previewImage ? (
+            <img src={previewImage} alt="img" />
+          ) : (
+            <img
+              className={styles.img}
+              src="https://via.placeholder.com/400x360.png/"
+              alt=""
+            />
+          )}
+          <div style={{ height: "340px" }}>
+            <EditorComponent
+              QuillRef={contentInputRef}
+              value={PostModalState!.content!}
+            />
+          </div>
         </div>
-        <button onClick={postingUpdateHandler}>등록하기</button>
+        <div
+          style={{
+            width: "auto",
+            display: "flex",
+            justifyContent: "flex-end",
+            margin: "0.3rem 1rem 0 0",
+          }}
+        >
+          <button onClick={postingUpdateHandler} style={{ width: "4rem" }}>
+            수정하기
+          </button>
+        </div>
       </form>
     </div>
   );

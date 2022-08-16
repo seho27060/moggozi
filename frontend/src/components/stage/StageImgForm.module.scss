@@ -40,7 +40,8 @@
           font-weight: 700;
           color: rgb(100, 100, 100);
         }
-        button:nth-child(4) {
+        div:nth-child(4) {
+          text-align: center;
           width: 100px;
           height: 40px;
           border: 0;
@@ -48,6 +49,7 @@
           background: rgb(101, 101, 101);
           font-size: 18px;
           font-weight: 600;
+          line-height: 40px;
           color: #fff;
         }
       }

@@ -17,6 +17,7 @@ import PostDetailItem from "../post/PostDetailItem";
 
 import styles from "./AlertOnair.module.scss";
 import PostModal from "../ui/PostModal";
+import PostFormModal from "../ui/PostFormModal";
 
 const AlertOnair: React.FC<{}> = () => {
   const dispatch = useDispatch();
@@ -62,11 +63,16 @@ const AlertOnair: React.FC<{}> = () => {
       </button>
       <div>{isToggle && <AlertList setIsToggle={setIsToggle} />}</div>
       <div>
-        {alertPostModalOpen && (
+
+        {(alertPostModalOpen && !postUpdateFormOpen) &&(
           <PostModal open={alertPostModalOpen} close={closePostModal}>
-            {!postUpdateFormOpen && <PostDetailItem />}
-            {postUpdateFormOpen && <PostUpdateForm />}
+            <PostDetailItem />
           </PostModal>
+        )}
+        {(alertPostModalOpen && postUpdateFormOpen) && (
+          <PostFormModal open={alertPostModalOpen} close={closePostModal}>
+            <PostUpdateForm />
+          </PostFormModal>
         )}
       </div>
     </div>

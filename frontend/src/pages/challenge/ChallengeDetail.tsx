@@ -212,9 +212,6 @@ const ChallengeDetail: React.FC = () => {
               </div>
 
               <div>
-                {loadedChallenge!.state === 0 && (
-                  <div className={styles.arrow}>원하는 작업을 선택하세요~ </div>
-                )}
                 {loadedChallenge!.state === 0 ? (
                   <div>
                     {userInfo.id === loadedChallenge!.writer.id && (
@@ -369,13 +366,16 @@ const ChallengeDetail: React.FC = () => {
       )}
 
       <div>
-        {postModalOpen && (
+        {(postModalOpen && !postUpdateFormOpen) &&(
           <PostModal open={postModalOpen} close={closePostModal}>
-            {!postUpdateFormOpen && <PostDetailItem />}
-            {postUpdateFormOpen && <PostUpdateForm />}
+            <PostDetailItem />
           </PostModal>
         )}
-
+        {(postModalOpen && postUpdateFormOpen) && (
+          <PostFormModal open={postModalOpen} close={closePostModal}>
+            <PostUpdateForm />
+          </PostFormModal>
+        )}
         {postFormModalOpen && (
           <PostFormModal open={postFormModalOpen} close={closePostFormModal}>
             <PostForm

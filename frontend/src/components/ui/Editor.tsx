@@ -36,7 +36,6 @@ const EditorComponent: React.FC<{
   );
 
   return (
-    <div className={styles.EditorContainer}>
       <ReactQuill
         ref={(element) => {
           if (element !== null) {
@@ -50,7 +49,6 @@ const EditorComponent: React.FC<{
         placeholder="내용을 입력해주세요."
         className={styles.Editor}
       />
-    </div>
   );
 };
 

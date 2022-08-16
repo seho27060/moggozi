@@ -34,6 +34,7 @@ import PostUpdateForm from "../components/post/PostUpdateForm";
 import Loader from "../components/ui/Loader";
 
 import styles from "./MainPage.module.scss";
+import PostFormModal from "../components/ui/PostFormModal";
 
 const MainPage: React.FC = () => {
   const dispatch = useDispatch();
@@ -249,12 +250,16 @@ const MainPage: React.FC = () => {
           </div>
         </div>
         <div>
-          {postModalOpen && (
-            <PostModal open={postModalOpen} close={closePostModal}>
-              {!postUpdateFormOpen && <PostDetailItem />}
-              {postUpdateFormOpen && <PostUpdateForm />}
-            </PostModal>
-          )}
+          {(postModalOpen && !postUpdateFormOpen) &&(
+          <PostModal open={postModalOpen} close={closePostModal}>
+            <PostDetailItem />
+          </PostModal>
+        )}
+        {(postModalOpen && postUpdateFormOpen) && (
+          <PostFormModal open={postModalOpen} close={closePostModal}>
+            <PostUpdateForm />
+          </PostFormModal>
+        )}
         </div>
       </div>
 

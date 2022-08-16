@@ -32,6 +32,9 @@ const NavigationBar: React.FC = () => {
           </li>
           <div className={style.div}>
             <li>
+              <NavLink to="/about">About</NavLink>
+            </li>
+            <li>
               <NavLink to="/notice/0">공지사항</NavLink>
             </li>
             <li>
@@ -39,9 +42,6 @@ const NavigationBar: React.FC = () => {
             </li>
             <li>
               <NavLink to="/post/all">포스팅</NavLink>
-            </li>
-            <li>
-              <NavLink to="/about">about</NavLink>
             </li>
             <li>
               <button

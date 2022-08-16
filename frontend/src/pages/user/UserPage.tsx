@@ -1,9 +1,7 @@
 import type { RootState } from "../../store/store";
 import { useSelector } from "react-redux";
-
 import { Link, useParams } from "react-router-dom";
 import { useCallback, useContext, useEffect, useState } from "react";
-
 import { otherUserDetail } from "../../lib/generalApi";
 import {
   fetchMyChallengeList,
@@ -11,18 +9,13 @@ import {
   myPagePost,
   userTryChallenge,
 } from "../../lib/withTokenApi";
-
 import MypageFollow from "../../components/accounts/MypageFollow";
-
 import styles from "./UserPage.module.scss";
 
 import { WebSocketContext } from "../../lib/WebSocketProvider";
 import { Alert } from "../../store/alert";
-
 import { UserChallengeType, UserPostType } from "../../store/userPage";
-
 import { useDispatch } from "react-redux";
-
 import {
   setPostModalOpen,
   setPostUpdateFormState,
@@ -37,6 +30,9 @@ import Tab from "@mui/material/Tab";
 import UserTabBox from "./UserTabBox";
 import { Box } from "@mui/material";
 import Loader from "../../components/ui/Loader";
+import PostFormModal from "../../components/ui/PostFormModal";
+
+import FavoriteIcon from "@mui/icons-material/Favorite";
 
 function UserPage() {
   const { postModalOpen, postUpdateFormOpen } = useSelector(
@@ -292,10 +288,20 @@ function UserPage() {
             {loginId === userId ? (
               ""
             ) : (
-              <button onClick={followHandler} className={styles.followButton}>
-                {" "}
-                {followState ? "♥ 언팔로우" : "♥ 팔로우"}
-              </button>
+              <div>
+                {followState ? (
+                  <div
+                    className={styles.unfollowButton}
+                    onClick={followHandler}
+                  >
+                    <FavoriteIcon /> <div>언팔로우</div>
+                  </div>
+                ) : (
+                  <div className={styles.followButton} onClick={followHandler}>
+                    <FavoriteIcon /> <div>팔로우</div>
+                  </div>
+                )}
+              </div>
             )}
           </div>
         ) : (
@@ -413,11 +419,15 @@ function UserPage() {
       )}
 
       <div>
-        {postModalOpen && (
+        {postModalOpen && !postUpdateFormOpen && (
           <PostModal open={postModalOpen} close={closePostModal}>
-            {!postUpdateFormOpen && <PostDetailItem />}
-            {postUpdateFormOpen && <PostUpdateForm />}
+            <PostDetailItem />
           </PostModal>
+        )}
+        {postModalOpen && postUpdateFormOpen && (
+          <PostFormModal open={postModalOpen} close={closePostModal}>
+            <PostUpdateForm />
+          </PostFormModal>
         )}
       </div>
       {isLogging && <Loader />}

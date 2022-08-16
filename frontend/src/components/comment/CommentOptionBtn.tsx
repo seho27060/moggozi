@@ -110,7 +110,7 @@ function CommentOptionBtn(props: Props): JSX.Element {
         {userId === comment.writer!.id && (
           <MenuItem
             onClick={(event:MouseEvent) => {
-               commentRemoveHandler(event)
+              commentRemoveHandler(event)
             }}
           >
             삭제
