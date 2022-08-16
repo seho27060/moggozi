@@ -104,12 +104,7 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
             Member newMember = Member.builder().username(username)
                     .fullname(fullname).nickname("User" + randomNo).password(password).is_social(1).role(role).build();
 
-            /** InvalidDataAccessApiUsageException: detached entity passed to persist, while saving through JPA repository
-             Tried but failed: Remove CASCADE.PERSIST, EntityManager... 스택오버플로우 답 없어...
-             How can I change detached entity into attached one? 생각생각생각...
-             detached <-> attached: After emptying cache for EntityManager to call entity from db
-             and then call the new created member (attached)
-             which is findByUsername(username) */
+
             memberRepository.saveAndFlush(newMember);
             newMember = memberRepository.findByUsername(username).get();
 
