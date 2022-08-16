@@ -5,6 +5,8 @@ import com.JJP.restapiserver.domain.entity.member.Alert;
 import com.JJP.restapiserver.repository.member.AlertRepository;
 import com.JJP.restapiserver.repository.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AlertServiceImpl implements AlertService {
 
+    private final Logger logger = LoggerFactory.getLogger(AlertServiceImpl.class);
     private final AlertRepository alertRepository;
 
     private final MemberRepository memberRepository;
@@ -86,9 +89,14 @@ public class AlertServiceImpl implements AlertService {
     @Override
     public AlertResponseDto saveAlert(Long senderId, Long receiverId, String type, Long index, String msg) {
         LocalDateTime now = LocalDateTime.now();
-        List<Alert> recent_alerts = alertRepository.findDuplicatedMessage(receiverId, type,now);
-        if(!recent_alerts.isEmpty()){
+        List<Alert> recent_alerts = alertRepository.findDuplicatedMessage(receiverId, "follow",now);
+        System.out.println(recent_alerts.toString());
+        if(!recent_alerts.isEmpty() && type.equals("follow")){
+            logger.debug("이전 팔로우 기록이 있어서 알림 생성을 안 합니다.");
             return null;
+        }
+        else{
+            logger.debug("이전 팔로우 기록이 없어서 알람을 보냅니다.");
         }
         Alert alert = Alert.builder()
                 .sender(memberRepository.getById(senderId))

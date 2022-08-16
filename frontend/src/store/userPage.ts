@@ -16,6 +16,7 @@ export interface UserPostType {
   content: Value | string | null;
   createdDate: Date | null;
   modifiedDate: Date | null;
+  likeNum: number | null;
   postImg: PostImgData[];
   state: number | null;
   postLikeList: {

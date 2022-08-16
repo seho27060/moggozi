@@ -2,12 +2,16 @@ package com.JJP.restapiserver.service.challenge;
 
 import com.JJP.restapiserver.domain.dto.challenge.ReviewRequestDto;
 import com.JJP.restapiserver.domain.dto.challenge.ReviewResponseDto;
+import com.JJP.restapiserver.domain.dto.challenge.ReviewResponsePageDto;
 import com.JJP.restapiserver.domain.dto.challenge.ReviewUpdateRequestDto;
+import com.JJP.restapiserver.domain.entity.challenge.Challenge;
 import com.JJP.restapiserver.domain.entity.challenge.Review;
 import com.JJP.restapiserver.repository.challenge.ChallengeRepository;
 import com.JJP.restapiserver.repository.member.MemberRepository;
 import com.JJP.restapiserver.repository.challenge.ReviewRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -15,6 +19,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -44,14 +49,30 @@ public class ReviewServiceImpl implements ReviewService{
     }
 
     @Override
-    public List<ReviewResponseDto> getReviewList(Long challenge_id) {
-        List<Review> reviewList = reviewRepository.findAllByChallenge_id(challenge_id);
+    public ReviewResponsePageDto getReviewList(Long challenge_id, Pageable pageable) {
+        Slice<Review> result = reviewRepository.findAllByChallenge_id(challenge_id, pageable);
+        List<Review> reviewList = result.getContent();
         List<ReviewResponseDto> reviewResponseDtoList = new ArrayList<>();
         if(reviewList != null){
             for(int i = 0; i < reviewList.size(); i++){
                 reviewResponseDtoList.add(new ReviewResponseDto(reviewList.get(i)));
             }
         }
+        ReviewResponsePageDto reviewResponsePageDto = ReviewResponsePageDto.builder()
+                .pageNum(result.getNumber())
+                .content(reviewList)
+                .size(result.getSize())
+                .hasNext(result.hasNext())
+                .build();
+        return reviewResponsePageDto;
+    }
+
+    @Override
+    public List<ReviewResponseDto> getReviewList(Long challenge_id) {
+        Challenge challenge = challengeRepository.getById(challenge_id);
+        List<Review> reviewList = challenge.getReviewList();
+        List<ReviewResponseDto> reviewResponseDtoList = reviewList.stream().map(o -> new ReviewResponseDto(o)).collect(Collectors.toList());
+
         return reviewResponseDtoList;
     }
 

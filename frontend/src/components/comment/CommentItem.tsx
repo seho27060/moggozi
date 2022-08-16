@@ -8,9 +8,9 @@ import CommentChild from "./CommentChild";
 import CommentOptionBtn from "./CommentOptionBtn";
 
 import styles from "./CommentItem.module.scss";
+import default_profile from "../../asset/default_profile.png"
 import { useState } from "react";
 
-import { BsFillPersonFill } from "react-icons/bs";
 import CommentUpdateForm from "./CommentUpdateForm";
 import {  useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -66,10 +66,10 @@ const CommentItem: React.FC<{
                 onClick={toUserPageHandler}
               />
             ) : (
-              <BsFillPersonFill
+              <img
                 className={styles.img}
-                // src="https://blog.kakaocdn.net/dn/vckff/btqCjeJmBHM/tMVpe4aUIMfH4nKS4aO3tK/img.jpg"
-                // alt=""
+                src={default_profile}
+                alt=""
                 style={{ height: "50px", width: "50px" }}
                 onClick={toUserPageHandler}
               />

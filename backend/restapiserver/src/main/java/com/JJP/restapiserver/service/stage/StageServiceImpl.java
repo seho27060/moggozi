@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -33,6 +35,16 @@ public class StageServiceImpl implements StageService {
                 stageResponseDtoList.add(new StageResponseDto(stage));
             }
         }
+        Collections.sort(stageResponseDtoList, new Comparator<StageResponseDto>() {
+            @Override
+            public int compare(StageResponseDto o1, StageResponseDto o2) {
+                if(o1.getOrder() < o2.getOrder()){
+                    return -1;
+                }
+                else
+                    return 1;
+            }
+        });
         return stageResponseDtoList;
     }
 

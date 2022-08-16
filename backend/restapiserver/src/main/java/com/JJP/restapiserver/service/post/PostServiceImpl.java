@@ -1,14 +1,25 @@
 package com.JJP.restapiserver.service.post;
 
 import com.JJP.restapiserver.domain.dto.challenge.Writer;
-import com.JJP.restapiserver.domain.dto.member.response.MyPagePostDto;
+import com.JJP.restapiserver.domain.dto.SliceListDto;
 import com.JJP.restapiserver.domain.dto.post.*;
+import com.JJP.restapiserver.domain.dto.stage.StageCompleteDto;
+import com.JJP.restapiserver.domain.entity.challenge.Challenge;
+import com.JJP.restapiserver.domain.entity.challenge.JoinedChallenge;
 import com.JJP.restapiserver.domain.entity.stage.Post;
+import com.JJP.restapiserver.domain.entity.stage.Stage;
+import com.JJP.restapiserver.domain.entity.stage.StageUser;
+import com.JJP.restapiserver.repository.challenge.JoinedChallengeRepository;
 import com.JJP.restapiserver.repository.member.MemberRepository;
 import com.JJP.restapiserver.repository.stage.PostLikeRepository;
 import com.JJP.restapiserver.repository.stage.PostRepository;
 import com.JJP.restapiserver.repository.stage.StageRepository;
+import com.JJP.restapiserver.repository.stage.StageUserRepository;
+import com.JJP.restapiserver.service.stage.StageJoinService;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
@@ -16,6 +27,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -23,18 +36,46 @@ import java.util.stream.Collectors;
 @Service
 public class PostServiceImpl implements PostService {
 
+    private final Logger logger = LoggerFactory.getLogger(PostServiceImpl.class);
     private final PostRepository postRepository;
     private final MemberRepository memberRepository;
     private final StageRepository stageRepository;
+    private final StageUserRepository stageUserRepository;
     private final PostLikeRepository postLikeRepository;
+    private final JoinedChallengeRepository joinedChallengeRepository;
+
+    private final StageJoinService stageJoinService;
 
     @Transactional
     @Override
     public Long savePost(PostSaveRequestDto postSaveRequestDto, Long member_id) {
-        Post post = postRepository.findByStage_idAndMember_Id(postSaveRequestDto.getStageId(), member_id);
+        logger.debug("----------------------포스트 등록 시작    --------------" );
 
+        Post post = postRepository.findByStage_idAndMember_Id(postSaveRequestDto.getStageId(), member_id);
+        Long stage_id = postSaveRequestDto.getStageId();
+        Stage stage =  stageRepository.getById(stage_id);
+        Challenge challenge = stage.getChallenge();
+        JoinedChallenge joinedChallenge = joinedChallengeRepository.findByChallenge_idAndMember_id(challenge.getId(), member_id).get();
+        int stage_num = challenge.getStageList().size();
+        Optional<StageUser> userState = stageUserRepository.findByMember_idAndStage_id(member_id, stage_id);
+        // 포스트가 등록이 되면 유저가 참여중인 스테이지의 상태를 완료(2)로 바꿈
+        if(userState.isPresent()){
+
+            logger.debug("----------------------스테이지를 완료로 바꿈--------------" );
+            stageJoinService.changeStageState(new StageCompleteDto(userState.get().getMember().getId(),
+                    userState.get().getStage().getId()), 2);
+//            userState.get(). setState(2);
+        }
+        // 그 다음에 만약 포스트의 개수가 챌린지의 스테이트 개수와 같다면, 조인드 챌린지의 상태를 2로 바꿔야함.
+        int post_num = postRepository.countByMember_idAndStage_id(member_id, stage_id);
+        logger.debug("----------------------현재 포스트 개수 "+ (post_num+1) + " --------------" );
+        logger.debug("----------------------현재 스테이지 개수 "+ (stage_num) + " --------------" );
+        if(post_num + 1 == stage_num){
+            joinedChallenge.setState(2);
+            logger.debug("----------------------챌린지를 완료로 바꿈--------------" );
+        }
         if(post != null){
-            return Long.valueOf(-1);
+            return (long) -1;
         }
 
         return postRepository.save(postSaveRequestDto.toEntity(memberRepository.getById(member_id), stageRepository.getById(postSaveRequestDto.getStageId()))).getId();
@@ -46,7 +87,7 @@ public class PostServiceImpl implements PostService {
         Long post_id = postUpdateRequestDto.getPostId();
         Post entity = postRepository.findById(post_id).orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + post_id));
 
-        if(entity.getMember().getId() != member_id){
+        if(!Objects.equals(entity.getMember().getId(), member_id)){
             return -1;
         }
 
@@ -60,6 +101,14 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    public void deletePostInJoinedChallenge(Long stage_id, Long member_id) {
+        Optional<Post> post = postRepository.findByStage_idAndMember_id(stage_id, member_id);
+        if(post.isPresent()){
+            postRepository.deleteByStage_idAndMember_id(stage_id, member_id);
+        }
+    }
+
+    @Override
     public void deletePost(Long post_id) {
         Post entity = postRepository.findById(post_id).orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + post_id));
 
@@ -67,20 +116,9 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<PostResponseDto> getStagePost(Long stage_id) {
-        List<Post> postList = postRepository.findAllByStage_id(stage_id);
-        List<PostResponseDto> postResponseDtoList = new ArrayList<>();
-        for(int i = 0; i < postList.size(); i++)
-        {
-            Post post = postList.get(i);
-            PostResponseDto postResponseDto = new PostResponseDto(post);
-            if(postLikeRepository.findByPost_idAndMember_id(postResponseDto.getId(), postResponseDto.getWriter().getId()).isPresent())
-            {
-                postResponseDto.setLiked(true);
-            }
-            postResponseDtoList.add(postResponseDto);
-        }
-        return postResponseDtoList;
+    public SliceListDto getStagePost(Long stage_id, Pageable pageable) {
+        Page<Post> postList = postRepository.findAllByStage_idOrderByCreatedDateDesc(stage_id, pageable);
+        return getSliceListDto(postList);
     }
 
     @Override
@@ -112,20 +150,23 @@ public class PostServiceImpl implements PostService {
             List<Post> postList = postRepository.findRandomPostList(size);
             List<PostResponseDto> postResponseDtoList = new ArrayList<>();
             if(postList != null){
-            for(int i = 0; i < postList.size(); i++)
-                postResponseDtoList.add(new PostResponseDto(postList.get(i)));
+                for (Post post : postList) postResponseDtoList.add(new PostResponseDto(post));
             }
             return postResponseDtoList;
         }
 
     @Override
-    public List<PostResponseDto> getMemberPost(Long member_id) {
-        List<Post> postList = postRepository.findAllByMember_id(member_id);
+    public SliceListDto getMemberPost(Long member_id, Pageable pageable) {
+        Page<Post> postList = postRepository.findAllByMember_idOrderByCreatedDateDesc(member_id, pageable);
 
+        return getSliceListDto(postList);
+    }
+
+    private SliceListDto getSliceListDto(Page<Post> postList) {
         List<PostResponseDto> postResponseDtoList = new ArrayList<>();
-        for(int i = 0; i < postList.size(); i++)
+        for(int i = 0; i < postList.getNumberOfElements(); i++)
         {
-            Post post = postList.get(i);
+            Post post = postList.getContent().get(i);
             PostResponseDto postResponseDto = new PostResponseDto(post);
             if(postLikeRepository.findByPost_idAndMember_id(postResponseDto.getId(), postResponseDto.getWriter().getId()).isPresent())
             {
@@ -133,42 +174,55 @@ public class PostServiceImpl implements PostService {
             }
             postResponseDtoList.add(postResponseDto);
         }
-        return postResponseDtoList;
+
+        return SliceListDto.builder()
+                .totalPages(postList.getTotalPages())
+                .totalElements(postList.getTotalElements())
+                .pageNum(postList.getNumber())
+                .content(postResponseDtoList)
+                .size(postList.getNumberOfElements())
+                .hasNext(postList.hasNext())
+                .build();
     }
 
     @Override
-    public MyPagePostDto infinitePostList(Long member_id, Pageable pageable){
+    public SliceListDto infinitePostList(Long member_id, Pageable pageable){
         Slice<Post> challengeSlice = postRepository.findByMember_IdOrderByCreatedDateDesc(member_id, pageable);
         List<Post> postList = challengeSlice.toList();
-        List<PostResponseDto> postResponseDtoList = postList.stream().map(o -> new PostResponseDto(o)).collect(Collectors.toList());
+        List<PostResponseDto> postResponseDtoList = postList.stream().map(PostResponseDto::new).collect(Collectors.toList());
 
-        MyPagePostDto myPagePostDto = MyPagePostDto.builder()
+        return SliceListDto.builder()
                 .pageNum(challengeSlice.getNumber())
                 .content(postResponseDtoList)
                 .size(challengeSlice.getSize())
                 .hasNext(challengeSlice.hasNext())
                 .build();
-        return myPagePostDto;
     }
 
     @Override
     public PostDetailDto detailPost(Long post_id, Long member_id){
         Post post = postRepository.getById(post_id);
+        boolean like;
 
-        Writer writer = new Writer(post.getMember().getId(), post.getMember().getNickname(), post.getMember().getUser_img());
-        PostDetailDto postDetailDto = PostDetailDto.builder()
+        Writer writer = new Writer(post.getMember().getId(), post.getMember().getNickname(), post.getMember().getUser_img(), post.getMember().getMemberScore().getScore());
+
+        if(member_id == null){
+            like = false;
+        } else{
+            like = postLikeRepository.findByPost_idAndMember_id(post_id, member_id).isPresent();
+        }
+
+        return PostDetailDto.builder()
                 .id(post_id)
                 .title(post.getTitle())
                 .content(post.getContent())
                 .createdTime(post.getCreatedDate())
-                .isLiked(postLikeRepository.findByPost_idAndMember_id(post_id, member_id).isPresent() ? true : false)
+                .isLiked(like)
                 .modifiedTime(post.getModifiedDate())
                 .postImg(post.getPostImg())
                 .likeNum(post.getPostLikeList().size())
                 .writer(writer)
                 .build();
-
-        return postDetailDto;
     }
 
     @Override
@@ -179,19 +233,32 @@ public class PostServiceImpl implements PostService {
             return -1;
         }
 
-        Writer writer = new Writer(member_id, post.getMember().getNickname(), post.getMember().getUser_img());
-        PostDetailDto postDetailDto = PostDetailDto.builder()
+        Writer writer = new Writer(member_id, post.getMember().getNickname(), post.getMember().getUser_img(), post.getMember().getMemberScore().getScore());
+
+        return PostDetailDto.builder()
                 .id(post.getId())
                 .title(post.getTitle())
                 .content(post.getContent())
                 .createdTime(post.getCreatedDate())
-                .isLiked(postLikeRepository.findByPost_idAndMember_id(post.getId(), member_id).isPresent() ? true : false)
+                .isLiked(postLikeRepository.findByPost_idAndMember_id(post.getId(), member_id).isPresent())
                 .modifiedTime(post.getModifiedDate())
                 .postImg(post.getPostImg())
                 .likeNum(post.getPostLikeList().size())
                 .writer(writer)
                 .build();
+    }
 
-        return postDetailDto;
+    @Override
+    public SliceListDto latestPostList(Pageable pageable){
+        Page<Post> postList = postRepository.findAllByOrderByCreatedDateDesc(pageable);
+
+        return getSliceListDto(postList);
+    }
+
+    @Override
+    public SliceListDto likePostList(Pageable pageable){
+        Page<Post> postList = postRepository.findAllByOrderByLikeNumDesc(pageable);
+
+        return getSliceListDto(postList);
     }
 }

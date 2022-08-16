@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import getTextLength from "../../lib/getTextLength";
 import { hobbyExist, hobbySearch, setHobby } from "../../lib/withTokenApi";
 import { addHobby, Hobby } from "../../store/challenge";
 import { RootState } from "../../store/store";
@@ -16,6 +17,7 @@ const HobbyForm: React.FC = () => {
   const [alertText, setAlertText] = useState(<div></div>);
   const [modalOpen, setModalOpen] = useState(false);
   const [inputText, setInputText] = useState("");
+  const [inputCnt, setInputCnt] = useState(0);
 
   const closeModal = () => {
     document.body.style.overflow = "unset";
@@ -58,6 +60,8 @@ const HobbyForm: React.FC = () => {
             } else {
               dispatch(addHobby(res));
               setInputText("");
+              setInputCnt(0);
+              setDropDownList([]);
             }
           });
         }
@@ -80,6 +84,11 @@ const HobbyForm: React.FC = () => {
 
   function changeInputHandler(event: React.ChangeEvent<HTMLInputElement>) {
     event.preventDefault();
+    const cnt = getTextLength(event.target.value);
+    if (cnt > 10 && event.target.value.length > inputText.length) {
+      return;
+    }
+    setInputCnt(cnt);
     setInputText(event.target.value);
     const enteredQuery = hobbyInputRef.current!.value;
     if (enteredQuery === "") {
@@ -113,6 +122,7 @@ const HobbyForm: React.FC = () => {
           onKeyUp={onKeyUpHandler}
           value={inputText}
         />
+        <p>{inputCnt}/10</p>
         <button type="button" onClick={onClickHandler}>
           &#43;
         </button>

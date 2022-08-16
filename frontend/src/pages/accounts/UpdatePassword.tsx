@@ -60,10 +60,9 @@ const UpdatePassword: React.FC = () => {
     <div className={styles.main}>
       <div className={styles.container}>
         <h1>비밀번호 변경</h1>
-        <hr />
         <form className={styles.form}>
           <div className={styles.nowPw}>
-            <label htmlFor="currentPw">현재 비밀번호 : </label>
+            <label htmlFor="currentPw">현재 비밀번호</label>
             <input
               type="password"
               name="currentPw"
@@ -75,7 +74,7 @@ const UpdatePassword: React.FC = () => {
           </div>
           <br />
           <div>
-            <label htmlFor="updatePw">변경할 비밀번호 : </label>
+            <label htmlFor="updatePw">변경할 비밀번호</label>
             <input
               type="password"
               name="updatePw"
@@ -89,7 +88,7 @@ const UpdatePassword: React.FC = () => {
           </div>
           <br />
           <div>
-            <label htmlFor="checkPw">비밀번호 확인 : </label>
+            <label htmlFor="checkPw">비밀번호 확인</label>
             <input
               type="password"
               name="checkPw"
@@ -105,9 +104,7 @@ const UpdatePassword: React.FC = () => {
               className={styles.input1}
             />
           </div>
-          {!passwordCheck && <p>비밀번호가 일치하지 않습니다.</p>}
-          <br />
-        <hr />
+          {!passwordCheck && <div className={styles.check}>비밀번호가 일치하지 않습니다.</div>}
           <button
             onClick={submitPwUpdateHandler}
             disabled={!passwordCheck}

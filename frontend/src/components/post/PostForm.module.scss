@@ -104,10 +104,56 @@
       }
     }
 
+    .imageForm {
+      display: flex;
+      justify-content: space-around;
+      align-items: flex-end;
+      margin: 0 0 20px 0;
+
+      .image {
+        width: 250px;
+        height: 250px;
+        background: rgb(233, 233, 233);
+        border-radius: 5px;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .addImg {
+          text-align: center;
+          div:nth-child(1) {
+            font-weight: 500;
+            color: rgb(151, 151, 151);
+            margin: 3px 0 3px 0;
+          }
+          div:nth-child(2) {
+            font-weight: 500;
+            color: rgb(151, 151, 151);
+            margin: 3px 0 3px 0;
+          }
+          div:nth-child(3) {
+            font-weight: 500;
+            margin: 3px 0 3px 0;
+            color: rgb(78, 78, 78);
+          }
+          div:nth-child(4) {
+            font-weight: 500;
+            margin: 3px 0 3px 0;
+            color: rgb(78, 78, 78);
+          }
+        }
+      }
+
+      input {
+        display: none;
+      }
+    }
+
+
     .img {
-      width: 400px;
+      width: 250px;
       height: 250px;
-      cursor: pointer;
     }
 
     .submitt {

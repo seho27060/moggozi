@@ -13,15 +13,12 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor
 public class StageJoinRequestDto {
-    @CreatedDate
-    private LocalDateTime join_time;
     private Long member_id;
     private Long stage_id;
     private int state;
 
     @Builder
-    public StageJoinRequestDto(LocalDateTime join_time, Long member_id, Long stage_id, int state){
-        this.join_time = join_time;
+    public StageJoinRequestDto(Long member_id, Long stage_id, int state){
         this.member_id = member_id;
         this.stage_id = stage_id;
         this.state = state;

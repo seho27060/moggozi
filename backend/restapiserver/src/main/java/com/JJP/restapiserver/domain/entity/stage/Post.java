@@ -32,14 +32,10 @@ public class Post extends BaseTimeEntity {
     @JsonBackReference
     private Stage stage;
 
-    @Column(length = 45)
     private String title;
 
     @Lob
     private String content;
-
-    @Column(length = 300)
-    private String postImg;
 
     @Column()
     private int state;
@@ -56,15 +52,14 @@ public class Post extends BaseTimeEntity {
     private List<Comment> postComment = new ArrayList<>();
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
-    private List<PostImg> postImgList = new ArrayList<>();
+    private List<PostImg> postImg = new ArrayList<>();
     @Builder
-    public Post(Long id, Member member, Stage stage, String title, String content, String post_img) {
+    public Post(Long id, Member member, Stage stage, String title, String content) {
         this.id = id;
         this.member = member;
         this.stage = stage;
         this.title = title;
         this.content = content;
-        this.postImg = post_img;
     }
 
     public void update(String title, String content) {

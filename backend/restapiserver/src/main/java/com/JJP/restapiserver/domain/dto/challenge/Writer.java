@@ -11,10 +11,12 @@ public class Writer {
     public String nickname;
 
     public String path;
-    public Writer(Long id, String nickname, String path){
+    public Long score;
+    public Writer(Long id, String nickname, String path, Long score){
         this.id =id;
         this.nickname = nickname;
         this.path = path;
+        this.score = score;
     }
 
 }

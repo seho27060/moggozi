@@ -2,9 +2,11 @@ package com.JJP.restapiserver.controller.challenge;
 
 import com.JJP.restapiserver.domain.dto.challenge.ReviewRequestDto;
 import com.JJP.restapiserver.domain.dto.challenge.ReviewResponseDto;
+import com.JJP.restapiserver.domain.dto.challenge.ReviewResponsePageDto;
 import com.JJP.restapiserver.domain.dto.challenge.ReviewUpdateRequestDto;
 import com.JJP.restapiserver.service.challenge.ReviewService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
