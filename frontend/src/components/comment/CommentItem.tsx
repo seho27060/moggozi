@@ -12,6 +12,9 @@ import { useState } from "react";
 
 import { BsFillPersonFill } from "react-icons/bs";
 import CommentUpdateForm from "./CommentUpdateForm";
+import {  useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setPostModalOpen } from "../../store/postModal";
 
 // 댓글 컴포넌트
 // 현재 스테이트에 불러들인 comment 리스트 가져오기
@@ -41,33 +44,41 @@ const CommentItem: React.FC<{
   console.log(comment.writer?.img);
   // console.log(`${comment.id}의 childs`, childs);
 
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+
+  const toUserPageHandler = () => {
+    navigate(`/user/${comment.writer!.id}`)
+    dispatch(setPostModalOpen(false))
+  }
   return (
     <div>
       {/* 댓글내용과 해당 댓글의 대댓글 출력. */}
       {/* 사용자이미지, img태그에 null값이 못들어감 수정필요 */}
       <div className={styles.writer}>
         <div className={styles.user}>
-          {comment.writer?.path ? (
-            <img
-              className={styles.img}
-              src={comment.writer?.path}
-              alt=""
-              style={{ height: "50px", width: "50px" }}
-            />
-          ) : (
-            <BsFillPersonFill
-              className={styles.img}
-              // src="https://blog.kakaocdn.net/dn/vckff/btqCjeJmBHM/tMVpe4aUIMfH4nKS4aO3tK/img.jpg"
-              // alt=""
-              style={{ height: "50px", width: "50px" }}
-            />
-          )}
-          <div>{comment.writer?.nickname}</div>
+            {comment.writer?.path ? (
+              <img
+                className={styles.img}
+                src={comment.writer?.path}
+                alt=""
+                style={{ height: "50px", width: "50px" }}
+                onClick={toUserPageHandler}
+              />
+            ) : (
+              <BsFillPersonFill
+                className={styles.img}
+                // src="https://blog.kakaocdn.net/dn/vckff/btqCjeJmBHM/tMVpe4aUIMfH4nKS4aO3tK/img.jpg"
+                // alt=""
+                style={{ height: "50px", width: "50px" }}
+                onClick={toUserPageHandler}
+              />
+            )}
+            <div>{comment.writer?.nickname}</div>
         </div>
         <div className={styles.option}>
           <CommentOptionBtn
             comment={comment}
-            postId={postModalState.id}
             setCommentUpdateFormToggle={setCommentUpdateFormToggle}
           />
         </div>

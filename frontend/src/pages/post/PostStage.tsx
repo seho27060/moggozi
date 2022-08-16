@@ -26,6 +26,7 @@ import styles from "./PostStage.module.scss";
 import { StageState } from "../../store/stage";
 import PostPageList from "../../components/post/PostPageList";
 import Loader from "../../components/ui/Loader";
+import PostFormModal from "../../components/ui/PostFormModal";
 
 const PostStage: React.FC = () => {
   document.body.style.overflow = "auto"; //모달때문에 이상하게 스크롤이 안되서 강제로 스크롤 바 생성함
@@ -143,12 +144,16 @@ const PostStage: React.FC = () => {
         </div>
 
         <div>
-          {postModalOpen && (
-            <PostModal open={postModalOpen} close={closePostModal}>
-              {!postUpdateFormOpen && <PostDetailItem />}
-              {postUpdateFormOpen && <PostUpdateForm />}
-            </PostModal>
-          )}
+          {(postModalOpen && !postUpdateFormOpen) &&(
+          <PostModal open={postModalOpen} close={closePostModal}>
+            <PostDetailItem />
+          </PostModal>
+        )}
+        {(postModalOpen && postUpdateFormOpen) && (
+          <PostFormModal open={postModalOpen} close={closePostModal}>
+            <PostUpdateForm />
+          </PostFormModal>
+        )}
           {postFormModalOpen && (
             <Modal
               open={postFormModalOpen}

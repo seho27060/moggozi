@@ -1,9 +1,7 @@
 import type { RootState } from "../../store/store";
 import { useSelector } from "react-redux";
-
 import { Link, useParams } from "react-router-dom";
 import { useCallback, useContext, useEffect, useState } from "react";
-
 import { otherUserDetail } from "../../lib/generalApi";
 import {
   fetchMyChallengeList,
@@ -11,18 +9,13 @@ import {
   myPagePost,
   userTryChallenge,
 } from "../../lib/withTokenApi";
-
 import MypageFollow from "../../components/accounts/MypageFollow";
-
 import styles from "./UserPage.module.scss";
 
 import { WebSocketContext } from "../../lib/WebSocketProvider";
 import { Alert } from "../../store/alert";
-
-import { UserChallengeType, UserPostType } from "../../store/userPage";
-
+import { setUserPagePostList, UserChallengeType } from "../../store/userPage";
 import { useDispatch } from "react-redux";
-
 import {
   setPostModalOpen,
   setPostUpdateFormState,
@@ -37,6 +30,9 @@ import Tab from "@mui/material/Tab";
 import UserTabBox from "./UserTabBox";
 import { Box } from "@mui/material";
 import Loader from "../../components/ui/Loader";
+import PostFormModal from "../../components/ui/PostFormModal";
+
+import FavoriteIcon from "@mui/icons-material/Favorite";
 
 function UserPage() {
   const { postModalOpen, postUpdateFormOpen } = useSelector(
@@ -60,7 +56,9 @@ function UserPage() {
   const [followState, setFollowState] = useState(false);
 
   const [challengeList, setChallengeList] = useState<UserChallengeType[]>([]);
-  const [postList, setPostList] = useState<UserPostType[]>([]);
+  // const [postList, setPostList] = useState<UserPostType[]>([]);
+  const userUserPagePostList = useSelector((state:RootState)=> state.userPage.UserPagePostList)
+
   const [myChallengeList, setMyChallengeList] = useState<ChallengeItemState[]>(
     []
   );
@@ -91,16 +89,17 @@ function UserPage() {
       value !== 0 &&
       Math.round(scrollTop + innerHeight) >= scrollHeight - 100
     ) {
-      setIsLogging(true);
       switch (value) {
         case 1: // 내 포스팅
           if (!postHasNext) {
             break;
           }
+          setIsLogging(true);
           myPagePost(userId, currentPostPage + 1, 16)
             .then((res) => {
               console.log(userId, "post", res);
-              setPostList(postList.concat(res.content));
+              dispatch(setUserPagePostList(userUserPagePostList.concat(res.content)))
+              // setPostList(postList.concat(res.content));/
               setCurrentPostPage(res.pageNum);
               setPostHasNext(res.hasNext);
             })
@@ -110,6 +109,7 @@ function UserPage() {
           if (!challengeHasNext) {
             break;
           }
+          setIsLogging(true);
           userTryChallenge(userId, currentChallengePage + 1, 16)
             .then((res) => {
               console.log(userId, "ch", res);
@@ -123,6 +123,7 @@ function UserPage() {
           if (!myChallengeHasNext) {
             break;
           }
+          setIsLogging(true);
           if (userId === loginData.userInfo.id) {
             // 작성한 챌린지
             fetchMyChallengeList(currentMyChallengePage + 1, 16)
@@ -144,7 +145,8 @@ function UserPage() {
     currentMyChallengePage,
     challengeList,
     myChallengeList,
-    postList,
+    // postList,
+    userUserPagePostList,
     userId,
     value,
     loginData.userInfo.id,
@@ -183,7 +185,8 @@ function UserPage() {
         myPagePost(userId, 0, 16)
           .then((res) => {
             console.log(userId, "post", res);
-            setPostList(res.content);
+            // setPostList(res.content);
+            dispatch(setUserPagePostList(res.content))
             setPostHasNext(res.hasNext);
           })
           .catch((err) => console.log("post err", err));
@@ -290,10 +293,20 @@ function UserPage() {
             {loginId === userId ? (
               ""
             ) : (
-              <button onClick={followHandler} className={styles.followButton}>
-                {" "}
-                {followState ? "♥ 언팔로우" : "♥ 팔로우"}
-              </button>
+              <div>
+                {followState ? (
+                  <div
+                    className={styles.unfollowButton}
+                    onClick={followHandler}
+                  >
+                    <FavoriteIcon /> <div>언팔로우</div>
+                  </div>
+                ) : (
+                  <div className={styles.followButton} onClick={followHandler}>
+                    <FavoriteIcon /> <div>팔로우</div>
+                  </div>
+                )}
+              </div>
             )}
           </div>
         ) : (
@@ -353,7 +366,8 @@ function UserPage() {
               myChallenges={null}
               challenges={challengeList.slice(0, 8)}
               nickname={nickname}
-              posts={postList.slice(0, 8)}
+              posts={userUserPagePostList.slice(0, 8)}
+              nameCheck = {false}
             />
           )}
           {value === 1 && (
@@ -361,7 +375,8 @@ function UserPage() {
               myChallenges={null}
               challenges={null}
               nickname={nickname}
-              posts={postList}
+              posts={userUserPagePostList}
+              nameCheck = {true}
             />
           )}
           {value === 2 && (
@@ -370,6 +385,7 @@ function UserPage() {
               challenges={challengeList}
               nickname={nickname}
               posts={null}
+              nameCheck = {true}
             />
           )}
         </>
@@ -380,7 +396,8 @@ function UserPage() {
               myChallenges={myChallengeList.slice(0, 8)}
               challenges={challengeList.slice(0, 8)}
               nickname={nickname}
-              posts={postList.slice(0, 8)}
+              posts={userUserPagePostList.slice(0, 8)}
+              nameCheck = {false}
             />
           )}
           {value === 1 && (
@@ -388,7 +405,8 @@ function UserPage() {
               myChallenges={null}
               challenges={null}
               nickname={nickname}
-              posts={postList}
+              posts={userUserPagePostList}
+              nameCheck = {true}
             />
           )}
           {value === 2 && (
@@ -397,6 +415,7 @@ function UserPage() {
               challenges={challengeList}
               nickname={nickname}
               posts={null}
+              nameCheck = {true}
             />
           )}
           {value === 3 && (
@@ -405,17 +424,22 @@ function UserPage() {
               challenges={null}
               nickname={nickname}
               posts={null}
+              nameCheck = {true}
             />
           )}
         </>
       )}
 
       <div>
-        {postModalOpen && (
+        {postModalOpen && !postUpdateFormOpen && (
           <PostModal open={postModalOpen} close={closePostModal}>
-            {!postUpdateFormOpen && <PostDetailItem />}
-            {postUpdateFormOpen && <PostUpdateForm />}
+            <PostDetailItem />
           </PostModal>
+        )}
+        {postModalOpen && postUpdateFormOpen && (
+          <PostFormModal open={postModalOpen} close={closePostModal}>
+            <PostUpdateForm />
+          </PostFormModal>
         )}
       </div>
       {isLogging && <Loader />}

@@ -10,7 +10,8 @@ const UserTabBox: React.FC<{
   myChallenges: ChallengeItemState[] | null;
   challenges: UserChallengeType[] | null;
   posts: UserPostType[] | null;
-}> = ({ nickname, myChallenges, challenges, posts }) => {
+  nameCheck : boolean
+}> = ({ nickname, myChallenges, challenges, posts,nameCheck }) => {
   return (
     <div>
       <div style={{ display: "flex", justifyContent: "center" }}>
@@ -32,6 +33,7 @@ const UserTabBox: React.FC<{
                     <Grid key={challenge.id} item xs={3}>
                       <UserChallengeItem
                         userChallenge={{ ...challenge, img: challenge.img! }}
+                        nameCheck = {nameCheck}
                       />
                     </Grid>
                   ))}
@@ -55,7 +57,8 @@ const UserTabBox: React.FC<{
                 <Grid container spacing={1}>
                   {challenges.map((challenge) => (
                     <Grid key={challenge.id} item xs={3}>
-                      <UserChallengeItem userChallenge={challenge} />
+                      <UserChallengeItem userChallenge={challenge} 
+                      nameCheck = {nameCheck}/>
                     </Grid>
                   ))}
                 </Grid>
@@ -78,7 +81,8 @@ const UserTabBox: React.FC<{
                 <Grid container spacing={2}>
                   {posts!.map((post) => (
                     <Grid key={post.id} item xs={3}>
-                      <UserPostItem userPost={post} />
+                      <UserPostItem userPost={post} 
+                      nameCheck = {nameCheck}/>
                     </Grid>
                   ))}
                 </Grid>

@@ -7,7 +7,7 @@ import { RootState } from "../../store/store";
 import AlertItem from "./AlertItem";
 
 import styles from "./AlertOnair.module.scss";
-
+import classes from "./AlertList.module.scss"
 const AlertList: React.FC<{
   setIsToggle: Dispatch<SetStateAction<boolean>>;
 }> = ({ setIsToggle }) => {
@@ -31,7 +31,7 @@ const AlertList: React.FC<{
           loadedAlertList.map((alert: Alert) => (
             <div key={alert.id}>
               <AlertItem alertData={alert} />
-              <hr />
+              <div className={classes.horizon}></div>
             </div>
           ))}
         {}
@@ -45,16 +45,16 @@ const AlertList: React.FC<{
           })
         })
       }}>알림 전체 확인</button> */}
-      <div style={{ display: "inline-flex", justifyContent: "center" }}>
+      <div style={{ display: "flex", justifyContent: "center" }}>
         <button
           onClick={alertAllHandler}
-          style={{ margin: "3px 15px", padding: "5px 0px 10px 5px",fontSize:"0.6rem"}}
+          style={{ margin: "3px 15px", padding: "5px 0px 10px 5px",fontSize:"1rem", fontWeight:"600", cursor: "pointer"}}
         >
           전체확인
         </button>
         <button
           onClick={() => setIsToggle(false)}
-          style={{ margin: "3px 15px", padding: "5px 5px 10px 5px",fontSize:"0.6rem" }}
+          style={{ margin: "3px 15px", padding: "5px 5px 10px 5px",fontSize:"1rem", fontWeight:"600", cursor: "pointer" }}
         >
           닫기
         </button>

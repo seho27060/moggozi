@@ -103,34 +103,6 @@
           }
         }
       }
-      // 말풍선
-      .arrow{
-        position: relative;
-        background: #7e6ae3;
-        color: #fff;
-        padding: 13px;
-        border-radius: 20rem;
-        bottom: 9px;
-        font-size: 20pt;
-        box-shadow: 2px 2px 3px #d1d1d1;
-    }
-    .arrow:after, .arrow_box:before {
-      left: 97%;
-      top: 50%;
-      border: solid transparent;
-      content: "";
-      height: 0;
-      width: 0;
-      position: absolute;
-      pointer-events: none;
-    }
-    
-    .arrow:after {
-      border-color: rgba(136, 183, 213, 0);
-      border-left-color: #7e6ae3;
-      border-width: 15px;
-      margin-top: -15px;
-    }
 
       // 챌린지 이미지
       .challengeImg {
