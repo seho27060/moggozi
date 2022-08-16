@@ -339,7 +339,7 @@ const ChallengeDetail: React.FC = () => {
                   </div>
                 </div>
                 <div className={styles.commentCnt}>
-                  <div>댓글 </div>
+                  <div>리뷰 </div>
                   <div>{reviews.length}</div>
                 </div>
               </div>
@@ -349,7 +349,10 @@ const ChallengeDetail: React.FC = () => {
 
           {loadedChallenge!.state === 1 && isLoggedIn && (
             <div>
-              <ReviewForm user_image={userImg} />
+              <ReviewForm
+                user_image={userImg}
+                userProgress={loadedChallenge!.userProgress}
+              />
               <ReviewList reviews={reviews} />
             </div>
           )}
@@ -366,12 +369,12 @@ const ChallengeDetail: React.FC = () => {
       )}
 
       <div>
-        {(postModalOpen && !postUpdateFormOpen) &&(
+        {postModalOpen && !postUpdateFormOpen && (
           <PostModal open={postModalOpen} close={closePostModal}>
             <PostDetailItem />
           </PostModal>
         )}
-        {(postModalOpen && postUpdateFormOpen) && (
+        {postModalOpen && postUpdateFormOpen && (
           <PostFormModal open={postModalOpen} close={closePostModal}>
             <PostUpdateForm />
           </PostFormModal>
