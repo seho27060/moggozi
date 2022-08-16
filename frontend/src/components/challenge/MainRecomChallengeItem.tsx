@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
 import { ChallengeItemState } from "../../store/challenge";
 
-import no_image from "../../asset/no_image.png"
+import no_image from "../../asset/no_image.png";
 import styles from "./MainRecomChallengeItem.module.scss";
-import FavoriteIcon from '@mui/icons-material/Favorite';
+import FavoriteIcon from "@mui/icons-material/Favorite";
 
 const MainRecomChallengeItem: React.FC<{ challenge: ChallengeItemState }> = ({
   challenge,
@@ -13,14 +13,12 @@ const MainRecomChallengeItem: React.FC<{ challenge: ChallengeItemState }> = ({
     <Link to={`/challenge/${challenge.id}`} className={`${styles.link} item`}>
       <div className={styles.challengeItem}>
         <div className={styles.img}>
-        {challenge.img !== "" && challenge.img ? (
-          <img src={challenge.img} alt="challenge Img"></img>
-        ) : (
-          <img
-            src={no_image}
-            alt=""
-          ></img>
-        )}</div>
+          {challenge.img !== "" && challenge.img ? (
+            <img src={challenge.img} alt="challenge Img"></img>
+          ) : (
+            <img src={no_image} alt=""></img>
+          )}
+        </div>
         {/* 진행도 뱃지 */}
         <div
           className={(() => {
@@ -35,23 +33,26 @@ const MainRecomChallengeItem: React.FC<{ challenge: ChallengeItemState }> = ({
             if (challenge.userProgress === 2) return "";
           })()}
         </div>
-        
+
         {/* 난이도 + 작성자 */}
-            <div className={styles.userInfo}>
-              <div className={styles.title}>
-                <div>{challenge.name}</div>
-                <div
-                  className={(() => {
-                    if (challenge.level === 1) return styles.level1;
-                    if (challenge.level === 2) return styles.level2;
-                    if (challenge.level === 3) return styles.level3;
-                  })()}
-                >
-                  Lv.{challenge.level}
-                </div>
-              </div>
-              <div className={styles.heart}><FavoriteIcon /><div className={styles.word}>{challenge.likeNum}</div></div>
+        <div className={styles.userInfo}>
+          <div className={styles.title}>
+            <div>{challenge.name}</div>
+            <div
+              className={(() => {
+                if (challenge.level === 1) return styles.level1;
+                if (challenge.level === 2) return styles.level2;
+                if (challenge.level === 3) return styles.level3;
+              })()}
+            >
+              {" "}
             </div>
+          </div>
+          <div className={styles.heart}>
+            <FavoriteIcon />
+            <div className={styles.word}>{challenge.likeNum}</div>
+          </div>
+        </div>
       </div>
 
       {!challenge.state && <p>현재 작성 중!!</p>}

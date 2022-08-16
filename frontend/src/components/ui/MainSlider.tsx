@@ -4,9 +4,11 @@ import Slider from "react-slick";
 
 
 
-import banner1 from "../../asset/banner1.png"
-import banner2 from "../../asset/banner2.png"
-import banner3 from "../../asset/banner3.png"
+import banner1 from "../../asset/banner/001.png"
+import banner2 from "../../asset/banner/002.png"
+import banner3 from "../../asset/banner/003.png"
+import banner4 from "../../asset/banner/004.png"
+import banner5 from "../../asset/banner/005.png"
 import styles from "./MainSlider.module.scss"
 
 import "slick-carousel/slick/slick.css";
@@ -59,7 +61,7 @@ const MainSlider = (
 
   return (
     <div>
-      <div className={styles.counter} data-content={`${slideCnt + 1} / 3`} style={{content: `${slideCnt} / 5`}}>
+      <div className={styles.counter} data-content={`${slideCnt + 1} / 5`} style={{content: `${slideCnt} / 5`}}>
         {/* {slideCnt} / 5 */}
         </div>
       <Slider {...settings} className={styles.img}>
@@ -73,9 +75,12 @@ const MainSlider = (
         <div>
           <img src={banner3} alt="" />
         </div>
-        {/* <div>
-          <img src="https://c.tenor.com/LlGsQPi_zsYAAAAd/kurzgesagt-gamma-ray.gif" alt="" />
-        </div> */}
+        <a href="https://forms.gle/YsrpxDNKo9ZiYbmH9" target="_blank" rel="noopener noreferrer">
+          <img src={banner4} alt="" />
+        </a>
+        <div>
+          <img src={banner5} alt="" />
+        </div>
       </Slider>
     </div>
   )

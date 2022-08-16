@@ -17,7 +17,7 @@ import Carousel from "../ui/Slider";
 import styles from "./StageItem.module.scss";
 import "./Carousel.module.scss";
 import PostList from "../post/PostList";
-
+import no_image from "../../asset/no_image.png"
 import Dompurify from "dompurify";
 
 const StageItem: React.FC<{
@@ -29,37 +29,19 @@ const StageItem: React.FC<{
   document.body.style.overflow = "auto"; //모달때문에 이상하게 스크롤이 안되서 강제로 스크롤 바 생성함
 
   const dispatch = useDispatch();
-  // const [postStageListState, setPostStageListState] = useState<PostData[]>([]);
   const postStageListState = useSelector(
     (state: RootState) => state.post.posts
   );
   const [getStageImg, setStageImg] = useState<imgState[]>([]);
   const checkedPost = useSelector((state: RootState) => state.post.checkedPost);
 
-  // const [getStageProgress, setStageProgress] = useState(0);
   const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
-  // const user = useSelector((state: RootState) => state.auth);
   const postingStageId = useSelector(
     (state: RootState) => state.post.postingStageId
   );
   const { postFormButtonOpen } = useSelector(
     (state: RootState) => state.postModal
   );
-
-  // // 스테이지 진행도
-  // useEffect(() => {
-  //   if (isLoggedIn === true) {
-  //     fetchStageProgress(stage.id!)
-  //       .then((res) => {
-  //         setStageProgress(res);
-  //       })
-  //       .catch((err) => {
-  //         console.log(err);
-  //       });
-  //   }
-  // }, [isLoggedIn, stage.id]);
-
-  // 스테이지 사진
 
   useEffect(() => {
     stageImgFetchAPI(stage.id!)
@@ -76,7 +58,6 @@ const StageItem: React.FC<{
     postListRead(Number(stage.id), 0, 3)
       .then((res) => {
         console.log("포스팅 불러오기 성공", res.content);
-        // setPostStageListState(res.content);
         dispatch(postSet(res.content));
         dispatch(setPostFormButtonState(true));
       })
@@ -89,7 +70,7 @@ const StageItem: React.FC<{
         dispatch(setCheckedPost(res));
       })
       .catch((err) => console.log("err", err));
-  }, [dispatch, stage.id, setCheckedPost]);
+  }, [dispatch, stage.id]);
 
   return (
     <div>
@@ -103,7 +84,7 @@ const StageItem: React.FC<{
               })
             ) : (
               <img
-                src="https://img1.daumcdn.net/thumb/R800x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbgHC4M%2FbtqBVf8rCqB%2FZz5aJuALI4JSKV8ZKAm8YK%2Fimg.jpg"
+                src={no_image}
                 alt=""
               />
             )}
