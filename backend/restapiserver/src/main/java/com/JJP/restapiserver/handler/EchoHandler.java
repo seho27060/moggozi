@@ -64,8 +64,6 @@ public class EchoHandler extends TextWebSocketHandler {
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
         Long session_val = userSessionsMap.get(session);
         String strJson = message.getPayload();
-        logger.debug("-----------메시지를 수신했습니다.---------");
-        logger.debug(strJson);
         JSONObject jsonObj = new JSONObject(strJson);
 
         // "alertIndex, senderId,senderName, receiverId, receiverName, type, index, 메시지"
@@ -76,6 +74,9 @@ public class EchoHandler extends TextWebSocketHandler {
             String receiverName = jsonObj.getString("receiverName");
             String type = jsonObj.getString("type");
             Long index = Long.parseLong(jsonObj.getString("index"));
+            logger.debug("------- " + senderName + "님이 보낸 메시지를 수신했습니다.---------");
+            logger.debug("------- 받는 이는 " + receiverName + " 입니다.-------------");
+            logger.debug("-------------타입은 " + type + " 입니다. ------------------------");
 
             if (session_val == -1L && type.equals("register")) {
                 userSessionsMap.put(session, senderId);
