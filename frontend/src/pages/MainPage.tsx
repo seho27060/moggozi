@@ -34,6 +34,8 @@ import PostUpdateForm from "../components/post/PostUpdateForm";
 import Loader from "../components/ui/Loader";
 
 import styles from "./MainPage.module.scss";
+import no_image from "../asset/no_image.png"
+
 import PostFormModal from "../components/ui/PostFormModal";
 
 const MainPage: React.FC = () => {
@@ -294,7 +296,7 @@ const MainPage: React.FC = () => {
                         src={
                           post.postImg!.length !== 0
                             ? post.postImg[0].path!
-                            : "https://blog.kakaocdn.net/dn/vckff/btqCjeJmBHM/tMVpe4aUIMfH4nKS4aO3tK/img.jpg"
+                            : no_image
                         }
                         alt=""
                         style={{ minWidth: "300px" }}

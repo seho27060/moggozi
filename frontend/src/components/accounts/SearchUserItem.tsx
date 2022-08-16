@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { otherUserDetail } from "../../lib/generalApi";
 import { UserInfo } from "../../store/auth";
 
+import default_profile from "../../asset/default_profile.png"
 import styles from "./SearchUserItem.module.scss";
 
 const SearchUserItem: React.FC<{ user: UserInfo }> = ({ user }) => {
@@ -31,9 +32,7 @@ const SearchUserItem: React.FC<{ user: UserInfo }> = ({ user }) => {
           <img src={img} alt="" />
         ) : (
           <img
-            src={
-              "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQUaworQRvFcmCL5AwklqSA8jkWoW56F00JdA&usqp=CAU"
-            }
+            src={default_profile}
             alt=""
           />
         )}

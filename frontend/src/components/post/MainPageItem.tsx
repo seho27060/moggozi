@@ -4,6 +4,8 @@ import { setModalPostState, setPostModalOpen } from "../../store/postModal";
 
 import Modal from "../ui/Modal";
 
+import default_profile from "../../asset/default_profile.png"
+import no_image from "../../asset/no_image.png"
 import styles from "./MainPageItem.module.scss";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import ShareIcon from "@mui/icons-material/Share";
@@ -51,7 +53,7 @@ const MainPageItem: React.FC<{ post: PostData }> = ({ post }) => {
             navigate(`/user/${post.writer?.id}`);
           }}
         >
-          <img src={post.writer?.path} alt="" />
+          {post.writer?.path ? <img src={post.writer?.path} alt="" /> : <img src={default_profile} alt="" />}
           <div className={styles.userInfo}>
             <div className={styles.writer}>{post.writer?.nickname}</div>
             {post.title!.length > 18 ? (
@@ -78,7 +80,7 @@ const MainPageItem: React.FC<{ post: PostData }> = ({ post }) => {
           alt=""
         />
       ) : (
-        <img className={styles.postImg} src="" alt="" 
+        <img className={styles.postImg} src={no_image} alt="" 
         onClick={(event: React.MouseEvent) => {
           event.preventDefault();
           dispatch(setModalPostState(post));
