@@ -1,11 +1,11 @@
 import { Grid } from "@mui/material";
-import TotalUserChallengeItem from "../../components/user/TotalUserChallengeItem";
-import TotalUserPostItem from "../../components/user/TotalUserPostItem";
+import UserChallengeItem from "../../components/user/UserChallengeItem";
+import UserPostItem from "../../components/user/UserPostItem";
 import { ChallengeItemState } from "../../store/challenge";
 import { UserChallengeType, UserPostType } from "../../store/userPage";
 import styles from "./UserPage.module.scss";
 
-const UserTabBox: React.FC<{
+const UserDetailTabBox: React.FC<{
   nickname: string;
   myChallenges: ChallengeItemState[] | null;
   challenges: UserChallengeType[] | null;
@@ -30,8 +30,8 @@ const UserTabBox: React.FC<{
                 </p>
                 <Grid container spacing={1}>
                   {myChallenges.map((challenge) => (
-                    <Grid key={challenge.id} item xs={3}>
-                      <TotalUserChallengeItem
+                    <Grid key={challenge.id} item xs={4}>
+                      <UserChallengeItem
                         userChallenge={{ ...challenge, img: challenge.img! }}
                         nameCheck = {nameCheck}
                       />
@@ -56,8 +56,8 @@ const UserTabBox: React.FC<{
                 </p>
                 <Grid container spacing={1}>
                   {challenges.map((challenge) => (
-                    <Grid key={challenge.id} item xs={3}>
-                      <TotalUserChallengeItem userChallenge={challenge} 
+                    <Grid key={challenge.id} item xs={4}>
+                      <UserChallengeItem userChallenge={challenge} 
                       nameCheck = {nameCheck}/>
                     </Grid>
                   ))}
@@ -71,17 +71,17 @@ const UserTabBox: React.FC<{
               <>
                 <p
                   style={{
-                    fontSize: "1.2rem",
-                    fontWeight: "700",
+                    fontSize: "20px",
+                    fontWeight: "600",
                     padding: "2rem",
                   }}
                 >
                   {nickname}님의 포스트
                 </p>
-                <Grid container spacing={2}>
+                <Grid container spacing={1}>
                   {posts!.map((post) => (
-                    <Grid key={post.id} item xs={3}>
-                      <TotalUserPostItem userPost={post} 
+                    <Grid key={post.id} item xs={4}>
+                      <UserPostItem userPost={post} 
                       nameCheck = {nameCheck}/>
                     </Grid>
                   ))}
@@ -95,4 +95,4 @@ const UserTabBox: React.FC<{
   );
 };
 
-export default UserTabBox;
+export default UserDetailTabBox;

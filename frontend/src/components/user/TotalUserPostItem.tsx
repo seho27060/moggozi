@@ -6,10 +6,10 @@ import { setModalPostState, setPostModalOpen } from "../../store/postModal";
 import { UserPostType } from "../../store/userPage";
 
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import styles from "./UserPostItem.module.scss";
+import styles from "./TotalUserPostItem.module.scss";
 import no_image from "../../asset/no_image.png";
 
-const UserPostItem: React.FC<{
+const TotalUserPostItem: React.FC<{
   userPost: UserPostType;
   nameCheck: boolean;
 }> = ({ userPost, nameCheck }) => {
@@ -61,4 +61,4 @@ const UserPostItem: React.FC<{
   );
 };
 
-export default UserPostItem;
+export default TotalUserPostItem;
