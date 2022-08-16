@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { challengeAdd, challengeImgApi } from "../../lib/withTokenApi";
@@ -13,12 +13,20 @@ import ReactQuill from "react-quill";
 import styles from "./ChallengeForm.module.scss";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { storageService } from "../../fbase/fbase";
+import Modal from "../ui/Modal";
 
 const ChallengeForm: React.FC<{ file: File | null }> = ({ file }) => {
   const nameInputRef = useRef<HTMLInputElement>(null);
   const descriptionInputRef = useRef<HTMLTextAreaElement>(null);
   const contentInputRef = useRef<ReactQuill>();
   const levelSelectRef = useRef<HTMLSelectElement>(null);
+  const [alertText, setAlertText] = useState(<div></div>);
+  const [modalOpen, setModalOpen] = useState(false);
+
+  const closeModal = () => {
+    document.body.style.overflow = "unset";
+    setModalOpen(false);
+  };
 
   const hobbyList = useSelector((state: RootState) => state.hobby.hobbyList);
   const hobbyCnt = useSelector((state: RootState) => state.hobby.hobbyCnt);
@@ -28,11 +36,13 @@ const ChallengeForm: React.FC<{ file: File | null }> = ({ file }) => {
     event.preventDefault();
     if (hobbyCnt === 0) {
       // 취미가 없을 땐 전송되지 않도록 한다.
-      alert("취미를 입력해주세요");
+      setAlertText(<div>취미를 입력해주세요!</div>);
+      setModalOpen(true);
       return;
     }
     if (!file) {
-      alert("사진은 필수입니다");
+      setAlertText(<div>사진은 필수입니다!</div>);
+      setModalOpen(true);
       return;
     }
     const enteredName = nameInputRef.current!.value;
@@ -40,16 +50,19 @@ const ChallengeForm: React.FC<{ file: File | null }> = ({ file }) => {
     const enteredContent = contentInputRef.current!.value;
     const enteredLevel = levelSelectRef.current!.value;
     if (!enteredName) {
-      alert("제목을 입력해주세요");
+      setAlertText(<div>제목을 입력해주세요!</div>);
+      setModalOpen(true);
       return;
     }
     if (!enteredDescription) {
-      alert("짧은 소개를 입력해주세요");
+      setAlertText(<div>짧은 소개를 입력해주세요!</div>);
+      setModalOpen(true);
       return;
     }
     if (!enteredContent) {
       console.log(enteredContent);
-      alert("내용을 입력해주세요");
+      setAlertText(<div>내용을 입력해주세요!</div>);
+      setModalOpen(true);
       return;
     }
 
@@ -132,6 +145,9 @@ const ChallengeForm: React.FC<{ file: File | null }> = ({ file }) => {
           등록하기
         </button>
       </div>
+      <Modal open={modalOpen} close={closeModal} header="안내">
+        {alertText}
+      </Modal>
     </div>
   );
 };

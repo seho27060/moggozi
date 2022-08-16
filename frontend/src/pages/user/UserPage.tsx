@@ -28,7 +28,7 @@ import { ChallengeItemState } from "../../store/challenge";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import UserTabBox from "./UserTabBox";
-import { Box, Skeleton } from "@mui/material";
+import { Box } from "@mui/material";
 import Loader from "../../components/ui/Loader";
 import PostFormModal from "../../components/ui/PostFormModal";
 
