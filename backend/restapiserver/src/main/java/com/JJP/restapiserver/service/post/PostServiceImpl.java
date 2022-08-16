@@ -49,6 +49,8 @@ public class PostServiceImpl implements PostService {
     @Transactional
     @Override
     public Long savePost(PostSaveRequestDto postSaveRequestDto, Long member_id) {
+        logger.debug("----------------------포스트 등록 시작    --------------" );
+
         Post post = postRepository.findByStage_idAndMember_Id(postSaveRequestDto.getStageId(), member_id);
         Long stage_id = postSaveRequestDto.getStageId();
         Stage stage =  stageRepository.getById(stage_id);
@@ -58,17 +60,20 @@ public class PostServiceImpl implements PostService {
         Optional<StageUser> userState = stageUserRepository.findByMember_idAndStage_id(member_id, stage_id);
         // 포스트가 등록이 되면 유저가 참여중인 스테이지의 상태를 완료(2)로 바꿈
         if(userState.isPresent()){
+
+            logger.debug("----------------------스테이지를 완료로 바꿈--------------" );
             stageJoinService.changeStageState(new StageCompleteDto(userState.get().getMember().getId(),
                     userState.get().getStage().getId()), 2);
 //            userState.get(). setState(2);
         }
         // 그 다음에 만약 포스트의 개수가 챌린지의 스테이트 개수와 같다면, 조인드 챌린지의 상태를 2로 바꿔야함.
         int post_num = postRepository.countByMember_idAndStage_id(member_id, stage_id);
-        if(post_num + 1 == stage_num){
-            joinedChallenge.setState(2);
-        }
         logger.debug("----------------------현재 포스트 개수 "+ (post_num+1) + " --------------" );
         logger.debug("----------------------현재 스테이지 개수 "+ (stage_num) + " --------------" );
+        if(post_num + 1 == stage_num){
+            joinedChallenge.setState(2);
+            logger.debug("----------------------챌린지를 완료로 바꿈--------------" );
+        }
         if(post != null){
             return (long) -1;
         }
@@ -93,6 +98,14 @@ public class PostServiceImpl implements PostService {
             postResponseDto.setLiked(true);
         }
         return 1;
+    }
+
+    @Override
+    public void deletePostInJoinedChallenge(Long stage_id, Long member_id) {
+        Optional<Post> post = postRepository.findByStage_idAndMember_id(stage_id, member_id);
+        if(post.isPresent()){
+            postRepository.deleteByStage_idAndMember_id(stage_id, member_id);
+        }
     }
 
     @Override

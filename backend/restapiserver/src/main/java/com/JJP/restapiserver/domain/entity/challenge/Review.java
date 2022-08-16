@@ -21,7 +21,6 @@ public class Review extends BaseTimeEntity {
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 20)
     private String review_content;
 
     // 1점부터 5점까지
