@@ -8,20 +8,13 @@ const ReviewList: React.FC<{ reviews: ReviewState[] }> = ({ reviews }) => {
   const [page, setPage] = useState(1);
   const [showReviews, setShowReviews] = useState<ReviewState[]>([]);
   const [maxPage, setMaxPage] = useState(0);
-  const [myReview, setMyReview] = useState<ReviewState>();
+  // const [myReview, setMyReview] = useState<ReviewState>();
   const userId = useSelector((state: RootState) => state.auth.userInfo.id);
   useEffect(() => {
     setPage(1);
     setShowReviews(reviews.slice(0, 5));
     setMaxPage(reviews.length / 5);
-
-    const myReview = reviews.filter((review) => {
-      return review.writer.id === userId;
-    });
-    if (myReview.length === 1) {
-      setMyReview(myReview[0]);
-    }
-  }, [reviews, userId]);
+  }, [userId, reviews]);
 
   const showMoreHandler = (event: React.MouseEvent) => {
     // 페이지를 변경
@@ -36,14 +29,14 @@ const ReviewList: React.FC<{ reviews: ReviewState[] }> = ({ reviews }) => {
 
   return (
     <div>
-      <hr></hr>
+      {/* <hr></hr>
       <p>내 리뷰</p>
       {myReview && (
         <div>
           <ReviewItem review={myReview} />
         </div>
       )}
-      <hr></hr>
+      <hr></hr> */}
       <ul>
         {showReviews.map((review) => (
           <li key={review.id}>

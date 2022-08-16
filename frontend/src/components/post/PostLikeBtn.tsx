@@ -55,6 +55,8 @@ const PostLikeBtn = () => {
           senderName: user.userInfo.nickname!.toString(),
           type: "post",
         };
+        console.log("send:",user.userInfo, "receive:",postModal.postModalState.writer)
+        console.log("send msg",jsonSend,ws)
         if (postModal.postModalState!.writer!.id! !== user.userInfo.id!) {
           ws.current.send(JSON.stringify(jsonSend));
         }

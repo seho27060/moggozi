@@ -11,9 +11,9 @@
     img {
       width: 992px;
       height: 500px;
-      object-fit: cover;
+      object-fit: contain;
+      background: black;
       z-index: 0;
-      
     }
 
     .badge0 {
@@ -124,7 +124,7 @@
           font-weight: 700;
           line-height: 16px;
           color: #fff;
-          margin: 0 2px 0 0;
+          padding: 2px 2px 0 0;
           z-index: 100;
 
         }

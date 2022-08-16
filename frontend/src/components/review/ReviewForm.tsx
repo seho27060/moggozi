@@ -11,6 +11,7 @@ import Box from "@mui/material/Box";
 import Rating from "@mui/material/Rating";
 
 import styles from "./ReviewForm.module.scss";
+import default_profile from "../../asset/default_profile.png"
 
 interface Props {
   user_image: string | undefined;
@@ -92,7 +93,7 @@ const ReviewForm = (props: Props) => {
         <img src={user_image} alt="user_img" />
       ) : (
         <img
-          src="https://i.pinimg.com/550x/2c/b2/aa/2cb2aa6c4b8aac0be04d52ce2b1cc21a.jpg"
+          src={default_profile}
           alt=""
         />
       )}
