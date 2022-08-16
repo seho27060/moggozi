@@ -28,21 +28,24 @@ const ChallengeForm: React.FC<{ file: File | null }> = ({ file }) => {
   const [descriptionText, setDescriptionText] = useState("");
   const [titleText, setTitleText] = useState("");
 
+  const hobbyList = useSelector((state: RootState) => state.hobby.hobbyList);
+  const hobbyCnt = useSelector((state: RootState) => state.hobby.hobbyCnt);
+  const navigate = useNavigate();
+
+  document.body.style.overflow = "auto"; //모달때문에 이상하게 스크롤이 안되서 강제로 스크롤 바 생성함
+  document.body.style.height = "auto";
+
   const closeModal = () => {
     document.body.style.overflow = "unset";
     setModalOpen(false);
   };
-
-  const hobbyList = useSelector((state: RootState) => state.hobby.hobbyList);
-  const hobbyCnt = useSelector((state: RootState) => state.hobby.hobbyCnt);
-  const navigate = useNavigate();
 
   const descriptionChangeHandler = (
     event: React.ChangeEvent<HTMLTextAreaElement>
   ) => {
     event.preventDefault();
     const cnt = getTextLength(event.target.value);
-    if (cnt > 200 && event.target.value.length > descriptionText.length) {
+    if (cnt > 120 && event.target.value.length > descriptionText.length) {
       return;
     }
     setDescriptionCnt(cnt);
@@ -52,7 +55,7 @@ const ChallengeForm: React.FC<{ file: File | null }> = ({ file }) => {
   const titleChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
     const cnt = getTextLength(event.target.value);
-    if (cnt > 30 && event.target.value.length > titleText.length) {
+    if (cnt > 20 && event.target.value.length > titleText.length) {
       return;
     }
     setTitleCnt(cnt);
@@ -126,6 +129,7 @@ const ChallengeForm: React.FC<{ file: File | null }> = ({ file }) => {
       <div className={styles.shortIntroduce}>
         <label htmlFor="description">짧은 소개</label>
         <textarea
+          ref={descriptionInputRef}
           name="description"
           id="description"
           placeholder="짧은 소개를 입력해주세요."
@@ -134,7 +138,7 @@ const ChallengeForm: React.FC<{ file: File | null }> = ({ file }) => {
           required
           onChange={descriptionChangeHandler}
         ></textarea>
-        <span>{descriptionCnt}/200</span>
+        <span>{descriptionCnt}/120</span>
       </div>
 
       <div className={styles.level}>
@@ -160,7 +164,7 @@ const ChallengeForm: React.FC<{ file: File | null }> = ({ file }) => {
           value={titleText}
           onChange={titleChangeHandler}
         />
-        <span>{titleCnt}/30</span>
+        <span>{titleCnt}/20</span>
       </div>
 
       {/* <div className={styles.challengeContent}>

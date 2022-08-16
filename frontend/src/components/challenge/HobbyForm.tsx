@@ -85,7 +85,7 @@ const HobbyForm: React.FC = () => {
   function changeInputHandler(event: React.ChangeEvent<HTMLInputElement>) {
     event.preventDefault();
     const cnt = getTextLength(event.target.value);
-    if (cnt > 15 && event.target.value.length > inputText.length) {
+    if (cnt > 10 && event.target.value.length > inputText.length) {
       return;
     }
     setInputCnt(cnt);
@@ -122,7 +122,7 @@ const HobbyForm: React.FC = () => {
           onKeyUp={onKeyUpHandler}
           value={inputText}
         />
-        <p>{inputCnt}/15</p>
+        <p>{inputCnt}/10</p>
         <button type="button" onClick={onClickHandler}>
           &#43;
         </button>
