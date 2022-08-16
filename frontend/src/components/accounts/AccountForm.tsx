@@ -1,16 +1,12 @@
 import React, { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { signUpApi, checkId, checkNickname } from "../../lib/generalApi";
-import { setAlertModalOpen } from "../../store/alertModal";
 
 import Modal from "../ui/Modal";
 
 import styles from "./AccountForm.module.scss";
 
 const AccountForm: React.FC = () => {
-  const navigate = useNavigate();
-
-  // 해당 상태에 따라 (emailState) 입력 input창을 빨갛게 표시
   const [emailModalOpen, setEmailModalOpen] = useState(false);
   const [nicknameModalOpen, setNicknameModalOpen] = useState(false);
   const [alertModalOpen, setAlertModalOpen] = useState(false);
@@ -29,6 +25,8 @@ const AccountForm: React.FC = () => {
   const nicknameInputRef = useRef<HTMLInputElement>(null);
   const [emailContent, setEmailContent] = useState("");
   const [nicknameContent, setNicknameContent] = useState("");
+
+  const navigate = useNavigate();
 
   const alertCloseModal = () => {
     setAlertModalOpen(false);
