@@ -85,7 +85,7 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
 
         String password = encoder.encode(username.split("@")[0] + "1234");
 //        String url = "http://localhost:8080"; /** 추후 주소 변경 필요 **/
-        String url = "http://localhost:3000/oauth/callback";
+        String url = "https://i7c201.p.ssafy.io/oauth/callback";
 
         if (member.isEmpty()) {
             // 유저 객체 만들기
@@ -104,8 +104,7 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
             Member newMember = Member.builder().username(username)
                     .fullname(fullname).nickname("User" + randomNo).password(password).is_social(1).role(role).build();
 
-            /**InvalidDataAccessApiUsageException: detached entity passed to persist, while saving through JPA repository
-             Tried but failed: Remove CASCADE.PERSIST, EntityManager...*/
+
             memberRepository.saveAndFlush(newMember);
             newMember = memberRepository.findByUsername(username).get();
 
