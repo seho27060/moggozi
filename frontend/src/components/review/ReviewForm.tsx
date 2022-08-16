@@ -14,10 +14,11 @@ import styles from "./ReviewForm.module.scss";
 
 interface Props {
   user_image: string | undefined;
+  userProgress: number;
 }
 
 const ReviewForm = (props: Props) => {
-  const { user_image } = props;
+  const { user_image, userProgress } = props;
 
   const dispatch = useDispatch();
   const contentInputRef = useRef<HTMLInputElement>(null);
@@ -42,35 +43,44 @@ const ReviewForm = (props: Props) => {
 
   const reviewSubmitHandler = (event: React.FormEvent) => {
     event.preventDefault();
-    if (rate === 0 || !content) {
-      alert("평점과 내용은 필수입니다.");
-    } else {
-      const reviewData = {
-        rate: rate,
-        reviewContent: content,
-        memberId: Number(currentUserId),
-        challengeId: Number(id),
-      };
-      console.log(reviewData);
-      reviewAdd(reviewData).then((res) => {
-        if (!!res) {
-          console.log(res);
-          alert(res);
-        } else {
-          alert("리뷰 작성이 완료되었습니다.");
-          fetchReview(Number(id))
-            .then((res) => {
-              dispatch(reviewFetch(res));
-            })
-            .catch((err) => {
-              alert(err.response);
-            });
-        }
-        setRate(0);
-        setValue(0);
-        setInputs({ content: "" });
-      });
+    console.log(userProgress);
+    if (userProgress === 0) {
+      alert("도전하셔야 남길 수 있습니다.");
+      return;
     }
+    if (!rate) {
+      alert("평점은 필수입니다.");
+      return;
+    }
+    if (!content) {
+      alert("내용은 필수입니다.");
+      return;
+    }
+    const reviewData = {
+      rate: rate,
+      reviewContent: content,
+      memberId: Number(currentUserId),
+      challengeId: Number(id),
+    };
+
+    reviewAdd(reviewData).then((res) => {
+      if (!!res) {
+        console.log(res); // 서버에서 보내준 `이미 등록된 한줄평이 있습니다.` 출력
+        alert(res);
+      } else {
+        alert("리뷰 작성이 완료되었습니다.");
+        fetchReview(Number(id))
+          .then((res) => {
+            dispatch(reviewFetch(res));
+          })
+          .catch((err) => {
+            alert(err.response);
+          });
+      }
+      setRate(0);
+      setValue(0);
+      setInputs({ content: "" });
+    });
   };
 
   ///// Rating 관련 코드
