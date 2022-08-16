@@ -44,10 +44,15 @@ const EditUserInfoForm: React.FC = () => {
   const [submitState, setSubmitState] = useState(true);
   const [content, setContent] = useState("");
   const [openModal, setOpenModal] = useState(false);
+  const [openCompleteModal, setOpenCompleteModal ] = useState(false)
 
   const closeModal = () => {
     setOpenModal(false);
   };
+
+  const closeCompleteModal = () => {
+    navigate("/", { replace: true });
+  }
 
   function checkNicknameHandler(event: React.MouseEvent) {
     event.preventDefault();
@@ -67,11 +72,17 @@ const EditUserInfoForm: React.FC = () => {
   function submitHandler(event: React.FormEvent) {
     event.preventDefault();
     if (submitState) {
-      updateUserApi(userId, option).then((res) =>
+      updateUserApi(userId, option).then((res) => {
+        setContent("회원정보 수정이 완료되었습니다.")
+        updateUserApi(userId, option).then((res) =>
         dispatch(userInfoEdit(option.nickname))
-      );
-
-      navigate(`/user/${userId}`, { replace: true });
+        setOpenCompleteModal(true)
+        );
+      }).catch((err) => {
+        console.log(err)
+        setContent("닉네임 중복을 확인해주세요!")
+        setOpenModal(true)
+      })
     } else {
       setContent("닉네임 중복을 확인하세요.");
       setOpenModal(true);
@@ -205,6 +216,7 @@ const EditUserInfoForm: React.FC = () => {
                   id="introduce"
                   value={option.introduce}
                   placeholder="자신을 한줄로 표현해보세요."
+                  maxLength={120}
                   onChange={(event) => {
                     setOption({ ...option, introduce: event.target.value });
                   }}
@@ -264,6 +276,9 @@ const EditUserInfoForm: React.FC = () => {
       </div>
 
       <Modal open={openModal} close={closeModal} header="안내">
+        <div>{content}</div>
+      </Modal>
+      <Modal open={openCompleteModal} close={closeCompleteModal} header="안내">
         <div>{content}</div>
       </Modal>
     </div>

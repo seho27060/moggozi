@@ -28,7 +28,6 @@ const PostForm: React.FC<{
 
   const [file, setFile] = useState<File>();
   const [previewImage, setPreviewImage] = useState("");
-  const [fileName, setFileName] = useState("");
 
   const [stageInfo, setStageInfo] = useState<StageState>();
 
@@ -77,7 +76,7 @@ const PostForm: React.FC<{
                           postImg: [{ path: res }],
                         })
                       );
-                      alert("포스팅이 등록되었습니다.")
+                      alert("포스팅이 등록되었습니다.");
                       // dispatch(
                       //   setCheckedPost({
                       //     ...PostData,
@@ -106,7 +105,7 @@ const PostForm: React.FC<{
           dispatch(postRegister({ ...newPostData, postImg: [{ path: [] }] }));
           dispatch(setCheckedPost({ ...newPostData, postImg: [{ path: [] }] }));
         }
-        alert("포스팅이 등록되었습니다.")
+        alert("포스팅이 등록되었습니다.");
         modalClose();
       })
       .catch((err) => console.log("포스팅 실패", err));
@@ -119,7 +118,6 @@ const PostForm: React.FC<{
 
     if (fileList) {
       // console.log(fileList[0].name);
-      setFileName(fileList[0].name);
       setFile(fileList[0]);
       setPreviewImage(URL.createObjectURL(fileList[0]));
     }
@@ -167,38 +165,41 @@ const PostForm: React.FC<{
             <div>{titleCnt.length} / 30</div>
           </div>
         </div>
-        <input
-          defaultValue={fileName ? fileName : "첨부파일"}
-          placeholder="첨부파일"
-        />
         <div className={styles.photo}>
-          <div>사진 첨부 (선택)</div>
+          <div>사진 첨부 (필수)</div>
           <div>사진을 첨부해주세요.</div>
         </div>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            margin: "20px 0 20px 0",
-          }}
-        >
-          <label htmlFor="img">파일 찾기</label>
+        <div className={styles.imageForm}>
+          <label htmlFor="img">
+            
+            <div className={styles.image}>
+              <div className={styles.addImg}>
+                <div>이곳을 눌러</div>
+                <div>사진을 추가해주세요</div>
+                <div>*권장 사이즈 1920x1920</div>
+                <div>최소 640x640 (1:1)</div>
+              </div>
+            </div>
+          </label>
           <input
             type="file"
             accept="image/*"
             id="img"
             onChange={onLoadHandler}
           />
+          <div>
+            <div style={{textAlign: 'center', marginBottom: "5px"}}>사진 미리보기</div>
+          {previewImage ? (
+            <img className={styles.img} src={previewImage} alt="preview img" />
+          ) : (
+            <img
+              className={styles.img}
+              src="https://blog.kakaocdn.net/dn/vckff/btqCjeJmBHM/tMVpe4aUIMfH4nKS4aO3tK/img.jpg"
+              alt=""
+            />
+          )}
+          </div>
         </div>
-        {previewImage ? (
-          <img className={styles.img} src={previewImage} alt="preview img" />
-        ) : (
-          <img
-            className={styles.img}
-            src="https://via.placeholder.com/400x250.png/"
-            alt=""
-          />
-        )}
         {/* 에디터 적용 */}
         <div>
           <EditorComponent
