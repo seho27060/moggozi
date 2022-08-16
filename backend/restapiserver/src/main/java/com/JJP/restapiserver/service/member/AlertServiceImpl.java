@@ -86,7 +86,7 @@ public class AlertServiceImpl implements AlertService {
     @Override
     public AlertResponseDto saveAlert(Long senderId, Long receiverId, String type, Long index, String msg) {
         LocalDateTime now = LocalDateTime.now();
-        List<Alert> recent_alerts = alertRepository.findDuplicatedMessage(receiverId, type,now);
+        List<Alert> recent_alerts = alertRepository.findDuplicatedMessage(receiverId, "follow",now);
         if(!recent_alerts.isEmpty()){
             return null;
         }

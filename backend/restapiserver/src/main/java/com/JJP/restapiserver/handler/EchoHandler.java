@@ -63,13 +63,9 @@ public class EchoHandler extends TextWebSocketHandler {
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
         Long session_val = userSessionsMap.get(session);
-        if(session_val == -1L){
-            logger.debug("-----------메세지 처리 시작 ----------");
-        }
-        else {
-            logger.debug("-----------메세지 처리 시작 " + session_val + "  ----------");
-        }
         String strJson = message.getPayload();
+        logger.debug("-----------메시지를 수신했습니다.---------");
+        logger.debug(strJson);
         JSONObject jsonObj = new JSONObject(strJson);
 
         // "alertIndex, senderId,senderName, receiverId, receiverName, type, index, 메시지"
@@ -97,19 +93,19 @@ public class EchoHandler extends TextWebSocketHandler {
             String msg = "";
             if (receiver != null) {
                 if (type.equals("challenge")) {
-                    msg = senderName + "님이a등록하신 챌린지에a좋아요를 눌렀습니다.";
+                    msg = senderName + "님이\n등록하신 챌린지에\n좋아요를 눌렀습니다.";
                 }
                 else if(type.equals("post")){
-                    msg = senderName + "님이a등록하신 포스트에a좋아요를 눌렀습니다.";
+                    msg = senderName + "님이\n등록하신 포스트에\n좋아요를 눌렀습니다.";
                 }
                 else if(type.equals("comment")){
-                    msg = senderName + "님이a등록하신 포스트에a댓글을 달았습니다.";
+                    msg = senderName + "님이\n등록하신 포스트에\n댓글을 달았습니다.";
                 }
                 else if(type.equals("reply")){
-                    msg = senderName + "님이a등록하신 댓글에a대댓글을 달았습니다.";
+                    msg = senderName + "님이\n등록하신 댓글에\n대댓글을 달았습니다.";
                 }
                 else if(type.equals("follow")){
-                    msg = senderName + "님이a팔로우하기a시작했습니다.";
+                    msg = senderName + "님이\n팔로우하기\n시작했습니다.";
                 }
 
                 if(!msg.equals("")){
