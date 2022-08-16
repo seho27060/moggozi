@@ -164,6 +164,7 @@ const PostUpdateForm: React.FC<{}> = () => {
             <EditorComponent
               QuillRef={contentInputRef}
               value={PostModalState!.content!}
+              maxlength = {300}
             />
           </div>
         </div>

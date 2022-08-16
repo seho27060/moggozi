@@ -8,8 +8,8 @@ export interface Comment {
   parentId: number | null;
   text: string | null;
   writer: UserInfo | null;
-  createdTime: Date | null;
-  modifiedTime: Date | null;
+  createdTime: Date | string|null;
+  modifiedTime: Date | string|null;
 }
 
 // state : 0(숨김), 1(활성), 2(삭제)
