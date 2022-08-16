@@ -1,6 +1,7 @@
 package com.JJP.restapiserver.service.challenge;
 
 import com.JJP.restapiserver.domain.dto.challenge.*;
+import com.JJP.restapiserver.domain.dto.stage.StageJoinRequestDto;
 import com.JJP.restapiserver.domain.dto.tag.TagRequestDto;
 import com.JJP.restapiserver.domain.dto.tag.TagResponseDto;
 import com.JJP.restapiserver.domain.entity.Tag.ChallengeTag;
@@ -10,6 +11,7 @@ import com.JJP.restapiserver.domain.entity.challenge.Challenge;
 import com.JJP.restapiserver.domain.entity.challenge.ChallengeLike;
 import com.JJP.restapiserver.domain.entity.challenge.JoinedChallenge;
 import com.JJP.restapiserver.domain.entity.member.Member;
+import com.JJP.restapiserver.domain.entity.stage.Stage;
 import com.JJP.restapiserver.repository.Tag.ChallengeTagRepository;
 import com.JJP.restapiserver.repository.Tag.MemberTagRepository;
 import com.JJP.restapiserver.repository.Tag.TagRepository;
@@ -18,6 +20,8 @@ import com.JJP.restapiserver.repository.challenge.ChallengeRepository;
 import com.JJP.restapiserver.repository.challenge.JoinedChallengeRepository;
 import com.JJP.restapiserver.repository.member.MemberRepository;
 import com.JJP.restapiserver.service.Tag.ChallengeTagService;
+import com.JJP.restapiserver.service.post.PostService;
+import com.JJP.restapiserver.service.stage.StageJoinService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,11 +51,14 @@ public class ChallengeServiceImpl implements ChallengeService{
     private final TagRepository tagRepository;
     private final ChallengeTagRepository challengeTagRepository;
 
+    private final StageJoinService stageJoinService;
     private final ChallengeLikeRepository challengeLikeRepository;
 
     private final MemberTagRepository memberTagRepository;
 
     private final ChallengeTagService challengeTagService;
+
+    private final PostService postService;
 
 //    @Override
 //    public List<ChallengeListResponseDto> getChallengeListByHobby(String hobby, Long member_id) {
@@ -110,7 +117,7 @@ public class ChallengeServiceImpl implements ChallengeService{
 
     @Override
     public ChallengePageDto getChallengeListByLike(Long member_id, Pageable pageable) {
-        Page<Challenge> list = challengeRepository.findAllByOrderByLikeNumDesc(pageable);
+        Page<Challenge> list = challengeRepository.findByStateOrderByLikeNumDesc(1,pageable);
         List<Challenge> challengeList = list.toList();
 
         List<ChallengeListResponseDto> responseDtoList = new ArrayList<>();
@@ -126,7 +133,7 @@ public class ChallengeServiceImpl implements ChallengeService{
         return challengePageDto;
     }
     public ChallengePageDto getChallengeListByLikeWithoutLogin(Pageable pageable) {
-        Page<Challenge> list = challengeRepository.findAllByOrderByLikeNumDesc(pageable);
+        Page<Challenge> list = challengeRepository.findByStateOrderByLikeNumDesc(1, pageable);
         List<Challenge> challengeList = list.toList();
 
         List<ChallengeListResponseDto> responseDtoList = new ArrayList<>();
@@ -306,6 +313,9 @@ public class ChallengeServiceImpl implements ChallengeService{
                                 .challenge(challenge)
                                 .member(member)
                                 .build());
+        for(Stage stage : challenge.getStageList()) {
+            stageJoinService.joinStage(new StageJoinRequestDto(challengeUpdateRequestDto.getMemberId(), stage.getId(),1));
+        }
         return true;
         }
     }
@@ -316,7 +326,13 @@ public class ChallengeServiceImpl implements ChallengeService{
                 findByChallenge_idAndMember_id(challenge_id,
                         member_id);
         if(joinedChallenge.isPresent()){
+            //참여한 챌린지에서 지우고
+            Challenge challenge = joinedChallenge.get().getChallenge();
+            for(Stage stage : challenge.getStageList()){
+                postService.deletePostInJoinedChallenge(stage.getId(), member_id);
+            }
             joinedChallengeRepository.delete(joinedChallenge.get());
+            // 스테이지에 포스팅한 것들도 싹다 지워야함
         }
     }
 
@@ -348,7 +364,7 @@ public class ChallengeServiceImpl implements ChallengeService{
         // joinedchallenge -> challenge_index -> challenge
         List<Long> challenge_ids = challengeSlice.stream().map(o -> o.getChallenge().getId()).collect(Collectors.toList());
         // challenge_index -> challenge
-        List<Challenge> challengeList = challengeRepository.findByIdIn(challenge_ids);
+        List<Challenge> challengeList = challengeRepository.findByStateAndIdIn(1, challenge_ids);
         List<ChallengeSimpleResponseDto> challengeSimpleResponseDtoList = new ArrayList<>();
         for(Challenge challenge : challengeList){
             int state = 0;
@@ -528,7 +544,7 @@ public class ChallengeServiceImpl implements ChallengeService{
         logger.debug("------------------서비스 로직 시작------------");
         List<ChallengeTag> challengeTagList = challengeTagService.getChallengeTagContainingTag(keyword);
         List<Long> ids = challengeTagList.stream().map(o -> o.getChallenge().getId()).collect(Collectors.toList());
-        Page<Challenge> challengeList = challengeRepository.findByIdIn(ids, pageable);
+        Page<Challenge> challengeList = challengeRepository.findByStateAndIdIn(1, ids, pageable);
         List<ChallengeListResponseDto> challengeListResponseDtoList = new ArrayList<>();
         challengeListResponseDtoList = challengeIntoListDto(challengeList.toList(), challengeListResponseDtoList, member_id);
         logger.debug("-------------------서비스 로직 종료-----------");
@@ -548,7 +564,7 @@ public class ChallengeServiceImpl implements ChallengeService{
         logger.debug("------------------서비스 로직 시작------------");
         List<ChallengeTag> challengeTagList = challengeTagService.getChallengeTagContainingTag(keyword);
         List<Long> ids = challengeTagList.stream().map(o -> o.getChallenge().getId()).collect(Collectors.toList());
-        Page<Challenge> challengeList = challengeRepository.findByIdIn(ids, pageable);
+        Page<Challenge> challengeList = challengeRepository.findByStateAndIdIn(1, ids, pageable);
         List<ChallengeListResponseDto> challengeListResponseDtoList = new ArrayList<>();
         challengeListResponseDtoList = challengeIntoListDto(challengeList.toList(), challengeListResponseDtoList);
         logger.debug("-------------------서비스 로직 종료-----------");
@@ -590,7 +606,7 @@ public class ChallengeServiceImpl implements ChallengeService{
 
     @Override
     public ChallengePageDto getRecentChallenge(Long member_id, Pageable pageable) {
-        Page<Challenge> challengeList = challengeRepository.findAllByOrderByCreatedDateDesc(pageable);
+        Page<Challenge> challengeList = challengeRepository.findByStateOrderByCreatedDateDesc(1, pageable);
         if(challengeList.hasContent())
         {
             List<ChallengeListResponseDto> challengeListResponseDtoList = new ArrayList<>();
@@ -613,7 +629,7 @@ public class ChallengeServiceImpl implements ChallengeService{
 
     @Override
     public ChallengePageDto getRecentChallenge(Pageable pageable) {
-        Page<Challenge> challengeList = challengeRepository.findAllByOrderByCreatedDateDesc(pageable);
+        Page<Challenge> challengeList = challengeRepository.findByStateOrderByCreatedDateDesc(1, pageable);
         if(challengeList.hasContent())
         {
             List<ChallengeListResponseDto> challengeListResponseDtoList = new ArrayList<>();

@@ -1,5 +1,6 @@
 package com.JJP.restapiserver.controller.stage;
 
+import com.JJP.restapiserver.domain.dto.SliceListDto;
 import com.JJP.restapiserver.domain.dto.post.*;
 import com.JJP.restapiserver.domain.entity.stage.Post;
 import com.JJP.restapiserver.repository.stage.PostRepository;
@@ -72,35 +73,43 @@ public class PostController {
     }
 
     // member에 따른 post리스트
-    @Operation(summary = "member에 따른 post리스트")
+    @Operation(summary = "member에 따른 최신순 post리스트")
     @GetMapping("/member/{member_id}")
-    private List<PostResponseDto> memberPostList(@PathVariable Long member_id){
-        return postService.getMemberPost(member_id);
+    private ResponseEntity<SliceListDto> memberPostList(@PathVariable Long member_id, Pageable pageable){
+        SliceListDto sliceListDto = postService.getMemberPost(member_id, pageable);
+
+        return new ResponseEntity<>(sliceListDto, HttpStatus.OK);
     }
 
     // stage에 따른 post리스트
-    @Operation(summary = "stage에 따른 post리스트")
+    @Operation(summary = "stage에 따른 최신순 post리스트")
     @GetMapping("/{stage_id}")
-    private List<PostResponseDto> stagePostList(@PathVariable Long stage_id){
-        return postService.getStagePost(stage_id);
+    private ResponseEntity<SliceListDto> stagePostList(@PathVariable Long stage_id, Pageable pageable){
+        SliceListDto sliceListDto = postService.getStagePost(stage_id, pageable);
+
+        return new ResponseEntity<>(sliceListDto, HttpStatus.OK);
     }
 
     @Operation(summary = "랜덤 갯수 post리스트")
     @GetMapping("/random/{size}")
-    private ResponseEntity getRandomListBySize(@PathVariable int size){
+    private ResponseEntity<List<PostResponseDto>> getRandomListBySize(@PathVariable int size){
         List<PostResponseDto> postResponseDtoList = postService.getRandomPostList(size);
-        return new ResponseEntity(postResponseDtoList, HttpStatus.OK);
+        return new ResponseEntity<>(postResponseDtoList, HttpStatus.OK);
     }
 
     @Operation(summary = "최근 작성순서에 따른 post리스트")
     @GetMapping("/list/latest")
-    private Page<Post> postLatestList(Pageable pageable){
-        return postRepository.findAllByOrderByCreatedDateDesc(pageable);
+    private ResponseEntity<SliceListDto> postLatestList(Pageable pageable){
+        SliceListDto sliceListDto = postService.latestPostList(pageable);
+
+        return new ResponseEntity<>(sliceListDto, HttpStatus.OK);
     }
 
     @Operation(summary = "좋아요에 따른 post리스트")
     @GetMapping("/list/like")
-    private Page<Post> postLikeList(Pageable pageable){
-        return postRepository.findAllByOrderByLikeNumDesc(pageable);
+    private ResponseEntity<SliceListDto> postLikeList(Pageable pageable){
+        SliceListDto sliceListDto = postService.likePostList(pageable);
+
+        return new ResponseEntity<>(sliceListDto, HttpStatus.OK);
     }
 }

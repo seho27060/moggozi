@@ -41,13 +41,11 @@ public class Stage extends BaseTimeEntity {
     @JsonManagedReference
     private List<StageImg> stageImgList = new ArrayList<>();
 
-    @Column(length = 20)
     private String name;
 
-    @Column(length = 500)
+    @Lob
     private String content;
 
-    @Column(length = 200)
     private String img;
 
     @Builder

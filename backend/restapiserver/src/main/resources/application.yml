@@ -16,7 +16,7 @@ spring:
   jpa:
     open-in-view: true
     generate-ddl: true
-    show-sql: true
+    show-sql: false
     hibernate:
     ddl-auto: create-drop
     defer-datasource-initialization: true

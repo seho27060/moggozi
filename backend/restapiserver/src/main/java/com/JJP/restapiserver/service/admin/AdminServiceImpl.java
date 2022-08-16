@@ -13,11 +13,14 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class AdminServiceImpl implements AdminService {
 
     private final MemberRepository memberRepository;
@@ -25,15 +28,16 @@ public class AdminServiceImpl implements AdminService {
     private final JwtUtils jwtUtils;
     private final RoleRepository roleRepository;
 
+    @Override
     public ResponseEntity<?> loginAdmin(String username, String password) {
-        Optional<Member> adminstrator = memberRepository.findByUsername(username);
-        if(adminstrator.isEmpty())
+        Optional<Member> admin = memberRepository.findByUsername(username);
+        if(admin.isEmpty())
             return ResponseEntity.badRequest().body(new MessageResponse("Error: Check username, password"));
 
         Optional<Role> role = roleRepository.findById(memberRepository.findByUsername(username).get().getRole().getId());
-        System.out.println(role.get().getName());
 
-        if(role.isPresent() && role.get().getName().toString().equals("ROLE_ADMIN") && passwordEncoder.matches(password, adminstrator.get().getPassword())) {  // 관리자에게 따로 Jwt를 발행하진 않는다.
+        if(role.isPresent() && role.get().getName().toString().equals("ROLE_ADMIN") && passwordEncoder.matches(password, admin.get().getPassword())) {  // 관리자에게 따로 Jwt를 발행하진 않는다.
+
             return ResponseEntity.ok(new MessageResponse("Successfully signed in"));
         } else {
             return ResponseEntity.badRequest().body(new MessageResponse("Error: Administrator can only access"));
@@ -48,6 +52,12 @@ public class AdminServiceImpl implements AdminService {
 
         return ResponseEntity.ok(memberInfoList);
     }
+
+    @Override
+    public List<MemberInfo> getUsers(){
+        return memberRepository.findMembersByRole();
+    }
+
 
     @Override
     public ResponseEntity<?> updateUserInfo(String username, String userRole, Long memberId) {

@@ -24,6 +24,6 @@ public class Tag {
     @JsonIgnore
     private List<ChallengeTag> challengeTagList = new ArrayList<>();
 
-    @Column(length = 20)
+    @Column(length = 10)
     private String tag;
 }
