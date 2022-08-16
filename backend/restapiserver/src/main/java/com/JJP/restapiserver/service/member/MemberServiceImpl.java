@@ -128,7 +128,7 @@ public class MemberServiceImpl implements MemberService {
         String fullname = updateUserRequest.getFullname();
         String nickname = updateUserRequest.getNickname();
         String introduce = updateUserRequest.getIntroduce();
-        String user_img = updateUserRequest.getUserImg();
+        String user_img = member.get().getUser_img();
         int is_private = updateUserRequest.getIsPrivate();
         int is_social = member.get().getIs_social();
 
@@ -352,7 +352,7 @@ public class MemberServiceImpl implements MemberService {
              member = Member.builder().id(user_id)
                     .username(username).fullname(fullname)
                     .password(password).nickname(nickname)
-                    .introduce(introduce)
+                    .introduce(introduce).user_img(user_img)
                     .is_private(is_private).role(role).is_social(is_social).build();
         }
         memberRepository.save(member);
