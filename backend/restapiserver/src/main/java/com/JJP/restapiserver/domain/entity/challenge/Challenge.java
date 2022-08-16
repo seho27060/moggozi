@@ -34,12 +34,13 @@ public class Challenge extends BaseTimeEntity {
     @JsonBackReference
     private Member member;
 
+    @Column(length = 20)
     private String name;
 
     @Column(length= 300)
     private String challenge_img;
 
-    @Column(length = 500)
+    @Lob
     private String content;
 
     private int level;
@@ -48,6 +49,7 @@ public class Challenge extends BaseTimeEntity {
 
     @Column(columnDefinition = "INTEGER default 0")
     private int likeNum = 0;
+    @Column(length = 120)
     private String description;
 
     // 스테이지와 다대일 양방향 관계
