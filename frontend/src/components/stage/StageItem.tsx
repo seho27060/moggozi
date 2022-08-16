@@ -29,16 +29,13 @@ const StageItem: React.FC<{
   document.body.style.overflow = "auto"; //모달때문에 이상하게 스크롤이 안되서 강제로 스크롤 바 생성함
 
   const dispatch = useDispatch();
-  // const [postStageListState, setPostStageListState] = useState<PostData[]>([]);
   const postStageListState = useSelector(
     (state: RootState) => state.post.posts
   );
   const [getStageImg, setStageImg] = useState<imgState[]>([]);
   const checkedPost = useSelector((state: RootState) => state.post.checkedPost);
 
-  // const [getStageProgress, setStageProgress] = useState(0);
   const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
-  // const user = useSelector((state: RootState) => state.auth);
   const postingStageId = useSelector(
     (state: RootState) => state.post.postingStageId
   );
@@ -46,21 +43,7 @@ const StageItem: React.FC<{
     (state: RootState) => state.postModal
   );
 
-  // // 스테이지 진행도
-  // useEffect(() => {
-  //   if (isLoggedIn === true) {
-  //     fetchStageProgress(stage.id!)
-  //       .then((res) => {
-  //         setStageProgress(res);
-  //       })
-  //       .catch((err) => {
-  //         console.log(err);
-  //       });
-  //   }
-  // }, [isLoggedIn, stage.id]);
-
   // 스테이지 사진
-
   useEffect(() => {
     stageImgFetchAPI(stage.id!)
       .then((res) => {
@@ -75,7 +58,6 @@ const StageItem: React.FC<{
   useEffect(() => {
     postListRead(Number(stage.id), 0, 3)
       .then((res) => {
-        console.log("포스팅 불러오기 성공", res.content);
         // setPostStageListState(res.content);
         dispatch(postSet(res.content));
         dispatch(setPostFormButtonState(true));
@@ -85,7 +67,6 @@ const StageItem: React.FC<{
       });
     stageMyPostRead(Number(stage.id))
       .then((res) => {
-        console.log("사용자 스테이지 포스팅유무", res);
         dispatch(setCheckedPost(res));
       })
       .catch((err) => console.log("err", err));
@@ -94,7 +75,7 @@ const StageItem: React.FC<{
   return (
     <div>
       <div className={styles.stageInfo}>
-        <div className={styles.carouesl}>
+        <div className={styles.carousel}>
           <Carousel>
             {/* 여기서 map으로 div태그 안에 이미지 출력하면 된다. 밑의 3개는 임시 사진.*/}
             {Array.isArray(getStageImg) && getStageImg.length !== 0 ? (
@@ -139,7 +120,6 @@ const StageItem: React.FC<{
               ) : (
                 <button
                   onClick={() => {
-                    console.log("checkedpost", checkedPost);
                     dispatch(setModalPostState(checkedPost));
                     dispatch(setPostModalOpen(true));
                   }}
