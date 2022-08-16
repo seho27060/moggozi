@@ -14,6 +14,7 @@ public interface ReviewService {
     ReviewResponseDto registerReview(ReviewRequestDto reviewRequestDto);
 
     ReviewResponsePageDto getReviewList(Long challenge_id, Pageable pageable);
+    List<ReviewResponseDto> getReviewList(Long challenge_id);
 
     ReviewResponseDto updateReview(ReviewUpdateRequestDto reviewUpdateRequestDto);
     ResponseEntity deleteReview(Long review_id);
