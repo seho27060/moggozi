@@ -19,7 +19,7 @@ import "./Carousel.module.scss";
 import PostList from "../post/PostList";
 import no_image from "../../asset/no_image.png";
 import Dompurify from "dompurify";
-import Loader from "../ui/Loader";
+import { Skeleton } from "@mui/material";
 
 const StageItem: React.FC<{
   stage: StageState;
@@ -51,7 +51,7 @@ const StageItem: React.FC<{
     stageImgFetchAPI(stage.id!)
       .then((res) => {
         setStageImg(res);
-        setIsLoading(false);
+        setTimeout(() => setIsLoading(false), 500);
       })
       .catch((err) => {
         console.log(err);
@@ -80,7 +80,12 @@ const StageItem: React.FC<{
       <div className={styles.stageInfo}>
         <div className={styles.carousel}>
           {isLoading ? (
-            <Loader />
+            <Skeleton
+              style={{ bottom: 130 }}
+              width={500}
+              height={600}
+              animation="wave"
+            />
           ) : (
             <Carousel>
               {Array.isArray(getStageImg) && getStageImg.length !== 0 ? (
