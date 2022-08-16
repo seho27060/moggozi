@@ -101,6 +101,14 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    public void deletePostInJoinedChallenge(Long stage_id, Long member_id) {
+        Optional<Post> post = postRepository.findByStage_idAndMember_id(stage_id, member_id);
+        if(post.isPresent()){
+            postRepository.deleteByStage_idAndMember_id(stage_id, member_id);
+        }
+    }
+
+    @Override
     public void deletePost(Long post_id) {
         Post entity = postRepository.findById(post_id).orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + post_id));
 

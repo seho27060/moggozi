@@ -32,7 +32,6 @@ public class Post extends BaseTimeEntity {
     @JsonBackReference
     private Stage stage;
 
-    @Column(length = 45)
     private String title;
 
     @Lob
