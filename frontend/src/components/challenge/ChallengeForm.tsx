@@ -114,14 +114,15 @@ const ChallengeForm: React.FC<{ file: File | null }> = ({ file }) => {
           getDownloadURL(res.ref).then((res) => {
             console.log(res);
             challengeImgApi(challengeId, res).then((res) => {
-              alert("챌린지 생성이 완료되었습니다.");
+              setAlertText(<div>챌린지 생성이 완료되었습니다.</div>);
+              setModalOpen(true);
               navigate(`/challenge/${challengeId}`, { replace: true }); // 뒤로가기 안 먹도록!
             });
           });
         });
       })
       .catch((err) => {
-        alert(err.response);
+        console.log(err.response);
       });
   }
   return (

@@ -121,13 +121,12 @@ const ChallengeUpdateForm: React.FC<{ challenge: ChallengeDetailState }> = (
       // 챌린지 id가 존재하는 경우만
       challengeUpdate(challengeData, props.challenge.id)
         .then((res) => {
-          console.log(res);
           setAlertText(<div>챌린지 수정이 완료되었습니다.</div>);
           setModalOpen(true);
           navigate(`/challenge/${res.id}`, { replace: true }); // 뒤로가기 안 먹도록!
         })
         .catch((err) => {
-          alert(err.response);
+          console.log(err.response);
         });
     }
   }
