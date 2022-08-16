@@ -12,6 +12,8 @@ import UserImgForm from "./UserImgForm";
 import styles from "./EditUserInfoForm.module.scss";
 import Modal from "../ui/Modal";
 import { checkNickname } from "../../lib/generalApi";
+import { useDispatch } from "react-redux";
+import { userInfoEdit } from "../../store/auth";
 
 // html input 태그에서 value의 type에 null이 매칭이 안되서 임의로 undefined로 수정하였습니다.
 interface UserEditState {
@@ -28,6 +30,7 @@ const EditUserInfoForm: React.FC = () => {
   const navigate = useNavigate();
   const userId = useSelector((state: RootState) => state.auth.userInfo.id);
   const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
+  const dispatch = useDispatch();
 
   const [option, setOption] = useState<UserEditState>({
     username: "",
@@ -64,8 +67,11 @@ const EditUserInfoForm: React.FC = () => {
   function submitHandler(event: React.FormEvent) {
     event.preventDefault();
     if (submitState) {
-      updateUserApi(userId, option);
-      navigate("/", { replace: true });
+      updateUserApi(userId, option).then((res) =>
+        dispatch(userInfoEdit(option.nickname))
+      );
+
+      navigate(`/user/${userId}`, { replace: true });
     } else {
       setContent("닉네임 중복을 확인하세요.");
       setOpenModal(true);

@@ -28,7 +28,7 @@ import { ChallengeItemState } from "../../store/challenge";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import UserTabBox from "./UserTabBox";
-import { Box } from "@mui/material";
+import { Box, Skeleton } from "@mui/material";
 import Loader from "../../components/ui/Loader";
 import PostFormModal from "../../components/ui/PostFormModal";
 
@@ -57,7 +57,9 @@ function UserPage() {
 
   const [challengeList, setChallengeList] = useState<UserChallengeType[]>([]);
   // const [postList, setPostList] = useState<UserPostType[]>([]);
-  const userUserPagePostList = useSelector((state:RootState)=> state.userPage.UserPagePostList)
+  const userUserPagePostList = useSelector(
+    (state: RootState) => state.userPage.UserPagePostList
+  );
 
   const [myChallengeList, setMyChallengeList] = useState<ChallengeItemState[]>(
     []
@@ -98,7 +100,9 @@ function UserPage() {
           myPagePost(userId, currentPostPage + 1, 16)
             .then((res) => {
               console.log(userId, "post", res);
-              dispatch(setUserPagePostList(userUserPagePostList.concat(res.content)))
+              dispatch(
+                setUserPagePostList(userUserPagePostList.concat(res.content))
+              );
               // setPostList(postList.concat(res.content));/
               setCurrentPostPage(res.pageNum);
               setPostHasNext(res.hasNext);
@@ -153,6 +157,7 @@ function UserPage() {
     challengeHasNext,
     myChallengeHasNext,
     postHasNext,
+    dispatch,
   ]);
 
   useEffect(() => {
@@ -186,7 +191,7 @@ function UserPage() {
           .then((res) => {
             console.log(userId, "post", res);
             // setPostList(res.content);
-            dispatch(setUserPagePostList(res.content))
+            dispatch(setUserPagePostList(res.content));
             setPostHasNext(res.hasNext);
           })
           .catch((err) => console.log("post err", err));
@@ -213,7 +218,7 @@ function UserPage() {
         // alert("오류가 발생했습니다.")
         console.log("otherUserDetail", err);
       });
-  }, [userId, loginData]);
+  }, [userId, loginData, dispatch, loginId]);
 
   function followHandler(event: React.MouseEvent) {
     event.preventDefault();
@@ -313,135 +318,269 @@ function UserPage() {
           <div></div>
         )}
       </div>
-      {isPrivate ? <div>블러 처리 가림막</div> : <div>보여주기</div>}
-      <div style={{ display: "flex", justifyContent: "center" }}>
-        <div className={styles.container}>
-          <Box
-            display="flex"
-            justifyContent="center"
-            width="100%"
-            borderBottom="2px solid #afafaf"
-            margin="50px 0 0 0"
-          >
-            <Tabs
-              sx={{}}
-              value={value}
-              onChange={handleChange}
-              variant="scrollable"
-              textColor="inherit"
-              TabIndicatorProps={{
-                style: {
-                  background: "rgba(81, 255, 20, 0.62)",
-                  height: "10px",
-                  bottom: "10px",
-                },
-              }}
-              scrollButtons
-              allowScrollButtonsMobile
-              aria-label="scrollable force tabs example"
-            >
-              {tabMenus.map((menus, index) => (
-                <Tab
-                  key={index}
-                  label={`${menus}`}
-                  sx={{
-                    fontSize: "20px",
-                    fontWeight: "700",
-                    fontFamily: "pretendard",
-                    textAlign: "center",
-                    marginRight: "20px",
-                    px: 1,
+      {isPrivate && userId !== loginId ? (
+        <div className={styles.blurEffect}>
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            <div className={styles.container}>
+              <Box
+                display="flex"
+                justifyContent="center"
+                width="100%"
+                borderBottom="2px solid #afafaf"
+                margin="50px 0 0 0"
+              >
+                <Tabs
+                  sx={{}}
+                  value={value}
+                  onChange={handleChange}
+                  variant="scrollable"
+                  textColor="inherit"
+                  TabIndicatorProps={{
+                    style: {
+                      background: "rgba(81, 255, 20, 0.62)",
+                      height: "10px",
+                      bottom: "10px",
+                    },
                   }}
+                  scrollButtons
+                  allowScrollButtonsMobile
+                  aria-label="scrollable force tabs example"
+                >
+                  {tabMenus.map((menus, index) => (
+                    <Tab
+                      key={index}
+                      label={`${menus}`}
+                      sx={{
+                        fontSize: "20px",
+                        fontWeight: "700",
+                        fontFamily: "pretendard",
+                        textAlign: "center",
+                        marginRight: "20px",
+                        px: 1,
+                      }}
+                    />
+                  ))}
+                </Tabs>
+              </Box>
+            </div>
+          </div>
+          <div></div>
+          {userId !== loginId ? (
+            <>
+              {value === 0 && (
+                <UserTabBox
+                  myChallenges={null}
+                  challenges={challengeList.slice(0, 8)}
+                  nickname={nickname}
+                  posts={userUserPagePostList.slice(0, 8)}
+                  nameCheck={false}
                 />
-              ))}
-            </Tabs>
-          </Box>
-        </div>
-      </div>
-      <div></div>
-      {userId !== loginId ? (
-        <>
-          {value === 0 && (
-            <UserTabBox
-              myChallenges={null}
-              challenges={challengeList.slice(0, 8)}
-              nickname={nickname}
-              posts={userUserPagePostList.slice(0, 8)}
-              nameCheck = {false}
-            />
+              )}
+              {value === 1 && (
+                <UserTabBox
+                  myChallenges={null}
+                  challenges={null}
+                  nickname={nickname}
+                  posts={userUserPagePostList}
+                  nameCheck={true}
+                />
+              )}
+              {value === 2 && (
+                <UserTabBox
+                  myChallenges={null}
+                  challenges={challengeList}
+                  nickname={nickname}
+                  posts={null}
+                  nameCheck={true}
+                />
+              )}
+            </>
+          ) : (
+            <>
+              {value === 0 && (
+                <UserTabBox
+                  myChallenges={myChallengeList.slice(0, 8)}
+                  challenges={challengeList.slice(0, 8)}
+                  nickname={nickname}
+                  posts={userUserPagePostList.slice(0, 8)}
+                  nameCheck={false}
+                />
+              )}
+              {value === 1 && (
+                <UserTabBox
+                  myChallenges={null}
+                  challenges={null}
+                  nickname={nickname}
+                  posts={userUserPagePostList}
+                  nameCheck={true}
+                />
+              )}
+              {value === 2 && (
+                <UserTabBox
+                  myChallenges={null}
+                  challenges={challengeList}
+                  nickname={nickname}
+                  posts={null}
+                  nameCheck={true}
+                />
+              )}
+              {value === 3 && (
+                <UserTabBox
+                  myChallenges={myChallengeList}
+                  challenges={null}
+                  nickname={nickname}
+                  posts={null}
+                  nameCheck={true}
+                />
+              )}
+            </>
           )}
-          {value === 1 && (
-            <UserTabBox
-              myChallenges={null}
-              challenges={null}
-              nickname={nickname}
-              posts={userUserPagePostList}
-              nameCheck = {true}
-            />
-          )}
-          {value === 2 && (
-            <UserTabBox
-              myChallenges={null}
-              challenges={challengeList}
-              nickname={nickname}
-              posts={null}
-              nameCheck = {true}
-            />
-          )}
-        </>
-      ) : (
-        <>
-          {value === 0 && (
-            <UserTabBox
-              myChallenges={myChallengeList.slice(0, 8)}
-              challenges={challengeList.slice(0, 8)}
-              nickname={nickname}
-              posts={userUserPagePostList.slice(0, 8)}
-              nameCheck = {false}
-            />
-          )}
-          {value === 1 && (
-            <UserTabBox
-              myChallenges={null}
-              challenges={null}
-              nickname={nickname}
-              posts={userUserPagePostList}
-              nameCheck = {true}
-            />
-          )}
-          {value === 2 && (
-            <UserTabBox
-              myChallenges={null}
-              challenges={challengeList}
-              nickname={nickname}
-              posts={null}
-              nameCheck = {true}
-            />
-          )}
-          {value === 3 && (
-            <UserTabBox
-              myChallenges={myChallengeList}
-              challenges={null}
-              nickname={nickname}
-              posts={null}
-              nameCheck = {true}
-            />
-          )}
-        </>
-      )}
 
-      <div>
-        {postModalOpen && !postUpdateFormOpen && (
-          <PostModal open={postModalOpen} close={closePostModal}>
-            <PostDetailItem />
-          </PostModal>
-        )}
-        {postModalOpen && postUpdateFormOpen && (
-          <PostFormModal open={postModalOpen} close={closePostModal}>
-            <PostUpdateForm />
-          </PostFormModal>
-        )}
-      </div>
+          <div>
+            {postModalOpen && !postUpdateFormOpen && (
+              <PostModal open={postModalOpen} close={closePostModal}>
+                <PostDetailItem />
+              </PostModal>
+            )}
+            {postModalOpen && postUpdateFormOpen && (
+              <PostFormModal open={postModalOpen} close={closePostModal}>
+                <PostUpdateForm />
+              </PostFormModal>
+            )}
+          </div>
+        </div>
+      ) : (
+        <div>
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            <div className={styles.container}>
+              <Box
+                display="flex"
+                justifyContent="center"
+                width="100%"
+                borderBottom="2px solid #afafaf"
+                margin="50px 0 0 0"
+              >
+                <Tabs
+                  sx={{}}
+                  value={value}
+                  onChange={handleChange}
+                  variant="scrollable"
+                  textColor="inherit"
+                  TabIndicatorProps={{
+                    style: {
+                      background: "rgba(81, 255, 20, 0.62)",
+                      height: "10px",
+                      bottom: "10px",
+                    },
+                  }}
+                  scrollButtons
+                  allowScrollButtonsMobile
+                  aria-label="scrollable force tabs example"
+                >
+                  {tabMenus.map((menus, index) => (
+                    <Tab
+                      key={index}
+                      label={`${menus}`}
+                      sx={{
+                        fontSize: "20px",
+                        fontWeight: "700",
+                        fontFamily: "pretendard",
+                        textAlign: "center",
+                        marginRight: "20px",
+                        px: 1,
+                      }}
+                    />
+                  ))}
+                </Tabs>
+              </Box>
+            </div>
+          </div>
+          <div></div>
+          {userId !== loginId ? (
+            <>
+              {value === 0 && (
+                <UserTabBox
+                  myChallenges={null}
+                  challenges={challengeList.slice(0, 8)}
+                  nickname={nickname}
+                  posts={userUserPagePostList.slice(0, 8)}
+                  nameCheck={false}
+                />
+              )}
+              {value === 1 && (
+                <UserTabBox
+                  myChallenges={null}
+                  challenges={null}
+                  nickname={nickname}
+                  posts={userUserPagePostList}
+                  nameCheck={true}
+                />
+              )}
+              {value === 2 && (
+                <UserTabBox
+                  myChallenges={null}
+                  challenges={challengeList}
+                  nickname={nickname}
+                  posts={null}
+                  nameCheck={true}
+                />
+              )}
+            </>
+          ) : (
+            <>
+              {value === 0 && (
+                <UserTabBox
+                  myChallenges={myChallengeList.slice(0, 8)}
+                  challenges={challengeList.slice(0, 8)}
+                  nickname={nickname}
+                  posts={userUserPagePostList.slice(0, 8)}
+                  nameCheck={false}
+                />
+              )}
+              {value === 1 && (
+                <UserTabBox
+                  myChallenges={null}
+                  challenges={null}
+                  nickname={nickname}
+                  posts={userUserPagePostList}
+                  nameCheck={true}
+                />
+              )}
+              {value === 2 && (
+                <UserTabBox
+                  myChallenges={null}
+                  challenges={challengeList}
+                  nickname={nickname}
+                  posts={null}
+                  nameCheck={true}
+                />
+              )}
+              {value === 3 && (
+                <UserTabBox
+                  myChallenges={myChallengeList}
+                  challenges={null}
+                  nickname={nickname}
+                  posts={null}
+                  nameCheck={true}
+                />
+              )}
+            </>
+          )}
+
+          <div>
+            {postModalOpen && !postUpdateFormOpen && (
+              <PostModal open={postModalOpen} close={closePostModal}>
+                <PostDetailItem />
+              </PostModal>
+            )}
+            {postModalOpen && postUpdateFormOpen && (
+              <PostFormModal open={postModalOpen} close={closePostModal}>
+                <PostUpdateForm />
+              </PostFormModal>
+            )}
+          </div>
+        </div>
+      )}
       {isLogging && <Loader />}
     </div>
   );
