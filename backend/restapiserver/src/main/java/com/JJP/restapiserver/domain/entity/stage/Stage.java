@@ -43,6 +43,7 @@ public class Stage extends BaseTimeEntity {
 
     private String name;
 
+    @Lob
     private String content;
 
     private String img;
