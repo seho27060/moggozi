@@ -352,7 +352,7 @@ public class MemberServiceImpl implements MemberService {
              member = Member.builder().id(user_id)
                     .username(username).fullname(fullname)
                     .password(password).nickname(nickname)
-                    .introduce(introduce).user_img(user_img)
+                    .introduce(introduce)
                     .is_private(is_private).role(role).is_social(is_social).build();
         }
         memberRepository.save(member);
