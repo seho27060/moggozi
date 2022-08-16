@@ -37,6 +37,7 @@ import PostModal from "../../components/ui/PostModal";
 import PostFormModal from "../../components/ui/PostFormModal";
 import ChallengeOptionBtn from "../../components/ui/ChallengeOptionBtn";
 import Loader from "../../components/ui/Loader";
+import Modal from "../../components/ui/Modal";
 
 const ChallengeDetail: React.FC = () => {
   document.body.style.overflow = "auto"; //모달때문에 이상하게 스크롤이 안되서 강제로 스크롤 바 생성함
@@ -49,6 +50,8 @@ const ChallengeDetail: React.FC = () => {
   const userInfo = useSelector((state: RootState) => state.auth.userInfo);
   const stageId = useSelector((state: RootState) => state.post.postingStageId);
   const userImg = useSelector((state: RootState) => state.auth.userInfo.img);
+  const [alertText, setAlertText] = useState(<div></div>);
+  const [modalOpen, setModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [loadedChallenge, setLoadedChallenge] =
     useState<ChallengeDetailState>();
@@ -59,6 +62,11 @@ const ChallengeDetail: React.FC = () => {
   const { postModalOpen, postFormModalOpen, postUpdateFormOpen } = useSelector(
     (state: RootState) => state.postModal
   );
+
+  const closeAlertModal = () => {
+    document.body.style.overflow = "unset";
+    setModalOpen(false);
+  };
 
   const closePostModal = () => {
     dispatch(setPostModalOpen(false));
@@ -73,7 +81,8 @@ const ChallengeDetail: React.FC = () => {
   const likeHandler = (event: React.MouseEvent) => {
     event.preventDefault();
     if (!isLoggedIn) {
-      alert("로그인 후 이용 가능합니다.");
+      setAlertText(<div>로그인 후 이용 가능합니다.</div>);
+      setModalOpen(true);
       return;
     }
     challengeLike({ challengeId: Number(id) })
@@ -112,7 +121,8 @@ const ChallengeDetail: React.FC = () => {
     event.preventDefault();
     if (window.confirm("정말 도전하시겠습니까?")) {
       tryChallenge(userInfo.id!, loadedChallenge!.id!).then((res) => {
-        alert("챌린지 도전 완료!");
+        setAlertText(<div>챌린지 도전 완료!</div>);
+        setModalOpen(true);
         setRefresh(!refresh);
       });
     }
@@ -122,7 +132,8 @@ const ChallengeDetail: React.FC = () => {
     event.preventDefault();
     if (window.confirm("도전 취소하시겠습니까?")) {
       cancelChallenge(loadedChallenge!.id!).then((res) => {
-        alert("챌린지 도전 취소 완료");
+        setAlertText(<div>챌린지 도전 취소 완료!</div>);
+        setModalOpen(true);
         setRefresh(!refresh);
       });
     }
@@ -304,17 +315,6 @@ const ChallengeDetail: React.FC = () => {
               className={`view ql-editor ${styles.cont}`}
             ></div>
 
-            {/* <div
-              className={styles.writer}
-              onClick={() => {
-                navigate(`/user/${loadedChallenge!.writer.id!}`);
-              }}
-            >
-              <img src={loadedChallenge!.writer.path} alt="" />
-              <div className={styles.user}>
-                {loadedChallenge!.writer.nickname}
-              </div>
-            </div> */}
             {loadedChallenge!.state === 1 && (
               <div className={styles.like}>
                 <div
@@ -385,11 +385,13 @@ const ChallengeDetail: React.FC = () => {
               stageId={Number(stageId)}
               modalClose={closePostFormModal}
               challenge={loadedChallenge?.name!}
-              // stage={}
             />
           </PostFormModal>
         )}
       </div>
+      <Modal open={modalOpen} close={closeAlertModal} header="안내">
+        {alertText}
+      </Modal>
     </div>
   );
 };
