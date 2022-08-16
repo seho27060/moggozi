@@ -74,10 +74,10 @@ const EditUserInfoForm: React.FC = () => {
     if (submitState) {
       updateUserApi(userId, option).then((res) => {
         setContent("회원정보 수정이 완료되었습니다.")
-        updateUserApi(userId, option).then((res) =>
-        dispatch(userInfoEdit(option.nickname))
-        setOpenCompleteModal(true)
-        );
+        updateUserApi(userId, option).then((res) => {
+          dispatch(userInfoEdit(option.nickname))
+          setOpenCompleteModal(true)
+        });
       }).catch((err) => {
         console.log(err)
         setContent("닉네임 중복을 확인해주세요!")
