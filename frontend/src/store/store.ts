@@ -10,6 +10,7 @@ import reviewReducer from "./review";
 import alertReducer from "./alert"
 import alertModalReducer from "./alertModal";
 import noticeReducer from  "./notice"
+import userPageReducer from "./userPage"
 
 export const store = configureStore({
   reducer: {
@@ -24,6 +25,7 @@ export const store = configureStore({
     postStage : postStageReducer,
     stages: stageReducer,
     review: reviewReducer,
+    userPage: userPageReducer,
   },
 });
 

@@ -14,7 +14,7 @@ import styles from "./UserPage.module.scss";
 
 import { WebSocketContext } from "../../lib/WebSocketProvider";
 import { Alert } from "../../store/alert";
-import { UserChallengeType, UserPostType } from "../../store/userPage";
+import { setUserPagePostList, UserChallengeType } from "../../store/userPage";
 import { useDispatch } from "react-redux";
 import {
   setPostModalOpen,
@@ -56,7 +56,9 @@ function UserPage() {
   const [followState, setFollowState] = useState(false);
 
   const [challengeList, setChallengeList] = useState<UserChallengeType[]>([]);
-  const [postList, setPostList] = useState<UserPostType[]>([]);
+  // const [postList, setPostList] = useState<UserPostType[]>([]);
+  const userUserPagePostList = useSelector((state:RootState)=> state.userPage.UserPagePostList)
+
   const [myChallengeList, setMyChallengeList] = useState<ChallengeItemState[]>(
     []
   );
@@ -96,7 +98,8 @@ function UserPage() {
           myPagePost(userId, currentPostPage + 1, 16)
             .then((res) => {
               console.log(userId, "post", res);
-              setPostList(postList.concat(res.content));
+              dispatch(setUserPagePostList(userUserPagePostList.concat(res.content)))
+              // setPostList(postList.concat(res.content));/
               setCurrentPostPage(res.pageNum);
               setPostHasNext(res.hasNext);
             })
@@ -142,7 +145,8 @@ function UserPage() {
     currentMyChallengePage,
     challengeList,
     myChallengeList,
-    postList,
+    // postList,
+    userUserPagePostList,
     userId,
     value,
     loginData.userInfo.id,
@@ -181,7 +185,8 @@ function UserPage() {
         myPagePost(userId, 0, 16)
           .then((res) => {
             console.log(userId, "post", res);
-            setPostList(res.content);
+            // setPostList(res.content);
+            dispatch(setUserPagePostList(res.content))
             setPostHasNext(res.hasNext);
           })
           .catch((err) => console.log("post err", err));
@@ -361,7 +366,7 @@ function UserPage() {
               myChallenges={null}
               challenges={challengeList.slice(0, 8)}
               nickname={nickname}
-              posts={postList.slice(0, 8)}
+              posts={userUserPagePostList.slice(0, 8)}
               nameCheck = {false}
             />
           )}
@@ -370,7 +375,7 @@ function UserPage() {
               myChallenges={null}
               challenges={null}
               nickname={nickname}
-              posts={postList}
+              posts={userUserPagePostList}
               nameCheck = {true}
             />
           )}
@@ -391,7 +396,7 @@ function UserPage() {
               myChallenges={myChallengeList.slice(0, 8)}
               challenges={challengeList.slice(0, 8)}
               nickname={nickname}
-              posts={postList.slice(0, 8)}
+              posts={userUserPagePostList.slice(0, 8)}
               nameCheck = {false}
             />
           )}
@@ -400,7 +405,7 @@ function UserPage() {
               myChallenges={null}
               challenges={null}
               nickname={nickname}
-              posts={postList}
+              posts={userUserPagePostList}
               nameCheck = {true}
             />
           )}
