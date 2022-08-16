@@ -29,6 +29,7 @@ import { ChallengeItemState } from "../../store/challenge";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import UserTabBox from "./UserTabBox";
+import UserDetailTabBox from "./UserDetailTabBox";
 import { Box } from "@mui/material";
 import Loader from "../../components/ui/Loader";
 import PostFormModal from "../../components/ui/PostFormModal";
@@ -535,8 +536,9 @@ function UserPage() {
                   nameCheck={false}
                 />
               )}
+              {/* // 포스팅 탭 */}
               {value === 1 && (
-                <UserTabBox
+                <UserDetailTabBox
                   myChallenges={null}
                   challenges={null}
                   nickname={nickname}
@@ -544,8 +546,9 @@ function UserPage() {
                   nameCheck={true}
                 />
               )}
+              {/* 도전한 챌린지 */}
               {value === 2 && (
-                <UserTabBox
+                <UserDetailTabBox
                   myChallenges={null}
                   challenges={challengeList}
                   nickname={nickname}
@@ -553,8 +556,9 @@ function UserPage() {
                   nameCheck={true}
                 />
               )}
+              {/* 만든 챌린지 */}
               {value === 3 && (
-                <UserTabBox
+                <UserDetailTabBox
                   myChallenges={myChallengeList}
                   challenges={null}
                   nickname={nickname}
