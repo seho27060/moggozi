@@ -61,25 +61,19 @@ const PostUpdateForm: React.FC<{}> = () => {
         // 이미지 업로드
         if (file) {
           const imgRef = ref(storageService, `post/${PostUpdateData.postId}`);
-          uploadBytes(imgRef, file)
-            .then((res) => {
-              getDownloadURL(res.ref)
-                .then((res) => {
-                  modifiedModalPost.postImg = [{ path: res }];
-                  postImgApi(PostUpdateData.postId!, res)
-                    .then((res) => {
-                      console.log("post 수정완료", res);
-                      dispatch(postModify(modifiedModalPost));
-                      dispatch(setPostUpdateFormState(false));
-                      dispatch(setModalPostState(modifiedModalPost));
-                      dispatch(setCheckedPost(modifiedModalPost));
-                    })
-                    .catch((err) => console.log("이미지 db에 저장 실패", err));
-                })
-                .catch((err) => console.log("이미지 url 가져오기 실패", err));
-              setPreviewImage("");
-            })
-            .catch((err) => console.log("이미지 firestore에 업로드 실패", err));
+          uploadBytes(imgRef, file).then((res) => {
+            getDownloadURL(res.ref).then((res) => {
+              modifiedModalPost.postImg = [{ path: res }];
+              postImgApi(PostUpdateData.postId!, res).then((res) => {
+                console.log("post 수정완료", res);
+                dispatch(postModify(modifiedModalPost));
+                dispatch(setPostUpdateFormState(false));
+                dispatch(setModalPostState(modifiedModalPost));
+                dispatch(setCheckedPost(modifiedModalPost));
+              });
+            });
+            setPreviewImage("");
+          });
         } else {
           console.log("post 수정완료", res);
           dispatch(postModify(modifiedModalPost));
@@ -89,10 +83,10 @@ const PostUpdateForm: React.FC<{}> = () => {
         }
       })
       .catch((err) => {
-        console.log("err", err);
+        console.log(err);
       });
 
-  setCheckModifyToggle(false)
+    setCheckModifyToggle(false);
   };
 
   // 이미지 로드
@@ -161,7 +155,11 @@ const PostUpdateForm: React.FC<{}> = () => {
           ) : (
             <img
               className={styles.img}
-              src="https://via.placeholder.com/400x360.png/"
+              src={
+                PostModalState!.postImg.length !== 0
+                  ? PostModalState!.postImg[0].path!
+                  : "https://via.placeholder.com/400x360.png/"
+              }
               alt=""
             />
           )}
@@ -185,17 +183,27 @@ const PostUpdateForm: React.FC<{}> = () => {
               onClick={() => {
                 setCheckModifyToggle(true);
               }}
-              style={{ width: "4rem", margin:"10px 2rem"}}
+              style={{ width: "4rem", margin: "10px 2rem" }}
             >
               수정하기
             </button>
           )}
           {checkModifyToggle && (
             <div>
-              <button onClick={postingUpdateHandler} style={{ width: "4rem", margin:"10px 5px 10px 5px" }}>
+              <button
+                onClick={postingUpdateHandler}
+                style={{ width: "4rem", margin: "10px 5px 10px 5px" }}
+              >
                 수정완료
               </button>
-              <button onClick={() => {setCheckModifyToggle(false); }} style={{ width: "4rem" }}>취소</button>
+              <button
+                onClick={() => {
+                  setCheckModifyToggle(false);
+                }}
+                style={{ width: "4rem" }}
+              >
+                취소
+              </button>
             </div>
           )}
         </div>
