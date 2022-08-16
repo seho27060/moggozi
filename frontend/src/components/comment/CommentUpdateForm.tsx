@@ -1,12 +1,11 @@
-import { Dispatch, FormEvent, SetStateAction, useContext, useRef } from "react";
+import { Dispatch, FormEvent, SetStateAction, useRef } from "react";
 import { commentUpdate } from "../../lib/withTokenApi";
 import { CommentSend, Comment, commentModify } from "../../store/comment";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
-import { useNavigate } from "react-router-dom";
 
-// import styles from "./CommentUpdateForm.module.scss";/
+import styles from "./CommentUpdateForm.module.scss";
 
 const CommentUpdateForm: React.FC<{
   comment: Comment;
@@ -14,7 +13,6 @@ const CommentUpdateForm: React.FC<{
   setCommentUpdateFormToggle: Dispatch<SetStateAction<boolean>>;
 }> = ({ comment, postId, setCommentUpdateFormToggle }) => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const user = useSelector((state: RootState) => state.auth);
   const enteredComment = useRef<HTMLInputElement>(null);
 
@@ -38,17 +36,19 @@ const CommentUpdateForm: React.FC<{
   };
   const commentModifyHandler = (event: FormEvent) => {
     event.preventDefault();
-    commentSend.text = enteredComment.current!.value;
-    commentState.text = enteredComment.current!.value;
-    commentUpdate(comment.id, commentSend).then((res) => {
-      console.log("comment 수정완료", res);
-      dispatch(commentModify(commentState));
-    });
-    setCommentUpdateFormToggle(false);
+    if (window.confirm("수정하시겠습니까?")) {
+      commentSend.text = enteredComment.current!.value;
+      commentState.text = enteredComment.current!.value;
+      commentUpdate(comment.id, commentSend).then((res) => {
+        console.log("comment 수정완료", res);
+        dispatch(commentModify(commentState));
+      });
+      setCommentUpdateFormToggle(false);
+    }
   };
 
   return (
-    <div>
+    <div className={styles.commentUpdateContainer}>
       <form>
         <label htmlFor="content"></label>
         <input
@@ -59,9 +59,9 @@ const CommentUpdateForm: React.FC<{
         />
         <button
           onClick={commentModifyHandler}
-          style={{ width: "2.3rem", padding: 0 }}
+          style={{ width: "3.3rem", padding: "0" }}
         >
-          수정
+          수정완료
         </button>
       </form>
     </div>

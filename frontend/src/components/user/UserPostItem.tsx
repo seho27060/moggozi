@@ -5,11 +5,12 @@ import { PostData } from "../../store/post";
 import { setModalPostState, setPostModalOpen } from "../../store/postModal";
 import { UserPostType } from "../../store/userPage";
 
-import styles from "./UserChallengeItem.module.scss"
+import styles from "./UserChallengeItem.module.scss";
 
 const UserPostItem: React.FC<{
   userPost: UserPostType;
-}> = ({ userPost }) => {
+  nameCheck: boolean;
+}> = ({ userPost, nameCheck }) => {
   const dispatch = useDispatch();
   let postData: PostData | null = null;
   postRead(userPost.id)
@@ -35,10 +36,11 @@ const UserPostItem: React.FC<{
       }}
     >
       <div className={styles.img}>
-      <img
-        src={userPost.postImg?.length !== 0 ? userPost.postImg[0].path! : ""}
-        alt="challengeImg"
-      />
+        <img
+          src={userPost.postImg?.length !== 0 ? userPost.postImg[0].path! : ""}
+          alt="challengeImg"
+        />
+        {nameCheck && <div className={styles.itemTitle}>{userPost.title}</div>}
       </div>
     </div>
   );

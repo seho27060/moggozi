@@ -46,7 +46,7 @@ const CommentChild: React.FC<{ child: Comment }> = ({ child }) => {
           <div>{child.writer?.nickname}</div>
         </div>
         <div className={styles.option}>
-          <CommentOptionBtn comment={child} postId={postId} setCommentUpdateFormToggle={setCommentUpdateFormToggle}/>
+          <CommentOptionBtn comment={child}  setCommentUpdateFormToggle={setCommentUpdateFormToggle}/>
         </div>
       </div>
       <div>

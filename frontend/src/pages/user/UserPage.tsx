@@ -360,6 +360,7 @@ function UserPage() {
               challenges={challengeList.slice(0, 8)}
               nickname={nickname}
               posts={postList.slice(0, 8)}
+              nameCheck = {false}
             />
           )}
           {value === 1 && (
@@ -368,6 +369,7 @@ function UserPage() {
               challenges={null}
               nickname={nickname}
               posts={postList}
+              nameCheck = {true}
             />
           )}
           {value === 2 && (
@@ -376,6 +378,7 @@ function UserPage() {
               challenges={challengeList}
               nickname={nickname}
               posts={null}
+              nameCheck = {true}
             />
           )}
         </>
@@ -387,6 +390,7 @@ function UserPage() {
               challenges={challengeList.slice(0, 8)}
               nickname={nickname}
               posts={postList.slice(0, 8)}
+              nameCheck = {false}
             />
           )}
           {value === 1 && (
@@ -395,6 +399,7 @@ function UserPage() {
               challenges={null}
               nickname={nickname}
               posts={postList}
+              nameCheck = {true}
             />
           )}
           {value === 2 && (
@@ -403,6 +408,7 @@ function UserPage() {
               challenges={challengeList}
               nickname={nickname}
               posts={null}
+              nameCheck = {true}
             />
           )}
           {value === 3 && (
@@ -411,6 +417,7 @@ function UserPage() {
               challenges={null}
               nickname={nickname}
               posts={null}
+              nameCheck = {true}
             />
           )}
         </>
