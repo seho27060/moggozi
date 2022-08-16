@@ -6,6 +6,7 @@ import { setModalPostState, setPostModalOpen } from "../../store/postModal";
 import { UserPostType } from "../../store/userPage";
 
 import styles from "./UserChallengeItem.module.scss";
+import no_image from "../../asset/no_image.png"
 
 const UserPostItem: React.FC<{
   userPost: UserPostType;
@@ -37,7 +38,7 @@ const UserPostItem: React.FC<{
     >
       <div className={styles.img}>
         <img
-          src={userPost.postImg?.length !== 0 ? userPost.postImg[0].path! : ""}
+          src={userPost.postImg?.length !== 0 ? userPost.postImg[0].path! : no_image}
           alt="challengeImg"
         />
         {nameCheck && <div className={styles.itemTitle}>{userPost.title}</div>}

@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { ChallengeItemState } from "../../store/challenge";
 
+import no_image from "../../asset/no_image.png"
 import styles from "./MainPopChallengeItem.module.scss";
 import FavoriteIcon from '@mui/icons-material/Favorite';
 
@@ -15,7 +16,7 @@ const MainPopChallengeItem: React.FC<{ challenge: ChallengeItemState }> = ({
           <img src={challenge.img} alt="challenge Img"></img>
         ) : (
           <img
-            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS2vD3MC0-zWEcZYdaZg3s-1fC0q9p5IMwOmA&usqp=CAU"
+            src={no_image}
             alt=""
           ></img>
         )}

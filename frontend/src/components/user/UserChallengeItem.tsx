@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { UserChallengeType } from "../../store/userPage";
 
+import no_image from "../../asset/no_image.png"
 import styles from "./UserChallengeItem.module.scss";
 
 const UserChallengeItem: React.FC<{
@@ -15,7 +16,9 @@ const UserChallengeItem: React.FC<{
     <div>
       <Link to={`/challenge/${userChallenge.id}`} className={styles.link}>
         <div className={styles.img}>
-          <img src={userChallenge.img!} alt="challengeImg" />
+          { userChallenge.img! !== "" && userChallenge.img! ? <img src={userChallenge.img!} alt="challengeImg" /> :
+          <img src={no_image} alt="" />}
+          
           {nameCheck && <div className={styles.itemTitle}>{userChallenge.name}</div>}
         </div>
       </Link>

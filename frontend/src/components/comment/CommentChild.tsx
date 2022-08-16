@@ -4,8 +4,8 @@ import { RootState } from "../../store/store";
 
 import styles from "./CommentChild.module.scss";
 import CommentOptionBtn from "./CommentOptionBtn";
+import default_profile from "../../asset/default_profile.png"
 
-import { BsFillPersonFill } from "react-icons/bs"
 import { useState } from "react";
 import CommentUpdateForm from "./CommentUpdateForm";
 import { useNavigate } from "react-router-dom";
@@ -37,7 +37,9 @@ const CommentChild: React.FC<{ child: Comment }> = ({ child }) => {
               onClick={toUserPageHandler}
             />
           ) : (
-            <BsFillPersonFill
+            <img
+              src={default_profile}
+              alt=""
               style={{ height: "43px", width: "43px" }}
               onClick={toUserPageHandler}
             />

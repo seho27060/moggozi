@@ -11,6 +11,7 @@ import {
 } from "../../lib/withTokenApi";
 import MypageFollow from "../../components/accounts/MypageFollow";
 import styles from "./UserPage.module.scss";
+import big_default_profile from "../../asset/big_default_profile.jpg"
 
 import { WebSocketContext } from "../../lib/WebSocketProvider";
 import { Alert } from "../../store/alert";
@@ -181,7 +182,7 @@ function UserPage() {
         if (!!res.userImg === false) {
           // 기본 프로필 이미지
           setImg(
-            "https://i.pinimg.com/236x/f2/a1/d6/f2a1d6d87b1231ce39710e6ba1c1e129.jpg"
+            big_default_profile
           );
         } else {
           setImg(res.userImg);
@@ -255,9 +256,6 @@ function UserPage() {
 
   return (
     <div className={styles.margin}>
-      <div style={{ margin: "20px" }}>
-        <a href="#/">공유버튼</a>
-      </div>
       <div className={styles.info}>
         {loginId === userId ? (
           <Link
