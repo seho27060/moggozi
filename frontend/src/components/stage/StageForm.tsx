@@ -42,7 +42,7 @@ const StageForm: React.FC<{ closeModal: () => void }> = ({ closeModal }) => {
   function stageSubmitHandler(event: React.FormEvent) {
     event.preventDefault();
 
-    if (stages.length > 10) {
+    if (stages.length >= 10) {
       setAlertText(<div>스테이지의 개수는 10개까지 입니다.</div>);
       setModalOpen(true);
       return;
@@ -99,7 +99,11 @@ const StageForm: React.FC<{ closeModal: () => void }> = ({ closeModal }) => {
             <span>{titleCnt}/20</span>
           </div>
           <div>
-            <EditorComponent QuillRef={contentInputRef} value={""} maxlength={500}/>
+            <EditorComponent
+              QuillRef={contentInputRef}
+              value={""}
+              maxlength={500}
+            />
           </div>
         </form>
         <div className={styles.buttons}>

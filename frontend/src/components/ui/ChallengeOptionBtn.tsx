@@ -5,6 +5,7 @@ import ChallengeDeleteBtn from "../challenge/ChallengeDeleteBtn";
 import { registerChallenge } from "../../lib/withTokenApi";
 
 import styles from "./ChallengeOptionBtn.module.scss";
+import Modal from "./Modal";
 interface Props {
   id: string | undefined;
   userId: number | null;
@@ -16,11 +17,19 @@ interface Props {
 export default function ChallengeOptionBtn(props: Props) {
   const { id, userId, writerId, state, loadedChallenge } = props;
   const navigate = useNavigate();
+  const [alertText, setAlertText] = React.useState(<div></div>);
+  const [modalOpen, setModalOpen] = React.useState(false);
+
+  const closeAlertModal = () => {
+    document.body.style.overflow = "unset";
+    setModalOpen(false);
+  };
 
   const registerHandler = (event: React.MouseEvent) => {
     event.preventDefault();
     if (loadedChallenge!.stageList.length === 0) {
-      alert("스테이지가 존재하지 않아 등록하지 못합니다.");
+      setAlertText(<div>스테이지가 존재하지 않아 등록하지 못합니다.</div>);
+      setModalOpen(true);
       return;
     }
     if (
@@ -41,14 +50,16 @@ export default function ChallengeOptionBtn(props: Props) {
           <div>챌린지 등록</div>
         </div>
       )}
-      <div className={styles.divTag}
+      <div
+        className={styles.divTag}
         onClick={() => {
           navigate(`/stage/${id}`);
         }}
       >
         <div>스테이지 편집</div>
       </div>
-      <Link className={styles.aTag}
+      <Link
+        className={styles.aTag}
         to={`/challenge/${id}/update`}
         state={loadedChallenge}
         style={{ textDecoration: "none" }}
@@ -59,6 +70,9 @@ export default function ChallengeOptionBtn(props: Props) {
       <div className={styles.divTag}>
         <ChallengeDeleteBtn />
       </div>
+      <Modal open={modalOpen} close={closeAlertModal} header="안내">
+        {alertText}
+      </Modal>
     </div>
   );
 }

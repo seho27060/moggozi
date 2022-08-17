@@ -26,7 +26,6 @@ const HobbyForm: React.FC = () => {
 
   function submitHandler() {
     const enteredHobby = hobbyInputRef.current!.value;
-    console.log(hobbyList);
     if (!enteredHobby) {
       setAlertText(<div>태그를 입력해주세요!</div>);
       setModalOpen(true);

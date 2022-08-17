@@ -103,7 +103,6 @@ const ChallengeUpdateForm: React.FC<{ challenge: ChallengeDetailState }> = (
       return;
     }
     if (!enteredContent) {
-      console.log(enteredContent);
       setAlertText(<div>내용을 입력해주세요!</div>);
       setModalOpen(true);
       return;
@@ -192,7 +191,7 @@ const ChallengeUpdateForm: React.FC<{ challenge: ChallengeDetailState }> = (
         <EditorComponent
           QuillRef={contentInputRef}
           value={props.challenge.content!}
-          maxlength = {700}
+          maxlength={700}
         />
       </div>
       {/* <div className={styles.checker}>{contentInput.length} / 500</div> */}

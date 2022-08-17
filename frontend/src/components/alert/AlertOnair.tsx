@@ -37,10 +37,8 @@ const AlertOnair: React.FC<{}> = () => {
   // const ws = useContext(WebSocketContext);
 
   const alertClickHandler = () => {
-    console.log("alertclick", realTimeAlert);
     alertRecent()
       .then((res) => {
-        console.log("recent alert read", res);
         dispatch(setAlertList(res));
       })
       .catch((err) => {
@@ -63,13 +61,12 @@ const AlertOnair: React.FC<{}> = () => {
       </button>
       <div>{isToggle && <AlertList setIsToggle={setIsToggle} />}</div>
       <div>
-
-        {(alertPostModalOpen && !postUpdateFormOpen) &&(
+        {alertPostModalOpen && !postUpdateFormOpen && (
           <PostModal open={alertPostModalOpen} close={closePostModal}>
             <PostDetailItem />
           </PostModal>
         )}
-        {(alertPostModalOpen && postUpdateFormOpen) && (
+        {alertPostModalOpen && postUpdateFormOpen && (
           <PostFormModal open={alertPostModalOpen} close={closePostModal}>
             <PostUpdateForm />
           </PostFormModal>

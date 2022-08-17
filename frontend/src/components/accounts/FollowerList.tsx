@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { followApi } from "../../lib/withTokenApi";
 
-import default_profile from "../../asset/default_profile.png"
+import default_profile from "../../asset/default_profile.png";
 import styles from "./FollowerList.module.scss";
 
 interface Props {
@@ -27,9 +27,7 @@ const FollowerList = (props: Props): ReactElement => {
     event.preventDefault();
     setFollowState(!followState);
     followApi(id)
-      .then((res) => {
-        console.log(res);
-      })
+      .then((res) => {})
       .catch((err) => {
         console.log(err);
       });
@@ -43,13 +41,10 @@ const FollowerList = (props: Props): ReactElement => {
   return (
     <div className={styles.container}>
       <div className={styles.followers}>
-        { img !== "" && img ? (
+        {img !== "" && img ? (
           <img src={`${img}`} alt="profile_image" onClick={moveHandler} />
         ) : (
-          <img
-            src={default_profile}
-            alt=""
-          />
+          <img src={default_profile} alt="" />
         )}
 
         <div onClick={moveHandler}>{nickname}</div>

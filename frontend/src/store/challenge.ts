@@ -75,7 +75,6 @@ export const hobbySlice = createSlice({
       state.hobbyCnt = state.hobbyList.length;
     },
     resetHobby(state) {
-      console.log(1);
       state.hobbyList = [];
       state.hobbyCnt = 0;
     },

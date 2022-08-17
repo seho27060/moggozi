@@ -11,11 +11,10 @@ const ChallengeDeleteBtn: React.FC = () => {
     if (isChk) {
       challengeDelete(Number(id))
         .then((res) => {
-          console.log("삭제 완료");
           navigate("/", { replace: true }); // 메인 페이지로 이동 후 뒤로가기가 안 먹도록
         })
         .catch((err) => {
-          alert(err.response);
+          console.log(err.response);
         });
     }
   };

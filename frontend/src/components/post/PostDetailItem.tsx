@@ -15,8 +15,8 @@ import PostOptionBtn from "./PostOptionBtn";
 import Dompurify from "dompurify";
 import styles from "./PostDetailItem.module.scss";
 import "react-quill/dist/quill.snow.css";
-import default_profile_Img from "../../asset/default_profile.png"
-import no_image from "../../asset/no_image.png"
+import default_profile_Img from "../../asset/default_profile.png";
+import no_image from "../../asset/no_image.png";
 
 const PostDetailItem: React.FC<{}> = () => {
   const dispatch = useDispatch();
@@ -26,11 +26,10 @@ const PostDetailItem: React.FC<{}> = () => {
   const commentState = useSelector(
     (state: RootState) => state.comment.comments
   );
-  console.log(post.postModalState);
+
   useEffect(() => {
     commentRead(post.postModalState!.id)
       .then((res) => {
-        console.log(`${post.postModalState!.id}의 댓글`);
         dispatch(commentSet(res));
       })
       .catch((err) => {

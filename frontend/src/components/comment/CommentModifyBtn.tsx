@@ -51,7 +51,6 @@ const CommentModifyBtn: React.FC<{
     commentSend.text = enteredComment.current!.value;
     commentState.text = enteredComment.current!.value;
     commentUpdate(comment.id, commentSend).then((res) => {
-      console.log("comment 수정완료", res);
       dispatch(commentModify(commentState));
     });
     setIsFormToggle(!isFormToggle);
@@ -61,11 +60,9 @@ const CommentModifyBtn: React.FC<{
   const commentRemoveHandler = (event: MouseEvent) => {
     event.preventDefault();
     commentDelete(comment.id).then((res) => {
-      console.log(`${comment.id} 삭제 완료`, res);
       dispatch(commentRemove(comment.id));
     });
   };
-  // commentUpdate(comment.id,)
 
   return (
     <>
@@ -75,14 +72,14 @@ const CommentModifyBtn: React.FC<{
         </button>
         {isToggle && (
           <div>
-            {(userId !== comment.writer!.id) && (
+            {userId !== comment.writer!.id && (
               <button onClick={commentModifyHandler}>숨김</button>
             )}
           </div>
         )}
         {isToggle && (
           <div>
-            {(userId === comment.writer!.id) && (
+            {userId === comment.writer!.id && (
               <button onClick={commentRemoveHandler}>삭제</button>
             )}
           </div>

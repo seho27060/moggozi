@@ -42,7 +42,6 @@ export default function LongMenu(): JSX.Element {
     if (window.confirm("삭제하시겠습니까?")) {
       postDelete(post!.id)
         .then((res) => {
-          console.log("post 삭제완료", res);
           dispatch(postRemove(post));
           dispatch(setCheckedPost(-1));
         })

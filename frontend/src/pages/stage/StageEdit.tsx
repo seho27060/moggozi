@@ -50,10 +50,7 @@ const StageEdit: React.FC = () => {
     event.preventDefault();
     items.map((item, index) => {
       return stageOrderChange(Number(item.id), index + 1)
-        .then((res) => {
-          console.log(item.id);
-          console.log(index);
-          console.log("순서 변경 완료");
+        .then(() => {
           setIsOrderEdit(false);
         })
         .catch((err) => {
@@ -75,8 +72,14 @@ const StageEdit: React.FC = () => {
         <div className={styles.explain}>
           <div>스테이지 수정에 대한 간략한 설명😊</div>
           <div>ㆍ스테이지는 + 를 눌러 추가할 수 있어요!</div>
-          <div>ㆍ이미지는 스테이지를 추가한 후, 수정할 때 추가할 수 있어요.</div>
-          <div>ㆍ순서 변경을 클릭한 후, <span style={{fontWeight: "700"}}>"드래그 앤 드롭"</span>을 통해 순서를 바꿀 수 있어요.</div>
+          <div>
+            ㆍ이미지는 스테이지를 추가한 후, 수정할 때 추가할 수 있어요.
+          </div>
+          <div>
+            ㆍ순서 변경을 클릭한 후,{" "}
+            <span style={{ fontWeight: "700" }}>"드래그 앤 드롭"</span>을 통해
+            순서를 바꿀 수 있어요.
+          </div>
         </div>
 
         <div className={styles.horizon}></div>
@@ -130,8 +133,6 @@ const StageEdit: React.FC = () => {
             )}
           </div>
         )}
-
-
       </div>
     </div>
   );
