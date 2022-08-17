@@ -37,7 +37,6 @@ const PasswordReissueForm: React.FC = () => {
         })
         .catch((err) => {
           console.log(err);
-          alert("에러가 발생했습니다. 다시 시도해주세요");
           // window.location.reload();
         });
     }
@@ -83,14 +82,15 @@ const PasswordReissueForm: React.FC = () => {
         </div>
         <li>전송된 메일로 임시 비밀번호가 발급됩니다.</li>
         <li>발급된 임시 비밀번호를 이용하여 로그인하세요.</li>
-        <button className={`${style.purpleButton}`} onClick={passwordFindHandler}>임시비밀번호 발급</button>
+        <button
+          className={`${style.purpleButton}`}
+          onClick={passwordFindHandler}
+        >
+          임시비밀번호 발급
+        </button>
       </form>
       <React.Fragment>
-        <ReturnMainModal
-          open={modalOpen}
-          close={closeModal}
-          header="안내"
-        >
+        <ReturnMainModal open={modalOpen} close={closeModal} header="안내">
           <p>비밀번호가 초기화 되었습니다.</p>
           <p>이메일을 확인해주세요!</p>
         </ReturnMainModal>

@@ -15,7 +15,7 @@ export interface Alert {
   type: string | null;
 }
 interface AlertState {
-  wsocket : WebSocket | null,
+  wsocket: WebSocket | null;
   alertList: Alert[];
   alertAllList: Alert[];
   realTimeAlert: boolean;
@@ -23,7 +23,7 @@ interface AlertState {
 }
 
 const initialAlertState: AlertState = {
-  wsocket : null,
+  wsocket: null,
   alertList: [],
   alertAllList: [],
   realTimeAlert: false,
@@ -39,13 +39,16 @@ export const alertSlice = createSlice({
       state.alertList = [...loadedAlertList];
     },
     checkAlertList: (state) => {
-      const checkedAlertList = state.alertList.map((alert)=>({...alert,check : 1}))
-      console.log(checkedAlertList)
+      const checkedAlertList = state.alertList.map((alert) => ({
+        ...alert,
+        check: 1,
+      }));
+      // console.log(checkedAlertList)
       state.alertList = [...checkedAlertList];
     },
     setRealTimeAlert: (state, action) => {
-      console.log("realtimealert set",action.payload);
-      state.realTimeAlert = action.payload
+      // console.log("realtimealert set",action.payload);
+      state.realTimeAlert = action.payload;
     },
     setAllAlertList: (state, action) => {
       const loadedAlertList: Alert[] | null = [...action.payload];
@@ -54,7 +57,11 @@ export const alertSlice = createSlice({
   },
 });
 
-export const {setAlertList, setRealTimeAlert,setAllAlertList,checkAlertList } =
-  alertSlice.actions;
+export const {
+  setAlertList,
+  setRealTimeAlert,
+  setAllAlertList,
+  checkAlertList,
+} = alertSlice.actions;
 
 export default alertSlice.reducer;

@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useRef, useState } from "react";
+import React, { ChangeEvent, useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import { fetchReview, reviewUpdate } from "../../lib/withTokenApi";
@@ -11,6 +11,7 @@ import Rating from "@mui/material/Rating";
 import styles from "./ReviewUpdateForm.module.scss";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
+import Modal from "../ui/Modal";
 
 const ReviewUpdateForm: React.FC<{
   review: ReviewState;
@@ -22,8 +23,23 @@ const ReviewUpdateForm: React.FC<{
   const { id } = useParams();
   const [inputs, setInputs] = useState({ content: review.content || "" });
   const [rate, setRate] = useState(review.rate || 0);
-
+  const [modalOpen, setModalOpen] = useState(false);
+  const [alertText, setAlertText] = useState(<div></div>);
   const { content } = inputs;
+
+  const closeAlertModal = () => {
+    document.body.style.overflow = "unset";
+    setModalOpen(false);
+  };
+
+  useEffect(() => {
+    if (!modalOpen) {
+      document.body.style.overflow = "auto"; //모달때문에 이상하게 스크롤이 안되서 강제로 스크롤 바 생성함
+      document.body.style.height = "auto";
+    } else {
+      document.body.style.overflow = "hidden";
+    }
+  }, [modalOpen]);
 
   const onChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
@@ -37,15 +53,18 @@ const ReviewUpdateForm: React.FC<{
   const reviewSubmitHandler = (event: React.FormEvent) => {
     event.preventDefault();
     if (review.writer.id !== userId) {
-      alert("내가 작성한 글만 수정 가능합니다.");
+      setAlertText(<div>내가 작성한 글만 수정 가능합니다.</div>);
+      setModalOpen(true);
       return;
     }
     if (rate === 0) {
-      alert("평점을 입력해주세요.");
+      setAlertText(<div>평점을 입력해주세요.</div>);
+      setModalOpen(true);
       return;
     }
     if (!content) {
-      alert("내용을 입력해주세요.");
+      setAlertText(<div>내용을 입력해주세요.</div>);
+      setModalOpen(true);
       return;
     }
     const reviewData = {
@@ -55,14 +74,15 @@ const ReviewUpdateForm: React.FC<{
     };
     console.log(reviewData);
     reviewUpdate(reviewData, Number(id)).then((res) => {
-      alert("review 수정이 완료되었습니다.");
+      setAlertText(<div>review 수정이 완료되었습니다.</div>);
+      setModalOpen(true);
       fetchReview(Number(id))
         .then((res) => {
           dispatch(reviewFetch(res));
           closeHandler();
         })
         .catch((err) => {
-          alert(err.response);
+          console.log(err.response);
         });
     });
   };
@@ -107,6 +127,9 @@ const ReviewUpdateForm: React.FC<{
           </div>
         </div>
       </form>
+      <Modal open={modalOpen} close={closeAlertModal} header="안내">
+        {alertText}
+      </Modal>
     </div>
   );
 };

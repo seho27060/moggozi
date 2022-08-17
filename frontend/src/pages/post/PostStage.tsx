@@ -144,16 +144,16 @@ const PostStage: React.FC = () => {
         </div>
 
         <div>
-          {(postModalOpen && !postUpdateFormOpen) &&(
-          <PostModal open={postModalOpen} close={closePostModal}>
-            <PostDetailItem />
-          </PostModal>
-        )}
-        {(postModalOpen && postUpdateFormOpen) && (
-          <PostFormModal open={postModalOpen} close={closePostModal}>
-            <PostUpdateForm />
-          </PostFormModal>
-        )}
+          {postModalOpen && !postUpdateFormOpen && (
+            <PostModal open={postModalOpen} close={closePostModal}>
+              <PostDetailItem />
+            </PostModal>
+          )}
+          {postModalOpen && postUpdateFormOpen && (
+            <PostFormModal open={postModalOpen} close={closePostModal}>
+              <PostUpdateForm />
+            </PostFormModal>
+          )}
           {postFormModalOpen && (
             <Modal
               open={postFormModalOpen}
@@ -164,8 +164,6 @@ const PostStage: React.FC = () => {
               <PostForm
                 stageId={Number(stageId)}
                 modalClose={closePostFormModal}
-                // 값이 비면 안되서 아무거나 넣었음.
-                challenge={"123"}
               />
             </Modal>
           )}

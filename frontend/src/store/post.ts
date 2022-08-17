@@ -29,12 +29,12 @@ export interface PostItem {
 interface PostState {
   posts: PostData[];
   postingStageId: number | null;
-  checkedPost:PostData|number
+  checkedPost: PostData | number;
 }
 const initialPostState: PostState = {
   posts: [],
   postingStageId: null,
-  checkedPost:-1
+  checkedPost: -1,
 };
 
 export const postSlice = createSlice({
@@ -42,7 +42,7 @@ export const postSlice = createSlice({
   initialState: initialPostState,
   reducers: {
     postSet: (state, action) => {
-      console.log("postSet", action);
+      // console.log("postSet", action);
       const orderedPosts = action.payload;
       orderedPosts.sort((a: PostData, b: PostData) =>
         a.id! >= b.id! ? 1 : -1
@@ -50,30 +50,30 @@ export const postSlice = createSlice({
       state.posts = orderedPosts;
     },
     postRegister: (state, action) => {
-      console.log("postRegister", action);
+      // console.log("postRegister", action);
       state.posts = [...state.posts!, action.payload];
     },
     postModify: (state, action) => {
-      console.log("postModity", action);
+      // console.log("postModity", action);
       const postsModified = state.posts!.filter(
         (post) => post.id !== action.payload.id
       );
       state.posts = [...postsModified, action.payload];
     },
     postRemove: (state, action) => {
-      console.log("postRemove", action);
+      // console.log("postRemove", action);
       state.posts = state.posts!.filter(
         (post) => post.id !== action.payload.id
       );
     },
     setPostingStageId: (state, action) => {
-      console.log("setPostingStageId", action);
+      // console.log("setPostingStageId", action);
       state.postingStageId = action.payload;
     },
-    setCheckedPost: (state,action) => {
-      console.log("setCheckedPost",action)
-      state.checkedPost = action.payload
-    }
+    setCheckedPost: (state, action) => {
+      // console.log("setCheckedPost",action)
+      state.checkedPost = action.payload;
+    },
   },
 });
 
@@ -83,7 +83,7 @@ export const {
   postRegister,
   postRemove,
   setPostingStageId,
-  setCheckedPost
+  setCheckedPost,
 } = postSlice.actions;
 
 export default postSlice.reducer;

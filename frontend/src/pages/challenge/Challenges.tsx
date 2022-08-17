@@ -40,7 +40,6 @@ const Challenges: React.FC = () => {
     const { scrollTop } = document.documentElement;
 
     if (hasNext && Math.round(scrollTop + innerHeight) >= scrollHeight - 100) {
-      console.log(currentPage);
       setPageIsLoading(true);
       if (isLoggedIn) {
         isLoginFetchRecentChallengeList(currentPage + 1, 10)

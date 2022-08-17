@@ -7,19 +7,26 @@ import { stageImgFetchAPI } from "../../lib/imgApi";
 import { imgState, stageFetch, StageState } from "../../store/stage";
 import { RootState } from "../../store/store";
 import Loader from "../ui/Loader";
+import Modal from "../ui/Modal";
 
 import styles from "./StageImgForm.module.scss";
 
 const StageImgForm: React.FC<{
   stage: StageState;
 }> = ({ stage }) => {
-  console.log(stage);
   const [file, setFile] = useState<File>();
   const [previewImage, setPreviewImage] = useState("");
   const [images, setImages] = useState<imgState[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const stages = useSelector((state: RootState) => state.stages);
   const dispatch = useDispatch();
+  const [alertText, setAlertText] = useState(<div></div>);
+  const [modalOpen, setModalOpen] = useState(false);
+
+  const closeAlertModal = () => {
+    document.body.style.overflow = "unset";
+    setModalOpen(false);
+  };
 
   useEffect(() => {
     setIsLoading(true);
@@ -35,7 +42,6 @@ const StageImgForm: React.FC<{
     const fileList = event.target.files;
 
     if (fileList) {
-      console.log(fileList[0]);
       setFile(fileList[0]);
       setPreviewImage(URL.createObjectURL(fileList[0]));
       event.target.value = ""; // 이미지 업로드하고 초기화
@@ -46,11 +52,13 @@ const StageImgForm: React.FC<{
   const uploadHandler = (event: React.MouseEvent, target: string) => {
     event.preventDefault();
     if (!file) {
-      alert("사진을 넣어주세요");
+      setAlertText(<div>사진을 넣어주세요.</div>);
+      setModalOpen(true);
       return;
     }
     if (images.length >= 5) {
-      alert("스테이지 이미지는 5장까지 가능합니다.");
+      setAlertText(<div>스테이지 이미지는 5장까지 가능합니다.</div>);
+      setModalOpen(true);
       return;
     }
     setIsLoading(true);
@@ -89,9 +97,11 @@ const StageImgForm: React.FC<{
           setImages([]);
           setIsLoading(false);
         });
-      alert("삭제되었습니다.");
+      setAlertText(<div>삭제되었습니다.</div>);
+      setModalOpen(true);
     } else {
-      alert("취소되었습니다.");
+      setAlertText(<div>취소되었습니다.</div>);
+      setModalOpen(true);
     }
   };
 
@@ -99,7 +109,8 @@ const StageImgForm: React.FC<{
   const deleteAllHandler = (event: React.MouseEvent, target: string) => {
     event.preventDefault();
     if (!images) {
-      alert("이미지가 존재하지 않습니다.");
+      setAlertText(<div>이미지가 존재하지 않습니다.</div>);
+      setModalOpen(true);
     }
     if (window.confirm("정말 삭제하시겠습니까?")) {
       setIsLoading(true);
@@ -126,9 +137,11 @@ const StageImgForm: React.FC<{
           dispatch(stageFetch(newStages));
           setIsLoading(true);
         });
-      alert("삭제되었습니다.");
+      setAlertText(<div>삭제되었습니다.</div>);
+      setModalOpen(true);
     } else {
-      alert("취소되었습니다.");
+      setAlertText(<div>취소되었습니다.</div>);
+      setModalOpen(true);
     }
   };
   return (
@@ -201,6 +214,9 @@ const StageImgForm: React.FC<{
           </div>
         </div>
       )}
+      <Modal open={modalOpen} close={closeAlertModal} header="안내">
+        {alertText}
+      </Modal>
     </div>
   );
 };

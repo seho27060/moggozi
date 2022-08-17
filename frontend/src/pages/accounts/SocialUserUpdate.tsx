@@ -29,8 +29,6 @@ const SocialUserUpdate: React.FC = () => {
   const userId = useSelector((state: RootState) => state.auth.userInfo.id);
   const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
 
-  console.log(userId);
-
   const [option, setOption] = useState<UserEditState>({
     username: "",
     fullname: "",
@@ -43,7 +41,7 @@ const SocialUserUpdate: React.FC = () => {
   const [submitState, setSubmitState] = useState(true);
   const [content, setContent] = useState("");
   const [openModal, setOpenModal] = useState(false);
-  const [openCompleteModal, setOpenCompleteModal ] = useState(false)
+  const [openCompleteModal, setOpenCompleteModal] = useState(false);
 
   const closeModal = () => {
     setOpenModal(false);
@@ -51,22 +49,24 @@ const SocialUserUpdate: React.FC = () => {
 
   const closeCompleteModal = () => {
     navigate("/", { replace: true });
-  }
+  };
 
   function submitHandler(event: React.FormEvent) {
     event.preventDefault();
     if (submitState === false) {
-      setContent("닉네임 중복을 확인해주세요!")
-      setOpenModal(true)
-      return
+      setContent("닉네임 중복을 확인해주세요!");
+      setOpenModal(true);
+      return;
     } else {
-      updateUserApi(userId, option).then((res) => {
-        setContent("회원정보 수정이 완료되었습니다.")
-        setOpenCompleteModal(true)
-      }).catch((err) => {
-        setContent("닉네임 중복을 확인해주세요!")
-        setOpenModal(true)
-      })
+      updateUserApi(userId, option)
+        .then((res) => {
+          setContent("회원정보 수정이 완료되었습니다.");
+          setOpenCompleteModal(true);
+        })
+        .catch((err) => {
+          setContent("닉네임 중복을 확인해주세요!");
+          setOpenModal(true);
+        });
     }
   }
 
@@ -86,11 +86,10 @@ const SocialUserUpdate: React.FC = () => {
   }
 
   useEffect(() => {
-    document.body.style.overflow = 'unset';
+    document.body.style.overflow = "unset";
 
     if (isLoggedIn) {
       userDetail().then((res) => {
-        console.log(res)
         const currentState: UserEditState = {
           username: res.username,
           fullname: res.fullname,
@@ -103,7 +102,7 @@ const SocialUserUpdate: React.FC = () => {
       });
     } else {
       alert("잘못된 접근입니다.");
-      navigate("/");
+      navigate("/", { replace: true });
     }
   }, [isLoggedIn, navigate]);
 
@@ -128,16 +127,16 @@ const SocialUserUpdate: React.FC = () => {
                 }}
               />
             </div>
-              <div className={styles.password}>
-                <div>비밀번호</div>
-                <button
-                  onClick={() => {
-                    navigate("/account/updatePw");
-                  }}
-                >
-                  비밀번호 변경
-                </button>
-              </div>
+            <div className={styles.password}>
+              <div>비밀번호</div>
+              <button
+                onClick={() => {
+                  navigate("/account/updatePw");
+                }}
+              >
+                비밀번호 변경
+              </button>
+            </div>
             <div className={styles.name}>
               <label htmlFor="username">이름</label>
               <input
@@ -165,61 +164,70 @@ const SocialUserUpdate: React.FC = () => {
                   />
                   <button onClick={checkNicknameHandler}>중복확인</button>
                 </div>
-                <div className={styles.explain}>다른 유저와 겹치지 않는 자신만의 별명을 입력하세요.</div>
+                <div className={styles.explain}>
+                  다른 유저와 겹치지 않는 자신만의 별명을 입력하세요.
+                </div>
               </div>
             </div>
 
             <div className={styles.introduce}>
               <label htmlFor="introduce">한줄 소개</label>
-              <input 
-              type="text"
-              required
-              id="introduce"
-              placeholder="자신을 한줄로 표현해보세요."
-              onChange={(event) => {setOption({...option, introduce: event.target.value})}} />
+              <input
+                type="text"
+                required
+                id="introduce"
+                placeholder="자신을 한줄로 표현해보세요."
+                onChange={(event) => {
+                  setOption({ ...option, introduce: event.target.value });
+                }}
+              />
             </div>
             <div className={styles.isPrivate}>
-                <div>프로필 공개 여부</div>
-                <label htmlFor="false">
-                  <input
-                    type="radio"
-                    required
-                    checked={!option.isPrivate}
-                    id="false"
-                    name="is_private"
-                    value={0}
-                    onClick={(event) => {
-                      let prevIsPrivate = option.isPrivate;
-                      prevIsPrivate = 0;
-                      setOption({ ...option, isPrivate: prevIsPrivate });
-                    }}
-                  />
-                  공개
-                </label>
-                <label htmlFor="true">
-                  <input
-                    type="radio"
-                    required
-                    checked={!!option.isPrivate}
-                    value={1}
-                    id="true"
-                    name="is_private"
-                    onClick={(event) => {
-                      let prevIsPrivate = option.isPrivate;
-                      prevIsPrivate = 1;
-                      setOption({ ...option, isPrivate: prevIsPrivate });
-                    }}
-                  />
-                  비공개
-                </label>
+              <div>프로필 공개 여부</div>
+              <label htmlFor="false">
+                <input
+                  type="radio"
+                  required
+                  checked={!option.isPrivate}
+                  id="false"
+                  name="is_private"
+                  value={0}
+                  onClick={(event) => {
+                    let prevIsPrivate = option.isPrivate;
+                    prevIsPrivate = 0;
+                    setOption({ ...option, isPrivate: prevIsPrivate });
+                  }}
+                />
+                공개
+              </label>
+              <label htmlFor="true">
+                <input
+                  type="radio"
+                  required
+                  checked={!!option.isPrivate}
+                  value={1}
+                  id="true"
+                  name="is_private"
+                  onClick={(event) => {
+                    let prevIsPrivate = option.isPrivate;
+                    prevIsPrivate = 1;
+                    setOption({ ...option, isPrivate: prevIsPrivate });
+                  }}
+                />
+                비공개
+              </label>
+            </div>
+            <div className={styles.profile}>
+              <div className={styles.title}>프로필 이미지</div>
+              <div>
+                <UserImgForm />
               </div>
-              <div className={styles.profile}>
-                <div className={styles.title}>프로필 이미지</div>
-                <div>
-                  <UserImgForm />
-                </div>
-              </div>
-            <button className={styles.submit} type="button" onClick={submitHandler}>
+            </div>
+            <button
+              className={styles.submit}
+              type="button"
+              onClick={submitHandler}
+            >
               변경완료
             </button>
           </form>

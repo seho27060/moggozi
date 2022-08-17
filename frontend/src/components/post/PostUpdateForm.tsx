@@ -10,7 +10,7 @@ import { postImgApi, postUpdate } from "../../lib/withTokenApi";
 import { RootState } from "../../store/store";
 
 import EditorComponent from "../ui/Editor";
-import ChoiceModal from "../../components/ui/ChoiceModal"
+import ChoiceModal from "../../components/ui/ChoiceModal";
 import ReactQuill from "react-quill";
 
 import styles from "./PostUpdateForm.module.scss";
@@ -36,17 +36,15 @@ const PostUpdateForm: React.FC<{}> = () => {
   const [titleCnt, setTitleCnt] = useState("");
   const [file, setFile] = useState<File>();
   const [previewImage, setPreviewImage] = useState("");
-  const [ modalOpen, setModalOpen ] = useState(false);
-  const [ content, setContent ] = useState("수정하시겠습니까?")
+  const [modalOpen, setModalOpen] = useState(false);
+  const [content, setContent] = useState("수정하시겠습니까?");
 
   const closeModal = () => {
-    setModalOpen(false)
-  }
-
+    setModalOpen(false);
+  };
 
   const postingUpdateHandler = (event: MouseEvent) => {
     event.preventDefault();
-    console.log("!!!", contentInputRef.current!.value);
     const PostUpdateData: PostUpdateSend = {
       postId: PostModalState!.id!,
       title: titleInputRef.current!.value,
@@ -74,10 +72,8 @@ const PostUpdateForm: React.FC<{}> = () => {
             getDownloadURL(res.ref).then((res) => {
               modifiedModalPost.postImg = [{ path: res }];
               postImgApi(PostUpdateData.postId!, res).then((res) => {
-                console.log("post 수정완료", res);
                 dispatch(postModify(modifiedModalPost));
-                // 
-                dispatch(modifyUserPagePostList(modifiedModalPost))
+                dispatch(modifyUserPagePostList(modifiedModalPost));
                 dispatch(setPostUpdateFormState(false));
                 dispatch(setModalPostState(modifiedModalPost));
                 dispatch(setCheckedPost(modifiedModalPost));
@@ -86,10 +82,8 @@ const PostUpdateForm: React.FC<{}> = () => {
             setPreviewImage("");
           });
         } else {
-          console.log("post 수정완료", res);
           dispatch(postModify(modifiedModalPost));
-          dispatch(modifyUserPagePostList(modifiedModalPost))
-
+          dispatch(modifyUserPagePostList(modifiedModalPost));
           dispatch(setPostUpdateFormState(false));
           dispatch(setModalPostState(modifiedModalPost));
           dispatch(setCheckedPost(modifiedModalPost));
@@ -164,19 +158,30 @@ const PostUpdateForm: React.FC<{}> = () => {
             <EditorComponent
               QuillRef={contentInputRef}
               value={PostModalState!.content!}
-              maxlength = {300}
+              maxlength={300}
             />
           </div>
         </div>
         <div className={styles.finishBtn}>
-          <button className={styles.button} onClick={(event) => {
-            event.preventDefault();
-            setContent("수정하시겠습니까?");
-            setModalOpen(true); }}>수정완료
+          <button
+            className={styles.button}
+            onClick={(event) => {
+              event.preventDefault();
+              setContent("수정하시겠습니까?");
+              setModalOpen(true);
+            }}
+          >
+            수정완료
           </button>
         </div>
       </form>
-      <ChoiceModal open={modalOpen} close={closeModal} choice1={closeModal} choice2={postingUpdateHandler} header="안내">
+      <ChoiceModal
+        open={modalOpen}
+        close={closeModal}
+        choice1={closeModal}
+        choice2={postingUpdateHandler}
+        header="안내"
+      >
         {content}
       </ChoiceModal>
     </div>

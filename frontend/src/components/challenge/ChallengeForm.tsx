@@ -112,7 +112,6 @@ const ChallengeForm: React.FC<{ file: File | null }> = ({ file }) => {
         const imgRef = ref(storageService, `challenge/${challengeId}`);
         uploadBytes(imgRef, file!).then((res) => {
           getDownloadURL(res.ref).then((res) => {
-            console.log(res);
             challengeImgApi(challengeId, res).then((res) => {
               setAlertText(<div>챌린지 생성이 완료되었습니다.</div>);
               setModalOpen(true);
@@ -175,7 +174,11 @@ const ChallengeForm: React.FC<{ file: File | null }> = ({ file }) => {
       </div> */}
 
       <div>
-        <EditorComponent QuillRef={contentInputRef} value={""} maxlength={700}/>
+        <EditorComponent
+          QuillRef={contentInputRef}
+          value={""}
+          maxlength={700}
+        />
       </div>
 
       <div className={styles.done}>

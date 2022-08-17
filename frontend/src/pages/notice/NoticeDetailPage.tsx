@@ -16,7 +16,6 @@ const NoticeDetailPage: React.FC = () => {
   useEffect(() => {
     noticeRead(Number(noticeId))
       .then((res) => {
-        console.log(`${noticeId}번 공지사항 불러오기`, res);
         // dispatch(setNoticeList(res))
         dispatch(setNotice(res));
       })
@@ -28,7 +27,7 @@ const NoticeDetailPage: React.FC = () => {
   return (
     <div className={styles.container}>
       <div className={styles.noticeDetail}>
-      <div className={styles.title}>공지사항</div>
+        <div className={styles.title}>공지사항</div>
         {/* <div>{notice.noticeId}</div> */}
         <div>
           <div className={styles.noticeTitle}>
@@ -44,10 +43,7 @@ const NoticeDetailPage: React.FC = () => {
           </div>
           <div className={styles.noticeContent}>{notice.content}</div>
           <div className={styles.noticeBottom}>
-            <button
-              onClick={() => navigate(-1)}
-              className={styles.navigateBtn}
-            >
+            <button onClick={() => navigate(-1)} className={styles.navigateBtn}>
               뒤로가기
             </button>
           </div>

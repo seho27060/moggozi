@@ -24,7 +24,6 @@ const ChallengeImgForm: React.FC<{
     const fileList = event.target.files;
 
     if (fileList) {
-      console.log(fileList[0]);
       setFile(fileList[0]);
       setPreviewImage(URL.createObjectURL(fileList[0]));
     }
@@ -34,14 +33,15 @@ const ChallengeImgForm: React.FC<{
   const uploadHandler = (event: React.MouseEvent, target: string) => {
     event.preventDefault();
     const imgRef = ref(storageService, target);
-    uploadBytes(imgRef, file!).then((res) => {
-      getDownloadURL(res.ref).then((res) => {
-        console.log(res);
-        imgHandler(res);
-        challengeImgApi(challengeId, res);
-      });
-      setPreviewImage("");
-    });
+    uploadBytes(imgRef, file!)
+      .then((res) => {
+        getDownloadURL(res.ref).then((res) => {
+          imgHandler(res);
+          challengeImgApi(challengeId, res);
+        });
+        setPreviewImage("");
+      })
+      .catch((err) => console.log(err));
   };
 
   // 이미지 제거

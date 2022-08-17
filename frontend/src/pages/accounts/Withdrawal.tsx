@@ -17,8 +17,8 @@ const Withdrawal = () => {
   const [incorrectModalOpen, setIncorrectModalOpen] = useState(false);
 
   const withdrawalCloseModal = () => {
-    navigate("/")
-    window.location.reload()
+    navigate("/");
+    window.location.reload();
   };
   const incorrectCloseModal = () => {
     setIncorrectModalOpen(false);
@@ -33,7 +33,7 @@ const Withdrawal = () => {
     };
     withdrawal(option)
       .then((res) => {
-        dispatch(logout())
+        dispatch(logout());
         setWithdrawalModalOpen(true);
       })
       .catch((err) => {
@@ -41,10 +41,9 @@ const Withdrawal = () => {
       });
   };
 
-
   useEffect(() => {
-    document.body.style.overflow = 'unset';
-  }, [])
+    document.body.style.overflow = "unset";
+  }, []);
 
   return (
     <div>
