@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import getTextLength from "../../lib/getTextLength";
 import { hobbyExist, hobbySearch, setHobby } from "../../lib/withTokenApi";
@@ -11,7 +11,6 @@ import styles from "./HobbyForm.module.scss";
 
 const HobbyForm: React.FC = () => {
   const dispatch = useDispatch();
-  const hobbyInputRef = useRef<HTMLInputElement>(null);
   const [dropDownList, setDropDownList] = useState<Hobby[]>([]); // 자동완성 기능을 위한 dropDownList
   const hobbyList = useSelector((state: RootState) => state.hobby.hobbyList);
   const [alertText, setAlertText] = useState(<div></div>);
@@ -25,9 +24,8 @@ const HobbyForm: React.FC = () => {
   };
 
   function submitHandler() {
-    const enteredHobby = hobbyInputRef.current!.value;
-    console.log(hobbyList);
-    if (!enteredHobby) {
+    const result = inputText.trim();
+    if (!result) {
       setAlertText(<div>태그를 입력해주세요!</div>);
       setModalOpen(true);
       return;
@@ -37,7 +35,7 @@ const HobbyForm: React.FC = () => {
       setModalOpen(true);
       return;
     }
-    hobbyExist(enteredHobby)
+    hobbyExist(result)
       .then((res) => {
         if (!res) {
           // 취미 테이블에 없으면 새 취미 생성 alert 띄우기
@@ -45,14 +43,14 @@ const HobbyForm: React.FC = () => {
             "취미가 존재하지 않습니다. 새로운 취미를 등록하시겠습니까?"
           );
           if (isChk) {
-            setHobby({ name: enteredHobby }) // 새로운 취미 DB에 등록 후 가져오기
+            setHobby({ name: result }) // 새로운 취미 DB에 등록 후 가져오기
               .then((res) => {
                 dispatch(addHobby(res));
                 setInputText("");
               });
           }
         } else {
-          setHobby({ name: enteredHobby }).then((res) => {
+          setHobby({ name: result }).then((res) => {
             // Form에서 등록한 취미인지 확인
             if (hobbyList.some((hobby) => hobby.id === res.id)) {
               setAlertText(<div>이미 존재하는 취미입니다.</div>);
@@ -84,17 +82,17 @@ const HobbyForm: React.FC = () => {
 
   function changeInputHandler(event: React.ChangeEvent<HTMLInputElement>) {
     event.preventDefault();
-    const cnt = getTextLength(event.target.value);
+    const query = event.target.value;
+    const cnt = getTextLength(query);
     if (cnt > 10 && event.target.value.length > inputText.length) {
       return;
     }
     setInputCnt(cnt);
-    setInputText(event.target.value);
-    const enteredQuery = hobbyInputRef.current!.value;
-    if (enteredQuery === "") {
+    setInputText(query);
+    if (query === "") {
       setDropDownList([]);
     } else {
-      hobbySearch(enteredQuery)
+      hobbySearch(query)
         .then((res) => {
           setDropDownList(res);
         })
@@ -116,13 +114,11 @@ const HobbyForm: React.FC = () => {
           type="text"
           required
           id="hobby"
-          ref={hobbyInputRef}
           onChange={changeInputHandler}
           autoComplete="off"
           onKeyUp={onKeyUpHandler}
           value={inputText}
         />
-        <p>{inputCnt}/10</p>
         <button type="button" onClick={onClickHandler}>
           &#43;
         </button>

@@ -40,7 +40,6 @@ const CommentUpdateForm: React.FC<{
       commentSend.text = enteredComment.current!.value;
       commentState.text = enteredComment.current!.value;
       commentUpdate(comment.id, commentSend).then((res) => {
-        console.log("comment 수정완료", res);
         dispatch(commentModify(commentState));
       });
       setCommentUpdateFormToggle(false);

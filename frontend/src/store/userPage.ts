@@ -44,21 +44,23 @@ export const userPageSlice = createSlice({
   initialState: initialUserPageState,
   reducers: {
     setUserPagePostList(state, action) {
-      console.log("setUserPagePostList", action);
+      // console.log("setUserPagePostList", action);
       state.UserPagePostList = [...action.payload];
     },
     modifyUserPagePostList(state, action) {
-      console.log("modifyUserPagePostList", action);
+      // console.log("modifyUserPagePostList", action);
       let modifiedUserPagePostList = state.UserPagePostList!.filter(
         (post) => post.id !== action.payload.id
-      )
-      modifiedUserPagePostList = [...modifiedUserPagePostList,action.payload]
-      modifiedUserPagePostList.sort((a:UserPostType,b:UserPostType)=>
-    	(a.id < b.id) ? 1 : -1)
+      );
+      modifiedUserPagePostList = [...modifiedUserPagePostList, action.payload];
+      modifiedUserPagePostList.sort((a: UserPostType, b: UserPostType) =>
+        a.id < b.id ? 1 : -1
+      );
       state.UserPagePostList = modifiedUserPagePostList;
     },
   },
 });
 
-export const { setUserPagePostList,modifyUserPagePostList } = userPageSlice.actions;
+export const { setUserPagePostList, modifyUserPagePostList } =
+  userPageSlice.actions;
 export default userPageSlice.reducer;

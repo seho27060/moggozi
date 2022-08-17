@@ -10,9 +10,10 @@
 
     .title {
       width: 300px;
-      font-size: 20px;
+      font-size: 30px;
       font-weight: 700;
       text-align: left;
+      margin: 0 0 30px 0;
     }
   }
 
@@ -24,12 +25,13 @@
     .label {
       margin-bottom: 13px;
       font-weight: 700;
-      font-size: 15px;
+      font-size: 20px;
     }
 
     input {
-      width: 274px;
-      height: 30px;
+      width: 350px;
+      font-size: 16px;
+      height: 40px;
       border: 1px solid mixin.$cloudLine;
       border-radius: 5px;
       padding: 0 10px 0 15px;
@@ -43,19 +45,25 @@
     }
 
     .emailButton {
-      width: 300px;
+      width: 377px;
       height: 40px;
       border: 1px solid mixin.$mainColor;
       border-radius: 5px;
       background-color: #fff;
-      font-size: 12px;
-      font-weight: 700;
+      font-size: 14px;
+      font-weight: 600;
       color: mixin.$mainColor;
       cursor: pointer;
+      transition: all 0.5s;
+
+      &:hover {
+        background: mixin.$mainColor;
+        color: #fff;
+      }
     }
 
     .emailCompleteButton {
-      width: 300px;
+      width: 377px;
       height: 40px;
       border: 1px solid mixin.$mainColor;
       border-radius: 5px;
@@ -64,22 +72,30 @@
       font-weight: 700;
       color: #fff;
       cursor: pointer;
+      transition: all 0.5s;
+
+      &:hover {
+        border: 1px solid mixin.$mainColor;
+        background-color: #fff;
+        color: mixin.$mainColor;
+      }
     }
 
     .caution {
       margin: 5px 0 5px 0;
       text-align: end;
-      font-size: 10px;
+      font-size: 12px;
       color: red;
     }
   }
 
   .name {
-    margin: 0px 0 30px 0;
+    margin: 0px 0 50px 0;
 
     .label {
-      font-size: 15px;
+      margin-bottom: 13px;
       font-weight: 700;
+      font-size: 20px;
     }
 
     .explain {
@@ -90,22 +106,23 @@
     }
 
     input {
+      width: 350px;
+      font-size: 16px;
+      height: 40px;
       border: 1px solid mixin.$cloudLine;
       border-radius: 5px;
-      width: 274px;
-      height: 30px;
       padding: 0 15px 0 10px;
 
       &::placeholder {
         color: mixin.$cloudGray;
         font-weight: 400;
-        font-size: 12px;
+        font-size: 16px;
       }
     }
     .caution {
       margin: 5px 0 5px 0;
       text-align: end;
-      font-size: 10px;
+      font-size: 12px;
       color: red;
     }
   }
@@ -114,8 +131,9 @@
     margin: 4px 0 0 0;
 
     .label {
-      font-size: 15px;
+      margin-bottom: 13px;
       font-weight: 700;
+      font-size: 20px;
     }
 
     .explain {
@@ -126,47 +144,49 @@
     }
 
     input {
+      width: 350px;
+      font-size: 16px;
+      height: 40px;
       border: 1px solid mixin.$cloudLine;
       border-radius: 5px;
-      width: 274px;
-      height: 30px;
       padding: 0 15px 0 10px;
 
       &::placeholder {
         color: mixin.$cloudGray;
         font-weight: 400;
-        font-size: 12px;
+        font-size: 16px;
       }
     }
     .caution {
       margin: 5px 0 5px 0;
       text-align: end;
-      font-size: 10px;
+      font-size: 12px;
       color: red;
     }
   }
 
   .repassword {
-    margin: 33px 0 29px 0;
+    margin: 50px 0 29px 0;
 
     .label {
-      margin-bottom: 10px;
-      font-size: 15px;
+      margin-bottom: 13px;
       font-weight: 700;
+      font-size: 20px;
     }
 
     input {
+      width: 350px;
+      font-size: 16px;
+      height: 40px;
       margin-top: 3px;
       border: 1px solid mixin.$cloudLine;
       border-radius: 5px;
-      width: 274px;
-      height: 30px;
       padding: 0 15px 0 10px;
 
       &::placeholder {
         color: mixin.$cloudGray;
         font-weight: 400;
-        font-size: 12px;
+        font-size: 16px;
       }
     }
     .explain {
@@ -179,18 +199,18 @@
     .caution {
       margin: 5px 0 5px 0;
       text-align: end;
-      font-size: 10px;
+      font-size: 12px;
       color: red;
     }
   }
 
   .nickname {
-    margin: 4px 0 30px 0;
+    margin: 50px 0 30px 0;
 
     .label {
-      margin-bottom: 10px;
-      font-size: 15px;
+      margin-bottom: 13px;
       font-weight: 700;
+      font-size: 20px;
     }
 
     .explain {
@@ -203,7 +223,7 @@
     .caution {
       margin: 5px 0 5px 0;
       text-align: end;
-      font-size: 10px;
+      font-size: 11px;
       color: red;
     }
     .nicknameCheck {
@@ -212,8 +232,8 @@
       input {
         border: 1px solid mixin.$cloudLine;
         border-radius: 5px;
-        width: 183px;
-        height: 30px;
+        width: 260px;
+        height: 40px;
         padding: 0 15px 0 10px;
         margin: 0 10px 0 0;
 
@@ -228,39 +248,59 @@
         margin: 0;
         cursor: pointer;
         width: 80px;
-        height: 32px;
+        height: 42px;
         border: 1px solid mixin.$mainColor;
         border-radius: 5px;
         background-color: #fff;
-        font-size: 12px;
-        font-weight: 700;
+        font-size: 14px;
+        font-weight: 500;
         color: mixin.$mainColor;
+        transition: all 0.5s;
+
+        &:hover {
+          background: mixin.$mainColor;
+          color: #fff;
+        }
       }
 
       .nicknameCompleteButton {
         margin: 0;
         cursor: pointer;
         width: 80px;
-        height: 32px;
+        height: 42px;
         border: 1px solid mixin.$mainColor;
         border-radius: 5px;
         background-color: mixin.$mainColor;
-        font-size: 12px;
-        font-weight: 700;
+        font-size: 14px;
+        font-weight: 600;
         color: #fff;
+        transition: all 0.5s;
+
+        &:hover {
+          background: #fff;
+          color: mixin.$mainColor;
+        }
       }
     }
   }
 
   .submit {
-    width: 300px;
+    width: 377px;
     height: 40px;
     background-color: mixin.$mainColor;
     color: #fff;
     border: 0;
     border-radius: 5px;
-    font-size: 12px;
-    font-weight: 700;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.5s;
+
+    &:hover {
+      background: #fff;
+      border: 1px solid mixin.$mainColor;
+      color: mixin.$mainColor;
+    }
   }
 }
 

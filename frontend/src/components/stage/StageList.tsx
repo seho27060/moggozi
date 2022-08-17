@@ -36,8 +36,6 @@ const StageList: React.FC<{
     dispatch(setPostingStageId(id));
   };
 
-  console.log(stages);
-
   return (
     <Box className={styles.tabs}>
       {/* <div className={styles.tabs}> */}

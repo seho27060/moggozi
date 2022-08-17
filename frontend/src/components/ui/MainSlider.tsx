@@ -62,7 +62,7 @@ const MainSlider = (
 
   return (
     <div>
-      <div className={styles.counter} data-content={`${slideCnt + 1} / 5`} style={{content: `${slideCnt} / 5`}}>
+      <div className={styles.counter} data-content={`${slideCnt + 1} / 6`} style={{content: `${slideCnt} / 5`}}>
         {/* {slideCnt} / 5 */}
         </div>
       <Slider {...settings} className={styles.img}>
@@ -76,12 +76,12 @@ const MainSlider = (
         <div>
           <img src={banner3} alt="" />
         </div>
-        <a href="https://forms.gle/YsrpxDNKo9ZiYbmH9" target="_blank" rel="noopener noreferrer">
-          <img src={banner4} alt="" />
-        </a>
         <div>
-          <img src={banner5} alt="" />
+          <img src={banner4} alt="" />
         </div>
+        <a href="https://forms.gle/YsrpxDNKo9ZiYbmH9" target="_blank" rel="noopener noreferrer">
+          <img src={banner5} alt="" />
+        </a>
         <div>
           <img src={banner6} alt="" />
         </div>

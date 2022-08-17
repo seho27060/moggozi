@@ -3,6 +3,7 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 
 import styles from "./AboutPage.module.scss";
+import KeyboardDoubleArrowUpIcon from '@mui/icons-material/KeyboardDoubleArrowUp';
 import background from "../asset/about.png"
 
 const AboutPage = () => {
@@ -11,6 +12,7 @@ const AboutPage = () => {
   });
 
   return (
+    <div>
     <div className={styles.container} style={{backgroundImage: `url(${background})`, backgroundSize: 'contain'}}>
       <div className={styles.width}>
         <div className={styles.header} data-aos="fade-up" data-aos-duration="1000" data-aos-anchor-placement="top-center">반가워요!</div>
@@ -49,6 +51,13 @@ const AboutPage = () => {
           </div>
         </div>
       </div>
+      <div className={styles.topButton} onClick={() => {window.scrollTo({
+        behavior: 'smooth',
+        left: 0,
+        top: 0,
+
+      })}}><KeyboardDoubleArrowUpIcon /></div>
+    </div>
     </div>
   );
 };

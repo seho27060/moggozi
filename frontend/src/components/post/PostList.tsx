@@ -17,8 +17,6 @@ const PostList: React.FC<{
   const postList = [...posts!];
   postList!.sort((a: PostData, b: PostData) => (a.id >= b.id ? 1 : -1));
 
-  // console.log("postlist", postList);
-
   return (
     <div className={styles.postList}>
       {/* PostList */}

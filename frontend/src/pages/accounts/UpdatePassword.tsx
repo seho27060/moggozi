@@ -50,6 +50,7 @@ const UpdatePassword: React.FC = () => {
           console.log(res);
         })
         .catch((err) => {
+          console.log(err);
           alert("에러가 발생했습니다.");
           navigate("/account/userUpdate");
         });
@@ -104,7 +105,9 @@ const UpdatePassword: React.FC = () => {
               className={styles.input1}
             />
           </div>
-          {!passwordCheck && <div className={styles.check}>비밀번호가 일치하지 않습니다.</div>}
+          {!passwordCheck && (
+            <div className={styles.check}>비밀번호가 일치하지 않습니다.</div>
+          )}
           <button
             onClick={submitPwUpdateHandler}
             disabled={!passwordCheck}
@@ -120,7 +123,8 @@ const UpdatePassword: React.FC = () => {
             header="비밀번호 변경 완료"
           >
             <p>비밀번호가 변경되었습니다.</p>
-            <p>원할한 이용을 위해 다시 로그인해주세요</p>          </ReturnMainModal>
+            <p>원할한 이용을 위해 다시 로그인해주세요</p>{" "}
+          </ReturnMainModal>
         </React.Fragment>
       </div>
     </div>

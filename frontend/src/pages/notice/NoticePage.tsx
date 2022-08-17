@@ -18,7 +18,6 @@ const NoticePage: React.FC = () => {
   useEffect(() => {
     noticePageRead(Number(noticePageNum))
       .then((res) => {
-        console.log(`${noticePageNum}번 페이지 공지사항 불러오기`, res);
         // dispatch(setNoticeList(res))
         dispatch(setNoticeList([...res.content]));
         setTotalPages(Number(res.totalPages));

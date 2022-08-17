@@ -35,7 +35,6 @@ const ChallengeUpdate: React.FC = () => {
           })
           // console.log(res)
           .catch((err) => {
-            console.log(err);
             setIsLoading(false);
           });
       } else {

@@ -273,11 +273,10 @@ const MainPage: React.FC = () => {
             ].map((start, index) => (
               <div
                 key={start[0]}
-                style={{ minHeight: "13rem", padding: "50px 0 0 0" }}
+                style={{ minHeight: "13rem", padding: "15px 0 0 0" }}
               >
                 <AutoPlaySlider rtl={index + 1}>
                   {recentPostList.slice(start[0], start[1]).map((post) => {
-                    console.log(post);
                     return (
                       <div
                         key={post.id}
