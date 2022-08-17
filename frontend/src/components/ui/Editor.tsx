@@ -44,7 +44,7 @@ const EditorComponent: React.FC<{
       if (length !== 1) {
         label += "s";
       }
-      this.container.innerText = length +"/"+maxlength.toString()+"자";
+      this.container.innerText = length + " " + "/" + " " +maxlength.toString();
     }
   }
   Quill.register("modules/counter", Counter);
@@ -106,7 +106,7 @@ const EditorComponent: React.FC<{
         placeholder="내용을 입력해주세요."
         className={styles.Editor}
       />
-      <div id="counter"></div>
+      <div id="counter" className={styles.counter}></div>
     </div>
   );
 };

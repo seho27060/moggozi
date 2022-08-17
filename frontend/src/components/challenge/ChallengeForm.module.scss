@@ -20,7 +20,7 @@
 
     textarea {
       width: 737px;
-      height: 130px;
+      height: 100px;
       padding: 10px 10px 10px 10px;
       border: 1px solid mixin.$cloudLine;
       border-radius: 5px;
@@ -41,6 +41,16 @@
         line-height: 24px;
       }
     }
+  }
+
+  .descriptionCnt{
+    display: inline-block;
+    position: relative;
+    font-size: 14px;
+    font-weight: 500;
+    color: rgb(187, 187, 187);
+    left: 820px;
+    bottom: 30px;
   }
 
   .level {
@@ -82,6 +92,7 @@
       font-weight: 600;
       font-size: 40px;
       font-family: pretendard;
+      background: none;
 
       &:focus {
         outline: none;
@@ -144,6 +155,17 @@
       width: 140px;
       height: 60px;
     }
+  }
+
+  .titleCnt {
+    display: inline-block;
+    position: relative;
+    bottom: 26px;
+    left: 960px;
+    font-size: 14px;
+    font-weight: 500;
+    color: rgb(159, 159, 159);
+    margin: 5px 0 0 0;
   }
 }
 

@@ -96,7 +96,7 @@ const StageForm: React.FC<{ closeModal: () => void }> = ({ closeModal }) => {
               value={titleText}
               onChange={titleChangeHandler}
             />
-            <span>{titleCnt}/20</span>
+            <div className={styles.titleCnt}>{titleCnt}/20</div>
           </div>
           <div>
             <EditorComponent
