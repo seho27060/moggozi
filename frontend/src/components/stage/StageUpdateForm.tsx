@@ -115,7 +115,9 @@ const StageUpdateForm: React.FC<{
             </div>
           </form>
           <div className={styles.buttons}>
-            <button onClick={imgHandler}>이미지 수정</button>
+            <button onClick={imgHandler} className={styles.imgButton}>
+              이미지 생성 및 수정
+            </button>
             <button onClick={stateUpdateHandler}>수정 완료</button>
           </div>
         </div>

@@ -1,9 +1,8 @@
 @use "../../styles/mixin.scss" as mixin;
 
 @include mixin.desktop {
-
   .challengeForm {
-    width : auto;
+    width: auto;
     height: auto;
   }
 
@@ -15,7 +14,7 @@
       font-weight: 700;
       font-size: 25px;
       line-height: 30px;
-      margin: 0 50px 0 0 ;
+      margin: 0 50px 0 0;
     }
 
     textarea {
@@ -140,8 +139,8 @@
       border: 0;
       color: #fff;
       border-radius: 5px;
-      background: linear-gradient(90deg, #FF9921 -1.06%, #FFC337 101.51%);
-      width: 140px;
+      background: linear-gradient(90deg, #ff9921 -1.06%, #ffc337 101.51%);
+      width: 230px;
       height: 60px;
     }
   }

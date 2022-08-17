@@ -17,7 +17,7 @@ import {
 import { RootState } from "../../store/store";
 
 import styles from "./PostAll.module.scss";
-import KeyboardDoubleArrowUpIcon from '@mui/icons-material/KeyboardDoubleArrowUp';
+import KeyboardDoubleArrowUpIcon from "@mui/icons-material/KeyboardDoubleArrowUp";
 
 const PostAll: React.FC = () => {
   const dispatch = useDispatch();
@@ -48,7 +48,6 @@ const PostAll: React.FC = () => {
     const { scrollTop } = document.documentElement;
 
     if (hasNext && Math.round(scrollTop + innerHeight) >= scrollHeight - 100) {
-      console.log(currentPage);
       setIsLoading(true);
 
       fetchPostRecentList(currentPage + 1, 15)
@@ -74,13 +73,11 @@ const PostAll: React.FC = () => {
     setIsLoading(true);
     fetchPostLikeList(0, 3)
       .then((res) => {
-        console.log("postlikelist", res);
         setLikePostList(res.content);
       })
       .catch((err) => console.log("likepostlist err", err));
     fetchPostRecentList(0, 15)
       .then((res) => {
-        console.log("fisrt call", res);
         setRecentPostList(res.content);
         setHasNext(res.hasNext);
         setIsLoading(false);
@@ -120,12 +117,18 @@ const PostAll: React.FC = () => {
         </div>
       </div>
       {isLoading && <Loader />}
-      <div className={styles.topButton} onClick={() => {window.scrollTo({
-        behavior: 'smooth',
-        left: 0,
-        top: 0,
-
-      })}}><KeyboardDoubleArrowUpIcon /></div>
+      <div
+        className={styles.topButton}
+        onClick={() => {
+          window.scrollTo({
+            behavior: "smooth",
+            left: 0,
+            top: 0,
+          });
+        }}
+      >
+        <KeyboardDoubleArrowUpIcon />
+      </div>
     </div>
   );
 };

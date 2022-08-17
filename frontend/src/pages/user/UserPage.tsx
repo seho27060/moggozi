@@ -101,7 +101,7 @@ function UserPage() {
           setIsLogging(true);
           myPagePost(userId, currentPostPage + 1, 16)
             .then((res) => {
-              console.log(userId, "post", res);
+              // console.log(userId, "post", res);
               dispatch(
                 setUserPagePostList(userUserPagePostList.concat(res.content))
               );
@@ -118,7 +118,7 @@ function UserPage() {
           setIsLogging(true);
           userTryChallenge(userId, currentChallengePage + 1, 16)
             .then((res) => {
-              console.log(userId, "ch", res);
+              // console.log(userId, "ch", res);
               setChallengeList(challengeList.concat(res.content));
               setCurrentChallengePage(res.pageNum);
               setChallengeHasNext(res.hasNext);
@@ -134,7 +134,7 @@ function UserPage() {
             // 작성한 챌린지
             fetchMyChallengeList(currentMyChallengePage + 1, 16)
               .then((res) => {
-                console.log("call my recentrych");
+                // console.log("call my recentrych");
                 setMyChallengeList(myChallengeList.concat(res.content));
                 setCurrentMyChallengePage(res.pageNum);
                 setMyChallengeHasNext(res.hasNext);
@@ -171,7 +171,7 @@ function UserPage() {
   }, [handleScroll]);
 
   useEffect(() => {
-    console.log(userId, loginData.userInfo.id);
+    // console.log(userId, loginData.userInfo.id);
     otherUserDetail(userId, loginData.userInfo.id)
       .then((res) => {
         setNickname(res.nickname);
@@ -189,7 +189,7 @@ function UserPage() {
         // 내 포스팅
         myPagePost(userId, 0, 16)
           .then((res) => {
-            console.log(userId, "post", res);
+            // console.log(userId, "post", res);
             // setPostList(res.content);
             dispatch(setUserPagePostList(res.content));
             setPostHasNext(res.hasNext);
@@ -198,7 +198,7 @@ function UserPage() {
         // 도전한 챌린지
         userTryChallenge(userId, 0, 16)
           .then((res) => {
-            console.log(userId, "ch", res);
+            // console.log(userId, "ch", res);
             setChallengeList(res.content);
             setChallengeHasNext(res.hasNext);
           })
@@ -207,7 +207,7 @@ function UserPage() {
           // 작성한 챌린지
           fetchMyChallengeList(0, 16)
             .then((res) => {
-              console.log("call my recentrych");
+              // console.log("call my recentrych");
               setMyChallengeList(res.content);
               setMyChallengeHasNext(res.hasNext);
             })
@@ -226,7 +226,7 @@ function UserPage() {
       .then((res) => {
         setFollowedCnt(followState ? followedCnt - 1 : followedCnt + 1);
         setFollowState(!followState);
-        console.log("follow",res)
+        // console.log("follow", res);
         if (res.message === "Successfully followed.") {
           let jsonSend: Alert = {
             check: 0,
@@ -241,7 +241,7 @@ function UserPage() {
             type: "follow",
           };
           if (loginData.userInfo.id! !== userId!) {
-            console.log("send msg",jsonSend)///
+            // console.log("send msg", jsonSend); ///
             ws.current.send(JSON.stringify(jsonSend));
           }
         }
