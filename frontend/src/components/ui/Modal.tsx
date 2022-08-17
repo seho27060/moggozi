@@ -34,7 +34,7 @@ const Modal = (props: Props): ReactElement => {
           </header>
           <main>{props.children}</main>
           <footer>
-            <button className={styles.close} onClick={close}>
+            <button style={{width: "60px", height: "30px"}}  className={styles.close} onClick={close}>
               확인
             </button>
           </footer>

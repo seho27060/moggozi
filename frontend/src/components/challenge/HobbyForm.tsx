@@ -119,7 +119,6 @@ const HobbyForm: React.FC = () => {
           onKeyUp={onKeyUpHandler}
           value={inputText}
         />
-        <p>{inputCnt}/10</p>
         <button type="button" onClick={onClickHandler}>
           &#43;
         </button>
