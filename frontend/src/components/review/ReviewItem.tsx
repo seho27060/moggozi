@@ -23,7 +23,6 @@ const ReviewItem: React.FC<{ review: ReviewState }> = ({ review }) => {
     document.body.style.overflow = "unset";
     setModalOpen(false);
   };
-
   useEffect(() => {
     if (!modalOpen) {
       document.body.style.overflow = "auto"; //모달때문에 이상하게 스크롤이 안되서 강제로 스크롤 바 생성함
@@ -54,7 +53,7 @@ const ReviewItem: React.FC<{ review: ReviewState }> = ({ review }) => {
             onClick={() => {
               navigate(`/user/${review.writer.id}`);
             }}
-            src={default_profile}
+            src={!!review.writer.path ? review.writer.path : default_profile}
             alt=""
           />
 

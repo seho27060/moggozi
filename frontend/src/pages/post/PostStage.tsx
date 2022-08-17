@@ -55,7 +55,7 @@ const PostStage: React.FC = () => {
       setIsLoading(true);
       postListRead(Number(stageId), currentPage + 1, 18)
         .then((res) => {
-          console.log("포스팅 불러오기 성공", res.content);
+          // console.log("포스팅 불러오기 성공", res.content);
           dispatch(postSet(postListState.concat(res.content)));
           dispatch(setPostFormButtonState(true));
           setCurrentPage(res.pageNum);
@@ -71,7 +71,7 @@ const PostStage: React.FC = () => {
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll, true);
-    console.log("infinite call ver1");
+    // console.log("infinite call ver1");
     return () => {
       window.removeEventListener("scroll", handleScroll, true);
     };
@@ -87,10 +87,10 @@ const PostStage: React.FC = () => {
 
   useEffect(() => {
     setIsLoading(true);
-    console.log(stageId, "번 스테이지의 포스팅을 불러옵니다.");
+    // console.log(stageId, "번 스테이지의 포스팅을 불러옵니다.");
     postListRead(Number(stageId), 0, 18)
       .then((res) => {
-        console.log("포스팅 불러오기 성공", res.content);
+        // console.log("포스팅 불러오기 성공", res.content);
         dispatch(postSet(res.content));
         dispatch(setPostFormButtonState(true));
         setHasNext(res.hasNext);
@@ -101,13 +101,13 @@ const PostStage: React.FC = () => {
       });
     stageMyPostRead(Number(stageId))
       .then((res) => {
-        console.log("user stage post", res);
+        // console.log("user stage post", res);
         setCheckedPost(res);
       })
       .catch((err) => console.log("stagepostread err", err));
     stageDetailRead(Number(stageId))
       .then((res) => {
-        console.log("stage ", res);
+        // console.log("stage ", res);
         setStageState(res);
       })
       .catch((err) => console.log("stage err", err));
