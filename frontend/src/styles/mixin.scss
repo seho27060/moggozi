@@ -11,19 +11,26 @@ $cloudLine: #afafaf;
 }
 
 @mixin mobile {
-  @media only screen and (max-width: 767px) {
+  @media only screen and (max-width: 500x) {
     @content;
   }
 }
 
-@mixin tablet {
-  @media only screen and (min-width: 768px) and (max-width: 991px) {
+// @mixin tablet {
+//   @media only screen and (min-width: 768px) and (max-width: 991px) {
+//     @content;
+//   }
+// }
+@mixin caution {
+  @media only screen and (min-width: 500px) and (max-width: 992px) {
     @content;
   }
 }
+
+
 
 @mixin desktop {
-  @media only screen and (min-width: 992px) {
+  @media only screen and (min-width: 500px) {
     @content;
   }
 }

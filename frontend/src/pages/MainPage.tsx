@@ -262,7 +262,8 @@ const MainPage: React.FC = () => {
           </div>
 
           <div className={styles.sliderTitle}>
-            모꼬지 회원들의 포스팅을 구경하세요!
+            <div>방금 등록된</div>
+            <div>모꼬지 회원들의 포스팅을 구경하세요!</div>
           </div>
           <div className={styles.postingSlider}>
             {/*최신 포스팅 자동 슬라이더  */}
