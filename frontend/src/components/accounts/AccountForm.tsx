@@ -23,6 +23,7 @@ const AccountForm: React.FC = () => {
   const emailInputRef = useRef<HTMLInputElement>(null);
   const usernameInputRef = useRef<HTMLInputElement>(null);
   const nicknameInputRef = useRef<HTMLInputElement>(null);
+  const passwordInputRef = useRef<HTMLInputElement>(null);
   const [emailContent, setEmailContent] = useState("");
   const [nicknameContent, setNicknameContent] = useState("");
 
@@ -81,7 +82,7 @@ const AccountForm: React.FC = () => {
     const enteredEmail = emailInputRef.current!.value;
     const enteredUsername = usernameInputRef.current!.value;
     const enteredNickname = nicknameInputRef.current!.value;
-    const enteredPassword = passwordInputState;
+    const enteredPassword = passwordInputRef.current!.value;
 
     const option = {
       username: enteredEmail,
@@ -120,7 +121,7 @@ const AccountForm: React.FC = () => {
         break;
       case "nickname":
         if (
-          /^[a-zA-Zㄱ-힣0-9-_.]{2,12}$/.test(nicknameInputRef.current!.value)
+          /^[a-zA-Zㄱ-힣0-9-_.]{2,8}$/.test(nicknameInputRef.current!.value)
         ) {
           setIsNicknameChk(true);
         } else {
@@ -136,7 +137,9 @@ const AccountForm: React.FC = () => {
         break;
       case "password":
         if (
-          /^(?=.*\d)(?=.*[a-zA-Z])[0-9a-zA-Z]{8,}$/.test(passwordInputState)
+          /^(?=.*\d)(?=.*[a-zA-Z])[0-9a-zA-Z]{8,}$/.test(
+            passwordInputRef.current!.value
+          )
         ) {
           setIsPasswordChk(true);
         } else {
@@ -275,6 +278,7 @@ const AccountForm: React.FC = () => {
               required
               id="password"
               value={passwordInputState}
+              ref={passwordInputRef}
               placeholder="비밀번호"
               onChange={(event) => {
                 setPasswordInput(event.target.value);
@@ -310,7 +314,7 @@ const AccountForm: React.FC = () => {
               <label htmlFor="nickname">닉네임</label>
             </div>
             <div className={isNicknameChk ? styles.explain : styles.caution}>
-              2 ~ 15자의 닉네임을 입력하세요.
+              2 ~ 8자의 닉네임을 입력하세요.
             </div>
             <div className={styles.nicknameCheck}>
               <input
@@ -318,7 +322,7 @@ const AccountForm: React.FC = () => {
                 required
                 id="nickname"
                 ref={nicknameInputRef}
-                placeholder="별명 (2 ~ 15자)"
+                placeholder="별명 (2 ~ 8자)"
                 disabled={nicknameDoubleChk ? true : false}
                 onChange={(e) => checkHandler(e, "nickname")}
               />
