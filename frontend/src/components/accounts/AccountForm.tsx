@@ -271,6 +271,7 @@ const AccountForm: React.FC = () => {
               id="username"
               ref={usernameInputRef}
               placeholder="이름"
+              autoComplete="off"
               onChange={(e) => checkHandler(e, "name")}
             />
           </div>
@@ -288,6 +289,7 @@ const AccountForm: React.FC = () => {
               id="password"
               ref={passwordInputRef}
               placeholder="비밀번호"
+              autoComplete="off"
               onChange={(e) => {
                 checkHandler(e, "password");
               }}
@@ -307,6 +309,7 @@ const AccountForm: React.FC = () => {
               id="passwordCheck"
               ref={passwordCheckInputRef}
               placeholder="비밀번호 확인"
+              autoComplete="off"
               onChange={(e) => {
                 checkHandler(e, "password");
               }}
@@ -327,6 +330,7 @@ const AccountForm: React.FC = () => {
                 id="nickname"
                 ref={nicknameInputRef}
                 placeholder="별명 (2 ~ 8자)"
+                autoComplete="off"
                 disabled={nicknameDoubleChk ? true : false}
                 onChange={(e) => checkHandler(e, "nickname")}
               />
