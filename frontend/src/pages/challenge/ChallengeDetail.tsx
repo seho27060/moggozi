@@ -143,6 +143,7 @@ const ChallengeDetail: React.FC = () => {
 
   // 페이지 데이터 받아오기
   useEffect(() => {
+    document.body.style.overflow = 'auto';
     setIsLoading(true);
     if (id) {
       if (isLoggedIn) {

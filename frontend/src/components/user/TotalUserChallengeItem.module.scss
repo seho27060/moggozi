@@ -3,11 +3,13 @@
 @include mixin.desktop {
   .link {
     text-decoration: none;
-    display: flex;
+    // display: flex;
     justify-content: center;
 
     .img {
       overflow: hidden;
+      width: 220px;
+      height: 160px;
       border-radius: 5px;
       margin: 10px 10px 10px 10px;
       // width: 220px;
@@ -23,17 +25,19 @@
           transform: scale(1.1);
         }
       }
-      .itemTitle {
-        font-weight: 700;
-        font-size: 18px;
-        line-height: 22px;
-        /* identical to box height */
 
-        display: flex;
-        align-items: center;
-        text-align: center;
-        justify-content: center;
-      }
+    }
+    .itemTitle {
+      font-weight: 500;
+      font-size: 15px;
+      margin: 2px 10px 0 10px;
+      line-height: 22px;
+      /* identical to box height */
+
+      display: flex;
+      align-items: center;
+      text-align: center;
+      justify-content: center;
     }
   }
 }
