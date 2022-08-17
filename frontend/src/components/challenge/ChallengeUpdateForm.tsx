@@ -143,8 +143,8 @@ const ChallengeUpdateForm: React.FC<{ challenge: ChallengeDetailState }> = (
           placeholder="짧은 소개를 입력해주세요."
           onChange={descriptionChangeHandler}
         ></textarea>
-        <span>{descriptionCnt}/120</span>
       </div>
+        <div className={styles.descriptionCnt}>{descriptionCnt}/120</div>
 
       <div className={styles.level}>
         <label htmlFor="level">난이도</label>
@@ -172,7 +172,7 @@ const ChallengeUpdateForm: React.FC<{ challenge: ChallengeDetailState }> = (
           value={titleText}
           onChange={titleChangeHandler}
         />
-        <span>{titleCnt}/20</span>
+        <div className={styles.titleCnt}>{titleCnt}/20</div>
       </div>
       {/* <div className={styles.challengeContent}>
         <textarea
