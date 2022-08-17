@@ -14,8 +14,7 @@ const AccountForm: React.FC = () => {
   const [isNicknameChk, setIsNicknameChk] = useState(false);
   const [isEmailChk, setIsEmailChk] = useState(false);
   const [isPasswordChk, setIsPasswordChk] = useState(false);
-  const [passwordCheck, setPasswordCheck] = useState(false);
-  const [passwordInputState, setPasswordInput] = useState("");
+  const [isPasswordSameChk, setIsPasswordSameChk] = useState(true);
   const [alertText, setAlertText] = useState(<div></div>);
   const [emailDoubleChk, setEmailDoubleChk] = useState(false);
   const [nicknameDoubleChk, setNicknameDoubleChk] = useState(false);
@@ -23,6 +22,8 @@ const AccountForm: React.FC = () => {
   const emailInputRef = useRef<HTMLInputElement>(null);
   const usernameInputRef = useRef<HTMLInputElement>(null);
   const nicknameInputRef = useRef<HTMLInputElement>(null);
+  const passwordInputRef = useRef<HTMLInputElement>(null);
+  const passwordCheckInputRef = useRef<HTMLInputElement>(null);
   const [emailContent, setEmailContent] = useState("");
   const [nicknameContent, setNicknameContent] = useState("");
 
@@ -43,6 +44,11 @@ const AccountForm: React.FC = () => {
   // 회원가입
   function submitHandler(event: React.FormEvent) {
     event.preventDefault();
+    if (!emailDoubleChk) {
+      setAlertText(<div>이메일이 중복확인을 해주세요.</div>);
+      setAlertModalOpen(true);
+      return;
+    }
     if (!isEmailChk) {
       setAlertText(<div>이메일이 옳지 않습니다.</div>);
       setAlertModalOpen(true);
@@ -58,18 +64,8 @@ const AccountForm: React.FC = () => {
       setAlertModalOpen(true);
       return;
     }
-    if (!passwordCheck) {
+    if (!isPasswordSameChk) {
       setAlertText(<div>비밀번호가 일치하지 않습니다.</div>);
-      setAlertModalOpen(true);
-      return;
-    }
-    if (!isNicknameChk) {
-      setAlertText(<div>닉네임이 옳지 않습니다.</div>);
-      setAlertModalOpen(true);
-      return;
-    }
-    if (!emailDoubleChk) {
-      setAlertText(<div>이메일이 중복확인을 해주세요.</div>);
       setAlertModalOpen(true);
       return;
     }
@@ -78,10 +74,15 @@ const AccountForm: React.FC = () => {
       setAlertModalOpen(true);
       return;
     }
+    if (!isNicknameChk) {
+      setAlertText(<div>닉네임이 옳지 않습니다.</div>);
+      setAlertModalOpen(true);
+      return;
+    }
     const enteredEmail = emailInputRef.current!.value;
     const enteredUsername = usernameInputRef.current!.value;
     const enteredNickname = nicknameInputRef.current!.value;
-    const enteredPassword = passwordInputState;
+    const enteredPassword = passwordInputRef.current!.value;
 
     const option = {
       username: enteredEmail,
@@ -120,7 +121,7 @@ const AccountForm: React.FC = () => {
         break;
       case "nickname":
         if (
-          /^[a-zA-Zㄱ-힣0-9-_.]{2,12}$/.test(nicknameInputRef.current!.value)
+          /^[a-zA-Zㄱ-힣0-9-_.]{2,8}$/.test(nicknameInputRef.current!.value)
         ) {
           setIsNicknameChk(true);
         } else {
@@ -136,11 +137,22 @@ const AccountForm: React.FC = () => {
         break;
       case "password":
         if (
-          /^(?=.*\d)(?=.*[a-zA-Z])[0-9a-zA-Z]{8,}$/.test(passwordInputState)
+          /^(?=.*\d)(?=.*[a-zA-Z])[0-9a-zA-Z]{8,}$/.test(
+            passwordInputRef.current!.value
+          )
         ) {
           setIsPasswordChk(true);
         } else {
           setIsPasswordChk(false);
+        }
+        // 비밀번호 확인
+        if (
+          passwordInputRef.current!.value ===
+          passwordCheckInputRef.current!.value
+        ) {
+          setIsPasswordSameChk(true);
+        } else {
+          setIsPasswordSameChk(false);
         }
         break;
     }
@@ -274,11 +286,10 @@ const AccountForm: React.FC = () => {
               type="password"
               required
               id="password"
-              value={passwordInputState}
+              ref={passwordInputRef}
               placeholder="비밀번호"
-              onChange={(event) => {
-                setPasswordInput(event.target.value);
-                checkHandler(event, "password");
+              onChange={(e) => {
+                checkHandler(e, "password");
               }}
             />
           </div>
@@ -287,20 +298,17 @@ const AccountForm: React.FC = () => {
             <div className={styles.label}>
               <label htmlFor="passwordCheck">비밀번호 확인</label>
             </div>
-            {!passwordCheck && (
+            {!isPasswordSameChk && (
               <p className={styles.caution}>비밀번호가 일치하지 않습니다.</p>
             )}
             <input
               type="password"
               required
               id="passwordCheck"
+              ref={passwordCheckInputRef}
               placeholder="비밀번호 확인"
-              onChange={(event) => {
-                if (passwordInputState === event.target.value) {
-                  setPasswordCheck(true);
-                } else {
-                  setPasswordCheck(false);
-                }
+              onChange={(e) => {
+                checkHandler(e, "password");
               }}
             />
           </div>
@@ -310,7 +318,7 @@ const AccountForm: React.FC = () => {
               <label htmlFor="nickname">닉네임</label>
             </div>
             <div className={isNicknameChk ? styles.explain : styles.caution}>
-              2 ~ 15자의 닉네임을 입력하세요.
+              2 ~ 8자의 닉네임을 입력하세요.
             </div>
             <div className={styles.nicknameCheck}>
               <input
@@ -318,7 +326,7 @@ const AccountForm: React.FC = () => {
                 required
                 id="nickname"
                 ref={nicknameInputRef}
-                placeholder="별명 (2 ~ 15자)"
+                placeholder="별명 (2 ~ 8자)"
                 disabled={nicknameDoubleChk ? true : false}
                 onChange={(e) => checkHandler(e, "nickname")}
               />
@@ -351,7 +359,6 @@ const AccountForm: React.FC = () => {
           <button
             type="button"
             onClick={submitHandler}
-            disabled={!passwordCheck}
             className={styles.submit}
           >
             회원가입 하기

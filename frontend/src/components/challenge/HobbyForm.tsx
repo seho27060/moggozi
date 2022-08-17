@@ -16,7 +16,7 @@ const HobbyForm: React.FC = () => {
   const [alertText, setAlertText] = useState(<div></div>);
   const [modalOpen, setModalOpen] = useState(false);
   const [inputText, setInputText] = useState("");
-  const [inputCnt, setInputCnt] = useState(0);
+  // const [inputCnt, setInputCnt] = useState(0);
 
   const closeModal = () => {
     document.body.style.overflow = "unset";
@@ -58,7 +58,7 @@ const HobbyForm: React.FC = () => {
             } else {
               dispatch(addHobby(res));
               setInputText("");
-              setInputCnt(0);
+              // setInputCnt(0);
               setDropDownList([]);
             }
           });
@@ -87,7 +87,7 @@ const HobbyForm: React.FC = () => {
     if (cnt > 10 && event.target.value.length > inputText.length) {
       return;
     }
-    setInputCnt(cnt);
+    // setInputCnt(cnt);
     setInputText(query);
     if (query === "") {
       setDropDownList([]);

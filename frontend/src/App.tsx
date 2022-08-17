@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import Router from "./routes";
 import { authentication } from "./store/auth";
 import { persistAuth } from "./lib/withTokenApi";
-// import styles from "./App.module.scss";
+import styles from "./App.module.scss";
 import { useSelector } from "react-redux";
 import { RootState } from "./store/store";
 import WebSocketProvider from "./lib/WebSocketProvider";
@@ -32,6 +32,7 @@ function App() {
   return (
     <div style={{height: "100%", backgroundImage: `url(${backgroundImg})`, backgroundSize: "100%"}} >
       <WebSocketProvider>
+        <div className={styles.mobile}></div>
         <Router />
       </WebSocketProvider>
     </div>

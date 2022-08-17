@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 
 import styles from "./CompleteSignUp.module.scss";
-import RamG from "./../../asset/RamG.png";
+import RamG from "./../../asset/moggo.png";
 
 const CompleteSignUp = () => {
   const navigate = useNavigate();
