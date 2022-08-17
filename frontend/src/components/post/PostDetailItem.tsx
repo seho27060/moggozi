@@ -9,7 +9,7 @@ import CommentList from "../comment/CommentList";
 import { useDispatch } from "react-redux";
 import PostLikeBtn from "./PostLikeBtn";
 import { useNavigate } from "react-router-dom";
-import { setPostModalOpen } from "../../store/postModal";
+import { setAlertPostModalOpen, setPostFormModalOpen, setPostModalOpen } from "../../store/postModal";
 
 import PostOptionBtn from "./PostOptionBtn";
 import Dompurify from "dompurify";
@@ -57,8 +57,10 @@ const PostDetailItem: React.FC<{}> = () => {
           <div
             className={styles.writerInfo}
             onClick={() => {
-              navigate(`/user/${post.postModalState.writer!.id!}`);
               dispatch(setPostModalOpen(false));
+              dispatch(setPostFormModalOpen(false))
+              dispatch(setAlertPostModalOpen(false))
+              navigate(`/user/${post.postModalState.writer!.id!}`);
             }}
           >
             {post.postModalState!.writer?.img ? (

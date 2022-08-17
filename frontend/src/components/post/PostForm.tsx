@@ -1,7 +1,6 @@
 import {
   ChangeEvent,
   FormEvent,
-  MouseEvent,
   useEffect,
   useRef,
   useState,
@@ -20,7 +19,6 @@ import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { storageService } from "../../fbase/fbase";
 import { stageDetail } from "../../lib/generalApi";
 import { RootState } from "../../store/store";
-import { useQuill } from "react-quilljs";
 // import { style } from "@mui/system";
 
 const PostForm: React.FC<{
@@ -201,15 +199,14 @@ const PostForm: React.FC<{
         <div className={styles.photo}>
           <div>사진 첨부 (선택)</div>
           <div>사진을 첨부해주세요.</div>
-        </div>
-        <div
+          <div
           style={{
             display: "flex",
             justifyContent: "center",
             margin: "20px 0 20px 0",
           }}
         >
-          <label htmlFor="img">파일 찾기</label>
+          {/* <label htmlFor="img">파일 찾기</label> */}
           <input
             type="file"
             accept="image/*"
@@ -217,6 +214,8 @@ const PostForm: React.FC<{
             onChange={onLoadHandler}
           />
         </div>
+        </div>
+       
         {previewImage ? (
           <img className={styles.img} src={previewImage} alt="preview img" />
         ) : (

@@ -89,6 +89,9 @@
     }
 
     .photo {
+      display: flex;
+      flex-direction: row;
+      
       div:nth-child(1) {
         margin: 20px 0 10px 0;
         font-weight: 700;
@@ -97,10 +100,14 @@
       }
 
       div:nth-child(2) {
-        margin: 0 0 20px 0;
+        margin: 25px 0 0 5px;
         font-weight: 400;
         font-size: 16px;
         line-height: 24px;
+      }
+      
+      input {
+        margin: 6px 0 0 0;
       }
     }
 

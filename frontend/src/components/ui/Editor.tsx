@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect, useRef, MouseEvent } from "react";
+import { useState, useMemo, } from "react";
 import styles from "./Editor.module.scss";
 //이렇게 라이브러리를 불러와서 사용하면 됩니다
 import ReactQuill, { Quill } from "react-quill";
@@ -10,7 +10,6 @@ const EditorComponent: React.FC<{
   maxlength : number
 }> = ({ QuillRef, value,maxlength }) => {
   const [contents, setContents] = useState<ReactQuill.Value>(value);
-  let textCountRef = useRef(0);
 
   class Counter {
     quill: any;
@@ -106,7 +105,7 @@ const EditorComponent: React.FC<{
         placeholder="내용을 입력해주세요."
         className={styles.Editor}
       />
-      <div id="counter"></div>
+      <div id="counter" className={styles.textCounter}></div>
     </div>
   );
 };
