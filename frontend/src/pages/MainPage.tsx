@@ -266,7 +266,8 @@ const MainPage: React.FC = () => {
       </div>
 
       <div className={styles.sliderTitle}>
-        모꼬지 회원들의 포스팅을 구경하세요!
+        <div>방금 등록된</div>
+        <div>모꼬지 회원들의 포스팅을 구경하세요!</div>
       </div>
       <div className={styles.postingSlider}>
         {/*최신 포스팅 자동 슬라이더  */}
@@ -275,15 +276,14 @@ const MainPage: React.FC = () => {
           [
             [0, 9],
             [8, 17],
-            [16, 25],
+            [16, 25]
           ].map((start, index) => (
             <div
               key={start[0]}
-              style={{ minHeight: "13rem", padding: "50px 0 0 0" }}
+              style={{ minHeight: "13rem", padding: "15px 0 0 0" }}
             >
               <AutoPlaySlider rtl={index + 1}>
                 {recentPostList.slice(start[0], start[1]).map((post) => {
-                  console.log(post);
                   return (
                     <div
                       key={post.id}

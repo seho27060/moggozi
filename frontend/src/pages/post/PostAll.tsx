@@ -17,6 +17,7 @@ import {
 import { RootState } from "../../store/store";
 
 import styles from "./PostAll.module.scss";
+import KeyboardDoubleArrowUpIcon from '@mui/icons-material/KeyboardDoubleArrowUp';
 
 const PostAll: React.FC = () => {
   const dispatch = useDispatch();
@@ -119,6 +120,12 @@ const PostAll: React.FC = () => {
         </div>
       </div>
       {isLoading && <Loader />}
+      <div className={styles.topButton} onClick={() => {window.scrollTo({
+        behavior: 'smooth',
+        left: 0,
+        top: 0,
+
+      })}}><KeyboardDoubleArrowUpIcon /></div>
     </div>
   );
 };

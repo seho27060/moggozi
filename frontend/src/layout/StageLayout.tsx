@@ -5,7 +5,6 @@ const StageLayout = () => {
   return (
     <div>
       <NavigationBar />
-      StageLayout
       <Outlet />
     </div>
   );

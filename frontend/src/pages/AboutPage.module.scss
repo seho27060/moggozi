@@ -57,6 +57,15 @@
       }
     }
 
-
+    .topButton {
+      display: inline-block;
+      position: fixed;
+      bottom: 40px;
+      right: 40px;
+      svg {
+        font-size: 60px;
+        cursor: pointer;
+      }
+    }
   }
 }
