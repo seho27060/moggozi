@@ -21,8 +21,8 @@ const TotalUserChallengeItem: React.FC<{
           { userChallenge.img! !== "" && userChallenge.img! ? <img src={userChallenge.img!} alt="challengeImg" /> :
           <img src={no_image} alt="" />}
           
-          {nameCheck && <div className={styles.itemTitle}>{userChallenge.name}</div>}
         </div>
+          {nameCheck && <div className={styles.itemTitle}>{userChallenge.name}</div>}
       </Link>
     </div>
   );
