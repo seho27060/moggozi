@@ -151,6 +151,7 @@ const PostForm: React.FC<{
   return (
     <div className={styles.container}>
       <form className={styles.form}>
+        <div style={{ height: 50 }} />
         <div className={styles.inputTitle}>
           <label htmlFor="title">제목</label>
           <div className={styles.titleCnt}>
