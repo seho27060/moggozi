@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { challengeAdd, challengeImgApi } from "../../lib/withTokenApi";
@@ -39,6 +39,15 @@ const ChallengeForm: React.FC<{ file: File | null }> = ({ file }) => {
     document.body.style.overflow = "unset";
     setModalOpen(false);
   };
+
+  useEffect(() => {
+    if (!modalOpen) {
+      document.body.style.overflow = "auto"; //모달때문에 이상하게 스크롤이 안되서 강제로 스크롤 바 생성함
+      document.body.style.height = "auto";
+    } else {
+      document.body.style.overflow = "hidden";
+    }
+  }, [modalOpen]);
 
   const descriptionChangeHandler = (
     event: React.ChangeEvent<HTMLTextAreaElement>
@@ -182,7 +191,7 @@ const ChallengeForm: React.FC<{ file: File | null }> = ({ file }) => {
 
       <div className={styles.done}>
         <button type="button" onClick={submitHandler}>
-          등록하기
+          스테이지 생성하러 가기
         </button>
       </div>
       <Modal open={modalOpen} close={closeModal} header="안내">

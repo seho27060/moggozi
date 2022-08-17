@@ -277,7 +277,6 @@ const MainPage: React.FC = () => {
               >
                 <AutoPlaySlider rtl={index + 1}>
                   {recentPostList.slice(start[0], start[1]).map((post) => {
-                    console.log(post);
                     return (
                       <div
                         key={post.id}
