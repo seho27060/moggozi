@@ -77,10 +77,10 @@ const MainSlider = (
           <img src={banner3} alt="" />
         </div>
         <div>
-          <img src={banner5} alt="" />
+          <img src={banner4} alt="" />
         </div>
         <a href="https://forms.gle/YsrpxDNKo9ZiYbmH9" target="_blank" rel="noopener noreferrer">
-          <img src={banner4} alt="" />
+          <img src={banner5} alt="" />
         </a>
         <div>
           <img src={banner6} alt="" />
