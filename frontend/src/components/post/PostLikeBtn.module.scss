@@ -5,6 +5,7 @@
   .unlike {
     color: mixin.$cloudGray;
     margin: 0 5px 0 0;
+    cursor: pointer;
     svg {
       font-size: 18px;
       &:hover {
@@ -19,6 +20,7 @@
   .like {
     color: red;
     margin: 0 5px 0 0;
+    cursor: pointer;
     svg {
       font-size: 18px;
       &:hover {
