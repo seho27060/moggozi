@@ -46,7 +46,7 @@ const ReviewDeleteBtn: React.FC<{ review: ReviewState }> = ({ review }) => {
       });
   };
   return (
-    <div>
+    <div style={{margin: "0 0 3px 0"}}>
       <div>
         <button onClick={deleteHandler}>삭제</button>
       </div>

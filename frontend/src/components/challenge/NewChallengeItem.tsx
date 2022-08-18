@@ -17,7 +17,7 @@ const NewChallengeItem: React.FC<{ challenge: ChallengeItemState }> = ({
       <div className={styles.challengeItem}>
 
         <div className={styles.writer}>
-          <div className={styles.profile} onClick={() => {navigate(`/${challenge.writer.id}`)}}>
+          <div className={styles.profile} onClick={() => {navigate(`/user/${challenge.writer.id}`)}}>
             { challenge.writer.path !== "" && challenge.writer.path ? <img src={challenge.writer.path} alt="" /> : <img src={default_profile} alt="" />}
             
             <div>{challenge.writer.nickname}</div>
@@ -53,7 +53,7 @@ const NewChallengeItem: React.FC<{ challenge: ChallengeItemState }> = ({
         <div className={styles.challengeInfo}>
           <div>
             <div className={styles.title}>
-              <div>{challenge.name}</div>
+              <div onClick={() => { navigate(`/challenge/${challenge.id}` )}}>{challenge.name}</div>
               <div
                 className={(() => {
                   if (challenge.level === 1) return styles.level1;

@@ -4,6 +4,7 @@
   .container {
     display: flex;
     justify-content: center;
+    overflow-x: hidden;
 
     
     .mainPage {
@@ -88,6 +89,8 @@
     height: 800px;
     width: 2560px;
     background: #374151;
+    pointer-events: none;
+
   }
 
   .popPosting {

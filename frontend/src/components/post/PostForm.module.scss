@@ -3,6 +3,7 @@
 @include mixin.desktop {
   .container {
     width: 700px;
+    max-height: 800px;
   }
   .title {
     text-align: center;

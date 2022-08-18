@@ -167,6 +167,7 @@
           font-weight: 600;
           color: mixin.$mainColor;
           transition: all 0.5s;
+          cursor: pointer;
           
           &:hover {
             color: #fff;
