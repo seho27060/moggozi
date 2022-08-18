@@ -13,11 +13,11 @@ import styles from "./MypageFollow.module.scss";
 interface Props {
   followedCnt: number;
   followingCnt: number;
+  followCntHandler: (event: React.MouseEvent, state: boolean) => void;
 }
 
 const MypageFollow = (props: Props) => {
-  
-  const { followedCnt, followingCnt } = props;
+  const { followedCnt, followingCnt, followCntHandler } = props;
   const toId = Number(useParams().id);
 
   const [followedOpenModal, setFollowedOpenModal] = useState(false);
@@ -58,9 +58,11 @@ const MypageFollow = (props: Props) => {
         console.log(err);
       });
   }, [toId]);
-  {(followingOpenModal || followedOpenModal)
-    ? (document.body.style.overflow = "hidden")
-    : (document.body.style.overflow = "visible")}
+  {
+    followingOpenModal || followedOpenModal
+      ? (document.body.style.overflow = "hidden")
+      : (document.body.style.overflow = "visible");
+  }
   return (
     <div>
       <div>
@@ -99,6 +101,7 @@ const MypageFollow = (props: Props) => {
                 loginFollowState={object.loginFollowState}
                 nickname={object.nickname}
                 close={CloseModalHandler}
+                followCntHandler={followCntHandler}
               />
             ))}
           </div>
@@ -111,7 +114,6 @@ const MypageFollow = (props: Props) => {
         close={CloseModalHandler}
         header="팔로잉"
       >
-
         {!!followingInfo.length ? (
           <div style={{ height: "15rem", overflowY: "auto" }}>
             {followingInfo.map((object) => (

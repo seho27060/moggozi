@@ -12,6 +12,7 @@ interface Props {
   img: string | null;
   loginFollowState: number | null;
   nickname: string | null;
+  followCntHandler: (event: React.MouseEvent, state: boolean) => void;
   close: () => void;
 }
 
@@ -19,12 +20,14 @@ const FollowerList = (props: Props): ReactElement => {
   const navigate = useNavigate();
   const user = useSelector((state: RootState) => state.auth);
 
-  const { id, img, loginFollowState, nickname, close } = props;
+  const { id, img, loginFollowState, nickname, followCntHandler, close } =
+    props;
 
   const [followState, setFollowState] = useState(!!loginFollowState);
 
   function followHandler(event: React.MouseEvent) {
     event.preventDefault();
+    followCntHandler(event, followState);
     setFollowState(!followState);
     followApi(id)
       .then((res) => {})
