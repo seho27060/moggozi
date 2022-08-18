@@ -11,7 +11,7 @@ $cloudLine: #afafaf;
 }
 
 @mixin mobile {
-  @media only screen and (max-width: 500x) {
+  @media only screen and (max-width: 500px) {
     @content;
   }
 }
