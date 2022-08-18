@@ -16,6 +16,7 @@
       display: flex;
       width: 250px;
       height: 250px;
+      background: #fff;
       border-radius: 100%;
 
       .edit::before {
@@ -72,6 +73,9 @@
       cursor: pointer;
       svg {
         margin: 0 5px 0 0;
+        &:hover {
+          color: #ff6262 !important; 
+        }
       }
     }
 
@@ -93,6 +97,9 @@
       cursor: pointer;
       svg {
         margin: 0 5px 0 0;
+        &:hover {
+          color: white !important; 
+        }
       }
     }
 

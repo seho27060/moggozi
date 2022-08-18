@@ -16,7 +16,7 @@ const Footer = () => {
               <div onClick={() => { navigate("/") }}>Main</div>
               <div onClick={() => { navigate("/challenge") }}>Challenge</div>
               <div onClick={() => { navigate("/post/all") }}>Posting</div>
-              <div onClick={() => { navigate("/") }}>about</div>
+              <div onClick={() => { navigate("/about") }}>about</div>
               <div onClick={() => { navigate("/search") }}>Search</div>
             </div>
             

@@ -3,6 +3,7 @@
 @include mixin.desktop {
   .img {
     // border-radius: 5px;
+    cursor: pointer;
     div {
       // border-radius: 10px;
       img{
@@ -17,6 +18,7 @@
 
     a {
       // border-radius: 10px;
+      cursor: pointer;
       img{
         width: 989px;
         height: 450px;
@@ -42,7 +44,7 @@
       font-size: 18px;
       font-weight: 600;
       line-height: 19px;
-      z-index: 999;
+      z-index: 60;
       content: attr(data-content),
     }
   }

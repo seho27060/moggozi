@@ -10,6 +10,7 @@ import { RootState } from "./store/store";
 import WebSocketProvider from "./lib/WebSocketProvider";
 
 import backgroundImg from "./asset/mainbackground.png";
+import ScrollTop from "./components/ui/ScrollToTop"
 
 function App() {
   const dispatch = useDispatch();
@@ -32,6 +33,7 @@ function App() {
   return (
     <div style={{height: "100%", backgroundImage: `url(${backgroundImg})`, backgroundSize: "100%"}} >
       <WebSocketProvider>
+        <ScrollTop />
         <div className={styles.mobile}></div>
         <Router />
       </WebSocketProvider>
