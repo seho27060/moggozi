@@ -190,7 +190,7 @@ const MainPage: React.FC = () => {
       !recommendIsLoading &&
       !rankPostIsLoading &&
       !recentPostIsLoading ? (
-        <div>
+        <div className={styles.overFlow_x}>
           <div className={styles.container}>
             <div>
               <div className={styles.mainPage}>
