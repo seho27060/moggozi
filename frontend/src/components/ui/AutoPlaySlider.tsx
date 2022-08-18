@@ -2,8 +2,8 @@ import React from "react";
 import Slider from "react-slick";
 import { Props } from "./Slider";
 
-interface autoProps extends Props{
-  rtl:number
+interface autoProps extends Props {
+  rtl: number;
 }
 const AutoPlaySlider = (props: autoProps) => {
   const settings = {
@@ -14,14 +14,12 @@ const AutoPlaySlider = (props: autoProps) => {
     speed: 6000,
     autoplaySpeed: 0,
     cssEase: "linear",
-    rtl:(props.rtl % 2 === 1 ? true : false)
+    rtl: props.rtl % 2 === 1 ? true : false,
   };
 
   return (
     <div>
-      <Slider {...settings} >
-        {props.children}
-      </Slider>
+      <Slider {...settings}>{props.children}</Slider>
     </div>
   );
 };

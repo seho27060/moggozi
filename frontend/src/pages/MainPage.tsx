@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import {
   fetchPostLikeList,
   fetchPostRecentList,
@@ -39,7 +38,6 @@ import PostFormModal from "../components/ui/PostFormModal";
 
 const MainPage: React.FC = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
   // 로딩
@@ -93,7 +91,7 @@ const MainPage: React.FC = () => {
       .then((res) => {
         setLikePostList(res.content);
         // setRankPostIsLoading(false);
-        setTimeout(() => setRankPostIsLoading(false), 2000);
+        setTimeout(() => setRankPostIsLoading(false), 100);
       })
       .catch((err) => {
         console.log("like post err", err);
@@ -279,13 +277,7 @@ const MainPage: React.FC = () => {
                 <AutoPlaySlider rtl={index + 1}>
                   {recentPostList.slice(start[0], start[1]).map((post) => {
                     return (
-                      <div
-                        key={post.id}
-                        onClick={() => {
-                          navigate(`/user/${post.writer?.id}`);
-                        }}
-                        style={{ cursor: "pointer" }}
-                      >
+                      <div key={post.id} style={{ cursor: "pointer" }}>
                         <img
                           src={
                             post.postImg!.length !== 0

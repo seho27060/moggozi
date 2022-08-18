@@ -13,7 +13,6 @@ import backgroundImg from "./asset/mainbackground.png";
 
 function App() {
   const dispatch = useDispatch();
-
   const user = useSelector((state: RootState) => state.auth.userInfo);
 
   useEffect(() => {
@@ -30,7 +29,13 @@ function App() {
 
   // style={{backgroundImage: `url(${backgroundImg})`, backgroundSize: "100%"}}
   return (
-    <div style={{height: "100%", backgroundImage: `url(${backgroundImg})`, backgroundSize: "100%"}} >
+    <div
+      style={{
+        height: "100%",
+        backgroundImage: `url(${backgroundImg})`,
+        backgroundSize: "100%",
+      }}
+    >
       <WebSocketProvider>
         <div className={styles.mobile}></div>
         <Router />

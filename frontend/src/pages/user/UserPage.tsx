@@ -317,7 +317,9 @@ function UserPage() {
           <div></div>
         )}
       </div>
-      {isPrivate && userId !== loginId && <div className={styles.privateBox}></div> }
+      {isPrivate && userId !== loginId && (
+        <div className={styles.privateBox}></div>
+      )}
       {isPrivate && userId !== loginId ? (
         <div className={styles.blurEffect}>
           <div style={{ display: "flex", justifyContent: "center" }}>
