@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { signUpApi, checkId, checkNickname } from "../../lib/generalApi";
 
@@ -41,6 +41,9 @@ const AccountForm: React.FC = () => {
     setNicknameModalOpen(false);
   };
 
+  useEffect(() => {
+    document.body.style.overflow = 'auto';
+  })
   // 회원가입
   function submitHandler(event: React.FormEvent) {
     event.preventDefault();
