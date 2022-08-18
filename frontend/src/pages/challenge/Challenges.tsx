@@ -16,7 +16,7 @@ import { ChallengeItemState } from "../../store/challenge";
 import { RootState } from "../../store/store";
 
 import styles from "./Challenges.module.scss";
-import KeyboardDoubleArrowUpIcon from '@mui/icons-material/KeyboardDoubleArrowUp';
+import KeyboardDoubleArrowUpIcon from "@mui/icons-material/KeyboardDoubleArrowUp";
 import LocalFireDepartmentIcon from "@mui/icons-material/LocalFireDepartment";
 
 const Challenges: React.FC = () => {
@@ -140,13 +140,15 @@ const Challenges: React.FC = () => {
             <div>
               <div className={styles.popularChallengeTitle}>
                 <div>인기 챌린지</div>
-                <button
-                  onClick={() => {
-                    navigate(`/challenge/new`);
-                  }}
-                >
-                  챌린지 만들기
-                </button>
+                {isLoggedIn && (
+                  <button
+                    onClick={() => {
+                      navigate(`/challenge/new`);
+                    }}
+                  >
+                    챌린지 만들기
+                  </button>
+                )}
               </div>
               <div>
                 <PopChallengeList challenges={loadedChallengeRankList} />
@@ -176,12 +178,18 @@ const Challenges: React.FC = () => {
         )}
       </div>
       {pageIsLoading && <Loader />}
-      <div className={styles.topButton} onClick={() => {window.scrollTo({
-        behavior: 'smooth',
-        left: 0,
-        top: 0,
-
-      })}}><KeyboardDoubleArrowUpIcon /></div>
+      <div
+        className={styles.topButton}
+        onClick={() => {
+          window.scrollTo({
+            behavior: "smooth",
+            left: 0,
+            top: 0,
+          });
+        }}
+      >
+        <KeyboardDoubleArrowUpIcon />
+      </div>
     </div>
   );
 };

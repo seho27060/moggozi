@@ -14,7 +14,6 @@ import ScrollTop from "./components/ui/ScrollToTop"
 
 function App() {
   const dispatch = useDispatch();
-
   const user = useSelector((state: RootState) => state.auth.userInfo);
 
   useEffect(() => {
@@ -31,7 +30,13 @@ function App() {
 
   // style={{backgroundImage: `url(${backgroundImg})`, backgroundSize: "100%"}}
   return (
-    <div style={{height: "100%", backgroundImage: `url(${backgroundImg})`, backgroundSize: "100%"}} >
+    <div
+      style={{
+        height: "100%",
+        backgroundImage: `url(${backgroundImg})`,
+        backgroundSize: "100%",
+      }}
+    >
       <WebSocketProvider>
         <ScrollTop />
         <div className={styles.mobile}></div>

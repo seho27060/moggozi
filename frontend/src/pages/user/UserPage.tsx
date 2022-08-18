@@ -1,7 +1,7 @@
 import type { RootState } from "../../store/store";
 import { useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
-import { useCallback, useContext, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import { otherUserDetail } from "../../lib/generalApi";
 import {
   fetchMyChallengeList,
@@ -84,6 +84,20 @@ function UserPage() {
     setValue(newValue);
   };
 
+  // 마이페이지에서 followed 목록에서 follow/unFollow한 경우
+  const followCntHandler = (event: React.MouseEvent, state: boolean) => {
+    // 마이 페이지가 아닌 경우는 바꾸지 않는다.
+    if (userId !== loginId) {
+      return;
+    }
+    // follow한 경우
+    if (state) {
+      setFollowingCnt(followingCnt - 1);
+    } else {
+      setFollowingCnt(followingCnt + 1);
+    }
+  };
+
   const handleScroll = useCallback((): void => {
     const { innerHeight } = window;
     const { scrollHeight } = document.body;
@@ -123,7 +137,7 @@ function UserPage() {
               setCurrentChallengePage(res.pageNum);
               setChallengeHasNext(res.hasNext);
             })
-            .catch((err) => console.log("ch err", err));
+            .catch((err) => console.log(err));
           break;
         case 3: // 만든 챌린지
           if (!myChallengeHasNext) {
@@ -139,7 +153,7 @@ function UserPage() {
                 setCurrentMyChallengePage(res.pageNum);
                 setMyChallengeHasNext(res.hasNext);
               })
-              .catch((err) => console.log("myrecentch err", err));
+              .catch((err) => console.log(err));
           }
           break;
       }
@@ -291,7 +305,11 @@ function UserPage() {
         ) : (
           <div></div>
         )}
-        <MypageFollow followedCnt={followedCnt} followingCnt={followingCnt} />
+        <MypageFollow
+          followedCnt={followedCnt}
+          followingCnt={followingCnt}
+          followCntHandler={followCntHandler}
+        />
         {loginData.isLoggedIn ? (
           <div>
             {loginId === userId ? (
@@ -317,7 +335,9 @@ function UserPage() {
           <div></div>
         )}
       </div>
-      {isPrivate && userId !== loginId && <div className={styles.privateBox}></div> }
+      {isPrivate && userId !== loginId && (
+        <div className={styles.privateBox}></div>
+      )}
       {isPrivate && userId !== loginId ? (
         <div className={styles.blurEffect}>
           <div style={{ display: "flex", justifyContent: "center" }}>
