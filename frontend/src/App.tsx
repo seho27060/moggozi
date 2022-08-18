@@ -10,6 +10,7 @@ import { RootState } from "./store/store";
 import WebSocketProvider from "./lib/WebSocketProvider";
 
 import backgroundImg from "./asset/mainbackground.png";
+import ScrollTop from "./components/ui/ScrollToTop"
 
 function App() {
   const dispatch = useDispatch();
@@ -37,6 +38,7 @@ function App() {
       }}
     >
       <WebSocketProvider>
+        <ScrollTop />
         <div className={styles.mobile}></div>
         <Router />
       </WebSocketProvider>

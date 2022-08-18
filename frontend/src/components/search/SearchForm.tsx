@@ -114,39 +114,41 @@ const SearchForm = (props: Props) => {
       </header>
 
       {/* <main> */}
-      <main className={styles.tag}>
-        <h1>유저</h1>
-        {dropDownUserList.length === 0 && (
-          <div className={styles.noUser}>해당하는 유저가 없습니다.</div>
-        )}
-        <UserList users={dropDownUserList} close={close} />
-      </main>
-      <main>
-        <h1>챌린지</h1>
-        {dropDownChallengeList.length === 0 && (
-          <div className={styles.challenge}>해당하는 챌린지가 없습니다.</div>
-        )}
-        <SearchChallengeList challenges={dropDownChallengeList} close={close} />
-      </main>
-      <main className={styles.tagPart}>
-        <h1>태그</h1>
-        {dropDownHobbyList.length === 0 && (
-          <div className={styles.tagg}>해당하는 태그가 없습니다.</div>
-        )}
-        {dropDownHobbyList.map((dropDownItem) => {
-          return (
-            <div className={styles.hobbyTag}>
-              <Link
-                to={`/search?keyword=${dropDownItem.name}&page=0&size=4&choice=2`}
-                key={dropDownItem.id}
-                onClick={close}
-              >
-                # {dropDownItem.name}
-              </Link>
-            </div>
-          );
-        })}
-      </main>
+      <div className={styles.mainScroll}>
+        <main className={styles.tag}>
+          <h1>유저</h1>
+          {dropDownUserList.length === 0 && (
+            <div className={styles.noUser}>해당하는 유저가 없습니다.</div>
+          )}
+          <UserList users={dropDownUserList} close={close} />
+        </main>
+        <main>
+          <h1>챌린지</h1>
+          {dropDownChallengeList.length === 0 && (
+            <div className={styles.challenge}>해당하는 챌린지가 없습니다.</div>
+          )}
+          <SearchChallengeList challenges={dropDownChallengeList} close={close} />
+        </main>
+        <main className={styles.tagPart}>
+          <h1>태그</h1>
+          {dropDownHobbyList.length === 0 && (
+            <div className={styles.tagg}>해당하는 태그가 없습니다.</div>
+          )}
+          {dropDownHobbyList.map((dropDownItem) => {
+            return (
+              <div className={styles.hobbyTag}>
+                <Link
+                  to={`/search?keyword=${dropDownItem.name}&page=0&size=4&choice=2`}
+                  key={dropDownItem.id}
+                  onClick={close}
+                >
+                  # {dropDownItem.name}
+                </Link>
+              </div>
+            );
+          })}
+        </main>
+      </div>
       {/* </main> */}
     </div>
   );

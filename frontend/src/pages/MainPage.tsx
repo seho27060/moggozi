@@ -188,7 +188,7 @@ const MainPage: React.FC = () => {
       !recommendIsLoading &&
       !rankPostIsLoading &&
       !recentPostIsLoading ? (
-        <div>
+        <div className={styles.overFlow_x}>
           <div className={styles.container}>
             <div>
               <div className={styles.mainPage}>
@@ -277,7 +277,7 @@ const MainPage: React.FC = () => {
                 <AutoPlaySlider rtl={index + 1}>
                   {recentPostList.slice(start[0], start[1]).map((post) => {
                     return (
-                      <div key={post.id} style={{ cursor: "pointer" }}>
+                      <div key={post.id}>
                         <img
                           src={
                             post.postImg!.length !== 0

@@ -1,9 +1,16 @@
 @use "../styles/mixin.scss" as mixin;
 
 @include mixin.desktop {
+  
+  .overFlow_x {
+    overflow-x: hidden;
+  }
+
   .container {
     display: flex;
     justify-content: center;
+    overflow-x: hidden;
+
 
     
     .mainPage {
@@ -88,6 +95,9 @@
     height: 800px;
     width: 2560px;
     background: #374151;
+    pointer-events: none;
+    overflow-x: hidden;
+
   }
 
   .popPosting {
