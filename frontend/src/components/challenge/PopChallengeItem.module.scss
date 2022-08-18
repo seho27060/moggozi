@@ -157,7 +157,8 @@
           font-weight: 700;
           line-height: 25px;
           margin-right: 10px;
-          width: 350px;
+          max-width: 350px;
+          cursor: pointer;
         }
 
         .level1 {
