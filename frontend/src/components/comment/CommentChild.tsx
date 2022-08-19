@@ -4,12 +4,26 @@ import { RootState } from "../../store/store";
 
 import styles from "./CommentChild.module.scss";
 import CommentOptionBtn from "./CommentOptionBtn";
+import default_profile from "../../asset/default_profile.png"
 
-import { BsFillPersonFill } from "react-icons/bs"
+import { useState } from "react";
+import CommentUpdateForm from "./CommentUpdateForm";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setPostModalOpen } from "../../store/postModal";
 const CommentChild: React.FC<{ child: Comment }> = ({ child }) => {
+  
   const postId = useSelector(
     (state: RootState) => state.postModal.postModalState!.id
   );
+  const [commentUpdateFormToggle, setCommentUpdateFormToggle] = useState(false);
+
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+  const toUserPageHandler = () => {
+    navigate(`/user/${child.writer!.id}`)
+    dispatch(setPostModalOpen(false))
+  }
   return (
     <div className={styles.container}>
       <div className={styles.writer}>
@@ -20,24 +34,36 @@ const CommentChild: React.FC<{ child: Comment }> = ({ child }) => {
               src={child.writer?.path}
               alt=""
               style={{ height: "43px", width: "43px" }}
+              onClick={toUserPageHandler}
             />
           ) : (
-            <BsFillPersonFill
-              // className={styles.img}
-              // src="https://blog.kakaocdn.net/dn/vckff/btqCjeJmBHM/tMVpe4aUIMfH4nKS4aO3tK/img.jpg"
-              // alt=""
+            <img
+              src={default_profile}
+              alt=""
               style={{ height: "43px", width: "43px" }}
+              onClick={toUserPageHandler}
             />
           )}
           {/* <p>{child.order}</p> */}
           <div>{child.writer?.nickname}</div>
         </div>
         <div className={styles.option}>
-          <CommentOptionBtn comment={child} postId={postId} />
+          <CommentOptionBtn comment={child}  setCommentUpdateFormToggle={setCommentUpdateFormToggle}/>
         </div>
       </div>
       <div>
-        <div className={styles.comment}>{child.text}</div>
+        <div className={styles.comment}>
+          {/* {child.text} */}
+          {!commentUpdateFormToggle ? (
+            child.text
+          ) : (
+            <CommentUpdateForm
+              comment={child}
+              postId={postId}
+              setCommentUpdateFormToggle={setCommentUpdateFormToggle}
+            />
+          )}
+          </div>
         <div className={styles.date}>
           {child.modifiedTime?.toString().slice(0, 4)}년{" "}
           {child.modifiedTime?.toString().slice(6, 7)}월{" "}

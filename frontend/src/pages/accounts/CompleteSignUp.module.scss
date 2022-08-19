@@ -10,9 +10,10 @@
     height: 100vh;
 
     img {
-      width: 153px;
+      width: 250px;
       height: 128px;
-      object-fit: cover;
+      object-fit: contain;
+      background: none;
     }
 
     div:nth-child(2) {

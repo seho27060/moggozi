@@ -10,11 +10,13 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    margin: 150px 0 0 0;
 
     .editImg {
       display: flex;
       width: 250px;
       height: 250px;
+      background: #fff;
       border-radius: 100%;
 
       .edit::before {
@@ -54,6 +56,9 @@
     }
 
     .followButton {
+      display: flex;
+      justify-content: center;
+      align-items: center;
       margin: 20px 0 20px 0;
       width: 175px;
       height: 60px;
@@ -64,9 +69,71 @@
       font-size: 22px;
       line-height: 27px;
       color: #ff6262;
+      transition: all 0.5s;
+      cursor: pointer;
+      svg {
+        margin: 0 5px 0 0;
+        &:hover {
+          color: #ff6262 !important; 
+        }
+      }
     }
+
+    .unfollowButton {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 20px 0 20px 0;
+      width: 175px;
+      height: 60px;
+      background: #ff6262;
+      border: 2px solid #ff6262;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 22px;
+      line-height: 27px;
+      color: #ffffff;
+      transition: all 0.5s;
+      cursor: pointer;
+      svg {
+        margin: 0 5px 0 0;
+        &:hover {
+          color: white !important; 
+        }
+      }
+    }
+
+  }
+  .blurEffect {
+    filter: blur(10px);
+    -webkit-filter: blur(10px);
+    pointer-events : none;
+    z-index: 30;
+
+
   }
 
+  .privateBox {
+    width: 0px;
+    height: 0px;
+    &::after {
+      display: inline-block;
+      position: relative;
+      background: #fff;
+      border: 1px solid rgb(194, 194, 194);
+      border-radius: 5px;
+      width: 400px;
+      height: 120px;
+      top: 25vh;
+      left: 41.5vw;
+      text-align: center;
+      font-size: 20px;
+      font-weight: 600;
+      padding: 100px 0 0 0;
+      content: "프로필이 비공개로 설정되었습니다.🔒";
+      z-index: 100;
+    }
+  }
   .container {
     width:992px;
   }

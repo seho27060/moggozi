@@ -3,6 +3,7 @@
 @include mixin.desktop {
   .container {
     width: 700px;
+    max-height: 800px;
   }
   .title {
     text-align: center;
@@ -11,7 +12,7 @@
     line-height: 48px;
     margin: 25px 0 0 0;
   }
-  
+
   .head {
     // 챌린지
     div:nth-child(1) {
@@ -52,7 +53,7 @@
         font-weight: 700;
         font-size: 22px;
         line-height: 30px;
-        margin: 0 0 5px 0;
+        margin: 40px 0 5px 0;
       }
       input {
         height: 40px;
@@ -70,9 +71,8 @@
         &::placeholder {
           font-size: 16px;
           font-weight: 700;
-          color: mixin.$cloudGray
+          color: mixin.$cloudGray;
         }
-
       }
 
       .titleCnt {
@@ -104,13 +104,58 @@
       }
     }
 
-    .img {
-      width: 400px;
-      height: 250px;
-      cursor: pointer;
+    .imageForm {
+      display: flex;
+      justify-content: space-around;
+      align-items: flex-end;
+      margin: 0 0 20px 0;
+
+      .image {
+        width: 250px;
+        height: 250px;
+        background: rgb(233, 233, 233);
+        border-radius: 5px;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .addImg {
+          text-align: center;
+          div:nth-child(1) {
+            font-weight: 500;
+            color: rgb(151, 151, 151);
+            margin: 3px 0 3px 0;
+          }
+          div:nth-child(2) {
+            font-weight: 500;
+            color: rgb(151, 151, 151);
+            margin: 3px 0 3px 0;
+          }
+          div:nth-child(3) {
+            font-weight: 500;
+            margin: 3px 0 3px 0;
+            color: rgb(78, 78, 78);
+          }
+          div:nth-child(4) {
+            font-weight: 500;
+            margin: 3px 0 3px 0;
+            color: rgb(78, 78, 78);
+          }
+        }
+      }
+
+      input {
+        display: none;
+      }
     }
 
-    .submitt {
+    .img {
+      width: 250px;
+      height: 250px;
+    }
+
+    .submit {
       width: 110px !important;
       height: 50px !important;
       color: #fff !important;
@@ -120,6 +165,5 @@
       border-radius: 5px;
       margin: 15px 0 40px 0;
     }
-
   }
 }

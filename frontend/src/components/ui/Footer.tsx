@@ -16,7 +16,7 @@ const Footer = () => {
               <div onClick={() => { navigate("/") }}>Main</div>
               <div onClick={() => { navigate("/challenge") }}>Challenge</div>
               <div onClick={() => { navigate("/post/all") }}>Posting</div>
-              <div onClick={() => { navigate("/") }}>about</div>
+              <div onClick={() => { navigate("/about") }}>about</div>
               <div onClick={() => { navigate("/search") }}>Search</div>
             </div>
             
@@ -37,7 +37,7 @@ const Footer = () => {
             </div>
           </div>
         </div>
-        <div className={styles.copyright}><img src={moggozi} alt="" /><div>ⓒ 2022 Moggozi, All right reseved.</div></div>
+        <div className={styles.copyright}><img src={moggozi} alt="" /><div>ⓒ 2022 Moggozi, All right reserved.</div></div>
         </div>
         <div>
       </div>

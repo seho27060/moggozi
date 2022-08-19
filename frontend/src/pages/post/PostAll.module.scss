@@ -17,4 +17,15 @@
     // margin: 60px 0 0 0;
     // padding: 40px 0 0 0;
   }
+
+  .topButton {
+    display: inline-block;
+    position: fixed;
+    bottom: 40px;
+    right: 40px;
+    svg {
+      font-size: 60px;
+      cursor: pointer;
+    }
+  }
 }

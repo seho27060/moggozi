@@ -1,7 +1,115 @@
 @use "../../styles/mixin.scss" as mixin;
 
 @include mixin.desktop {
-  .postUpdateForm {
-    width : auto
+  .container {
+    display: flex;
+
+    .posting {
+      font-size: 25px;
+      font-weight: 700;
+    }
+  }
+
+  .form {
+    margin: 50px 0 50px 0;
+
+    .inputTitle {
+      // display: flex;
+      margin: 30px 0 10px 0;
+
+      .titleCnt {
+        display: flex;
+        align-items: flex-end;
+
+        input {
+          height: 40px;
+          width: 90%;
+          padding: 0 0 0 10px;
+          font-size: 16px;
+          font-weight: 700;
+          border: 0;
+          border-bottom: 1px solid mixin.$cloudLine;
+
+          &:focus {
+            outline: none;
+          }
+
+          &::placeholder {
+            font-size: 16px;
+            font-weight: 700;
+            color: mixin.$cloudGray;
+          }
+        }
+
+        div:nth-child(2) {
+          margin: 0 0 7px 10px;
+          font-size: 14px;
+          font-weight: 700;
+          color: mixin.$cloudGray;
+        }
+      }
+    }
+
+    .fileselect {
+      label {
+        display: block;
+        cursor: pointer;
+        margin: 0 0 5px 0;
+        font-size: 13px;
+      }
+      .labelbutton {
+        width: 70px;
+        height: 25px;
+        border: 1px solid mixin.$mainColor;
+        border-radius: 5px;
+        color: #fff;
+        background: mixin.$mainColor;
+        transition: all 0.5s;
+        text-align: center;
+        line-height: 25px;
+
+        &:hover {
+          color: mixin.$mainColor;
+          background: #fff;
+          border: 1px solid mixin.$mainColor;
+        }
+      }
+
+      input {
+        display: none;
+      }
+    }
+
+    .editorSection {
+      display: flex;
+      justify-content: space-around;
+    }
+
+    .img {
+      width: 360px;
+      height: 360px;
+      margin: 0 10px 0 0;
+      object-fit: contain;
+    }
+
+    .finishBtn {
+      margin: 5px 0 0 0;
+      display: flex;
+      justify-content: flex-end;
+      .button {
+        width: 100px;
+        height: 40px;
+        font-size: 14px;
+        border-radius: 5px;
+        color: #fff;
+        background: mixin.$mainColor;
+        transition: all 0.5s;
+
+        &:hover {
+          font-size: 16px;
+        }
+      }
+    }
+
   }
 }

@@ -76,6 +76,7 @@ public class MemberController {
     @PostMapping("/delete")
     public ResponseEntity<?> deleteUser(@Valid @RequestBody DeleteUserRequest deleteUserRequest, HttpServletRequest request) {
         Long user_id = jwtUtils.getUserIdFromJwtToken(request.getHeader("Authorization"));
+
         return memberService.delete(deleteUserRequest.getPassword(), user_id);
     }
 

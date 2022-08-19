@@ -9,6 +9,7 @@ import SearchModal from "../components/ui/SearchModal";
 
 import style from "./NavigationBar.module.scss";
 import logo from "../asset/moggozi.png";
+import default_profile from "../asset/default_profile.png"
 import AlertOnair from "../components/alert/AlertOnair";
 
 const NavigationBar: React.FC = () => {
@@ -32,6 +33,9 @@ const NavigationBar: React.FC = () => {
           </li>
           <div className={style.div}>
             <li>
+              <NavLink to="/about">About</NavLink>
+            </li>
+            <li>
               <NavLink to="/notice/0">공지사항</NavLink>
             </li>
             <li>
@@ -39,9 +43,6 @@ const NavigationBar: React.FC = () => {
             </li>
             <li>
               <NavLink to="/post/all">포스팅</NavLink>
-            </li>
-            <li>
-              <NavLink to="/search">about</NavLink>
             </li>
             <li>
               <button
@@ -89,9 +90,7 @@ const NavigationBar: React.FC = () => {
                     ) : (
                       <img
                         className={style.profileImg}
-                        src={
-                          "https://i.pinimg.com/236x/f2/a1/d6/f2a1d6d87b1231ce39710e6ba1c1e129.jpg"
-                        }
+                        src={default_profile}
                         alt=""
                       />
                     )}

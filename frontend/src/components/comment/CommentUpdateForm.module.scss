@@ -1,0 +1,14 @@
+@use "../../styles/mixin.scss" as mixin;
+
+@include mixin.desktop {
+  .commentUpdateContainer{
+    display: flex;
+    justify-content: space-around;
+    .modifyBtn {
+      width: 2.7rem;
+      padding: 0;
+    }
+  }
+  
+  
+}

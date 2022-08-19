@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { followApi } from "../../lib/withTokenApi";
 
+import default_profile from "../../asset/default_profile.png";
 import styles from "./FollowerList.module.scss";
 
 interface Props {
@@ -11,6 +12,7 @@ interface Props {
   img: string | null;
   loginFollowState: number | null;
   nickname: string | null;
+  followCntHandler: (event: React.MouseEvent, state: boolean) => void;
   close: () => void;
 }
 
@@ -18,17 +20,17 @@ const FollowerList = (props: Props): ReactElement => {
   const navigate = useNavigate();
   const user = useSelector((state: RootState) => state.auth);
 
-  const { id, img, loginFollowState, nickname, close } = props;
+  const { id, img, loginFollowState, nickname, followCntHandler, close } =
+    props;
 
   const [followState, setFollowState] = useState(!!loginFollowState);
 
   function followHandler(event: React.MouseEvent) {
     event.preventDefault();
+    followCntHandler(event, followState);
     setFollowState(!followState);
     followApi(id)
-      .then((res) => {
-        console.log(res);
-      })
+      .then((res) => {})
       .catch((err) => {
         console.log(err);
       });
@@ -42,13 +44,10 @@ const FollowerList = (props: Props): ReactElement => {
   return (
     <div className={styles.container}>
       <div className={styles.followers}>
-        {img ? (
+        {img !== "" && img ? (
           <img src={`${img}`} alt="profile_image" onClick={moveHandler} />
         ) : (
-          <img
-            src="https://img1.daumcdn.net/thumb/C176x176/?fname=https://k.kakaocdn.net/dn/GHYFr/btrsSwcSDQV/UQZxkayGyAXrPACyf0MaV1/img.jpg"
-            alt=""
-          />
+          <img src={default_profile} alt="" />
         )}
 
         <div onClick={moveHandler}>{nickname}</div>

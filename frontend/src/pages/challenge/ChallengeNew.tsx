@@ -21,7 +21,6 @@ const ChallengeNew: React.FC = () => {
     const fileList = event.target.files;
 
     if (fileList) {
-      console.log(fileList[0]);
       setFile(fileList[0]);
       setPreviewImage(URL.createObjectURL(fileList[0]));
     }

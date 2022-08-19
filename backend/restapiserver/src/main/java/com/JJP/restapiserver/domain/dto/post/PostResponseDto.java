@@ -5,7 +5,6 @@ import com.JJP.restapiserver.domain.entity.file.PostImg;
 import com.JJP.restapiserver.domain.entity.stage.Post;
 import lombok.*;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -33,8 +32,8 @@ public class PostResponseDto {
         this.id = post.getId();
         this.title = post.getTitle();
         this.content = post.getContent();
-        this.postImg = post.getPostImgList();
-        this.writer = new Writer(post.getMember().getId(), post.getMember().getNickname(), post.getMember().getUser_img());
+        this.postImg = post.getPostImg();
+        this.writer = new Writer(post.getMember().getId(), post.getMember().getNickname(), post.getMember().getUser_img(), post.getMember().getMemberScore().getScore());
         this.likeNum = 0;
         this.isLiked = false;
         if(post.getPostLikeList() != null){

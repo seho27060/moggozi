@@ -1,9 +1,7 @@
 import type { RootState } from "../../store/store";
 import { useSelector } from "react-redux";
-
 import { Link, useParams } from "react-router-dom";
-import { useCallback, useContext, useEffect, useState } from "react";
-
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import { otherUserDetail } from "../../lib/generalApi";
 import {
   fetchMyChallengeList,
@@ -11,18 +9,14 @@ import {
   myPagePost,
   userTryChallenge,
 } from "../../lib/withTokenApi";
-
 import MypageFollow from "../../components/accounts/MypageFollow";
-
 import styles from "./UserPage.module.scss";
+import big_default_profile from "../../asset/big_default_profile.jpg";
 
 import { WebSocketContext } from "../../lib/WebSocketProvider";
 import { Alert } from "../../store/alert";
-
-import { UserChallengeType, UserPostType } from "../../store/userPage";
-
+import { setUserPagePostList, UserChallengeType } from "../../store/userPage";
 import { useDispatch } from "react-redux";
-
 import {
   setPostModalOpen,
   setPostUpdateFormState,
@@ -35,8 +29,12 @@ import { ChallengeItemState } from "../../store/challenge";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import UserTabBox from "./UserTabBox";
+import UserDetailTabBox from "./UserDetailTabBox";
 import { Box } from "@mui/material";
 import Loader from "../../components/ui/Loader";
+import PostFormModal from "../../components/ui/PostFormModal";
+
+import FavoriteIcon from "@mui/icons-material/Favorite";
 
 function UserPage() {
   const { postModalOpen, postUpdateFormOpen } = useSelector(
@@ -60,7 +58,11 @@ function UserPage() {
   const [followState, setFollowState] = useState(false);
 
   const [challengeList, setChallengeList] = useState<UserChallengeType[]>([]);
-  const [postList, setPostList] = useState<UserPostType[]>([]);
+  // const [postList, setPostList] = useState<UserPostType[]>([]);
+  const userUserPagePostList = useSelector(
+    (state: RootState) => state.userPage.UserPagePostList
+  );
+
   const [myChallengeList, setMyChallengeList] = useState<ChallengeItemState[]>(
     []
   );
@@ -82,6 +84,20 @@ function UserPage() {
     setValue(newValue);
   };
 
+  // 마이페이지에서 followed 목록에서 follow/unFollow한 경우
+  const followCntHandler = (event: React.MouseEvent, state: boolean) => {
+    // 마이 페이지가 아닌 경우는 바꾸지 않는다.
+    if (userId !== loginId) {
+      return;
+    }
+    // follow한 경우
+    if (state) {
+      setFollowingCnt(followingCnt - 1);
+    } else {
+      setFollowingCnt(followingCnt + 1);
+    }
+  };
+
   const handleScroll = useCallback((): void => {
     const { innerHeight } = window;
     const { scrollHeight } = document.body;
@@ -91,16 +107,19 @@ function UserPage() {
       value !== 0 &&
       Math.round(scrollTop + innerHeight) >= scrollHeight - 100
     ) {
-      setIsLogging(true);
       switch (value) {
         case 1: // 내 포스팅
           if (!postHasNext) {
             break;
           }
+          setIsLogging(true);
           myPagePost(userId, currentPostPage + 1, 16)
             .then((res) => {
-              console.log(userId, "post", res);
-              setPostList(postList.concat(res.content));
+              // console.log(userId, "post", res);
+              dispatch(
+                setUserPagePostList(userUserPagePostList.concat(res.content))
+              );
+              // setPostList(postList.concat(res.content));/
               setCurrentPostPage(res.pageNum);
               setPostHasNext(res.hasNext);
             })
@@ -110,29 +129,31 @@ function UserPage() {
           if (!challengeHasNext) {
             break;
           }
+          setIsLogging(true);
           userTryChallenge(userId, currentChallengePage + 1, 16)
             .then((res) => {
-              console.log(userId, "ch", res);
+              // console.log(userId, "ch", res);
               setChallengeList(challengeList.concat(res.content));
               setCurrentChallengePage(res.pageNum);
               setChallengeHasNext(res.hasNext);
             })
-            .catch((err) => console.log("ch err", err));
+            .catch((err) => console.log(err));
           break;
         case 3: // 만든 챌린지
           if (!myChallengeHasNext) {
             break;
           }
+          setIsLogging(true);
           if (userId === loginData.userInfo.id) {
             // 작성한 챌린지
             fetchMyChallengeList(currentMyChallengePage + 1, 16)
               .then((res) => {
-                console.log("call my recentrych");
+                // console.log("call my recentrych");
                 setMyChallengeList(myChallengeList.concat(res.content));
                 setCurrentMyChallengePage(res.pageNum);
                 setMyChallengeHasNext(res.hasNext);
               })
-              .catch((err) => console.log("myrecentch err", err));
+              .catch((err) => console.log(err));
           }
           break;
       }
@@ -144,13 +165,15 @@ function UserPage() {
     currentMyChallengePage,
     challengeList,
     myChallengeList,
-    postList,
+    // postList,
+    userUserPagePostList,
     userId,
     value,
     loginData.userInfo.id,
     challengeHasNext,
     myChallengeHasNext,
     postHasNext,
+    dispatch,
   ]);
 
   useEffect(() => {
@@ -162,7 +185,7 @@ function UserPage() {
   }, [handleScroll]);
 
   useEffect(() => {
-    console.log(userId, loginData.userInfo.id);
+    // console.log(userId, loginData.userInfo.id);
     otherUserDetail(userId, loginData.userInfo.id)
       .then((res) => {
         setNickname(res.nickname);
@@ -173,24 +196,23 @@ function UserPage() {
         setFollowingCnt(res.followingCnt);
         if (!!res.userImg === false) {
           // 기본 프로필 이미지
-          setImg(
-            "https://i.pinimg.com/236x/f2/a1/d6/f2a1d6d87b1231ce39710e6ba1c1e129.jpg"
-          );
+          setImg(big_default_profile);
         } else {
           setImg(res.userImg);
         }
         // 내 포스팅
         myPagePost(userId, 0, 16)
           .then((res) => {
-            console.log(userId, "post", res);
-            setPostList(res.content);
+            // console.log(userId, "post", res);
+            // setPostList(res.content);
+            dispatch(setUserPagePostList(res.content));
             setPostHasNext(res.hasNext);
           })
           .catch((err) => console.log("post err", err));
         // 도전한 챌린지
         userTryChallenge(userId, 0, 16)
           .then((res) => {
-            console.log(userId, "ch", res);
+            // console.log(userId, "ch", res);
             setChallengeList(res.content);
             setChallengeHasNext(res.hasNext);
           })
@@ -199,7 +221,7 @@ function UserPage() {
           // 작성한 챌린지
           fetchMyChallengeList(0, 16)
             .then((res) => {
-              console.log("call my recentrych");
+              // console.log("call my recentrych");
               setMyChallengeList(res.content);
               setMyChallengeHasNext(res.hasNext);
             })
@@ -210,7 +232,7 @@ function UserPage() {
         // alert("오류가 발생했습니다.")
         console.log("otherUserDetail", err);
       });
-  }, [userId, loginData]);
+  }, [userId, loginData, dispatch, loginId]);
 
   function followHandler(event: React.MouseEvent) {
     event.preventDefault();
@@ -218,6 +240,7 @@ function UserPage() {
       .then((res) => {
         setFollowedCnt(followState ? followedCnt - 1 : followedCnt + 1);
         setFollowState(!followState);
+        // console.log("follow", res);
         if (res.message === "Successfully followed.") {
           let jsonSend: Alert = {
             check: 0,
@@ -232,6 +255,7 @@ function UserPage() {
             type: "follow",
           };
           if (loginData.userInfo.id! !== userId!) {
+            // console.log("send msg", jsonSend); ///
             ws.current.send(JSON.stringify(jsonSend));
           }
         }
@@ -247,9 +271,6 @@ function UserPage() {
 
   return (
     <div className={styles.margin}>
-      <div style={{ margin: "20px" }}>
-        <a href="#/">공유버튼</a>
-      </div>
       <div className={styles.info}>
         {loginId === userId ? (
           <Link
@@ -284,140 +305,305 @@ function UserPage() {
         ) : (
           <div></div>
         )}
-        <MypageFollow followedCnt={followedCnt} followingCnt={followingCnt} />
+        <MypageFollow
+          followedCnt={followedCnt}
+          followingCnt={followingCnt}
+          followCntHandler={followCntHandler}
+        />
         {loginData.isLoggedIn ? (
           <div>
             {loginId === userId ? (
               ""
             ) : (
-              <button onClick={followHandler} className={styles.followButton}>
-                {" "}
-                {followState ? "♥ 언팔로우" : "♥ 팔로우"}
-              </button>
+              <div>
+                {followState ? (
+                  <div
+                    className={styles.unfollowButton}
+                    onClick={followHandler}
+                  >
+                    <FavoriteIcon /> <div>언팔로우</div>
+                  </div>
+                ) : (
+                  <div className={styles.followButton} onClick={followHandler}>
+                    <FavoriteIcon /> <div>팔로우</div>
+                  </div>
+                )}
+              </div>
             )}
           </div>
         ) : (
           <div></div>
         )}
       </div>
-      {isPrivate ? <div>블러 처리 가림막</div> : <div>보여주기</div>}
-      <div style={{ display: "flex", justifyContent: "center" }}>
-        <div className={styles.container}>
-          <Box
-            display="flex"
-            justifyContent="center"
-            width="100%"
-            borderBottom="2px solid #afafaf"
-            margin="50px 0 0 0"
-          >
-            <Tabs
-              sx={{}}
-              value={value}
-              onChange={handleChange}
-              variant="scrollable"
-              textColor="inherit"
-              TabIndicatorProps={{
-                style: {
-                  background: "rgba(81, 255, 20, 0.62)",
-                  height: "10px",
-                  bottom: "10px",
-                },
-              }}
-              scrollButtons
-              allowScrollButtonsMobile
-              aria-label="scrollable force tabs example"
-            >
-              {tabMenus.map((menus, index) => (
-                <Tab
-                  key={index}
-                  label={`${menus}`}
-                  sx={{
-                    fontSize: "20px",
-                    fontWeight: "700",
-                    fontFamily: "pretendard",
-                    textAlign: "center",
-                    marginRight: "20px",
-                    px: 1,
-                  }}
-                />
-              ))}
-            </Tabs>
-          </Box>
-        </div>
-      </div>
-      <div></div>
-      {userId !== loginId ? (
-        <>
-          {value === 0 && (
-            <UserTabBox
-              myChallenges={null}
-              challenges={challengeList.slice(0, 8)}
-              nickname={nickname}
-              posts={postList.slice(0, 8)}
-            />
-          )}
-          {value === 1 && (
-            <UserTabBox
-              myChallenges={null}
-              challenges={null}
-              nickname={nickname}
-              posts={postList}
-            />
-          )}
-          {value === 2 && (
-            <UserTabBox
-              myChallenges={null}
-              challenges={challengeList}
-              nickname={nickname}
-              posts={null}
-            />
-          )}
-        </>
-      ) : (
-        <>
-          {value === 0 && (
-            <UserTabBox
-              myChallenges={myChallengeList.slice(0, 8)}
-              challenges={challengeList.slice(0, 8)}
-              nickname={nickname}
-              posts={postList.slice(0, 8)}
-            />
-          )}
-          {value === 1 && (
-            <UserTabBox
-              myChallenges={null}
-              challenges={null}
-              nickname={nickname}
-              posts={postList}
-            />
-          )}
-          {value === 2 && (
-            <UserTabBox
-              myChallenges={null}
-              challenges={challengeList}
-              nickname={nickname}
-              posts={null}
-            />
-          )}
-          {value === 3 && (
-            <UserTabBox
-              myChallenges={myChallengeList}
-              challenges={null}
-              nickname={nickname}
-              posts={null}
-            />
-          )}
-        </>
+      {isPrivate && userId !== loginId && (
+        <div className={styles.privateBox}></div>
       )}
+      {isPrivate && userId !== loginId ? (
+        <div className={styles.blurEffect}>
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            <div className={styles.container}>
+              <Box
+                display="flex"
+                justifyContent="center"
+                width="100%"
+                borderBottom="2px solid #afafaf"
+                margin="50px 0 0 0"
+              >
+                <Tabs
+                  sx={{}}
+                  value={value}
+                  onChange={handleChange}
+                  variant="scrollable"
+                  textColor="inherit"
+                  TabIndicatorProps={{
+                    style: {
+                      background: "rgba(81, 255, 20, 0.62)",
+                      height: "10px",
+                      bottom: "10px",
+                    },
+                  }}
+                  scrollButtons
+                  allowScrollButtonsMobile
+                  aria-label="scrollable force tabs example"
+                >
+                  {tabMenus.map((menus, index) => (
+                    <Tab
+                      key={index}
+                      label={`${menus}`}
+                      sx={{
+                        fontSize: "20px",
+                        fontWeight: "700",
+                        fontFamily: "pretendard",
+                        textAlign: "center",
+                        marginRight: "20px",
+                        px: 1,
+                      }}
+                    />
+                  ))}
+                </Tabs>
+              </Box>
+            </div>
+          </div>
+          <div></div>
+          {userId !== loginId ? (
+            <>
+              {value === 0 && (
+                <UserTabBox
+                  myChallenges={null}
+                  challenges={challengeList.slice(0, 8)}
+                  nickname={nickname}
+                  posts={userUserPagePostList.slice(0, 8)}
+                  nameCheck={false}
+                />
+              )}
+              {value === 1 && (
+                <UserTabBox
+                  myChallenges={null}
+                  challenges={null}
+                  nickname={nickname}
+                  posts={userUserPagePostList}
+                  nameCheck={true}
+                />
+              )}
+              {value === 2 && (
+                <UserTabBox
+                  myChallenges={null}
+                  challenges={challengeList}
+                  nickname={nickname}
+                  posts={null}
+                  nameCheck={true}
+                />
+              )}
+            </>
+          ) : (
+            <>
+              {value === 0 && (
+                <UserTabBox
+                  myChallenges={myChallengeList.slice(0, 8)}
+                  challenges={challengeList.slice(0, 8)}
+                  nickname={nickname}
+                  posts={userUserPagePostList.slice(0, 8)}
+                  nameCheck={false}
+                />
+              )}
+              {value === 1 && (
+                <UserTabBox
+                  myChallenges={null}
+                  challenges={null}
+                  nickname={nickname}
+                  posts={userUserPagePostList}
+                  nameCheck={true}
+                />
+              )}
+              {value === 2 && (
+                <UserTabBox
+                  myChallenges={null}
+                  challenges={challengeList}
+                  nickname={nickname}
+                  posts={null}
+                  nameCheck={true}
+                />
+              )}
+              {value === 3 && (
+                <UserTabBox
+                  myChallenges={myChallengeList}
+                  challenges={null}
+                  nickname={nickname}
+                  posts={null}
+                  nameCheck={true}
+                />
+              )}
+            </>
+          )}
 
-      <div>
-        {postModalOpen && (
-          <PostModal open={postModalOpen} close={closePostModal}>
-            {!postUpdateFormOpen && <PostDetailItem />}
-            {postUpdateFormOpen && <PostUpdateForm />}
-          </PostModal>
-        )}
-      </div>
+          <div>
+            {postModalOpen && !postUpdateFormOpen && (
+              <PostModal open={postModalOpen} close={closePostModal}>
+                <PostDetailItem />
+              </PostModal>
+            )}
+            {postModalOpen && postUpdateFormOpen && (
+              <PostFormModal open={postModalOpen} close={closePostModal}>
+                <PostUpdateForm />
+              </PostFormModal>
+            )}
+          </div>
+        </div>
+      ) : (
+        <div>
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            <div className={styles.container}>
+              <Box
+                display="flex"
+                justifyContent="center"
+                width="100%"
+                borderBottom="2px solid #afafaf"
+                margin="50px 0 0 0"
+              >
+                <Tabs
+                  sx={{}}
+                  value={value}
+                  onChange={handleChange}
+                  variant="scrollable"
+                  textColor="inherit"
+                  TabIndicatorProps={{
+                    style: {
+                      background: "rgba(81, 255, 20, 0.62)",
+                      height: "10px",
+                      bottom: "10px",
+                    },
+                  }}
+                  scrollButtons
+                  allowScrollButtonsMobile
+                  aria-label="scrollable force tabs example"
+                >
+                  {tabMenus.map((menus, index) => (
+                    <Tab
+                      key={index}
+                      label={`${menus}`}
+                      sx={{
+                        fontSize: "20px",
+                        fontWeight: "700",
+                        fontFamily: "pretendard",
+                        textAlign: "center",
+                        marginRight: "20px",
+                        px: 1,
+                      }}
+                    />
+                  ))}
+                </Tabs>
+              </Box>
+            </div>
+          </div>
+          <div></div>
+          {userId !== loginId ? (
+            <>
+              {value === 0 && (
+                <UserTabBox
+                  myChallenges={null}
+                  challenges={challengeList.slice(0, 8)}
+                  nickname={nickname}
+                  posts={userUserPagePostList.slice(0, 8)}
+                  nameCheck={false}
+                />
+              )}
+              {value === 1 && (
+                <UserTabBox
+                  myChallenges={null}
+                  challenges={null}
+                  nickname={nickname}
+                  posts={userUserPagePostList}
+                  nameCheck={true}
+                />
+              )}
+              {value === 2 && (
+                <UserTabBox
+                  myChallenges={null}
+                  challenges={challengeList}
+                  nickname={nickname}
+                  posts={null}
+                  nameCheck={true}
+                />
+              )}
+            </>
+          ) : (
+            <>
+              {value === 0 && (
+                <UserTabBox
+                  myChallenges={myChallengeList.slice(0, 8)}
+                  challenges={challengeList.slice(0, 8)}
+                  nickname={nickname}
+                  posts={userUserPagePostList.slice(0, 8)}
+                  nameCheck={false}
+                />
+              )}
+              {/* // 포스팅 탭 */}
+              {value === 1 && (
+                <UserDetailTabBox
+                  myChallenges={null}
+                  challenges={null}
+                  nickname={nickname}
+                  posts={userUserPagePostList}
+                  nameCheck={true}
+                />
+              )}
+              {/* 도전한 챌린지 */}
+              {value === 2 && (
+                <UserDetailTabBox
+                  myChallenges={null}
+                  challenges={challengeList}
+                  nickname={nickname}
+                  posts={null}
+                  nameCheck={true}
+                />
+              )}
+              {/* 만든 챌린지 */}
+              {value === 3 && (
+                <UserDetailTabBox
+                  myChallenges={myChallengeList}
+                  challenges={null}
+                  nickname={nickname}
+                  posts={null}
+                  nameCheck={true}
+                />
+              )}
+            </>
+          )}
+
+          <div>
+            {postModalOpen && !postUpdateFormOpen && (
+              <PostModal open={postModalOpen} close={closePostModal}>
+                <PostDetailItem />
+              </PostModal>
+            )}
+            {postModalOpen && postUpdateFormOpen && (
+              <PostFormModal open={postModalOpen} close={closePostModal}>
+                <PostUpdateForm />
+              </PostFormModal>
+            )}
+          </div>
+        </div>
+      )}
       {isLogging && <Loader />}
     </div>
   );

@@ -1,0 +1,64 @@
+@use "../../styles/mixin.scss";
+
+@include mixin.desktop {
+  .link {
+    display: flex;
+    justify-content: center;
+    margin: 0 0 50px 0;
+
+    .img {
+      width: 290px;
+      height: 210px;
+      overflow: hidden;
+      border-radius: 5px;
+
+      img {
+        width: 290px !important;
+        height: 210px !important;
+        border-radius: 5px;
+        object-fit: cover;
+        transition: all 0.5s;
+        cursor: pointer;
+
+        &:hover {
+          transform: scale(1.1);
+        }
+      }
+    }
+
+
+    .itemTitle {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 10px 0 0 0;
+
+      .title {
+        margin: 0 0 0 10px;
+        font-size: 20px;
+        font-weight: 600;
+      }
+
+      .iconBox {
+        display: flex;
+        margin: 0 10px 0 0;
+
+        svg {
+          font-size: 20px;
+          color: red;
+
+          &:hover {
+            color: red !important;
+          }
+        }
+
+        div:nth-child(2) {
+          font-size: 20px;
+          font-weight: 600;
+          margin: 0 0 0 3px;
+        }
+      }
+    }
+
+  }
+}

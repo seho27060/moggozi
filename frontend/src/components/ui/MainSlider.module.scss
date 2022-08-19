@@ -3,12 +3,26 @@
 @include mixin.desktop {
   .img {
     // border-radius: 5px;
+    cursor: pointer;
     div {
       // border-radius: 10px;
       img{
-        width: 980px;
+        width: 989px;
         height: 450px;
-        object-fit: cover;
+        object-fit: fill;
+        border-radius: 10px;
+        border: 1.5px solid mixin.$cloudGray;
+        background: #fff;
+      }
+    }
+
+    a {
+      // border-radius: 10px;
+      cursor: pointer;
+      img{
+        width: 989px;
+        height: 450px;
+        object-fit: fill;
         border-radius: 10px;
         border: 1.5px solid mixin.$cloudGray;
       }
@@ -21,8 +35,8 @@
     &::before {
       display: inline-block;
       position: relative;
-      left: 62px;
-      top: 421px;
+      left: 63px;
+      top: 422px;
       width: 40px;
       height: 20px;
       color: mixin.$cloudGray;
@@ -30,7 +44,7 @@
       font-size: 18px;
       font-weight: 600;
       line-height: 19px;
-      z-index: 999;
+      z-index: 60;
       content: attr(data-content),
     }
   }

@@ -1,13 +1,13 @@
 import { Outlet } from "react-router-dom";
+import Footer from "../components/ui/Footer";
 import NavigationBar from "./NavigationBar";
 
 const ChallengeLayout = () => {
   return (
-    <div>
+    <div style={{ minHeight: "100%", position: "relative"}}>
       <NavigationBar />
-      배경 들어갈 곳.
-      challenge Layout
       <Outlet />
+      <Footer />
     </div>
   );
 };

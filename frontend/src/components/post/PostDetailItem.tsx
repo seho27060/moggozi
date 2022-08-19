@@ -15,7 +15,8 @@ import PostOptionBtn from "./PostOptionBtn";
 import Dompurify from "dompurify";
 import styles from "./PostDetailItem.module.scss";
 import "react-quill/dist/quill.snow.css";
-import { BsFillPersonFill } from "react-icons/bs"
+import default_profile_Img from "../../asset/default_profile.png";
+import no_image from "../../asset/no_image.png";
 
 const PostDetailItem: React.FC<{}> = () => {
   const dispatch = useDispatch();
@@ -25,11 +26,10 @@ const PostDetailItem: React.FC<{}> = () => {
   const commentState = useSelector(
     (state: RootState) => state.comment.comments
   );
-  console.log(post.postModalState);
+
   useEffect(() => {
     commentRead(post.postModalState!.id)
       .then((res) => {
-        console.log(`${post.postModalState!.id}의 댓글`);
         dispatch(commentSet(res));
       })
       .catch((err) => {
@@ -45,9 +45,10 @@ const PostDetailItem: React.FC<{}> = () => {
           src={
             post.postModalState.postImg!.length !== 0
               ? post.postModalState.postImg[0].path!
-              : "https://blog.kakaocdn.net/dn/vckff/btqCjeJmBHM/tMVpe4aUIMfH4nKS4aO3tK/img.jpg"
+              : no_image
           }
           alt="포스팅이미지"
+          style={{ height: "550px", width: "550px" }}
         />
         {/* 수정 버튼 */}
       </div>
@@ -63,11 +64,7 @@ const PostDetailItem: React.FC<{}> = () => {
             {post.postModalState!.writer?.img ? (
               <img src={post.postModalState!.writer?.img} alt="" />
             ) : (
-              <BsFillPersonFill
-                // src="https://blog.kakaocdn.net/dn/vckff/btqCjeJmBHM/tMVpe4aUIMfH4nKS4aO3tK/img.jpg"
-                // alt=""
-                style={{ height: "50px", width: "50px" }}
-              />
+              <img src={default_profile_Img} alt="" />
             )}
 
             <div>{post.postModalState!.writer?.nickname}</div>

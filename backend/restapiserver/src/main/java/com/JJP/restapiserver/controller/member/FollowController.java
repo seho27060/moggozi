@@ -43,13 +43,12 @@ public class FollowController {
     // 조회하는 유저를 팔로우하는 리스트 - 로그인한 유저가 팔로우하는 상대면 상태 표시 필요 (follow_state)
     @GetMapping("/followed/{toMemberId}")
     public ResponseEntity<?> followedList(@PathVariable("toMemberId") Long toMemberId, HttpServletRequest servletRequest) {
+        Long loginId = null;
         if (servletRequest.getHeader("Authorization") != null) {
-            Long loginId = getMemberId(servletRequest);
-            if (loginId != null) {
-                return followService.followedList(toMemberId, loginId);
-            }
+            loginId = getMemberId(servletRequest);
         }
-        return ResponseEntity.badRequest().body("Error: You should log in.");
+
+        return followService.followedList(toMemberId, loginId);
     }
 
     // 멤버 아이디 획득을 위해 공통으로 쓰이는 메소드

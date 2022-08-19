@@ -1,7 +1,7 @@
 import { imgState, StageState } from "../../store/stage";
 import Dompurify from "dompurify";
 
-import styles from "./StageEditItem.module.scss"
+import styles from "./StageEditItem.module.scss";
 
 const StageEditItem: React.FC<{
   stage: StageState;
@@ -10,10 +10,10 @@ const StageEditItem: React.FC<{
   return (
     <div>
       <div className={styles.stageTitle}>
-        <div>스테이지 이름</div>
         <div>{stage.name}</div>
       </div>
-      <div style={{height: "240px", overflow: "hidden"}}
+      <div
+        style={{ height: "240px", overflow: "hidden" }}
         dangerouslySetInnerHTML={{
           __html: Dompurify.sanitize(stage!.content!.toString()),
         }}

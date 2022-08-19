@@ -16,6 +16,7 @@ import { ChallengeItemState } from "../../store/challenge";
 import { RootState } from "../../store/store";
 
 import styles from "./Challenges.module.scss";
+import KeyboardDoubleArrowUpIcon from "@mui/icons-material/KeyboardDoubleArrowUp";
 import LocalFireDepartmentIcon from "@mui/icons-material/LocalFireDepartment";
 
 const Challenges: React.FC = () => {
@@ -39,7 +40,6 @@ const Challenges: React.FC = () => {
     const { scrollTop } = document.documentElement;
 
     if (hasNext && Math.round(scrollTop + innerHeight) >= scrollHeight - 100) {
-      console.log(currentPage);
       setPageIsLoading(true);
       if (isLoggedIn) {
         isLoginFetchRecentChallengeList(currentPage + 1, 10)
@@ -75,7 +75,6 @@ const Challenges: React.FC = () => {
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll, true);
-
     return () => {
       window.removeEventListener("scroll", handleScroll, true);
     };
@@ -134,49 +133,62 @@ const Challenges: React.FC = () => {
   }, [isLoggedIn]);
 
   return (
-    <div className={styles.container}>
-      <div>
-        {rankIsLoading === true && <Loader />}
-        {rankIsLoading === false && (
+    <div>
+      <div className={styles.container}>
+        {rankIsLoading === false && recentIsLoading === false ? (
           <div>
-            <div className={styles.popularChallengeTitle}>
-              <div>인기 챌린지</div>
-              <button
-                onClick={() => {
-                  navigate(`/challenge/new`);
-                }}
-              >
-                챌린지 만들기
-              </button>
-            </div>
             <div>
-              <PopChallengeList challenges={loadedChallengeRankList} />
-            </div>
-          </div>
-        )}
-
-        {recentIsLoading === true && <Loader />}
-
-        {recentIsLoading === false && (
-          <div className={styles.newChallenge}>
-            <div style={{ display: "flex", justifyContent: "center" }}>
-              <div className={styles.new}>
-                <div className={styles.sentence}>
-                  <div>방금 만들어진</div>
-                  <div>따끈따끈한 챌린지를 만나보세요!</div>
-                </div>
-                <div className={styles.icon}>
-                  <LocalFireDepartmentIcon />
-                </div>
+              <div className={styles.popularChallengeTitle}>
+                <div>인기 챌린지</div>
+                {isLoggedIn && (
+                  <button
+                    onClick={() => {
+                      navigate(`/challenge/new`);
+                    }}
+                  >
+                    챌린지 만들기
+                  </button>
+                )}
+              </div>
+              <div>
+                <PopChallengeList challenges={loadedChallengeRankList} />
               </div>
             </div>
 
-            <div>
-              <NewChallengeList challenges={loadedRecentChallengeList} />
+            <div className={styles.newChallenge}>
+              <div style={{ display: "flex", justifyContent: "center" }}>
+                <div className={styles.new}>
+                  <div className={styles.sentence}>
+                    <div>방금 만들어진</div>
+                    <div>따끈따끈한 챌린지를 만나보세요!</div>
+                  </div>
+                  <div className={styles.icon}>
+                    <LocalFireDepartmentIcon />
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <NewChallengeList challenges={loadedRecentChallengeList} />
+              </div>
             </div>
           </div>
+        ) : (
+          <Loader />
         )}
-        {pageIsLoading && <Loader />}
+      </div>
+      {pageIsLoading && <Loader />}
+      <div
+        className={styles.topButton}
+        onClick={() => {
+          window.scrollTo({
+            behavior: "smooth",
+            left: 0,
+            top: 0,
+          });
+        }}
+      >
+        <KeyboardDoubleArrowUpIcon />
       </div>
     </div>
   );

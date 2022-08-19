@@ -46,6 +46,7 @@ const SearchPage: React.FC = () => {
     const page = Number(searchParams.get("page"));
     const size = Number(searchParams.get("size"));
     const choice = Number(searchParams.get("choice"));
+
     // 비어있으면 종료
     if (!keyword) {
       setIsLoading(false);
@@ -164,6 +165,7 @@ const SearchPage: React.FC = () => {
             ref={searchInputRef}
             onKeyPress={onKeyPressHandler}
             autoComplete="off"
+            defaultValue={keyword!}
           ></input>
           <button onClick={submitHandler}>검색</button>
         </div>

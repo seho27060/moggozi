@@ -33,7 +33,7 @@
       width: 120px;
       height: 50px;
       border-radius: 5px;
-      background: linear-gradient(90deg, #FF9921 -1.06%, #FFC337 101.51%);
+      background: linear-gradient(90deg, #ff9921 -1.06%, #ffc337 101.51%);
       color: #fff;
       font-size: 16px;
       font-weight: 700;
@@ -42,6 +42,9 @@
       &:hover {
         font-size: 18px;
       }
+    }
+    .imgButton {
+      width: 160px;
     }
   }
 
@@ -64,8 +67,6 @@
         background: mixin.$mainColor;
         color: #fff;
       }
-
     }
-
   }
 }

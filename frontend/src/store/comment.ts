@@ -8,8 +8,8 @@ export interface Comment {
   parentId: number | null;
   text: string | null;
   writer: UserInfo | null;
-  createdTime: Date | null;
-  modifiedTime: Date | null;
+  createdTime: Date | string | null;
+  modifiedTime: Date | string | null;
 }
 
 // state : 0(숨김), 1(활성), 2(삭제)
@@ -34,15 +34,15 @@ export const commentSlice = createSlice({
   initialState: initialCommentState,
   reducers: {
     commentSet: (state: CommentListState, action) => {
-      console.log("commentSet", action);
+      // console.log("commentSet", action);
       state.comments = action.payload;
     },
     commentRegister: (state: CommentListState, action) => {
-      console.log("commentRegister", action);
+      // console.log("commentRegister", action);
       state.comments = [...state.comments!, action.payload];
     },
     commentModify: (state: CommentListState, action) => {
-      console.log("commentModify", action);
+      // console.log("commentModify", action);
       //0(숨김), 1(활성), 2(삭제)
       const commentsModified = state.comments!.filter(
         (comment) => comment.id !== action.payload.id
@@ -50,7 +50,7 @@ export const commentSlice = createSlice({
       state.comments = [...commentsModified, action.payload];
     },
     commentRemove: (state: CommentListState, action) => {
-      console.log("commentRemove", action);
+      // console.log("commentRemove", action);
       //0(숨김), 1(활성), 2(삭제)
       state.comments = state.comments!.filter(
         (comment) => comment.id !== action.payload

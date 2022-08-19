@@ -9,7 +9,7 @@ import { WebSocketContext } from "../../lib/WebSocketProvider";
 import { UserInfo } from "../../store/auth";
 import { useNavigate } from "react-router-dom";
 
-import styles from "./OverCommentForm.module.scss"
+import styles from "./OverCommentForm.module.scss";
 
 const OverCommentForm: React.FC<{
   postId: number | null;
@@ -37,7 +37,6 @@ const OverCommentForm: React.FC<{
     console.log(enteredComment);
     commentAdd(enteredComment)
       .then((res) => {
-        console.log(`${postId}에 ${parentId} 댓글에 댓글 달기 완료`, res);
         dispatch(commentRegister(res));
         // 댓글, 대댓글 달리면 무조건 포스팅작성자에게 알림
         let jsonSend: Alert = {
@@ -79,7 +78,7 @@ const OverCommentForm: React.FC<{
             }
           });
         }
-        close()
+        close();
       })
       .catch((err) => {
         console.log(`comment register err ${err}`);
@@ -92,9 +91,16 @@ const OverCommentForm: React.FC<{
   return (
     <>
       <form className={styles.commentForm}>
-        <textarea name="comment" id="comment" ref={enteredText} placeholder="댓글달기"></textarea>
+        <textarea
+          name="comment"
+          id="comment"
+          ref={enteredText}
+          placeholder="댓글달기"
+        ></textarea>
         {/* <input type="text" id="comment" ref={enteredText} required placeholder="댓글달기"/> */}
-        <div><button onClick={commentSubmitHandler}>게시</button></div>
+        <div>
+          <button onClick={commentSubmitHandler}>등록</button>
+        </div>
       </form>
     </>
   );

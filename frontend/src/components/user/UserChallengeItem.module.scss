@@ -1,29 +1,154 @@
-@use '../../styles/mixin.scss';
+@use "../../styles/mixin.scss";
 
 @include mixin.desktop {
-  .link {
-    text-decoration: none;
+
+  .container {
     display: flex;
     justify-content: center;
-    
-    .img {
-      overflow: hidden;
-      border-radius:5px;
-      margin: 10px 10px 10px 10px;
-      // width: 220px;
+  }
 
+  .link {
+    margin: 0 0 50px 0;
+    text-decoration: none;
+
+    .img {
+      width: 290px;
+      height: 210px;
+      overflow: hidden;
+      border-radius: 5px;
 
       img {
-        width: 220px;
-        height: 160px;
-        border-radius:5px;
-        overflow: hidden;
+        width: 290px !important;
+        height: 210px !important;
+        border-radius: 5px;
+        object-fit: cover;
         transition: all 0.5s;
-  
+
         &:hover {
           transform: scale(1.1);
         }
       }
+    }
+
+    .level1 {
+      width: 0;
+      height: 0;
+
+      &::before {
+        display: inline-block;
+        position: relative;
+        content:"Lv.1";
+        background: #F0D300;
+        width: 40px;
+        height: 20px;
+        color: #fff;
+        font-size: 16px;
+        font-weight: 600;
+        border-radius: 0px 0px 5px 5px;
+        left: 193px;
+        bottom: 215px;
+        text-align: center;
+        line-height: 20px;
+      }
+    }
+
+    .level2 {
+      width: 0;
+      height: 0;
+
+      &::before {
+        display: inline-block;
+        position: relative;
+        content:"Lv.2";
+        background: #5AAE33;
+        width: 40px;
+        height: 20px;
+        color: #fff;
+        font-size: 16px;
+        font-weight: 600;
+        border-radius: 0px 0px 5px 5px;
+        left: 193px;
+        bottom: 215px;
+        text-align: center;
+        line-height: 20px;
+      }
+    }
+
+    .level3 {
+      width: 0;
+      height: 0;
+
+      &::before {
+        display: inline-block;
+        position: relative;
+        content:"Lv.3";
+        background: #E2195A;
+        width: 40px;
+        height: 20px;
+        color: #fff;
+        font-size: 16px;
+        font-weight: 600;
+        border-radius: 0px 0px 5px 5px;
+                left: 193px;
+        bottom: 215px;
+        left: 193px;
+        bottom: 215px;
+        text-align: center;
+        line-height: 20px;
+      }
+    }
+
+    .badge1 {
+      width: 0;
+      height: 0;
+
+      &::before {
+        display: inline-block;
+        position: relative;
+        content:"진행";
+        background: mixin.$mainColor;
+        width: 40px;
+        height: 20px;
+        color: #fff;
+        font-size: 15px;
+        font-weight: 600;
+        border-radius: 0px 0px 5px 5px;
+        left: 237px;
+        bottom: 215px;
+        text-align: center;
+        line-height: 20px;
+      }
+    }
+    .badge2 {
+      width: 0;
+      height: 0;
+
+      &::before {
+        display: inline-block;
+        position: relative;
+        content:"완료";
+        background: linear-gradient(90deg, #FF9921 -1.06%, #FFC337 101.51%);
+        width: 40px;
+        height: 20px;
+        color: #fff;
+        font-size: 15px;
+        font-weight: 600;
+        border-radius: 0px 0px 5px 5px;
+        left: 237px;
+        bottom: 215px;
+        text-align: center;
+        line-height: 20px;
+      }
+    }
+
+
+    .itemTitle {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 15px 0 0 0;
+      font-size: 18px;
+      font-weight: 700;
     }
 
   }

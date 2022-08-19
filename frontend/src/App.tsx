@@ -4,14 +4,16 @@ import { useEffect } from "react";
 import Router from "./routes";
 import { authentication } from "./store/auth";
 import { persistAuth } from "./lib/withTokenApi";
-// import styles from "./App.module.scss";
+import styles from "./App.module.scss";
 import { useSelector } from "react-redux";
 import { RootState } from "./store/store";
 import WebSocketProvider from "./lib/WebSocketProvider";
 
+import backgroundImg from "./asset/mainbackground.png";
+import ScrollTop from "./components/ui/ScrollToTop"
+
 function App() {
   const dispatch = useDispatch();
-
   const user = useSelector((state: RootState) => state.auth.userInfo);
 
   useEffect(() => {
@@ -26,9 +28,18 @@ function App() {
     }
   }, [dispatch, user.id]);
 
+  // style={{backgroundImage: `url(${backgroundImg})`, backgroundSize: "100%"}}
   return (
-    <div style={{height: "100%"}}>
+    <div
+      style={{
+        height: "100%",
+        backgroundImage: `url(${backgroundImg})`,
+        backgroundSize: "100%",
+      }}
+    >
       <WebSocketProvider>
+        <ScrollTop />
+        <div className={styles.mobile}></div>
         <Router />
       </WebSocketProvider>
     </div>

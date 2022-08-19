@@ -29,7 +29,7 @@ const StageUpdateBtn: React.FC<{
 
   return (
     <div>
-      <div className={styles.index}>{index}</div>
+      <div className={styles.index}>{index + 1}</div>
       <div className={styles.edit} onClick={openModal}>
         수정
       </div>

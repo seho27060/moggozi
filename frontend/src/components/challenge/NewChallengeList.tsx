@@ -1,19 +1,18 @@
 import { ChallengeItemState } from "../../store/challenge";
 import NewChallengeItem from "./NewChallengeItem";
 
-import styles from "./NewChallengeList.module.scss"
+import styles from "./NewChallengeList.module.scss";
 
 const NewChallengeList: React.FC<{ challenges: ChallengeItemState[] }> = ({
   challenges,
 }) => {
-  console.log(challenges)
   return (
     <div>
-    <div className={styles.challengeList}>
-      {challenges.map((challenge) => (
-        <NewChallengeItem key={challenge.id} challenge={challenge} />
-      ))}
-    </div>
+      <div className={styles.challengeList}>
+        {challenges.map((challenge) => (
+          <NewChallengeItem key={challenge.id} challenge={challenge} />
+        ))}
+      </div>
     </div>
   );
 };

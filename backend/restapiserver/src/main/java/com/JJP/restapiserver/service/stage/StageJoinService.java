@@ -1,6 +1,6 @@
 package com.JJP.restapiserver.service.stage;
 
-import com.JJP.restapiserver.domain.dto.member.response.MyPageStageDto;
+import com.JJP.restapiserver.domain.dto.SliceListDto;
 import com.JJP.restapiserver.domain.dto.stage.StageCompleteDto;
 import com.JJP.restapiserver.domain.dto.stage.StageJoinRequestDto;
 import com.JJP.restapiserver.domain.dto.stage.StageResponseDto;
@@ -18,5 +18,5 @@ public interface StageJoinService {
 
     int stateStage(Long member_id, Long stage_id);
 
-    MyPageStageDto infiniteStageList(Long member_id, Pageable pageable);
+    SliceListDto infiniteStageList(Long member_id, Pageable pageable);
 }

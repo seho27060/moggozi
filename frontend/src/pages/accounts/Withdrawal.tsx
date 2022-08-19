@@ -1,8 +1,6 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-
-import { logoutApi } from "../../lib/withTokenApi";
 import { logout } from "../../store/auth";
 
 import { withdrawal } from "../../lib/withTokenApi";
@@ -19,15 +17,8 @@ const Withdrawal = () => {
   const [incorrectModalOpen, setIncorrectModalOpen] = useState(false);
 
   const withdrawalCloseModal = () => {
-    logoutApi()
-      .then((res) => {
-        dispatch(logout());
-        navigate("/", { replace: true });
-        window.location.reload();
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    navigate("/");
+    window.location.reload();
   };
   const incorrectCloseModal = () => {
     setIncorrectModalOpen(false);
@@ -42,12 +33,17 @@ const Withdrawal = () => {
     };
     withdrawal(option)
       .then((res) => {
+        dispatch(logout());
         setWithdrawalModalOpen(true);
       })
       .catch((err) => {
         setIncorrectModalOpen(true);
       });
   };
+
+  useEffect(() => {
+    document.body.style.overflow = "unset";
+  }, []);
 
   return (
     <div>

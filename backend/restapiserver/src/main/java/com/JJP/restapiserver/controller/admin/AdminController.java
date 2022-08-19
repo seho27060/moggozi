@@ -24,7 +24,7 @@ public class AdminController {
     @PostMapping("/login")
     public ResponseEntity<?> loginAdmin(HttpSession session, @RequestBody AdminLoginRequest adminLoginRequest) {
         ResponseEntity responseEntity = adminService.loginAdmin(adminLoginRequest.getUsername(), adminLoginRequest.getPassword());
-        if(responseEntity.getStatusCodeValue() == 200) {
+        if(responseEntity.getStatusCodeValue() == 200){
             session.setAttribute("username", adminLoginRequest.getUsername());
             session.setAttribute("userRole", "ROLE_ADMIN");
         }
@@ -53,10 +53,8 @@ public class AdminController {
     public ResponseEntity<?> updateUser(HttpSession session, @PathVariable("memberId") Long memberId) {
         String username = (String) session.getAttribute("username");
         String userRole = (String) session.getAttribute("userRole");
-
         return adminService.updateUserInfo(username, userRole, memberId);
     }
-
 
 /*    // Session이 제대로 저장되었는지 확인하기 위한 API
     @PostMapping("/session")

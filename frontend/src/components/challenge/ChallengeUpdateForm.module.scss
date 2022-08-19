@@ -37,6 +37,16 @@
     }
   }
 
+  .descriptionCnt {
+    display: inline-block;
+    position: relative;
+    left: 840px;
+    bottom: 28px;
+    font-size: 14px;
+    font-weight: 500;
+    color: rgb(184, 184, 184);
+  }
+
   .level {
     display: flex;
     margin: 60px 0 0 0;
@@ -68,6 +78,7 @@
       padding: 10px 10px 10px 15px;
       font-weight: 600;
       font-size: 40px;
+      background: none;
 
       &:focus {
         outline: none;
@@ -78,6 +89,16 @@
         font-size: 40px;
         line-height: 48px;
       }
+    }
+
+    .titleCnt {
+      display: inline-block;
+      position: relative;
+      left: 940px;
+      bottom: 20px;
+      font-size: 14px;
+      font-weight: 500;
+      color:rgb(184, 184, 184);
     }
   }
 
@@ -101,6 +122,7 @@
         line-height: 24px;
       }
     }
+
   }
 
   .checker {
@@ -125,6 +147,7 @@
       background: linear-gradient(90deg, #FF9921 -1.06%, #FFC337 101.51%);
       width: 140px;
       height: 60px;
+      cursor: pointer;
     }
   }
 }

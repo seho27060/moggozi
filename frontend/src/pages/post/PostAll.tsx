@@ -2,18 +2,22 @@ import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import PostDetailItem from "../../components/post/PostDetailItem";
 import PostPageList from "../../components/post/PostPageList";
+import PostUpdateForm from "../../components/post/PostUpdateForm";
 import Loader from "../../components/ui/Loader";
+import PostFormModal from "../../components/ui/PostFormModal";
 import PostModal from "../../components/ui/PostModal";
 import { fetchPostLikeList, fetchPostRecentList } from "../../lib/withTokenApi";
 import { PostData } from "../../store/post";
 import {
   // setPostFormModalOpen,
   setPostModalOpen,
+  setPostUpdateFormState,
   // setPostUpdateFormState,
 } from "../../store/postModal";
 import { RootState } from "../../store/store";
 
 import styles from "./PostAll.module.scss";
+import KeyboardDoubleArrowUpIcon from "@mui/icons-material/KeyboardDoubleArrowUp";
 
 const PostAll: React.FC = () => {
   const dispatch = useDispatch();
@@ -24,10 +28,13 @@ const PostAll: React.FC = () => {
   const [hasNext, setHasNext] = useState(false);
 
   const user = useSelector((state: RootState) => state.auth.userInfo);
-  const { postModalOpen } = useSelector((state: RootState) => state.postModal);
+  const { postModalOpen, postUpdateFormOpen } = useSelector(
+    (state: RootState) => state.postModal
+  );
 
   const closePostModal = () => {
     dispatch(setPostModalOpen(false));
+    dispatch(setPostUpdateFormState(false));
   };
 
   if (postModalOpen) {
@@ -41,7 +48,6 @@ const PostAll: React.FC = () => {
     const { scrollTop } = document.documentElement;
 
     if (hasNext && Math.round(scrollTop + innerHeight) >= scrollHeight - 100) {
-      console.log(currentPage);
       setIsLoading(true);
 
       fetchPostRecentList(currentPage + 1, 15)
@@ -67,13 +73,11 @@ const PostAll: React.FC = () => {
     setIsLoading(true);
     fetchPostLikeList(0, 3)
       .then((res) => {
-        console.log("postlikelist", res);
         setLikePostList(res.content);
       })
       .catch((err) => console.log("likepostlist err", err));
     fetchPostRecentList(0, 15)
       .then((res) => {
-        console.log("fisrt call", res);
         setRecentPostList(res.content);
         setHasNext(res.hasNext);
         setIsLoading(false);
@@ -95,14 +99,36 @@ const PostAll: React.FC = () => {
         </div>
 
         <div>
-          {postModalOpen && (
+          {/* {postModalOpen && (
+            <PostModal open={postModalOpen} close={closePostModal}>
+              <PostDetailItem />
+            </PostModal>
+          )} */}
+          {postModalOpen && !postUpdateFormOpen && (
             <PostModal open={postModalOpen} close={closePostModal}>
               <PostDetailItem />
             </PostModal>
           )}
+          {postModalOpen && postUpdateFormOpen && (
+            <PostFormModal open={postModalOpen} close={closePostModal}>
+              <PostUpdateForm />
+            </PostFormModal>
+          )}
         </div>
       </div>
       {isLoading && <Loader />}
+      <div
+        className={styles.topButton}
+        onClick={() => {
+          window.scrollTo({
+            behavior: "smooth",
+            left: 0,
+            top: 0,
+          });
+        }}
+      >
+        <KeyboardDoubleArrowUpIcon />
+      </div>
     </div>
   );
 };

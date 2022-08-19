@@ -34,14 +34,12 @@ const CommentForm: React.FC<{
         order: order,
         state: 1,
       };
-      console.log(enteredComment);
 
       if (enteredComment.text!.length <= 0) {
         alert("댓글 내용을 입력해주세요.");
       } else {
         commentAdd(enteredComment)
           .then((res) => {
-            console.log(`${postId}에 ${parentId} 댓글에 댓글 달기 완료`, res);
             dispatch(commentRegister(res));
             // 댓글, 대댓글 달리면 무조건 포스팅작성자에게 알림
             let jsonSend: Alert = {
@@ -108,7 +106,7 @@ const CommentForm: React.FC<{
         ></textarea>
         {/* <input type="text" id="comment" ref={enteredText} required placeholder="댓글달기"/> */}
         <div>
-          <button onClick={commentSubmitHandler}>게시</button>
+          <button onClick={commentSubmitHandler}>등록</button>
         </div>
       </form>
     </>

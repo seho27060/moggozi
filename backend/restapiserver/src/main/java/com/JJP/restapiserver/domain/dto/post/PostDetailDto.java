@@ -1,9 +1,11 @@
 package com.JJP.restapiserver.domain.dto.post;
 
 import com.JJP.restapiserver.domain.dto.challenge.Writer;
+import com.JJP.restapiserver.domain.entity.file.PostImg;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -17,7 +19,7 @@ public class PostDetailDto {
 
     private String content;
 
-    private String postImg;
+    private List<PostImg> postImg;
 
     private Writer writer;
 

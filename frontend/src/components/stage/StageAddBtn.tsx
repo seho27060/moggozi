@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import Modal from "../ui/Modal";
+import StageEditModal from "../ui/StageEditModal";
 import StageForm from "./StageForm";
 
 import styles from "../../pages/stage/StageEdit.module.scss";
@@ -31,9 +31,9 @@ const StageAddBtn: React.FC = () => {
           <AddIcon />
         </div>
       </div>
-      <Modal open={modalOpen} close={closeModal} header="스테이지 생성">
+      <StageEditModal open={modalOpen} close={closeModal} header="스테이지 생성">
         <StageForm closeModal={closeModal} />
-      </Modal>
+      </StageEditModal>
     </div>
   );
 };

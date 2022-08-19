@@ -1,26 +1,53 @@
 @use "../../styles/mixin.scss" as mixin;
+
 .container {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 1.6rem 1rem;
-  font-size: 1.5rem;
+  // padding: 1.6rem 1rem;
+  padding: 25px 10px 25px 10px;
+  font-size: 1.1rem;
   text-decoration: none;
+  transition: all 0.5s;
+  background: #fff;
+  &:hover {
+    background-color: rgb(240, 240, 240);
+  }
 
-  div:nth-child(1) {
+  .title {
     margin: 0 0 0 20px;
+    font-size: 20px;
+    font-weight: 500;
   }
+}
 
-  .noticeDate {
-    font-size: 1.1rem;
-    padding: 0rem 1.9rem;
-    color: mixin.$cloudGray;
-    display: flex;
-    align-items: center;
+.horizon {
+  width: 0px;
+  height: 0px;
 
-    svg {
-      margin-top: 3px;
-    }
-    
+  &:after {
+    display: inline-block;
+    position: relative;
+    content: "";
+    background: mixin.$cloudLine;
+    width: 992px;
+    height: 1px;
+    bottom: 12px;
+    // left: 16px;
   }
+}
+
+
+.noticeDate { 
+  font-size: 15px;
+  // padding: 0rem 1.9rem;
+  padding: 0 15px 0 0;
+  color: mixin.$cloudGray;
+  display: flex;
+  align-items: center;
+
+  svg {
+    margin-top: 3px;
+  }
+  
 }

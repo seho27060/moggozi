@@ -8,6 +8,9 @@ import PostLayout from "./layout/PostLayout";
 import StageLayout from "./layout/StageLayout";
 import UserLayout from "./layout/UserLayout";
 import SearchLayout from "./layout/SearchLayout";
+import AboutPage from "./pages/AboutPage";
+import MainNotice from "./pages/MainNotice"
+
 // Accounts
 import Login from "./pages/accounts/Login";
 import CompleteSignUp from "./pages/accounts/CompleteSignUp";
@@ -62,6 +65,14 @@ export default function Router() {
           path: "/notice/detail/:noticeId",
           element: <NoticeDetailPage/>,
         },
+        {
+          path: "/about",
+          element: <AboutPage />,
+        },
+        {
+          path: "/mainNotice",
+          element: <MainNotice />,
+        }
       ],
     },
     {

@@ -18,7 +18,6 @@ const NoticePage: React.FC = () => {
   useEffect(() => {
     noticePageRead(Number(noticePageNum))
       .then((res) => {
-        console.log(`${noticePageNum}번 페이지 공지사항 불러오기`, res);
         // dispatch(setNoticeList(res))
         dispatch(setNoticeList([...res.content]));
         setTotalPages(Number(res.totalPages));
@@ -32,13 +31,14 @@ const NoticePage: React.FC = () => {
     <div className={styles.container}>
       <div className={styles.noticeList}>
         <div className={styles.noticeBanner}>공지사항</div>
-        <hr />
-        {noticeList!.map((notice) => (
-          <div key={notice.noticeId}>
-            <NoticeItem notice={notice} />
-            <hr />
-          </div>
-        ))}
+        <div className={styles.horizon}></div>
+        <div className={styles.minHeight}>
+          {noticeList!.map((notice) => (
+            <div key={notice.noticeId}>
+              <NoticeItem notice={notice} />
+            </div>
+          ))}
+        </div>
         <div className={styles.navigateBtnContainer}>
           <Link
             to={
@@ -52,7 +52,7 @@ const NoticePage: React.FC = () => {
           </Link>
           <Link
             to={
-              Number(noticePageNum) < totalPages-1
+              Number(noticePageNum) < totalPages - 1
                 ? `/notice/${Number(noticePageNum) + 1}`
                 : "#"
             }

@@ -10,20 +10,21 @@ import { postImgApi, postUpdate } from "../../lib/withTokenApi";
 import { RootState } from "../../store/store";
 
 import EditorComponent from "../ui/Editor";
+import ChoiceModal from "../../components/ui/ChoiceModal";
 import ReactQuill from "react-quill";
 
 import styles from "./PostUpdateForm.module.scss";
+import no_image from "../../asset/no_image.png";
+
 import { storageService } from "../../fbase/fbase";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { modifyUserPagePostList } from "../../store/userPage";
 // 생성폼 -> <PostUpdateForm post = {null}/>
 // 수정폼 -> <PostForm post = {수정할려는 포스트 데이터}/>
 
 const PostUpdateForm: React.FC<{}> = () => {
   const { postModalState: PostModalState } = useSelector(
     (state: RootState) => state.postModal
-  );
-  const checkedPost = useSelector(
-    (state: RootState) => state.post.checkedPost
   );
   console.log(PostModalState);
 
@@ -32,13 +33,18 @@ const PostUpdateForm: React.FC<{}> = () => {
   const titleInputRef = useRef<HTMLInputElement>(null);
   const contentInputRef = useRef<ReactQuill>();
 
+  const [titleCnt, setTitleCnt] = useState("");
   const [file, setFile] = useState<File>();
   const [previewImage, setPreviewImage] = useState("");
-  const [fileName, setFileName] = useState("");
+  const [modalOpen, setModalOpen] = useState(false);
+  const [content, setContent] = useState("수정하시겠습니까?");
+
+  const closeModal = () => {
+    setModalOpen(false);
+  };
 
   const postingUpdateHandler = (event: MouseEvent) => {
     event.preventDefault();
-    console.log("!!!", contentInputRef.current!.value);
     const PostUpdateData: PostUpdateSend = {
       postId: PostModalState!.id!,
       title: titleInputRef.current!.value,
@@ -62,35 +68,29 @@ const PostUpdateForm: React.FC<{}> = () => {
         // 이미지 업로드
         if (file) {
           const imgRef = ref(storageService, `post/${PostUpdateData.postId}`);
-          uploadBytes(imgRef, file)
-            .then((res) => {
-              getDownloadURL(res.ref)
-                .then((res) => {
-                  modifiedModalPost.postImg = [{ path: res }];
-                  postImgApi(PostUpdateData.postId!, res)
-                    .then((res) => {
-                      console.log("post 수정완료", res);
-                      dispatch(postModify(modifiedModalPost));
-                      dispatch(setPostUpdateFormState(false));
-                      dispatch(setModalPostState(modifiedModalPost));
-                      dispatch(setCheckedPost(modifiedModalPost))
-                    })
-                    .catch((err) => console.log("이미지 db에 저장 실패", err));
-                })
-                .catch((err) => console.log("이미지 url 가져오기 실패", err));
-              setPreviewImage("");
-            })
-            .catch((err) => console.log("이미지 firestore에 업로드 실패", err));
+          uploadBytes(imgRef, file).then((res) => {
+            getDownloadURL(res.ref).then((res) => {
+              modifiedModalPost.postImg = [{ path: res }];
+              postImgApi(PostUpdateData.postId!, res).then((res) => {
+                dispatch(postModify(modifiedModalPost));
+                dispatch(modifyUserPagePostList(modifiedModalPost));
+                dispatch(setPostUpdateFormState(false));
+                dispatch(setModalPostState(modifiedModalPost));
+                dispatch(setCheckedPost(modifiedModalPost));
+              });
+            });
+            setPreviewImage("");
+          });
         } else {
-          console.log("post 수정완료", res);
           dispatch(postModify(modifiedModalPost));
+          dispatch(modifyUserPagePostList(modifiedModalPost));
           dispatch(setPostUpdateFormState(false));
           dispatch(setModalPostState(modifiedModalPost));
-          dispatch(setCheckedPost(modifiedModalPost))
+          dispatch(setCheckedPost(modifiedModalPost));
         }
       })
       .catch((err) => {
-        console.log("err", err);
+        console.log(err);
       });
   };
 
@@ -101,46 +101,89 @@ const PostUpdateForm: React.FC<{}> = () => {
 
     if (fileList) {
       // console.log(fileList[0].name);
-      setFileName(fileList[0].name);
       setFile(fileList[0]);
       setPreviewImage(URL.createObjectURL(fileList[0]));
     }
   };
 
   return (
-    <div>
-      <form className={styles.postUpdateForm}>
-        <div>
-          <label htmlFor="title">제목</label>
-          <input
-            type="text"
-            id="title"
-            ref={titleInputRef}
-            defaultValue={PostModalState!.title!}
-          />
+    <div className={styles.container}>
+      <form className={styles.form}>
+        <div className={styles.posting}>포스팅 수정</div>
+        <div className={styles.inputTitle}>
+          <div className={styles.titleCnt}>
+            <input
+              type="text"
+              id="title"
+              ref={titleInputRef}
+              defaultValue={PostModalState!.title!}
+              placeholder="포스팅 제목을 입력하세요."
+              maxLength={30}
+              autoComplete="off"
+              onChange={(event) => {
+                setTitleCnt(event.target.value);
+              }}
+            />
+            <div>{titleCnt.length} / 30</div>
+          </div>
         </div>
         <div>
-          <input
-            defaultValue={fileName ? fileName : "첨부파일"}
-            placeholder="첨부파일"
-          />
-          <label htmlFor="img">파일 찾기</label>
-          <input
-            type="file"
-            accept="image/*"
-            id="img"
-            onChange={onLoadHandler}
-          />
+          <div className={styles.fileselect}>
+            <label htmlFor="img" className={styles.labelbutton}>
+              파일 선택
+            </label>
+            <input
+              type="file"
+              accept="image/*"
+              id="img"
+              onChange={onLoadHandler}
+            />
+          </div>
         </div>
-        {previewImage && <img src={previewImage} alt="img" />}
-        <div>
-          <EditorComponent
-            QuillRef={contentInputRef}
-            value={PostModalState!.content!}
-          />
+        <div className={styles.editorSection}>
+          {previewImage ? (
+            <img className={styles.img} src={previewImage} alt="img" />
+          ) : (
+            <img
+              className={styles.img}
+              src={
+                PostModalState!.postImg.length !== 0
+                  ? PostModalState!.postImg[0].path!
+                  : no_image
+              }
+              alt=""
+            />
+          )}
+          <div style={{ height: "340px" }}>
+            <EditorComponent
+              QuillRef={contentInputRef}
+              value={PostModalState!.content!}
+              maxlength={300}
+            />
+          </div>
         </div>
-        <button onClick={postingUpdateHandler}>등록하기</button>
+        <div className={styles.finishBtn}>
+          <button
+            className={styles.button}
+            onClick={(event) => {
+              event.preventDefault();
+              setContent("수정하시겠습니까?");
+              setModalOpen(true);
+            }}
+          >
+            수정완료
+          </button>
+        </div>
       </form>
+      <ChoiceModal
+        open={modalOpen}
+        close={closeModal}
+        choice1={closeModal}
+        choice2={postingUpdateHandler}
+        header="안내"
+      >
+        {content}
+      </ChoiceModal>
     </div>
   );
 };

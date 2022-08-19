@@ -25,7 +25,7 @@ export default ({ children }: { children: React.ReactNode }) => {
     index: "1",
     message: "message",
     receiverId: "1",
-    receiverName: "start",
+    receiverName: "server",
     senderId: "36",
     senderName: "seh",
     type: "register",
@@ -42,23 +42,23 @@ export default ({ children }: { children: React.ReactNode }) => {
       let checkList: Alert[] = [];
       alertRecent()
         .then((res) => {
-          console.log("web connect alert list", res);
+          // console.log("web connect alert list", res);
           dispatch(setAlertList(res));
           checkList = [...res];
           for (let index = 0; index < checkList.length; index++) {
-            const element = checkList[index].check
+            const element = checkList[index].check;
             if (element === 0) {
-              dispatch(setRealTimeAlert(true))
-              break
+              dispatch(setRealTimeAlert(true));
+              break;
             }
           }
         })
         .catch((err) => console.log("web connect alert list err", err));
-      
+
       setInterval(() => {
-        if (ws.current?.OPEN) {
+        if (ws!.current!.OPEN) {
           const time = new Date();
-          console.log(`30 sec,now: ${time}`);
+          // console.log(`30 sec,now: ${time}`, ws);
           ws.current!.send(JSON.stringify(jsonSend));
           // console.log("persisting connection", isConnecting, connetSend);
         } else {
@@ -67,16 +67,16 @@ export default ({ children }: { children: React.ReactNode }) => {
       }, 30000);
     };
     ws.current.onclose = (evt: any) => {
-      console.log("disconnect from " + webSocketUrl);
+      // console.log("disconnect from " + webSocketUrl);
       ws.current = new WebSocket(webSocketUrl);
-      console.log(evt);
+      // console.log(evt);
     };
     ws.current.onerror = (error) => {
       console.log("connection error " + webSocketUrl);
       console.log(error);
     };
     ws.current.onmessage = (evt: MessageEvent) => {
-      console.log(evt.data, `realtime${realTimeAlert}`);
+      // console.log(evt.data, `realtime${realTimeAlert}`);
       dispatch(setRealTimeAlert(true));
       // console.log(JSON.parse(ev))
     };

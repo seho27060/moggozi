@@ -1,0 +1,28 @@
+@use "../../styles/mixin.scss" as mixin;
+
+@include mixin.desktop {
+  .horizon {
+    width: 0;
+    height: 0;
+
+    &::before {
+      display: inline-block;
+      position: relative;
+      content: "";
+      width: 300px;
+      bottom: 15px;
+      height: 1px;
+      background: mixin.$cloudLine;
+      left: 0;
+    }
+  }
+
+  .Noalarm {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 300px;
+    height: 100px;
+  }
+
+}

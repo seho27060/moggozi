@@ -24,11 +24,6 @@ const PostLikeBtn = () => {
     if (user.isLoggedIn && !postModal.postModalState.liked) {
       console.log(postModal);
       postLike(postModal.postModalState.id).then((res) => {
-        console.log(
-          postModal.postModalState.id,
-          `${!postModal.postModalState.liked} 완료`,
-          res
-        );
         const modifiedModalPost: PostData = {
           id: postModal.postModalState!.id!,
           title: postModal.postModalState!.title,
@@ -64,14 +59,14 @@ const PostLikeBtn = () => {
         alert("로그인 후 이용 가능합니다.");
         navigate("/");
       } else {
-        alert("이미 좋아요한 포스팅입니다.")
+        alert("이미 좋아요한 포스팅입니다.");
       }
     }
   };
 
   return (
     <div>
-      <div >
+      <div>
         {postModal.postModalState.liked ? (
           <div className={styles.like} onClick={postLikeHandler}>
             <FavoriteIcon />

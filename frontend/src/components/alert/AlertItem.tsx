@@ -4,21 +4,19 @@ import { alertRead, postRead } from "../../lib/withTokenApi";
 import { Alert } from "../../store/alert";
 import { PostData } from "../../store/post";
 import {
-  setAlertModalPostState,
+  // setAlertModalPostState,/
   setAlertPostModalOpen,
   setModalPostState,
   setPostModalOpen,
 } from "../../store/postModal";
-import styles from "./AlertOnair.module.scss";
+import styles from "./AlertItem.module.scss";
 const AlertItem: React.FC<{ alertData: Alert }> = ({ alertData }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const alertCheckHandler = () => {
     alertRead(Number(alertData!.id))
-      .then((res) => {
-        console.log("alert check", res);
-      })
+      .then((res) => {})
       .catch((err) => {
         console.log("err");
       });
@@ -36,7 +34,7 @@ const AlertItem: React.FC<{ alertData: Alert }> = ({ alertData }) => {
         })
         .catch((err) => {
           alert("삭제된 게시글입니다.");
-          console.log("Err",err)
+          console.log("Err", err);
         });
       // dispatch(setPostModalStageId);
     } else if (alertData.type === "follow") {
@@ -74,7 +72,7 @@ const AlertItem: React.FC<{ alertData: Alert }> = ({ alertData }) => {
   const Item = (text: string) => {
     return (
       <div>
-        {text.split("a").map((txt,index) => (
+        {text.split("a").map((txt, index) => (
           <div key={index}>
             {txt}
             <br />
@@ -86,15 +84,7 @@ const AlertItem: React.FC<{ alertData: Alert }> = ({ alertData }) => {
   // type하고 index 이용해서 api요청후 이동할 라우터 정하기
   return (
     <div>
-      <button
-        onClick={alertCheckHandler}
-        style={{
-          background: "white",
-          margin: "0.5rem 0",
-          fontSize: "0.7rem",
-          padding: "1rem 0.7rem 0rem 1.7rem",
-        }}
-      >
+      <button onClick={alertCheckHandler} className={styles.btnHover}>
         {/* 확인한 알림/ 안한 알림에 따라 다르게 출력 */}
         {/* type 별로 라우터 다르게 navigate */}
         <div style={{ whiteSpace: "pre-line" }}>{Item(alertData.message!)}</div>

@@ -17,32 +17,36 @@ import { ChallengeItemState } from "../store/challenge";
 import { RootState } from "../store/store";
 
 import MainChallengeList from "../components/challenge/MainChallengeList";
+import MainRecomChallengeList from "../components/challenge/MainRecomChallengeList";
 import MainSlider from "../components/ui/MainSlider";
 
-import styles from "./MainPage.module.scss";
 import MainPopChallengeList from "../components/challenge/MainPopChallengeList";
 import AutoPlaySlider from "../components/ui/AutoPlaySlider";
 import { PostData } from "../store/post";
-import { Grid } from "@mui/material";
+import { Grid, Skeleton } from "@mui/material";
 import MainPageItem from "../components/post/MainPageItem";
 import PostModal from "../components/ui/PostModal";
 import { setPostModalOpen, setPostUpdateFormState } from "../store/postModal";
 import { useDispatch } from "react-redux";
 import PostDetailItem from "../components/post/PostDetailItem";
 import PostUpdateForm from "../components/post/PostUpdateForm";
-import Loader from "../components/ui/Loader";
+
+import styles from "./MainPage.module.scss";
+import no_image from "../asset/no_image.png";
+
+import PostFormModal from "../components/ui/PostFormModal";
 
 const MainPage: React.FC = () => {
   const dispatch = useDispatch();
 
   const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
   // 로딩
-  const [rankIsLoading, setRankIsLoading] = useState(true);
-  const [recentTryIsLoading, setRecentTryIsLoading] = useState(true);
-  const [recentIsLoading, setRecentIsLoading] = useState(true);
-  const [recommendIsLoading, setRecommendIsLoading] = useState(true);
-  const [rankPostIsLoading, setRankPostIsLoading] = useState(true);
-  const [recentPostIsLoading, setRecentPostIsLoading] = useState(true);
+  const [rankIsLoading, setRankIsLoading] = useState(false);
+  const [recentTryIsLoading, setRecentTryIsLoading] = useState(false);
+  const [recentIsLoading, setRecentIsLoading] = useState(false);
+  const [recommendIsLoading, setRecommendIsLoading] = useState(false);
+  const [rankPostIsLoading, setRankPostIsLoading] = useState(false);
+  const [recentPostIsLoading, setRecentPostIsLoading] = useState(false);
 
   const [recentPostList, setRecentPostList] = useState<PostData[]>([]);
   const [likePostList, setLikePostList] = useState<PostData[]>([]);
@@ -68,13 +72,12 @@ const MainPage: React.FC = () => {
   };
   useEffect(() => {
     setRankIsLoading(true);
-    setRecentTryIsLoading(true);
     setRecentIsLoading(true);
     setRecommendIsLoading(true);
     setRankPostIsLoading(true);
     setRecentPostIsLoading(true);
     // 최신 포스트
-    fetchPostRecentList(0, 13)
+    fetchPostRecentList(0, 25)
       .then((res) => {
         setRecentPostList(res.content);
         setRecentPostIsLoading(false);
@@ -87,7 +90,8 @@ const MainPage: React.FC = () => {
     fetchPostLikeList(0, 4)
       .then((res) => {
         setLikePostList(res.content);
-        setRankPostIsLoading(false);
+        // setRankPostIsLoading(false);
+        setTimeout(() => setRankPostIsLoading(false), 100);
       })
       .catch((err) => {
         console.log("like post err", err);
@@ -95,6 +99,7 @@ const MainPage: React.FC = () => {
       });
 
     if (isLoggedIn) {
+      setRecentTryIsLoading(true);
       // 로그인 한 경우
       // 인기 순
       isLoginFetchChallengeRankList(0, 3)
@@ -119,7 +124,7 @@ const MainPage: React.FC = () => {
       // 추천 순
       isLoginFetchRecommendChallengeList()
         .then((res) => {
-          const twoPickRecommend = res.slice(0, 2);
+          const twoPickRecommend = res.slice(0, 5);
           setRecommendChallengeList(twoPickRecommend);
           setRecommendIsLoading(false);
         })
@@ -164,7 +169,7 @@ const MainPage: React.FC = () => {
       // 추천 순
       fetchRecommendChallengeList()
         .then((res) => {
-          const twoPickRecommend = res.slice(0, 2);
+          const twoPickRecommend = res.slice(0, 6);
           setRecommendChallengeList(twoPickRecommend);
           setRecommendIsLoading(false);
         })
@@ -176,104 +181,181 @@ const MainPage: React.FC = () => {
   }, [isLoggedIn]);
 
   return (
-    <div className={styles.container}>
-      <div className={styles.mainPage}>
-        <MainSlider />
-        {/* 최신 챌린지*/}
-        {recentIsLoading === true && <Loader />}
-        {recentIsLoading === false && (
-          <div className={styles.myChallenge}>
-            <div className={styles.myTitle}>
-              <div>최신</div>
-              <div>챌린지</div>
-            </div>
-            <MainChallengeList challenges={loadedRecentChallengeList} />
-          </div>
-        )}
+    <div>
+      {!rankIsLoading &&
+      !recentTryIsLoading &&
+      !recentIsLoading &&
+      !recommendIsLoading &&
+      !rankPostIsLoading &&
+      !recentPostIsLoading ? (
+        <div className={styles.overFlow_x}>
+          <div className={styles.container}>
+            <div>
+              <div className={styles.mainPage}>
+                <div className={styles.mainSlider}>
+                  <MainSlider />
+                </div>
 
-        {/* 추천 챌린지*/}
-        {recommendIsLoading === true && <Loader />}
-        {recommendIsLoading === false && (
-          <div className={styles.myChallenge}>
-            <div className={styles.myTitle}>
-              <div>추천</div>
-              <div>챌린지</div>
-            </div>
-            <MainChallengeList challenges={recommendChallengeList} />
-          </div>
-        )}
-
-        {/* 참여한 챌린지 */}
-        {isLoggedIn === true && recentTryIsLoading === true && <Loader />}
-        {isLoggedIn === true && recentTryIsLoading === false && (
-          <div className={styles.myChallenge}>
-            <div className={styles.myTitle}>
-              <div>내가 참여한</div>
-              <div>챌린지</div>
-            </div>
-            <MainChallengeList challenges={loadedRecentTryChallengeList} />
-          </div>
-        )}
-
-        {/* 인기 챌린지 */}
-        {rankIsLoading === true && <Loader />}
-        {rankIsLoading === false && (
-          <div className={styles.popChallenge}>
-            <div className={styles.title}>인기 챌린지</div>
-            <MainPopChallengeList challenges={loadedChallengeRankList} />
-          </div>
-        )}
-
-        {/*최신 포스팅 자동 슬라이더  */}
-        {recentPostIsLoading === true && <Loader />}
-        {recentPostIsLoading === false &&
-          [
-            [0, 4],
-            [4, 9],
-            [9, 13],
-          ].map((start) => (
-            <div key={start[0]} style={{ minHeight: "13rem" }}>
-              <AutoPlaySlider rtl={start[1] - start[0] - 4}>
-                {recentPostList.slice(start[0], start[1]).map((post) => {
-                  console.log(post);
-                  return (
-                    <div key={post.id}>
-                      <img
-                        src={
-                          post.postImg!.length !== 0
-                            ? post.postImg[0].path!
-                            : "https://blog.kakaocdn.net/dn/vckff/btqCjeJmBHM/tMVpe4aUIMfH4nKS4aO3tK/img.jpg"
-                        }
-                        alt=""
-                        style={{ minWidth: "300px" }}
-                      ></img>
+                {/* 참여한 챌린지 */}
+                {isLoggedIn === true && (
+                  <div className={styles.myChallenge}>
+                    <div className={styles.myTitle}>
+                      <div>내가 참여한</div>
+                      <div>챌린지</div>
                     </div>
-                  );
-                })}
-              </AutoPlaySlider>
+                    <MainChallengeList
+                      challenges={loadedRecentTryChallengeList}
+                    />
+                  </div>
+                )}
+
+                {/* 최신 챌린지*/}
+                <div className={styles.myChallenge}>
+                  <div className={styles.myTitle}>
+                    <div>최신</div>
+                    <div>챌린지</div>
+                  </div>
+                  <MainChallengeList challenges={loadedRecentChallengeList} />
+                </div>
+
+                {/* 추천 챌린지*/}
+                <div className={styles.recommendChallenge}>
+                  <div className={styles.myTitle}>
+                    <div>모꼬지가 추천하는 챌린지</div>
+                  </div>
+                  <MainRecomChallengeList challenges={recommendChallengeList} />
+                </div>
+
+                {/* 인기 챌린지 */}
+                <div className={styles.popChallenge}>
+                  <div className={styles.title}>인기 챌린지</div>
+                  <MainPopChallengeList challenges={loadedChallengeRankList} />
+                </div>
+              </div>
+
+              {/* 인기순 포스팅 */}
+              <div className={styles.popPosting}>
+                <div>인기 포스팅</div>
+                <Grid container spacing={1}>
+                  {likePostList.map((post) => (
+                    <Grid key={post.id} item xs={3}>
+                      <MainPageItem post={post} />
+                    </Grid>
+                  ))}
+                </Grid>
+              </div>
             </div>
-          ))}
-        <br />
-        {/* 인기순 포스팅 */}
-        {rankPostIsLoading === true && <Loader />}
-        {rankPostIsLoading === false && (
-          <Grid container spacing={1}>
-            {likePostList.map((post) => (
-              <Grid key={post.id} item xs={3}>
-                <MainPageItem post={post} />
-              </Grid>
+            <div>
+              {postModalOpen && !postUpdateFormOpen && (
+                <PostModal open={postModalOpen} close={closePostModal}>
+                  <PostDetailItem />
+                </PostModal>
+              )}
+              {postModalOpen && postUpdateFormOpen && (
+                <PostFormModal open={postModalOpen} close={closePostModal}>
+                  <PostUpdateForm />
+                </PostFormModal>
+              )}
+            </div>
+          </div>
+
+          <div className={styles.sliderTitle}>
+            <div>방금 등록된</div>
+            <div>모꼬지 회원들의 포스팅을 구경하세요!</div>
+          </div>
+          <div className={styles.postingSlider}>
+            {/*최신 포스팅 자동 슬라이더  */}
+            {[
+              [0, 9],
+              [8, 17],
+              [16, 25],
+            ].map((start, index) => (
+              <div
+                key={start[0]}
+                style={{ minHeight: "13rem", padding: "15px 0 0 0" }}
+              >
+                <AutoPlaySlider rtl={index + 1}>
+                  {recentPostList.slice(start[0], start[1]).map((post) => {
+                    return (
+                      <div key={post.id}>
+                        <img
+                          src={
+                            post.postImg!.length !== 0
+                              ? post.postImg[0].path!
+                              : no_image
+                          }
+                          alt=""
+                          style={{ minWidth: "300px" }}
+                        ></img>
+                      </div>
+                    );
+                  })}
+                </AutoPlaySlider>
+              </div>
             ))}
-          </Grid>
-        )}
-      </div>
-      <div>
-        {postModalOpen && (
-          <PostModal open={postModalOpen} close={closePostModal}>
-            {!postUpdateFormOpen && <PostDetailItem />}
-            {postUpdateFormOpen && <PostUpdateForm />}
-          </PostModal>
-        )}
-      </div>
+          </div>
+        </div>
+      ) : (
+        <div className={styles.container}>
+          <div>
+            <div className={styles.mainPage}>
+              <Skeleton
+                className={styles.mainSlider}
+                variant="rectangular"
+                height={450}
+                width={989}
+              />
+              {isLoggedIn === true && (
+                <div className={styles.myChallenge}>
+                  <Skeleton className={styles.myTitle}>
+                    <div>내가 참여한</div>
+                    <div>챌린지</div>
+                  </Skeleton>
+
+                  <Skeleton>
+                    <MainChallengeList
+                      challenges={loadedRecentTryChallengeList}
+                    />
+                  </Skeleton>
+                </div>
+              )}
+              <div style={{ height: 30 }} />
+              {/* 최신 챌린지*/}
+              <div className={styles.myChallenge}>
+                <Skeleton className={styles.myTitle}>
+                  <div>최신</div>
+                  <div>챌린지</div>
+                </Skeleton>
+                <Skeleton variant="rectangular">
+                  <MainChallengeList challenges={loadedRecentChallengeList} />
+                </Skeleton>
+              </div>
+              {/* 추천 챌린지*/}
+              <div className={styles.recommendChallenge}>
+                <Skeleton width={300} height={80} />
+                <Skeleton variant="rectangular">
+                  <MainRecomChallengeList challenges={recommendChallengeList} />
+                </Skeleton>
+              </div>
+              <div style={{ height: 50 }} />
+              {/* 인기 챌린지 */}
+              <div className={styles.popChallenge}>
+                <Skeleton width={300} height={80} />
+                <Skeleton variant="rectangular" width={992} height={500} />
+              </div>
+              <div style={{ height: 110 }} />
+              {/* 인기순 포스팅 */}
+              <div style={{ display: "flex", justifyContent: "center" }}>
+                <Skeleton width={200} height={80} />
+              </div>
+              <Skeleton width={1000} height={450} />
+
+              <div style={{ height: 110 }} />
+              <Skeleton variant="rectangular" width={1000} height={1000} />
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

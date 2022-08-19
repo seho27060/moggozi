@@ -1,6 +1,6 @@
 import { Grid } from "@mui/material";
-import UserChallengeItem from "../../components/user/UserChallengeItem";
-import UserPostItem from "../../components/user/UserPostItem";
+import TotalUserChallengeItem from "../../components/user/TotalUserChallengeItem";
+import TotalUserPostItem from "../../components/user/TotalUserPostItem";
 import { ChallengeItemState } from "../../store/challenge";
 import { UserChallengeType, UserPostType } from "../../store/userPage";
 import styles from "./UserPage.module.scss";
@@ -10,7 +10,8 @@ const UserTabBox: React.FC<{
   myChallenges: ChallengeItemState[] | null;
   challenges: UserChallengeType[] | null;
   posts: UserPostType[] | null;
-}> = ({ nickname, myChallenges, challenges, posts }) => {
+  nameCheck : boolean
+}> = ({ nickname, myChallenges, challenges, posts,nameCheck }) => {
   return (
     <div>
       <div style={{ display: "flex", justifyContent: "center" }}>
@@ -30,8 +31,9 @@ const UserTabBox: React.FC<{
                 <Grid container spacing={1}>
                   {myChallenges.map((challenge) => (
                     <Grid key={challenge.id} item xs={3}>
-                      <UserChallengeItem
+                      <TotalUserChallengeItem
                         userChallenge={{ ...challenge, img: challenge.img! }}
+                        nameCheck = {nameCheck}
                       />
                     </Grid>
                   ))}
@@ -55,7 +57,8 @@ const UserTabBox: React.FC<{
                 <Grid container spacing={1}>
                   {challenges.map((challenge) => (
                     <Grid key={challenge.id} item xs={3}>
-                      <UserChallengeItem userChallenge={challenge} />
+                      <TotalUserChallengeItem userChallenge={challenge} 
+                      nameCheck = {nameCheck}/>
                     </Grid>
                   ))}
                 </Grid>
@@ -78,7 +81,8 @@ const UserTabBox: React.FC<{
                 <Grid container spacing={2}>
                   {posts!.map((post) => (
                     <Grid key={post.id} item xs={3}>
-                      <UserPostItem userPost={post} />
+                      <TotalUserPostItem userPost={post} 
+                      nameCheck = {nameCheck}/>
                     </Grid>
                   ))}
                 </Grid>

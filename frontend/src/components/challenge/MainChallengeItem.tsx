@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { ChallengeItemState } from "../../store/challenge";
 
+import no_image from "../../asset/no_image.png"
 import styles from "./MainChallengeItem.module.scss";
 import FavoriteIcon from '@mui/icons-material/Favorite';
 
@@ -11,14 +12,16 @@ const MainChallengeItem: React.FC<{ challenge: ChallengeItemState }> = ({
   return (
     <Link to={`/challenge/${challenge.id}`} className={styles.link}>
       <div className={styles.challengeItem}>
+        <div className={styles.overflow}>
         {challenge.img ? (
           <img src={challenge.img} alt="challenge Img"></img>
         ) : (
           <img
-            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS2vD3MC0-zWEcZYdaZg3s-1fC0q9p5IMwOmA&usqp=CAU"
+            src={no_image}
             alt=""
           ></img>
         )}
+        </div>
         {/* 진행도 뱃지 */}
         <div
           className={(() => {
@@ -44,9 +47,7 @@ const MainChallengeItem: React.FC<{ challenge: ChallengeItemState }> = ({
                     if (challenge.level === 2) return styles.level2;
                     if (challenge.level === 3) return styles.level3;
                   })()}
-                >
-                  Lv.{challenge.level}
-                </div>
+                ></div>
               </div>
               <div className={styles.heart}><FavoriteIcon /><div className={styles.word}>{challenge.likeNum}</div></div>
             </div>

@@ -37,29 +37,38 @@ import PostModal from "../../components/ui/PostModal";
 import PostFormModal from "../../components/ui/PostFormModal";
 import ChallengeOptionBtn from "../../components/ui/ChallengeOptionBtn";
 import Loader from "../../components/ui/Loader";
+import Modal from "../../components/ui/Modal";
+import no_image from "../../asset/no_image.png";
+import default_profile from "../../asset/default_profile.png";
 
 const ChallengeDetail: React.FC = () => {
-  
   document.body.style.overflow = "auto"; //모달때문에 이상하게 스크롤이 안되서 강제로 스크롤 바 생성함
   document.body.style.height = "auto";
   const navigate = useNavigate();
 
   const { id } = useParams();
   const ws = useContext(WebSocketContext);
-
   const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
   const userInfo = useSelector((state: RootState) => state.auth.userInfo);
   const stageId = useSelector((state: RootState) => state.post.postingStageId);
   const userImg = useSelector((state: RootState) => state.auth.userInfo.img);
+  const [alertText, setAlertText] = useState(<div></div>);
+  const [modalOpen, setModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [loadedChallenge, setLoadedChallenge] =
     useState<ChallengeDetailState>();
+  const [refresh, setRefresh] = useState(false); // 새로고침 시키기 위한 값
   const dispatch = useDispatch();
   const reviews = useSelector((state: RootState) => state.review);
 
   const { postModalOpen, postFormModalOpen, postUpdateFormOpen } = useSelector(
     (state: RootState) => state.postModal
   );
+
+  const closeAlertModal = () => {
+    document.body.style.overflow = "unset";
+    setModalOpen(false);
+  };
 
   const closePostModal = () => {
     dispatch(setPostModalOpen(false));
@@ -73,6 +82,11 @@ const ChallengeDetail: React.FC = () => {
   // 좋아요
   const likeHandler = (event: React.MouseEvent) => {
     event.preventDefault();
+    if (!isLoggedIn) {
+      setAlertText(<div>로그인 후 이용 가능합니다.</div>);
+      setModalOpen(true);
+      return;
+    }
     challengeLike({ challengeId: Number(id) })
       .then((res) => {
         if (!loadedChallenge!.liked) {
@@ -109,7 +123,9 @@ const ChallengeDetail: React.FC = () => {
     event.preventDefault();
     if (window.confirm("정말 도전하시겠습니까?")) {
       tryChallenge(userInfo.id!, loadedChallenge!.id!).then((res) => {
-        alert("챌린지 도전 완료!");
+        setAlertText(<div>챌린지 도전 완료!</div>);
+        setModalOpen(true);
+        setRefresh(!refresh);
       });
     }
   };
@@ -118,13 +134,16 @@ const ChallengeDetail: React.FC = () => {
     event.preventDefault();
     if (window.confirm("도전 취소하시겠습니까?")) {
       cancelChallenge(loadedChallenge!.id!).then((res) => {
-        alert("챌린지 도전 취소 완료");
+        setAlertText(<div>챌린지 도전 취소 완료!</div>);
+        setModalOpen(true);
+        setRefresh(!refresh);
       });
     }
   };
 
   // 페이지 데이터 받아오기
   useEffect(() => {
+    document.body.style.overflow = 'auto';
     setIsLoading(true);
     if (id) {
       if (isLoggedIn) {
@@ -167,7 +186,7 @@ const ChallengeDetail: React.FC = () => {
           });
       }
     }
-  }, [id, isLoggedIn, dispatch]);
+  }, [id, isLoggedIn, dispatch, refresh]);
 
   return (
     <div className={styles.main}>
@@ -207,7 +226,7 @@ const ChallengeDetail: React.FC = () => {
               </div>
 
               <div>
-                {loadedChallenge!.writer.id === userInfo.id ? (
+                {loadedChallenge!.state === 0 ? (
                   <div>
                     {userInfo.id === loadedChallenge!.writer.id && (
                       <div>
@@ -231,7 +250,13 @@ const ChallengeDetail: React.FC = () => {
                         navigate(`/user/${loadedChallenge!.writer.id}`);
                       }}
                     >
-                      <img src={loadedChallenge!.writer.img} alt="" />
+                      {loadedChallenge!.writer.path !== "" &&
+                      loadedChallenge!.writer.path ? (
+                        <img src={loadedChallenge!.writer.path} alt="" />
+                      ) : (
+                        <img src={default_profile} alt="" />
+                      )}
+
                       <div>
                         <div className={styles.user}>
                           {loadedChallenge!.writer.nickname}
@@ -257,11 +282,7 @@ const ChallengeDetail: React.FC = () => {
             </div>
 
             {loadedChallenge!.img === '""' ? (
-              <img
-                className={styles.challengeImg}
-                src="https://via.placeholder.com/1000x450.png/"
-                alt=""
-              />
+              <img className={styles.challengeImg} src={no_image} alt="" />
             ) : (
               <img
                 className={styles.challengeImg}
@@ -271,7 +292,7 @@ const ChallengeDetail: React.FC = () => {
             )}
             <div className={styles.tag_start}>
               <HobbyList hobbies={loadedChallenge!.hobbyList} />
-              {isLoggedIn === true && (
+              {loadedChallenge!.state === 1 && isLoggedIn === true && (
                 <div>
                   {loadedChallenge!.userProgress === 0 && (
                     <button className={styles.button} onClick={startHandler}>
@@ -299,77 +320,82 @@ const ChallengeDetail: React.FC = () => {
               className={`view ql-editor ${styles.cont}`}
             ></div>
 
-            <div
-              className={styles.writer}
-              onClick={() => {
-                navigate(`/user/${loadedChallenge!.writer.id!}`);
-              }}
-            >
-              <img src={loadedChallenge!.writer.img} alt="" />
-              <div className={styles.user}>
-                {loadedChallenge!.writer.nickname}
-              </div>
-            </div>
-
-            <div className={styles.like}>
-              <div className={styles.likeLabel} onClick={likeHandler}>
-                {isLoggedIn === true && loadedChallenge!.liked === false && (
-                  <div className={styles.nonHeart}>
-                    <FavoriteIcon />
+            {loadedChallenge!.state === 1 && (
+              <div className={styles.like}>
+                <div
+                  className={styles.likeLabel}
+                  onClick={!loadedChallenge!.liked ? likeHandler : undefined}
+                >
+                  {loadedChallenge!.liked === false && (
+                    <div className={styles.nonHeart}>
+                      <FavoriteIcon />
+                    </div>
+                    // 챌린지 좋아요
+                  )}
+                  {loadedChallenge!.liked === true && (
+                    <div className={styles.heart}>
+                      <FavoriteIcon />
+                    </div>
+                    // 챌린지좋아요 취소
+                  )}{" "}
+                  좋아요{" "}
+                  <div className={styles.likeCnt}>
+                    {loadedChallenge!.likeNum}
                   </div>
-                  // 챌린지 좋아요
-                )}
-                {isLoggedIn === true && loadedChallenge!.liked === true && (
-                  <div className={styles.heart}>
-                    <FavoriteIcon />
-                  </div>
-                  // 챌린지좋아요 취소
-                )}{" "}
-                좋아요{" "}
-                <div className={styles.likeCnt}>{loadedChallenge!.likeNum}</div>
+                </div>
+                <div className={styles.commentCnt}>
+                  <div>리뷰 </div>
+                  <div>{reviews.length}</div>
+                </div>
               </div>
-              <div className={styles.commentCnt}>
-                <div>댓글 </div>
-                <div>{reviews.length}</div>
-              </div>
-            </div>
-
-            <div></div>
+            )}
           </div>
           <div className={styles.horizon}></div>
 
-          <div>{isLoggedIn && <ReviewForm user_image={userImg} />}</div>
-          <ReviewList reviews={reviews} />
+          {loadedChallenge!.state === 1 && isLoggedIn && (
+            <div>
+              <ReviewForm
+                user_image={userImg}
+                userProgress={loadedChallenge!.userProgress}
+              />
+              <ReviewList reviews={reviews} />
+            </div>
+          )}
 
           <div>
             <div className={styles.stageHr}></div>
             <StageList
               stages={loadedChallenge!.stageList}
               challengeProgress={loadedChallenge!.userProgress}
+              challengeState={loadedChallenge!.state}
             />
           </div>
         </div>
       )}
 
       <div>
-        {postModalOpen && (
+        {postModalOpen && !postUpdateFormOpen && (
           <PostModal open={postModalOpen} close={closePostModal}>
-            {!postUpdateFormOpen && <PostDetailItem />}
-            {postUpdateFormOpen && <PostUpdateForm />}
+            <PostDetailItem />
           </PostModal>
         )}
-
+        {postModalOpen && postUpdateFormOpen && (
+          <PostFormModal open={postModalOpen} close={closePostModal}>
+            <PostUpdateForm />
+          </PostFormModal>
+        )}
         {postFormModalOpen && (
           <PostFormModal open={postFormModalOpen} close={closePostFormModal}>
             <PostForm
               stageId={Number(stageId)}
               modalClose={closePostFormModal}
-              challenge={loadedChallenge?.name!}
-              // stage={}
             />
           </PostFormModal>
         )}
       </div>
+      <Modal open={modalOpen} close={closeAlertModal} header="안내">
+        {alertText}
+      </Modal>
     </div>
   );
 };

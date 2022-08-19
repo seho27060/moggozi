@@ -1,0 +1,183 @@
+@use "../../styles/mixin.scss" as mixin;
+
+@include mixin.desktop {
+  .link {
+    text-decoration: none;
+    // margin: 20px 0 20px 0;
+  }
+
+  .challengeItem {
+    padding: 0px 20px 0px 20px;
+
+    .img {
+      width: 280px;
+      height: 170px;
+      overflow: hidden;
+      border: 1px solid rgb(236, 236, 236);
+      border-radius: 5px;
+
+      img {
+        width: 280px;
+        height: 170px;
+        object-fit: contain;
+        background: black;
+        transition: all 0.9s;
+
+        &:hover {
+          transform: scale(1.1);
+        }
+      }
+    }
+
+    .badge0 {
+      display: none;
+    }
+
+    .badge1 {
+      width: 0px;
+      height: 0px;
+      &::before {
+        display: inline-block;
+        position: relative;
+        border-radius: 0px 0px 5px 5px;
+        left: 184px;
+        bottom: 174px;
+        width: 40px;
+        height: 20px;
+        background: mixin.$mainColor;
+        color: #fff;
+        text-align: center;
+        font-size: 14px;
+        font-weight: 600;
+        line-height: 19px;
+        content: "진행";
+      }
+    }
+
+    .badge2 {
+      width: 0px;
+      height: 0px;
+      &::before {
+        display: inline-block;
+        position: relative;
+        border-radius: 0px 0px 5px 5px;
+        left: 184px;
+        bottom: 174px;
+        width: 40px;
+        height: 20px;
+        background: linear-gradient(90deg, #ff9921 -1.06%, #ffc337 101.51%);
+        color: #fff;
+        text-align: center;
+        font-size: 14px;
+        font-weight: 700;
+        line-height: 19px;
+        content: "완료";
+      }
+    }
+
+    .userInfo {
+      display: flex;
+      // align-items: center;
+      justify-content: space-between;
+      margin: 10px 0 0 0;
+      .title {
+        display: flex;
+        // 제목
+        div:nth-child(1) {
+          width: 240px;
+          font-size: 17px;
+          font-weight: 700;
+        }
+      }
+
+      // 레벨 뱃지
+      .level1 {
+        width: 0;
+        height: 0;
+
+        &::before {
+          display: inline-block;
+          position: relative;
+          content: "Lv.1";
+          background: #f0d300;
+          width: 40px;
+          height: 20px;
+          color: #fff;
+          font-size: 14px;
+          font-weight: 600;
+          border-radius: 0px 0px 5px 5px;
+          right: 12px;
+          bottom: 184px;
+          text-align: center;
+          line-height: 20px;
+        }
+      }
+
+      .level2 {
+        width: 0;
+        height: 0;
+
+        &::before {
+          display: inline-block;
+          position: relative;
+          content: "Lv.2";
+          background: #5aae33;
+          width: 40px;
+          height: 20px;
+          color: #fff;
+          font-size: 14px;
+          font-weight: 600;
+          border-radius: 0px 0px 5px 5px;
+          right: 12px;
+          bottom: 184px;
+          text-align: center;
+          line-height: 20px;
+        }
+      }
+
+      .level3 {
+        width: 0;
+        height: 0;
+
+        &::before {
+          display: inline-block;
+          position: relative;
+          content: "Lv.3";
+          background: #e2195a;
+          width: 40px;
+          height: 20px;
+          color: #fff;
+          font-size: 14px;
+          font-weight: 600;
+          border-radius: 0px 0px 5px 5px;
+          right: 12px;
+          bottom: 184px;
+          text-align: center;
+          line-height: 20px;
+        }
+      }
+
+      .heart {
+        display: flex;
+        svg {
+          color: rgb(254, 116, 116);
+          font-size: 18px;
+          margin: 0 3px 0 0;
+          &:hover {
+            color: rgb(254, 116, 116) !important;
+          }
+        }
+        .word {
+          font-size: 16px;
+          font-weight: 700;
+          line-height: 16px;
+          color: mixin.$cloudGray;
+          padding: 2px 2px 0 0;
+        }
+      }
+    }
+  }
+}
+
+@include mixin.mobile {
+}

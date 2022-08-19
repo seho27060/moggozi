@@ -17,6 +17,7 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 
 export default function LongMenu(): JSX.Element {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  // const [checkDeleteToggle, setCheckDeleteToggle] = React.useState(false)
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -38,18 +39,19 @@ export default function LongMenu(): JSX.Element {
   };
   const postRemoveHandler = (event: MouseEvent) => {
     event.preventDefault();
-    postDelete(post!.id)
-      .then((res) => {
-        console.log("post 삭제완료", res);
-        dispatch(postRemove(post));
-        dispatch(setCheckedPost(-1))
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-    dispatch(setPostModalOpen(false));
-    dispatch(setAlertPostModalOpen(false));
-    setAnchorEl(null);
+    if (window.confirm("삭제하시겠습니까?")) {
+      postDelete(post!.id)
+        .then((res) => {
+          dispatch(postRemove(post));
+          dispatch(setCheckedPost(-1));
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+      dispatch(setPostModalOpen(false));
+      dispatch(setAlertPostModalOpen(false));
+      setAnchorEl(null);
+    }
   };
 
   return (

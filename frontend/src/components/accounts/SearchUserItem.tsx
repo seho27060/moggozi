@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { otherUserDetail } from "../../lib/generalApi";
 import { UserInfo } from "../../store/auth";
 
+import default_profile from "../../asset/default_profile.png";
 import styles from "./SearchUserItem.module.scss";
 
 const SearchUserItem: React.FC<{ user: UserInfo }> = ({ user }) => {
@@ -16,7 +17,7 @@ const SearchUserItem: React.FC<{ user: UserInfo }> = ({ user }) => {
       .then((res) => {
         setNickname(res.nickname);
         setIsPrivate(res.isPrivate);
-        setImg(res.img);
+        setImg(res.userImg);
         setIntroduce(res.introduce);
       })
       .catch((err) => {
@@ -27,16 +28,7 @@ const SearchUserItem: React.FC<{ user: UserInfo }> = ({ user }) => {
   return (
     <Link to={`/user/${user.id}`} className={styles.link}>
       <div className={styles.items}>
-        {img ? (
-          <img src={img} alt="" />
-        ) : (
-          <img
-            src={
-              "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQUaworQRvFcmCL5AwklqSA8jkWoW56F00JdA&usqp=CAU"
-            }
-            alt=""
-          />
-        )}
+        {img ? <img src={img} alt="" /> : <img src={default_profile} alt="" />}
         <div className={styles.info}>
           <div className={styles.title}>
             <div>{nickname}</div>

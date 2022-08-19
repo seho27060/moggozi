@@ -1,21 +1,25 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ChallengeItemState } from "../../store/challenge";
 import HobbyList from "./HobbyList";
 
+import no_image from "../../asset/no_image.png"
+import default_profile from "../../asset/default_profile.png"
 import styles from "./NewChallengeItem.module.scss";
 import FavoriteIcon from '@mui/icons-material/Favorite';
 
 const NewChallengeItem: React.FC<{ challenge: ChallengeItemState }> = ({
   challenge,
 }) => {
+  const navigate = useNavigate();
   // 작성 중일 때 겉에서 보이게 끔 스타일링!!(등록 전인 상태 표시)
   return (
     <div className={styles.sort}>
       <div className={styles.challengeItem}>
 
         <div className={styles.writer}>
-          <div className={styles.profile}>
-            <img src={challenge.writer.path} alt="" />
+          <div className={styles.profile} onClick={() => {navigate(`/user/${challenge.writer.id}`)}}>
+            { challenge.writer.path !== "" && challenge.writer.path ? <img src={challenge.writer.path} alt="" /> : <img src={default_profile} alt="" />}
+            
             <div>{challenge.writer.nickname}</div>
           </div>
           <div className={styles.date}>{challenge.modifiedDate?.slice(2, 10)}</div>
@@ -26,7 +30,7 @@ const NewChallengeItem: React.FC<{ challenge: ChallengeItemState }> = ({
             <img className={styles.img} src={challenge.img} alt="challenge Img"></img>
           ) : (
             <img className={styles.img}
-              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS2vD3MC0-zWEcZYdaZg3s-1fC0q9p5IMwOmA&usqp=CAU"
+              src={no_image}
               alt=""
             ></img>
           )}
@@ -49,7 +53,7 @@ const NewChallengeItem: React.FC<{ challenge: ChallengeItemState }> = ({
         <div className={styles.challengeInfo}>
           <div>
             <div className={styles.title}>
-              <div>{challenge.name}</div>
+              <div onClick={() => { navigate(`/challenge/${challenge.id}` )}}>{challenge.name}</div>
               <div
                 className={(() => {
                   if (challenge.level === 1) return styles.level1;

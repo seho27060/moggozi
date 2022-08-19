@@ -8,11 +8,25 @@
 
   .challengeItem {
     padding: 0px 20px 0px 20px;
-
+    
+    .overflow {
+      width: 280px;
+      height: 170px;
+      overflow: hidden;
+      border-radius: 5px;
+      border: 1px solid rgb(231, 231, 231);
+    }
+    
     img {
       width: 280px;
       height: 170px;
-      object-fit: cover;
+      object-fit: contain;
+      background: black;
+      transition: all 0.7s;
+
+      &:hover {
+        transform: scale(1.1)
+      }
     }
 
     .badge0 {
@@ -26,8 +40,8 @@
         display: inline-block;
         position: relative;
         border-radius: 0px 0px 5px 5px;
-        left: 222px;
-        bottom: 174px;
+        left: 185px;
+        bottom: 176px;
         width: 40px;
         height: 20px;
         background: mixin.$mainColor;
@@ -47,8 +61,8 @@
         display: inline-block;
         position: relative;
         border-radius: 0px 0px 5px 5px;
-        left: 222px;
-        bottom: 174px;
+        left: 185px;
+        bottom: 176px;
         width: 40px;
         height: 20px;
         background: linear-gradient(90deg, #FF9921 -1.06%, #FFC337 101.51%);
@@ -63,24 +77,23 @@
     
     .userInfo {
       display: flex;
-      align-items: center;
+      // align-items: center;
       justify-content: space-between;
       margin: 10px 0 0 0;
       .title{
         display: flex;
         // 제목
         div:nth-child(1) {
-          font-size: 20px;
+          width: 250px;
+          font-size: 17px;
           font-weight: 700;
+          line-height: 20px;
         } 
-        // 레벨 뱃지
-        div:nth-child(2) {
-          margin: 0 0 0 10px;
-        }
       }
 
       .heart {
         display: flex;
+        // align-items: center;
         svg {
           color: rgb(254, 116, 116);
           font-size: 18px;
@@ -94,7 +107,7 @@
           font-weight: 700;
           line-height: 16px;
           color: mixin.$cloudGray;
-          margin: 0 2px 0 0;
+          padding: 2px 2px 0 0;
         }
       }
     }
@@ -102,51 +115,69 @@
 
   // 레벨 뱃지
   .level1 {
-    font-weight: 600;
-    font-size: 14px;
-    line-height: 25px;
-    margin-right: 10px;
-    width: 40px;
-    height: 20px;
-    background: #F0D300;;
-    text-align: center;
-    line-height:20px;
-    // font-size:
-    font-weight: 600;
-    color: #fff;
-    border-radius: 5px;
+    width: 0;
+    height: 0;
+
+    &::before {
+      display: inline-block;
+      position: relative;
+      content:"Lv.1";
+      background: #F0D300;
+      width: 40px;
+      height: 20px;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 600;
+      border-radius: 0px 0px 5px 5px;
+      right: 20px;
+      bottom: 186px;
+      text-align: center;
+      line-height: 20px;
+    }
   }
 
   .level2 {
-    font-weight: 600;
-    font-size: 14px;
-    line-height: 25px;
-    margin-right: 10px;
-    width: 40px;
-    height: 20px;
-    background: #5AAE33;
-    text-align: center;
-    line-height:20px;
-    // font-size:
-    font-weight: 600;
-    color: #fff;
-    border-radius: 5px;
+    width: 0;
+    height: 0;
+
+    &::before {
+      display: inline-block;
+      position: relative;
+      content:"Lv.2";
+      background: #5AAE33;
+      width: 40px;
+      height: 20px;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 600;
+      border-radius: 0px 0px 5px 5px;
+      right: 20px;
+      bottom: 186px;
+      text-align: center;
+      line-height: 20px;
+    }
   }
 
   .level3 {
-    font-weight: 600;
-    font-size: 14px;
-    line-height: 25px;
-    margin-right: 10px;
-    width: 40px;
-    height: 20px;
-    background: #E2195A;
-    text-align: center;
-    line-height:20px;
-    // font-size:
-    font-weight: 600;
-    color: #fff;
-    border-radius: 5px;
+    width: 0;
+    height: 0;
+
+    &::before {
+      display: inline-block;
+      position: relative;
+      content:"Lv.3";
+      background: #E2195A;
+      width: 40px;
+      height: 20px;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 600;
+      border-radius: 0px 0px 5px 5px;
+      right: 20px;
+      bottom: 186px;
+      text-align: center;
+      line-height: 20px;
+    }
   }
 }
 

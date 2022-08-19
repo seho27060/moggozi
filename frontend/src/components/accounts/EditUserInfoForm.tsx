@@ -12,6 +12,8 @@ import UserImgForm from "./UserImgForm";
 import styles from "./EditUserInfoForm.module.scss";
 import Modal from "../ui/Modal";
 import { checkNickname } from "../../lib/generalApi";
+import { useDispatch } from "react-redux";
+import { userInfoEdit } from "../../store/auth";
 
 // html input 태그에서 value의 type에 null이 매칭이 안되서 임의로 undefined로 수정하였습니다.
 interface UserEditState {
@@ -28,6 +30,14 @@ const EditUserInfoForm: React.FC = () => {
   const navigate = useNavigate();
   const userId = useSelector((state: RootState) => state.auth.userInfo.id);
   const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
+  const userNickname = useSelector(
+    (state: RootState) => state.auth.userInfo.nickname
+  );
+  const dispatch = useDispatch();
+  const [submitState, setSubmitState] = useState(true);
+  const [content, setContent] = useState("");
+  const [openModal, setOpenModal] = useState(false);
+  const [openCompleteModal, setOpenCompleteModal] = useState(false);
 
   const [option, setOption] = useState<UserEditState>({
     username: "",
@@ -38,12 +48,12 @@ const EditUserInfoForm: React.FC = () => {
     isPrivate: 0,
   });
 
-  const [submitState, setSubmitState] = useState(true);
-  const [content, setContent] = useState("");
-  const [openModal, setOpenModal] = useState(false);
-
   const closeModal = () => {
     setOpenModal(false);
+  };
+
+  const closeCompleteModal = () => {
+    navigate("/", { replace: true });
   };
 
   function checkNicknameHandler(event: React.MouseEvent) {
@@ -63,14 +73,30 @@ const EditUserInfoForm: React.FC = () => {
 
   function submitHandler(event: React.FormEvent) {
     event.preventDefault();
-    if (submitState) {
-      updateUserApi(userId, option);
-      navigate("/", { replace: true });
+    if (option.nickname === userNickname || submitState) {
+      updateUserApi(userId, option)
+        .then((res) => {
+          setContent("회원정보 수정이 완료되었습니다.");
+          updateUserApi(userId, option).then((res) => {
+            dispatch(userInfoEdit(option.nickname));
+            setOpenCompleteModal(true);
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+          setContent("닉네임 중복을 확인해주세요!");
+          setOpenModal(true);
+        });
     } else {
       setContent("닉네임 중복을 확인하세요.");
       setOpenModal(true);
     }
   }
+  // 닉네임 수정하러 가기
+  const nickNameUpdateHandler = (event: React.MouseEvent) => {
+    event.preventDefault();
+    setSubmitState(false);
+  };
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -177,15 +203,21 @@ const EditUserInfoForm: React.FC = () => {
                       type="text"
                       required
                       id="nickname"
+                      readOnly={submitState ? true : false}
+                      maxLength={8}
                       value={option.nickname}
                       onChange={(event) => {
                         setOption({ ...option, nickname: event.target.value });
                       }}
                     />
-                    <button onClick={checkNicknameHandler}>중복확인</button>
+                    {submitState ? (
+                      <button onClick={nickNameUpdateHandler}>수정</button>
+                    ) : (
+                      <button onClick={checkNicknameHandler}>중복확인</button>
+                    )}
                   </div>
                   <div className={styles.explain}>
-                    다른 유저와 겹치지 않는 자신만의 별명을 입력하세요.
+                    다른 유저와 겹치지 않는 자신만의 별명을 입력하세요.(2 ~ 8자)
                   </div>
                 </div>
               </div>{" "}
@@ -199,6 +231,7 @@ const EditUserInfoForm: React.FC = () => {
                   id="introduce"
                   value={option.introduce}
                   placeholder="자신을 한줄로 표현해보세요."
+                  maxLength={25}
                   onChange={(event) => {
                     setOption({ ...option, introduce: event.target.value });
                   }}
@@ -258,6 +291,9 @@ const EditUserInfoForm: React.FC = () => {
       </div>
 
       <Modal open={openModal} close={closeModal} header="안내">
+        <div>{content}</div>
+      </Modal>
+      <Modal open={openCompleteModal} close={closeCompleteModal} header="안내">
         <div>{content}</div>
       </Modal>
     </div>

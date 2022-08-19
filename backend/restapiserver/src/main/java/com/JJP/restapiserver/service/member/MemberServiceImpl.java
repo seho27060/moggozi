@@ -128,7 +128,7 @@ public class MemberServiceImpl implements MemberService {
         String fullname = updateUserRequest.getFullname();
         String nickname = updateUserRequest.getNickname();
         String introduce = updateUserRequest.getIntroduce();
-        String user_img = updateUserRequest.getUserImg();
+        String user_img = member.get().getUser_img();
         int is_private = updateUserRequest.getIsPrivate();
         int is_social = member.get().getIs_social();
 
@@ -237,7 +237,7 @@ public class MemberServiceImpl implements MemberService {
     public ResponseEntity<?> login(LoginRequest loginRequest) {
 
         Member member = memberRepository.findByUsername(loginRequest.getUsername()).get();
-        if(member.getRole().equals(ERole.ROLE_INVALIDATED_USER))
+        if(member.getRole().getName().toString().equals("ROLE_INVALIDATED_USER"))
             return ResponseEntity.badRequest().body("Error: The user doesn't exist.");
 
         // Authentication 객체를 생성한다 by AuthenticationManager
@@ -280,6 +280,7 @@ public class MemberServiceImpl implements MemberService {
                 .userImg(member.getUser_img())
                 .isPrivate(member.getIs_private())
                 .isSocial(member.getIs_social())
+                .score(member.getMemberScore().getScore())
                 .build();
 
         return ResponseEntity.ok(updateInfoResponse);
@@ -317,6 +318,7 @@ public class MemberServiceImpl implements MemberService {
                 .followedCnt(followedCnt)
                 .followingCnt(followingCnt)
                 .isFollowing(followStatus)
+                .score(member.getMemberScore().getScore())
                 .build();
     }
 
@@ -357,7 +359,7 @@ public class MemberServiceImpl implements MemberService {
 
         if (user_id == -1L) {
             MemberScore memberScore = MemberScore.builder()
-                    .id(member.getId())
+                    .member(member)
                     .score(0L)
                     .build();
             memberScoreRepository.save(memberScore);

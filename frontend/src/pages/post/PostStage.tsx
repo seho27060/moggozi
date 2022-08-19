@@ -26,6 +26,7 @@ import styles from "./PostStage.module.scss";
 import { StageState } from "../../store/stage";
 import PostPageList from "../../components/post/PostPageList";
 import Loader from "../../components/ui/Loader";
+import PostFormModal from "../../components/ui/PostFormModal";
 
 const PostStage: React.FC = () => {
   document.body.style.overflow = "auto"; //모달때문에 이상하게 스크롤이 안되서 강제로 스크롤 바 생성함
@@ -54,7 +55,7 @@ const PostStage: React.FC = () => {
       setIsLoading(true);
       postListRead(Number(stageId), currentPage + 1, 18)
         .then((res) => {
-          console.log("포스팅 불러오기 성공", res.content);
+          // console.log("포스팅 불러오기 성공", res.content);
           dispatch(postSet(postListState.concat(res.content)));
           dispatch(setPostFormButtonState(true));
           setCurrentPage(res.pageNum);
@@ -70,7 +71,7 @@ const PostStage: React.FC = () => {
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll, true);
-    console.log("infinite call ver1");
+    // console.log("infinite call ver1");
     return () => {
       window.removeEventListener("scroll", handleScroll, true);
     };
@@ -86,10 +87,10 @@ const PostStage: React.FC = () => {
 
   useEffect(() => {
     setIsLoading(true);
-    console.log(stageId, "번 스테이지의 포스팅을 불러옵니다.");
+    // console.log(stageId, "번 스테이지의 포스팅을 불러옵니다.");
     postListRead(Number(stageId), 0, 18)
       .then((res) => {
-        console.log("포스팅 불러오기 성공", res.content);
+        // console.log("포스팅 불러오기 성공", res.content);
         dispatch(postSet(res.content));
         dispatch(setPostFormButtonState(true));
         setHasNext(res.hasNext);
@@ -100,13 +101,13 @@ const PostStage: React.FC = () => {
       });
     stageMyPostRead(Number(stageId))
       .then((res) => {
-        console.log("user stage post", res);
+        // console.log("user stage post", res);
         setCheckedPost(res);
       })
       .catch((err) => console.log("stagepostread err", err));
     stageDetailRead(Number(stageId))
       .then((res) => {
-        console.log("stage ", res);
+        // console.log("stage ", res);
         setStageState(res);
       })
       .catch((err) => console.log("stage err", err));
@@ -143,11 +144,15 @@ const PostStage: React.FC = () => {
         </div>
 
         <div>
-          {postModalOpen && (
+          {postModalOpen && !postUpdateFormOpen && (
             <PostModal open={postModalOpen} close={closePostModal}>
-              {!postUpdateFormOpen && <PostDetailItem />}
-              {postUpdateFormOpen && <PostUpdateForm />}
+              <PostDetailItem />
             </PostModal>
+          )}
+          {postModalOpen && postUpdateFormOpen && (
+            <PostFormModal open={postModalOpen} close={closePostModal}>
+              <PostUpdateForm />
+            </PostFormModal>
           )}
           {postFormModalOpen && (
             <Modal
@@ -159,8 +164,6 @@ const PostStage: React.FC = () => {
               <PostForm
                 stageId={Number(stageId)}
                 modalClose={closePostFormModal}
-                // 값이 비면 안되서 아무거나 넣었음.
-                challenge={"123"}
               />
             </Modal>
           )}
