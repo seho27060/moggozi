@@ -1,6 +1,7 @@
 [TOC]
 
 # 🎉moggozi
+![maing](https://user-images.githubusercontent.com/81341784/204679171-de49d842-dbec-4e14-9470-d7045dc0ea93.png)
 
 ![readme_main](https://user-images.githubusercontent.com/81341784/203911647-78e7db4c-7257-4493-9510-2ba462ea0911.gif)
 
