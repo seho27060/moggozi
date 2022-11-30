@@ -3,8 +3,6 @@
 # 🎉moggozi
 ![maing](https://user-images.githubusercontent.com/81341784/204679171-de49d842-dbec-4e14-9470-d7045dc0ea93.png)
 
-![readme_main](https://user-images.githubusercontent.com/81341784/203911647-78e7db4c-7257-4493-9510-2ba462ea0911.gif)
-
 ## :family: 프로젝트 팀원 소개
 
 | [박세호]()  | [임윤혁]()  | 허재영      | [박상현]() | [조성민](https://github.com/WeedInGist) | 정호진     |
@@ -127,6 +125,7 @@
 
 ## ✨서비스 화면 및 주요기능
 
+![readme_main](https://user-images.githubusercontent.com/81341784/203911647-78e7db4c-7257-4493-9510-2ba462ea0911.gif)
 ![(1-25) 공통PJT_광주_2반_C201_시연시나리오](https://user-images.githubusercontent.com/81341784/203912530-2fa98213-db91-4c7e-aece-571822e78c01.jpg)![(2-25) 공통PJT_광주_2반_C201_시연시나리오](https://user-images.githubusercontent.com/81341784/203912533-0f75fc4d-7971-43f0-b183-b972dc44c488.jpg)
 ![(3-25) 공통PJT_광주_2반_C201_시연시나리오](https://user-images.githubusercontent.com/81341784/203912536-a4eda525-cb95-4d26-b316-0e42ae330296.jpg)
 ![(4-25) 공통PJT_광주_2반_C201_시연시나리오](https://user-images.githubusercontent.com/81341784/203912537-d0c8c147-c0a6-4558-8083-a836446c0b5c.jpg)
